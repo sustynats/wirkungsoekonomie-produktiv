@@ -9,162 +9,162 @@
     {
       "key": "source_items",
       "kind": "object",
-      "count": 69896,
+      "count": 69899,
       "parts": [
         {
-          "sha256": "0d9536d47d5c58b896a70529c8892cb294c520337bcf0ba3ddc8a23e4261c7e6",
+          "sha256": "91f0882da76b83c392a659881a2ea71c17b9f7a373d991e0d4a153c7f6ac9749",
           "bytes": 8387589,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "0d9536d47d5c58b896a70529c8892cb294c520337bcf0ba3ddc8a23e4261c7e6.json.gz",
-            "sha256": "e1a4a7a09a168f1ce1596f561cf6534122c2b1e5706a74e04fa0fa73a4d23573",
-            "bytes": 1809666
+            "asset": "91f0882da76b83c392a659881a2ea71c17b9f7a373d991e0d4a153c7f6ac9749.json.gz",
+            "sha256": "5381abe03645db71e2774527c106a8c02edc5d122f6401eb97cc08eb0001d106",
+            "bytes": 1809673
           }
         },
         {
-          "sha256": "9f989c0abc6ccde8e026560c037376f1bbf53cbbf1868695205d03632a6dd4b8",
+          "sha256": "93894255c8b5c93979424bd30c0c1c344d0483c7f69835acfed567850b7897fc",
           "bytes": 8387930,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "9f989c0abc6ccde8e026560c037376f1bbf53cbbf1868695205d03632a6dd4b8.json.gz",
-            "sha256": "167bfefa2e86ec9ab42cb720cc896ab5b25372ce6bada5d44eb869033c2290f2",
-            "bytes": 1793318
+            "asset": "93894255c8b5c93979424bd30c0c1c344d0483c7f69835acfed567850b7897fc.json.gz",
+            "sha256": "1ef3604cc6a5e6aa56f94a754b8a1f16a47f9c8e480043dd6fc7b4e2d0a2c669",
+            "bytes": 1793331
           }
         },
         {
-          "sha256": "438b39b3ddaacd4ffe9d808de11b25e33547089d44d313c4cbc4919c5c9506a7",
+          "sha256": "81c6b8d8a039b9e3dbdb1faf9b05d8422cb865217961a5d6afe1a1708f72858d",
           "bytes": 8388391,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "438b39b3ddaacd4ffe9d808de11b25e33547089d44d313c4cbc4919c5c9506a7.json.gz",
-            "sha256": "37f8591b1a172a8ed0dd66a10c0b7b504c67e4f676285a4f1559c9ee6dc589e2",
-            "bytes": 1774688
+            "asset": "81c6b8d8a039b9e3dbdb1faf9b05d8422cb865217961a5d6afe1a1708f72858d.json.gz",
+            "sha256": "7ed35b7afe49ce8d9dec0e7d51da79e60a2b0f11fdb6dcb44889d218d82095ee",
+            "bytes": 1774698
           }
         },
         {
-          "sha256": "015b14d41a91e6aa4f91128b6e9442426e84d09a7158649fd45f332b814f2f1e",
+          "sha256": "382ddaae5defe2a5cf61caac441a6aae83ae8a0f80339bf11e29a041c9fc7fef",
           "bytes": 8388322,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "015b14d41a91e6aa4f91128b6e9442426e84d09a7158649fd45f332b814f2f1e.json.gz",
-            "sha256": "714c00d5a236cd9597d7f93f74384cb642099d93f7d047142ef901074fee7c32",
-            "bytes": 1813352
+            "asset": "382ddaae5defe2a5cf61caac441a6aae83ae8a0f80339bf11e29a041c9fc7fef.json.gz",
+            "sha256": "be0a8373185abcaf6992867a7244d0c6276f2b9bc939b8119e78a4cd687fe4e2",
+            "bytes": 1813354
           }
         },
         {
-          "sha256": "1d88379354b4a56049a58770756b7dc4b543e902493f7ca04de2c03fe6072fdc",
+          "sha256": "b1b7e91f049b34aced3b748e65259d212ced35ccefabbf7815a01fc50cd23153",
           "bytes": 8387236,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "1d88379354b4a56049a58770756b7dc4b543e902493f7ca04de2c03fe6072fdc.json.gz",
-            "sha256": "eb3d8e889bd5c48b5d603900beb31583e9f8525554206b15aef975643f750209",
-            "bytes": 1806178
+            "asset": "b1b7e91f049b34aced3b748e65259d212ced35ccefabbf7815a01fc50cd23153.json.gz",
+            "sha256": "4e5b80bf7b792f35b1f22193d0460f704f0a3feb199daf6797a4fd85b4ddbe9f",
+            "bytes": 1806183
           }
         },
         {
-          "sha256": "5e802b75ab750616f7d94fe1bf7797906f553cd0c8c438a03f226a87ee5089dd",
+          "sha256": "4012701cef606c7d438e7cd99e495c535a71e036a31555a72a0c0d5d91810a6c",
           "bytes": 8387923,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "5e802b75ab750616f7d94fe1bf7797906f553cd0c8c438a03f226a87ee5089dd.json.gz",
-            "sha256": "c5e213b3c630b388067bd23fcdb4e32b24cb573c7751e3ba3d86ded623b48f50",
-            "bytes": 1797004
+            "asset": "4012701cef606c7d438e7cd99e495c535a71e036a31555a72a0c0d5d91810a6c.json.gz",
+            "sha256": "7b82a224d76bc4a698e7eb20f787aaaaedb95be711c146e378f152cfb15beb9d",
+            "bytes": 1797012
           }
         },
         {
-          "sha256": "f4a1882060f60f27868760279e34b3af28517caf565454f0e1bd0cbf5960901e",
+          "sha256": "d532ac5464057753781514f6eeb092dc090bc71df64584da63ec5066458f1e36",
           "bytes": 8387452,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "f4a1882060f60f27868760279e34b3af28517caf565454f0e1bd0cbf5960901e.json.gz",
-            "sha256": "1694520c519430de0f92f46d9df0d865ae7d1ce0a3f4813d23a30c9ef6f9116e",
-            "bytes": 1818884
+            "asset": "d532ac5464057753781514f6eeb092dc090bc71df64584da63ec5066458f1e36.json.gz",
+            "sha256": "849cde5df3df07ed8e01b97fd9d2fcc69e2f4849f060ca563fbd2b6a696ad15a",
+            "bytes": 1818887
           }
         },
         {
-          "sha256": "5b309af2d80a0ff13db662ea135f05bc7b32427c5603bd7c32ad411dac8a2c02",
+          "sha256": "fb0424023108dfdae9f8594d95d29adf31d657da30a14b4e007b31e4b465080a",
           "bytes": 8388607,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "5b309af2d80a0ff13db662ea135f05bc7b32427c5603bd7c32ad411dac8a2c02.json.gz",
-            "sha256": "e6df81f22135d690401c6adf3b4c1c22788eedb2609b9f6fbfac04afaa52a6a7",
-            "bytes": 1807894
+            "asset": "fb0424023108dfdae9f8594d95d29adf31d657da30a14b4e007b31e4b465080a.json.gz",
+            "sha256": "449944f65f1c40b4744ae2e7434105257937753b428e58cef741d589cf7d9547",
+            "bytes": 1807896
           }
         },
         {
-          "sha256": "91b05fb5ba5f47b85d5713270ae963a181ae3c8b5b706e7765bf1c768d8375cb",
+          "sha256": "c54f9f60f0fc65be65759b2dfd6ea1617856c5dc45e8f33a429e51f8b0190010",
           "bytes": 8388229,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "91b05fb5ba5f47b85d5713270ae963a181ae3c8b5b706e7765bf1c768d8375cb.json.gz",
-            "sha256": "c7504368513ae4b0bbabbce7693d5863487b30aa4a57bd40cd32b6c9746ba9d7",
-            "bytes": 1797168
+            "asset": "c54f9f60f0fc65be65759b2dfd6ea1617856c5dc45e8f33a429e51f8b0190010.json.gz",
+            "sha256": "7073c31e1dbd03becd031339edebd14041826e3080282d4935cddfc94fa7461a",
+            "bytes": 1797187
           }
         },
         {
-          "sha256": "19f0af7bc6e60ed4faa16af7a3e9f5e57c0543ff496c8d466ee517a602fe74e1",
+          "sha256": "c89e973ca72698c24f0110e96d7f1f609b85caf63139f6b1cd102ba7d4a40867",
           "bytes": 8388200,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "19f0af7bc6e60ed4faa16af7a3e9f5e57c0543ff496c8d466ee517a602fe74e1.json.gz",
-            "sha256": "c33a6c5967f99cbfb1b342ab9075e35d2bb20c64d376d857db2b6b2de4ae3b0a",
-            "bytes": 1790682
+            "asset": "c89e973ca72698c24f0110e96d7f1f609b85caf63139f6b1cd102ba7d4a40867.json.gz",
+            "sha256": "01b099aa97bb446e957c6da69c929c3bfd8a261623759da42addc29f6ec0c817",
+            "bytes": 1790686
           }
         },
         {
-          "sha256": "d846a0617a9cb6e2be08a410813352f0a342232eb2317191e49909bf6e0340a9",
-          "bytes": 8387496,
+          "sha256": "9df5fe308124966438e201d08192b9993b063c23d296f850734e77361694f579",
+          "bytes": 8387494,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "d846a0617a9cb6e2be08a410813352f0a342232eb2317191e49909bf6e0340a9.json.gz",
-            "sha256": "f87c47ad675c548192886f2bce79a62584dcbacd71909d807d6f5e92ad80bfa2",
-            "bytes": 1784684
+            "asset": "9df5fe308124966438e201d08192b9993b063c23d296f850734e77361694f579.json.gz",
+            "sha256": "7cb3fc7da2a874d4373bc189d52f89f274a07da0a24659ddbf6eb9119e0a4075",
+            "bytes": 1784644
           }
         },
         {
-          "sha256": "6bba38631c505a1676b68db7944684fbc2b1ff7d201a08d6483666d615adf444",
-          "bytes": 8387828,
+          "sha256": "29e0c0341a6d3647a4b2b1757dcfcb1ff87cb7021c057d57310f4d740cf0852b",
+          "bytes": 8387808,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "6bba38631c505a1676b68db7944684fbc2b1ff7d201a08d6483666d615adf444.json.gz",
-            "sha256": "2472c156ad15a000f854d6f257ec0165240ab9f171cd6abab7a3a5b19645889b",
-            "bytes": 1729616
+            "asset": "29e0c0341a6d3647a4b2b1757dcfcb1ff87cb7021c057d57310f4d740cf0852b.json.gz",
+            "sha256": "d436c789b56d48f46987afd2cc6f05e00b65a3006e5c3ee2f71a5090c1d6f053",
+            "bytes": 1729483
           }
         },
         {
-          "sha256": "cb236fac900cf6c42ebc8793bf85e0547d1672c985b1464c64341bc733695511",
-          "bytes": 356927,
+          "sha256": "d463a97a9da317ece52b1619810c613396ca0c29edb930f49b7f4a4cba577abe",
+          "bytes": 361495,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "cb236fac900cf6c42ebc8793bf85e0547d1672c985b1464c64341bc733695511.json.gz",
-            "sha256": "994f7123195ce2a41cd14bfa63f9d59862aefd32734a71d068461b42fdeb98c3",
-            "bytes": 72179
+            "asset": "d463a97a9da317ece52b1619810c613396ca0c29edb930f49b7f4a4cba577abe.json.gz",
+            "sha256": "104fa6172ab7a905bc54c2e92e9abd00e8cf135b265bdcdac0bba23c5ae1a331",
+            "bytes": 73282
           }
         }
       ]
@@ -172,294 +172,294 @@
     {
       "key": "events",
       "kind": "object",
-      "count": 72132,
+      "count": 72135,
       "parts": [
         {
-          "sha256": "82c0aa42ce4983d6b43184ce9bc5f72c0b8989a819bfe9313015ce553d6d0394",
-          "bytes": 8387080,
+          "sha256": "df757852b240f22cd04f55ceb7b7e2c44631d4c6e0ac266de267652a8cbb933d",
+          "bytes": 8387201,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "82c0aa42ce4983d6b43184ce9bc5f72c0b8989a819bfe9313015ce553d6d0394.json.gz",
-            "sha256": "bad97973942791ad1e5b0a666f38d59e2a7f5a77f73c2b6a902d28e962fb77b1",
-            "bytes": 1080842
+            "asset": "df757852b240f22cd04f55ceb7b7e2c44631d4c6e0ac266de267652a8cbb933d.json.gz",
+            "sha256": "fdf3a616232ca46a02e586e8fd8e6158be2f931553c928311761b2255b32290f",
+            "bytes": 1080831
           }
         },
         {
-          "sha256": "967ff3628c24e479de2fb41abe76c9395c53062b6a72e982570b4d89e8a0620b",
+          "sha256": "a940542c853ae8c2cc2efa14231b2780919022c4016d2202bf4c97fcfbeadfb1",
           "bytes": 8386459,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "967ff3628c24e479de2fb41abe76c9395c53062b6a72e982570b4d89e8a0620b.json.gz",
-            "sha256": "f3cb48e5675eedec57f3304095047b50d3a5446c2448d1a9f978a1b45b5d1a72",
-            "bytes": 597741
+            "asset": "a940542c853ae8c2cc2efa14231b2780919022c4016d2202bf4c97fcfbeadfb1.json.gz",
+            "sha256": "2f677f864722e9e2e2116a6af7b26e1001ee3a0117e7afa96e7cc53122f38428",
+            "bytes": 597754
           }
         },
         {
-          "sha256": "cde21473fd1bdf5d74102892be5769e7d3f7f848ff7ddb9737a02c28276e6401",
+          "sha256": "ac82f7018e3c64ab1c3abc7418503684fdc568aa5fb7fdc7f1f6cc4e32207788",
           "bytes": 8387442,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "cde21473fd1bdf5d74102892be5769e7d3f7f848ff7ddb9737a02c28276e6401.json.gz",
-            "sha256": "b473e48f85e8e7297a46d8dceed7972c5fdc495094bde9be71b3bcc61fe10ece",
-            "bytes": 594275
+            "asset": "ac82f7018e3c64ab1c3abc7418503684fdc568aa5fb7fdc7f1f6cc4e32207788.json.gz",
+            "sha256": "86410661cc1a07a7e81d28b38ae7754c107254182a9ca92a2ce1267af74977ee",
+            "bytes": 594286
           }
         },
         {
-          "sha256": "e0c22a594ee5f10ad80498fdb99fb7401f53307b222cf8e2e532b31a785fed56",
+          "sha256": "2b7c1b2b44cc5e0cd408d4b5e6ef15802f019db7abc7a2d779a7de58a978145d",
           "bytes": 8387847,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "e0c22a594ee5f10ad80498fdb99fb7401f53307b222cf8e2e532b31a785fed56.json.gz",
-            "sha256": "e8aeb1741296b68bf2949199dbf7975abf9096506caab59f9f11cfb7245650fc",
-            "bytes": 571046
+            "asset": "2b7c1b2b44cc5e0cd408d4b5e6ef15802f019db7abc7a2d779a7de58a978145d.json.gz",
+            "sha256": "2d4efa4d00493b3d3f7968795761d9c0d3846bbaa9543a1f918f292c60fa9ff6",
+            "bytes": 571060
           }
         },
         {
-          "sha256": "8d8feb22576eeeda39c24913a6599d04df2670d681715bbd15abf67880c3048e",
+          "sha256": "a092deb4762d90630707beb9de8ba376b5d81680bad403d55d36da37791f7219",
           "bytes": 8385988,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "8d8feb22576eeeda39c24913a6599d04df2670d681715bbd15abf67880c3048e.json.gz",
-            "sha256": "f1c8acf01cbbd3b0dbc78307e01be0824fbaa4405d9111cbe81d5e17d2e9a1df",
-            "bytes": 586884
+            "asset": "a092deb4762d90630707beb9de8ba376b5d81680bad403d55d36da37791f7219.json.gz",
+            "sha256": "6efd7b489b5f40498c0151e0047b12471650c73124841e7be2bacd12169abde7",
+            "bytes": 586894
           }
         },
         {
-          "sha256": "fafcd59cce08a4feb4e204650adefe3b9689306740d8e066d40dae7daa68bcaf",
+          "sha256": "5e0bf84508947b4ce920a640f9bd313586ff9f53d134c16ae580b5ab1f9a5c1c",
           "bytes": 8387590,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "fafcd59cce08a4feb4e204650adefe3b9689306740d8e066d40dae7daa68bcaf.json.gz",
-            "sha256": "3765bb2a3f6c1fb7751ab956dcb5e43453cd732ab3268dee81d4c2e0bd944e8d",
-            "bytes": 595373
+            "asset": "5e0bf84508947b4ce920a640f9bd313586ff9f53d134c16ae580b5ab1f9a5c1c.json.gz",
+            "sha256": "f560b38b30d466f6fa81a5b83534530ddb7118fa674fddc154be5678714dfa52",
+            "bytes": 595371
           }
         },
         {
-          "sha256": "aa3a6dd3571a7c441ea6b16f20b835f3a893d058f74a5e508b63eb8282750368",
+          "sha256": "2f705080df251d58bd82f71ae3bf6b8770eb2dee2d9e22da11ffed6560e1a415",
           "bytes": 8386860,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "aa3a6dd3571a7c441ea6b16f20b835f3a893d058f74a5e508b63eb8282750368.json.gz",
-            "sha256": "16a411cd2e8ab109e86286f12a23de56838fece955348809d799268f0a7d1fe5",
-            "bytes": 581581
+            "asset": "2f705080df251d58bd82f71ae3bf6b8770eb2dee2d9e22da11ffed6560e1a415.json.gz",
+            "sha256": "35a5f750e82ac90a9277d0459322ff6606ae32c13a1fd970b5285d2e9f84ddbb",
+            "bytes": 581569
           }
         },
         {
-          "sha256": "512d6d9135231a4075411debecc71f131731e2f4be12e955f88d50be4799e43f",
+          "sha256": "bda9ae2ef15e818f2b8b39604e2e45a38059a3aa61d92a739484ac3577e4cf5f",
           "bytes": 8385824,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "512d6d9135231a4075411debecc71f131731e2f4be12e955f88d50be4799e43f.json.gz",
-            "sha256": "b2028cbc0830619179940035ca94ae88e1112821657e5de235f545e40fcbe878",
-            "bytes": 593424
+            "asset": "bda9ae2ef15e818f2b8b39604e2e45a38059a3aa61d92a739484ac3577e4cf5f.json.gz",
+            "sha256": "de31f225b5c8fc3a5c5b087f6292980a3d28264434c073a891704f3d9e8fc8b5",
+            "bytes": 593419
           }
         },
         {
-          "sha256": "142f26ac650b77583c0e00f5633096c024e3dc0b2689fd2d3efb9fb632e36aca",
+          "sha256": "f8a780d5fa39780b381a9394dce88768a4b3ed503aadf9c095360fe9de28cec3",
           "bytes": 8386119,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "142f26ac650b77583c0e00f5633096c024e3dc0b2689fd2d3efb9fb632e36aca.json.gz",
-            "sha256": "08cbd34916153cf3fb61bd712de33edfea1e721666c009eadac62043a69f598d",
-            "bytes": 594267
+            "asset": "f8a780d5fa39780b381a9394dce88768a4b3ed503aadf9c095360fe9de28cec3.json.gz",
+            "sha256": "dbdc20a0baf7b57223ab48c142afdf3cd1f0a21e1f8580a313ea2fc68bb7a386",
+            "bytes": 594263
           }
         },
         {
-          "sha256": "06fa3e137fda70ea4ab7fa9ee88b2f250ddfc9932e622c3b71cd1217947cf24c",
+          "sha256": "3c245a403bc3fe24adca04b5dc14a4a4c1dd4ec84c369ec867b90f9958337824",
           "bytes": 8388134,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "06fa3e137fda70ea4ab7fa9ee88b2f250ddfc9932e622c3b71cd1217947cf24c.json.gz",
-            "sha256": "bcee4ec37db9818cad53019d0dfcdaed9601d910b8cb251624f11c32a2a7ee1a",
-            "bytes": 580896
+            "asset": "3c245a403bc3fe24adca04b5dc14a4a4c1dd4ec84c369ec867b90f9958337824.json.gz",
+            "sha256": "1a609e64ba56104601cbbc362a6313b72b12fd088de9c2dd9ed17a059410f40e",
+            "bytes": 580895
           }
         },
         {
-          "sha256": "db5e8575228ba3945554156373f255eb039153d5c747044ab3e3b535380cca5b",
+          "sha256": "6ffe742109e0b289542e719d32ef19978e10b11d0166ca0a2a719645c1fec56b",
           "bytes": 8387495,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "db5e8575228ba3945554156373f255eb039153d5c747044ab3e3b535380cca5b.json.gz",
-            "sha256": "eb4d2602d882680ebb37f996503fa5b8a435fe23b0f0378ba7e42dff66590af3",
-            "bytes": 579423
+            "asset": "6ffe742109e0b289542e719d32ef19978e10b11d0166ca0a2a719645c1fec56b.json.gz",
+            "sha256": "a7003cc307cf5142ddd0f70f7daae6897b25426230defb98827ca021f95c0bf8",
+            "bytes": 579422
           }
         },
         {
-          "sha256": "13c42e0cc9bcb7f79be8f801df96b74087985658e2343aed1f2967108ed4f896",
+          "sha256": "9771c93b372512e68e04eb5610c38cf499bcb24f0f70010793b50ed199209859",
           "bytes": 8385690,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "13c42e0cc9bcb7f79be8f801df96b74087985658e2343aed1f2967108ed4f896.json.gz",
-            "sha256": "2fc4e1ff2b0059f50c8a9f97164d580deae4830687018ce352dc529136b4650e",
-            "bytes": 595899
+            "asset": "9771c93b372512e68e04eb5610c38cf499bcb24f0f70010793b50ed199209859.json.gz",
+            "sha256": "5c06ff2ece0c1955df560f26a28089d3d487f300b2fb9e62a7eabdd5d58fb304",
+            "bytes": 595892
           }
         },
         {
-          "sha256": "96a4b2b1ca3d6e5197a4bc3ec01a44eb04f18e62d0942f868f8b99d6d22c9afe",
+          "sha256": "7ddd4f5da88e3be9b436953ab252df6e051e19696821476a61f1ac4a451be89b",
           "bytes": 8385739,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "96a4b2b1ca3d6e5197a4bc3ec01a44eb04f18e62d0942f868f8b99d6d22c9afe.json.gz",
-            "sha256": "72c6eb2c21137841f69f0bd35b5f3686eb05959565d22f0f9ddeaa00eb0b8f65",
-            "bytes": 591687
+            "asset": "7ddd4f5da88e3be9b436953ab252df6e051e19696821476a61f1ac4a451be89b.json.gz",
+            "sha256": "a71111049fcb598b9b40dc05f9502d19d9de305efe2c5cf6d4e939985eb9a754",
+            "bytes": 591683
           }
         },
         {
-          "sha256": "11c67057c8ac999f16c1398b8bcdb466ab3e623b93cd1db441596a5fccc0510b",
+          "sha256": "8676aebd3b747468b23fee8c4e18d7bf5d30b7155dc4dd3f0aff314733acc1c6",
           "bytes": 8387569,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "11c67057c8ac999f16c1398b8bcdb466ab3e623b93cd1db441596a5fccc0510b.json.gz",
-            "sha256": "9a3d4eea0343f10d7c55289279ab8142102740db622491712507b857baab8741",
-            "bytes": 605774
+            "asset": "8676aebd3b747468b23fee8c4e18d7bf5d30b7155dc4dd3f0aff314733acc1c6.json.gz",
+            "sha256": "f7669850c7201e185701c92f09d80c946eaa17f2a218f2012923c771b7ae4feb",
+            "bytes": 605773
           }
         },
         {
-          "sha256": "da1e5790c60b1ba65ef2db009e6d54540b0b0dadec1f4849cd6d45b13e441c03",
+          "sha256": "9cad9d3d952b9cc358b0bb9fe01fe8f4c4238b120c630507bef8934acded7425",
           "bytes": 8386309,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "da1e5790c60b1ba65ef2db009e6d54540b0b0dadec1f4849cd6d45b13e441c03.json.gz",
-            "sha256": "6eef349f6670722036da4980f56aae2b456b3df087aeda2ff3f1fdca7d4ca294",
-            "bytes": 598508
+            "asset": "9cad9d3d952b9cc358b0bb9fe01fe8f4c4238b120c630507bef8934acded7425.json.gz",
+            "sha256": "fda7d48a311293c11af6b8d3a7bdb9d6fde4b78250eeb160d52b8363956bf2c4",
+            "bytes": 598511
           }
         },
         {
-          "sha256": "c0399378211edc93a0ff5a68fad8935cc0bb49a5cb779396519ff29b64f4e11a",
+          "sha256": "7e861c4304bdbbe2feef74efc1529ac85c27fa2e4a5cf49d53bb7c9ab000e846",
           "bytes": 8388046,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "c0399378211edc93a0ff5a68fad8935cc0bb49a5cb779396519ff29b64f4e11a.json.gz",
-            "sha256": "0c2c790176e07f0efd27a67e33c5cd73f13cffb95846851b4655e0da13e57aa5",
-            "bytes": 589577
+            "asset": "7e861c4304bdbbe2feef74efc1529ac85c27fa2e4a5cf49d53bb7c9ab000e846.json.gz",
+            "sha256": "e4e9374a64b9423ab865e1bc072eebd5e765b8ec8716dc1ebb5e898b3ef4bc51",
+            "bytes": 589579
           }
         },
         {
-          "sha256": "8a84e7a53bcb84c7cb11c96bba4a54e1264a485e8808ed707f591c7aa0a1822c",
+          "sha256": "98658ec2fb70ac7ccbaa4e1550b94f35899afd540f4c19f9b37c4de82d4dafac",
           "bytes": 8388374,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "8a84e7a53bcb84c7cb11c96bba4a54e1264a485e8808ed707f591c7aa0a1822c.json.gz",
-            "sha256": "603f4d927bedb74a1b1e2b805072eb5e7255bd0d01a0d44be2f03a5842936f9e",
-            "bytes": 592846
+            "asset": "98658ec2fb70ac7ccbaa4e1550b94f35899afd540f4c19f9b37c4de82d4dafac.json.gz",
+            "sha256": "4030de62fba25071e9a7c9cad9b0f9bf3b7176116f5ab5972690a182ef96a657",
+            "bytes": 592852
           }
         },
         {
-          "sha256": "6a1c29d47a988cd24a60e71f4a8159b3f3ecaaf0f20315fdb8ef7139d25f1a47",
+          "sha256": "c197d7a0dab3019219d1d6ac25fe20ee329404b681292e936cb4ec22a28e24b2",
           "bytes": 8387287,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "6a1c29d47a988cd24a60e71f4a8159b3f3ecaaf0f20315fdb8ef7139d25f1a47.json.gz",
-            "sha256": "fe1e8fd832b918bdb360c1c6aa5a1aa0136d48a43265f95f0fe942793516e701",
-            "bytes": 584452
+            "asset": "c197d7a0dab3019219d1d6ac25fe20ee329404b681292e936cb4ec22a28e24b2.json.gz",
+            "sha256": "b8135f8276fbcd04c4e9ba5c2226ecd0b458150ef363987290e8b4e3685d908b",
+            "bytes": 584456
           }
         },
         {
-          "sha256": "e35267ac1d5c23d83ebe69ab1092b15df5b00833bf589a8ef3b61646c5de1615",
+          "sha256": "3797b64ab99c519dfee50b51535a321fc196dbeac2f65cbd84d7005062625b0d",
           "bytes": 8388272,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "e35267ac1d5c23d83ebe69ab1092b15df5b00833bf589a8ef3b61646c5de1615.json.gz",
-            "sha256": "0a3d8b02bc8e82dd544366219bc139e7d505e86e0cb666e885a1a2fe00fb38f2",
-            "bytes": 584914
+            "asset": "3797b64ab99c519dfee50b51535a321fc196dbeac2f65cbd84d7005062625b0d.json.gz",
+            "sha256": "b0f60fdac72c5d871f1e54bd170625329f5c4cee946bf4785943c7b8e6be8cc1",
+            "bytes": 584919
           }
         },
         {
-          "sha256": "661dce6c0c99e9d047d634982aaf6f87efaa018839a0cc8287fd6757663760d1",
+          "sha256": "b6ceee7640e219e0d212dce10249a8a29d68e0384b6b13e528e99adf4c8caa02",
           "bytes": 8385694,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "661dce6c0c99e9d047d634982aaf6f87efaa018839a0cc8287fd6757663760d1.json.gz",
-            "sha256": "7aa1a3e804fefd4ba1ebd0e8fa67bc61b4dd32ba045efcc2dd8e58c450e72660",
-            "bytes": 585507
+            "asset": "b6ceee7640e219e0d212dce10249a8a29d68e0384b6b13e528e99adf4c8caa02.json.gz",
+            "sha256": "32e0f1a63123c366a69d802766289b3b735b684c95323c211f213d05cb52bc19",
+            "bytes": 585511
           }
         },
         {
-          "sha256": "cf38863cc3d1bec48ae64ecee740d320eacd1d9e0e0752f20ea108a4b80b58a2",
+          "sha256": "92e3da82e48f6eda6211072c553edc4f064a547554b5bebeea708f3de4d83641",
           "bytes": 8387165,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "cf38863cc3d1bec48ae64ecee740d320eacd1d9e0e0752f20ea108a4b80b58a2.json.gz",
-            "sha256": "c6dd8325eb22b9dbb7d2e738003e4e910a222a31ab95f3ce9472ba9f42603b40",
-            "bytes": 573178
+            "asset": "92e3da82e48f6eda6211072c553edc4f064a547554b5bebeea708f3de4d83641.json.gz",
+            "sha256": "a55db2dc8ae32336512ef510ac7d2d560f20c2f9b5b25e774b0a48dfd729dbd0",
+            "bytes": 573163
           }
         },
         {
-          "sha256": "39bb87e8c10acc843ef163638afe785ed48c4c2d90b75e3829c24ccc977ee961",
+          "sha256": "19a7fb86544d2971ae820fc874b268bc280fd52792524786547c5ece2109315c",
           "bytes": 8387760,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "39bb87e8c10acc843ef163638afe785ed48c4c2d90b75e3829c24ccc977ee961.json.gz",
-            "sha256": "a27b85d4895bd373b3e11fc1740f718f0016ce584b9c1b6b076fa68b26cb82c1",
-            "bytes": 565759
+            "asset": "19a7fb86544d2971ae820fc874b268bc280fd52792524786547c5ece2109315c.json.gz",
+            "sha256": "a4c88bcdb9b4da2dba785acb409277bdd62707794124b9cf3c6e927eeea8e200",
+            "bytes": 565766
           }
         },
         {
-          "sha256": "4e4733b8cbfeceb4587c664cb4cbb43e7a3239bdd780848c0dba90dfe9ec8f3d",
-          "bytes": 8385885,
+          "sha256": "3b3293848f4a3887b43fd3ea7a7a239c185c14f3e35d00b13454cbc94e56add1",
+          "bytes": 8386165,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "4e4733b8cbfeceb4587c664cb4cbb43e7a3239bdd780848c0dba90dfe9ec8f3d.json.gz",
-            "sha256": "dc34bef42635d3127b4449f56db12f006fd7142dfcc5b1b9afbc1a7a799cdb59",
-            "bytes": 572468
+            "asset": "3b3293848f4a3887b43fd3ea7a7a239c185c14f3e35d00b13454cbc94e56add1.json.gz",
+            "sha256": "528e35a172e477c1798ff676c659668014ce454669dc67fafa1e00cc34baef27",
+            "bytes": 572547
           }
         },
         {
-          "sha256": "66a738c08973b17755de2dfebe62f997f63539affd1529176d9c16793c32ec34",
-          "bytes": 953187,
+          "sha256": "60db0f0a6d5ddcc0764ce9d3f318e1cd7aed43296676db8011e74928fc944d29",
+          "bytes": 962524,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "66a738c08973b17755de2dfebe62f997f63539affd1529176d9c16793c32ec34.json.gz",
-            "sha256": "62103449877eeda299af335933914c64cdbea46404dadb6028fbf73783cd6a66",
-            "bytes": 61513
+            "asset": "60db0f0a6d5ddcc0764ce9d3f318e1cd7aed43296676db8011e74928fc944d29.json.gz",
+            "sha256": "b8afccf38503e18dec725734f2874f69a42315d5eadd2ded61813db271804a59",
+            "bytes": 62183
           }
         }
       ]
@@ -467,7 +467,7 @@
     {
       "key": "event_sources",
       "kind": "array",
-      "count": 69896,
+      "count": 69899,
       "parts": [
         {
           "sha256": "1b9cb6448b5949a67b1362a2284818c2437361af47b18f5bf6f1c5a72b7174c6",
@@ -482,15 +482,15 @@
           }
         },
         {
-          "sha256": "ae1613c4618de9cb4be6e47217279cd30a3a7723f7bf89f639e3f10557bff3f7",
-          "bytes": 4623511,
+          "sha256": "01f54711201798bbd928fd94fb2b0ffe0a676d3263b528fd2fde3f53512d4269",
+          "bytes": 4624074,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "ae1613c4618de9cb4be6e47217279cd30a3a7723f7bf89f639e3f10557bff3f7.json.gz",
-            "sha256": "965d53de5fbc6f1b8b54b8b1987db80e590bd8982b7e5c6fdc983d452629c505",
-            "bytes": 1294360
+            "asset": "01f54711201798bbd928fd94fb2b0ffe0a676d3263b528fd2fde3f53512d4269.json.gz",
+            "sha256": "98eda8cc41ac544154c0199167a27eacbd9d04caae5e53e1349c37e2ce492089",
+            "bytes": 1294517
           }
         }
       ]
@@ -501,15 +501,15 @@
       "count": 41,
       "parts": [
         {
-          "sha256": "f5fca76b939b563ceb0f2f573a3272896bd26be99ded131c9c91bb4ef22bac1c",
+          "sha256": "6ac504c614c4ddf45e6a8f8dedb61625e8ab5ffc0569e5700ff341b9f01643c5",
           "bytes": 9706,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "f5fca76b939b563ceb0f2f573a3272896bd26be99ded131c9c91bb4ef22bac1c.json.gz",
-            "sha256": "f6ebdea12b2ebfc56e48d572d8aeeb5fb0dd70744dc89ef53e9e367d0080bf3c",
-            "bytes": 1467
+            "asset": "6ac504c614c4ddf45e6a8f8dedb61625e8ab5ffc0569e5700ff341b9f01643c5.json.gz",
+            "sha256": "03469b908375bcff93829fb941fe6999507c198d738b61f8422c0ce2e5b3b50a",
+            "bytes": 1456
           }
         }
       ]
@@ -520,39 +520,39 @@
       "count": 20000,
       "parts": [
         {
-          "sha256": "b4bdb61d79c53bfba0c1cb981c5b72e066f3b2ea9739d28df7401aa315ba7c7b",
-          "bytes": 8387270,
+          "sha256": "7b0e086afcbcac3e3439fc4b27765f6749e18277fcc9108e3a13f4ad8a82cda1",
+          "bytes": 8387252,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "b4bdb61d79c53bfba0c1cb981c5b72e066f3b2ea9739d28df7401aa315ba7c7b.json.gz",
-            "sha256": "f9782410e99e85607adfbbe8982b47907418ac89b259741bac2870b52208b0aa",
-            "bytes": 646947
+            "asset": "7b0e086afcbcac3e3439fc4b27765f6749e18277fcc9108e3a13f4ad8a82cda1.json.gz",
+            "sha256": "eaba6ee51957639242e5db5f00097dc4fde996d126f261a1555aa8ee41300364",
+            "bytes": 646261
           }
         },
         {
-          "sha256": "87b9c9f325f4adba415a6f6bf99247212a55449fbbb3a137e325226c4df14542",
-          "bytes": 8387681,
+          "sha256": "e67d265512047973a11fe6aeb366f2ec96c375cfbf40ac92678787982b9db87a",
+          "bytes": 8387604,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "87b9c9f325f4adba415a6f6bf99247212a55449fbbb3a137e325226c4df14542.json.gz",
-            "sha256": "1e659afab14e9bc9b2c481ce3367417e164cd4cb84caeb5831aeb807f06ad5e8",
-            "bytes": 386144
+            "asset": "e67d265512047973a11fe6aeb366f2ec96c375cfbf40ac92678787982b9db87a.json.gz",
+            "sha256": "e0510b3a09199bb9de9498ceb0e86084ce6715d84fec36ca74c57f60b7e3cd69",
+            "bytes": 386104
           }
         },
         {
-          "sha256": "a519d3245ce98afbb0991e1786ad39785e04e1349c75f757ecf63e8e82f6c0f0",
-          "bytes": 243422,
+          "sha256": "58645bd31d36be79b52e0bd64ffacbbd48533620753b9b47816d175b06155a4e",
+          "bytes": 266297,
           "release": {
             "storage_format": "woek-release-part-gzip-1",
             "repository": "sustynats/wirkungsoekonomie-produktiv",
             "tag": "wirkungsticker-data-2026-11-part-2",
-            "asset": "a519d3245ce98afbb0991e1786ad39785e04e1349c75f757ecf63e8e82f6c0f0.json.gz",
-            "sha256": "84d18f964055b6583bd41495347cf2b0350426a7522024931b9146cc6d89e78a",
-            "bytes": 12568
+            "asset": "58645bd31d36be79b52e0bd64ffacbbd48533620753b9b47816d175b06155a4e.json.gz",
+            "sha256": "7bd7f29e64a0401cb76d8b064161994ddbef2d1ebc3f4812e5c9b3a0a5e09d59",
+            "bytes": 12777
           }
         }
       ]
@@ -560,7 +560,7 @@
     {
       "key": "updated_at",
       "kind": "value",
-      "value": "2026-11-22T21:53:31.565Z"
+      "value": "2026-11-22T22:09:37.735Z"
     }
   ],
   "parts_storage": "github-release-parts-1"
