@@ -36,10 +36,6 @@
   },
   "outbox": [
     {
-      "id": "99e94dd572dc4581c6c26779",
-      "content": "✓ WÖk-Störung behoben\nAutomatische Nachrichtenläufe\nPrüfung: 2026-11-22T21:21:00.804Z"
-    },
-    {
       "id": "62dd88b6f02013ac52b370ae",
       "content": "⚠ WÖk-Betriebsstörung\nTitelbilder: 49 veröffentlichte Meldung(en) ohne nutzbares Titelbild; 2 mit Kartenfallback, weil der Bilddienst nicht lieferte.\nSeit: 2026-11-22T21:06:04.924Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
     },
