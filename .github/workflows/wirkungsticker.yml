@@ -191,7 +191,8 @@ jobs:
         run: node scripts/news/meldungsauftraege.mjs abgeben
       - name: Take over editions approved in the private editorial desk
         id: approved
-        if: ${{ false && (steps.slot.outputs.should_run == 'true' && inputs.dry_run != true) }}
+        # News-only constrains paid discovery, not already approved manuscripts.
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
         continue-on-error: true
         env:
           WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
@@ -305,7 +306,7 @@ jobs:
       # "wird veroeffentlicht" stehen.
       - name: Acknowledge approved editions after the durable push
         id: approval_receipt
-        if: ${{ false && (steps.slot.outputs.should_run == 'true' && inputs.dry_run != true) }}
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
         continue-on-error: true
         env:
           WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"

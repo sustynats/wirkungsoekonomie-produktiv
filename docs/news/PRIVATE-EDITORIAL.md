@@ -74,6 +74,18 @@ Die bestehende fünfminütige Import-/Git-Publikation übernimmt freigegebene Fa
 unter denselben Locks. Erst der Nachweis des passenden Hash-Markers in der
 öffentlichen HTML-Fassung setzt den Redaktionsstatus auf `PUBLISHED`.
 
+### Wiederherstellung der Publikationsverbindung - 22.11.2026
+
+Die Isolation des allgemeinen Nachrichtenlaufs darf die Übernahme bereits
+fassungsgebunden freigegebener Manuskripte nicht abschalten. Der normale
+Nachrichtenworkflow führt deshalb `import-approved-editorials.mjs --claim`
+vor dem Seitenbau und `--finalize` nach dem dauerhaften Push aus. Die Quittung
+prüft weiterhin die tatsächlich ausgelieferte HTML-Fassung; ein Push allein
+ist keine Veröffentlichung. Ein späterer Lauf bestätigt noch offene Ausgaben.
+Dabei werden keine Texte erzeugt, Freigaben ersetzt oder Quellen aktiviert.
+Private Auftragsrecherche, Modellaufrufe und historische Wiederaufnahmen
+bleiben durch ihre eigenen Kosten-, Zugriffs- und Freigaberegeln begrenzt.
+
 ## Betrieb
 
 ### Automatische Entwuerfe fuer alle beobachteten Sendungen (01.10.2026)
