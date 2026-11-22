@@ -6,6 +6,37 @@
   "language": "de",
   "items": [
     {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/angriffe-und-explosionen-im-mittelmeer-seedrohnen-zerstoren-russisches-kriegsschiff-und--ad3307/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/angriffe-und-explosionen-im-mittelmeer-seedrohnen-zerstoren-russisches-kriegsschiff-und--ad3307/",
+      "title": "Angriffe im Mittelmeer: Berichte über Schäden an russischen Schiffen",
+      "summary": "Der Tagesspiegel berichtet über Angriffe mit Seedrohnen auf zwei russische Schiffe im Mittelmeer. Schäden und Verantwortlichkeiten sind vorerst nur aus einer einzelnen journalistischen Quelle bekannt.",
+      "date_published": "2026-11-22T20:30:09.000Z",
+      "date_modified": "2026-11-22T20:30:09.000Z",
+      "_woek_released_at": "2026-11-22T21:26:35.162Z",
+      "tags": [
+        "Geopolitik"
+      ],
+      "_woek_type": "Wirkungsakte",
+      "_woek_late_delivery": false,
+      "_woek_impact_profile": {
+        "human": {
+          "magnitude": 1,
+          "direction": "negative",
+          "status": "potential"
+        },
+        "planet": {
+          "magnitude": 1,
+          "direction": "negative",
+          "status": "potential"
+        },
+        "democracy": {
+          "magnitude": 1,
+          "direction": "negative",
+          "status": "potential"
+        }
+      }
+    },
+    {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/explosion-auf-russischem-schiff-in-libyen-behorden-vermuten-drohnenangriff-d49a54/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/explosion-auf-russischem-schiff-in-libyen-behorden-vermuten-drohnenangriff-d49a54/",
       "title": "Explosion auf russischem Schiff in Libyen: Behörden vermuten Drohnenangriff",
