@@ -4,9 +4,14 @@ import {recoverDiscoveryForRun,newsOnlyPriorWorkHold,titleImageIdsForRun} from '
 import {assertAutomaticImpactTransport} from '../../scripts/news/processing-mode.mjs';
 const workflow=fs.readFileSync(new URL('../../.github/workflows/wirkungsticker.yml',import.meta.url),'utf8');
 const step=name=>{const marker=`      - name: ${name}\n`,i=workflow.indexOf(marker);assert.notEqual(i,-1);const j=workflow.indexOf('\n      - name:',i+marker.length);return workflow.slice(i,j<0?undefined:j);};
-test('news-only uses the direct lane while every private editorial/replay step remains disabled',()=>{
+test('news-only isolates paid discovery while retaining approved editorial publication',()=>{
  assert.match(workflow,/if: vars\.WIRKUNGSTICKER_PROCESSING_MODE == 'api' \|\| vars\.WIRKUNGSTICKER_PROCESSING_MODE == ''/);
- for(const name of ["Fetch Natalie's news orders from the private editorial desk","Hand analysed news orders to Natalie's approval list",'Take over editions approved in the private editorial desk','Acknowledge approved editions after the durable push','Recover the verified retained St. Pauli answer without a provider call','Queue potential reassessments for the newest online stories','Synchronize public survey pages from Oracle']) assert.match(step(name),/^        if: \$\{\{ false && /m,name);
+ for(const name of ["Fetch Natalie's news orders from the private editorial desk","Hand analysed news orders to Natalie's approval list",'Recover the verified retained St. Pauli answer without a provider call','Queue potential reassessments for the newest online stories','Synchronize public survey pages from Oracle']) assert.match(step(name),/^        if: \$\{\{ false && /m,name);
+ for(const name of ['Take over editions approved in the private editorial desk','Acknowledge approved editions after the durable push']) {
+  assert.match(step(name),/^        if: steps\.slot\.outputs\.should_run == 'true' && inputs\.dry_run != true$/m,name);
+  assert.match(step(name),/WOEK_NEWS_BRIDGE_TOKEN: \$\{\{ secrets\.WOEK_NEWS_BRIDGE_TOKEN \}\}/);
+  assert.doesNotMatch(step(name),/run-api\.mjs|OPENAI_API_KEY|redaktionsworker\.mjs/);
+ }
  for(const name of ['Verify interrupted paid work before another provider request','Validate the existing archive encryption key before paid work','Seal paid originals for private recovery','Preserve failed-run work and usage for recovery']) assert.doesNotMatch(step(name),/^        if: \$\{\{ false && /m,name);
 });
 test('both workflows run the same isolated unit test script without changing news settings',()=>{
