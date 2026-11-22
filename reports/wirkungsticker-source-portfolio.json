@@ -453,7 +453,7 @@
     }
   ],
   "regional_coverage": {
-    "checked_at": "2026-11-22T22:09:37.735Z",
+    "checked_at": "2026-11-22T22:24:11.841Z",
     "required_states": 16,
     "configured_states": 15,
     "healthy_states": 14,
@@ -2577,7 +2577,7 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 7344,
-        "items_local_rejected": 879,
+        "items_local_rejected": 881,
         "items_duplicate": 5283,
         "items_existing_story": 165,
         "items_short_ai_checked": 0,
@@ -2685,7 +2685,7 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 18660,
-        "items_local_rejected": 2283,
+        "items_local_rejected": 2284,
         "items_duplicate": 11390,
         "items_existing_story": 655,
         "items_short_ai_checked": 0,
@@ -2882,19 +2882,19 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 0,
-        "items_local_rejected": 641,
+        "items_local_rejected": 642,
         "items_duplicate": 1981,
         "items_existing_story": 218,
         "items_short_ai_checked": 0,
-        "items_full_analyzed": 17,
-        "items_published": 10,
+        "items_full_analyzed": 18,
+        "items_published": 11,
         "items_story_updates": 2,
         "items_primary_source_found": 20,
         "items_source_integrity_failed": 319,
         "items_corrected_later": 0,
-        "ai_input_tokens": 145670,
-        "ai_output_tokens": 89786,
-        "estimated_ai_cost": 0.267529,
+        "ai_input_tokens": 154924,
+        "ai_output_tokens": 93748,
+        "estimated_ai_cost": 0.274134,
         "fetch_failures": 0,
         "parse_failures": 0
       }
@@ -3213,7 +3213,7 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 18540,
-        "items_local_rejected": 2130,
+        "items_local_rejected": 2134,
         "items_duplicate": 12989,
         "items_existing_story": 245,
         "items_short_ai_checked": 0,
@@ -3240,7 +3240,7 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 14355,
-        "items_local_rejected": 774,
+        "items_local_rejected": 775,
         "items_duplicate": 6075,
         "items_existing_story": 86,
         "items_short_ai_checked": 0,
@@ -3267,7 +3267,7 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 18660,
-        "items_local_rejected": 1982,
+        "items_local_rejected": 1986,
         "items_duplicate": 13698,
         "items_existing_story": 59,
         "items_short_ai_checked": 0,
@@ -3321,7 +3321,7 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 17354,
-        "items_local_rejected": 1618,
+        "items_local_rejected": 1621,
         "items_duplicate": 9163,
         "items_existing_story": 107,
         "items_short_ai_checked": 0,
@@ -3463,9 +3463,9 @@
       "source_utility_score": 100,
       "metrics": {
         "items_seen": 6786,
-        "items_local_rejected": 2125,
+        "items_local_rejected": 2133,
         "items_duplicate": 4001,
-        "items_existing_story": 684,
+        "items_existing_story": 685,
         "items_short_ai_checked": 0,
         "items_full_analyzed": 21,
         "items_published": 8,
@@ -3494,15 +3494,15 @@
         "items_duplicate": 8103,
         "items_existing_story": 256,
         "items_short_ai_checked": 0,
-        "items_full_analyzed": 86,
-        "items_published": 43,
+        "items_full_analyzed": 87,
+        "items_published": 44,
         "items_story_updates": 11,
         "items_primary_source_found": 0,
         "items_source_integrity_failed": 319,
         "items_corrected_later": 0,
-        "ai_input_tokens": 1199533,
-        "ai_output_tokens": 898007,
-        "estimated_ai_cost": 3.072216,
+        "ai_input_tokens": 1208787,
+        "ai_output_tokens": 901969,
+        "estimated_ai_cost": 3.07882,
         "fetch_failures": 0,
         "parse_failures": 0
       }
@@ -3545,7 +3545,7 @@
       "review_reasons": [
         "no_unique_publication_in_30_days"
       ],
-      "source_utility_score": 54.1,
+      "source_utility_score": 55.6,
       "metrics": {
         "items_seen": 7260,
         "items_local_rejected": 61,
