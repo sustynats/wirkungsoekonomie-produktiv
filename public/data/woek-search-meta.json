@@ -319930,7 +319930,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "f447f43f90360e76",
+      "contentHash": "bd7725659f962d8e",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#lagen-titel": {
@@ -319938,7 +319938,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "f447f43f90360e76",
+      "contentHash": "bd7725659f962d8e",
       "sectionId": "lagen-titel"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -320324,6 +320324,14 @@
       "sourceFile": "wirkungsticker/amazon-will-4-8-milliarden-euro-in-rechenzentren-im-rhein-main-gebiet-investieren-9d1ba0/index.html",
       "contentHash": "03a1df61bcc403f9",
       "sectionId": "news-related-title"
+    },
+    "/wirkungsticker/analyse/amerika-ungeschminkt-was-die-reise-durch-trumps-land-sichtbar-macht-24865d/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/amerika-ungeschminkt-was-die-reise-durch-trumps-land-sichtbar-macht-24865d/index.html",
+      "contentHash": "efc5232324edd33e",
+      "sectionId": "woek-page-55e45d9517470cab"
     },
     "/wirkungsticker/analyse/angriffe-auf-umspannwerke-warum-der-schutz-kritischer-infrastruktur-ein-systemthem-219f43/": {
       "documentType": "Referenz",
@@ -321269,6 +321277,38 @@
       "contentHash": "3d5f18a85c8e64c9",
       "sectionId": "woek-page-660d5282b6b3967a"
     },
+    "/wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/index.html",
+      "contentHash": "380162e8a93cc824",
+      "sectionId": "woek-page-f9e8ebdb54e71a63"
+    },
+    "/wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/index.html",
+      "contentHash": "380162e8a93cc824",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/index.html",
+      "contentHash": "380162e8a93cc824",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/index.html",
+      "contentHash": "380162e8a93cc824",
+      "sectionId": "planet"
+    },
     "/wirkungsticker/analyse/generaldebatte-deutschland-braucht-mehr-als-einen-gewonnenen-schlagabtausch/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -321412,6 +321452,46 @@
       "sourceFile": "wirkungsticker/analyse/kernfusion-ist-moglich-genau-das-ist-nicht-die-entscheidende-frage-1ed5bf/index.html",
       "contentHash": "2878d2fad7b6039d",
       "sectionId": "woek-page-e7961a445f09f292"
+    },
+    "/wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/index.html",
+      "contentHash": "22b71e6c9f9b245d",
+      "sectionId": "woek-page-e221475ffbf7df23"
+    },
+    "/wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/index.html",
+      "contentHash": "22b71e6c9f9b245d",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/index.html",
+      "contentHash": "22b71e6c9f9b245d",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/index.html",
+      "contentHash": "22b71e6c9f9b245d",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/ki-ist-keine-naturgewalt-aber-sie-verandert-wer-wissen-arbeit-und-entscheidungen-steuert-a0931c/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/ki-ist-keine-naturgewalt-aber-sie-verandert-wer-wissen-arbeit-und-entscheidungen-steuert-a0931c/index.html",
+      "contentHash": "7a9cc2e83724bb0d",
+      "sectionId": "woek-page-0b7db8cd9e49268c"
     },
     "/wirkungsticker/analyse/ki-weltuntergang-die-folge-trennt-reale-risiken-von-gro-en-erzahlungen-9d612c/": {
       "documentType": "Referenz",
@@ -321580,6 +321660,38 @@
       "sourceFile": "wirkungsticker/analyse/ldn492-nachgehort-wie-aus-39-sitzen-tatsachliche-macht-werden-kann-defd69/index.html",
       "contentHash": "2c86f23da9aa914a",
       "sectionId": "3-eine-expertenregierung"
+    },
+    "/wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/index.html",
+      "contentHash": "de134440397aad57",
+      "sectionId": "woek-page-283025f9099e3e65"
+    },
+    "/wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/index.html",
+      "contentHash": "de134440397aad57",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/index.html",
+      "contentHash": "de134440397aad57",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/index.html",
+      "contentHash": "de134440397aad57",
+      "sectionId": "planet"
     },
     "/wirkungsticker/analyse/machtwechsel-uber-jens-spahns-rucktritt-wenn-vertrauen-im-ausschuss-kippt-a68572/": {
       "documentType": "Referenz",
@@ -321837,6 +321949,14 @@
       "contentHash": "104ba2ba930b24dd",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/maischberger-zwischen-hoffnung-kriegsdruck-und-politischer-verantwortung-fa9293/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/maischberger-zwischen-hoffnung-kriegsdruck-und-politischer-verantwortung-fa9293/index.html",
+      "contentHash": "e3edbfcd778c52b2",
+      "sectionId": "woek-page-a52f05e4f20741fc"
+    },
     "/wirkungsticker/analyse/maischberger-zwischen-reformdruck-spritpreisen-und-pazifismus-ea70aa/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -321988,6 +322108,30 @@
       "sourceFile": "wirkungsticker/analyse/markus-lanz-vom-17-september-2026-macht-wohnungsnot-und-die-grenzen-politischer-erzahlungen-31e83e/index.html",
       "contentHash": "d141509cade481de",
       "sectionId": "woek-page-eab48e38d977f418"
+    },
+    "/wirkungsticker/analyse/markus-lanz-vom-3-november-2026-zwischen-protest-gewalt-und-politischer-verantwortung-44a76a/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/markus-lanz-vom-3-november-2026-zwischen-protest-gewalt-und-politischer-verantwortung-44a76a/index.html",
+      "contentHash": "7a9ad9a6dcdac232",
+      "sectionId": "woek-page-796c82b8fbf7b1b6"
+    },
+    "/wirkungsticker/analyse/markus-lanz-wenn-debatten-uber-gewalt-antisemitismus-und-migration-ineinanderfallen-c0992a/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/markus-lanz-wenn-debatten-uber-gewalt-antisemitismus-und-migration-ineinanderfallen-c0992a/index.html",
+      "contentHash": "29669b15a05094ca",
+      "sectionId": "woek-page-bb890dfb262159ad"
+    },
+    "/wirkungsticker/analyse/markus-lanz-wenn-politische-linien-sichtbar-werden-47ea6b/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/markus-lanz-wenn-politische-linien-sichtbar-werden-47ea6b/index.html",
+      "contentHash": "4a54ba79454e5afc",
+      "sectionId": "woek-page-9db96de0960478ee"
     },
     "/wirkungsticker/analyse/markus-lanz-zwischen-afd-abgrenzung-europa-und-dem-streit-uber-migration-259c3f/": {
       "documentType": "Referenz",
@@ -322301,6 +322445,14 @@
       "contentHash": "96ab283b4dc67a81",
       "sectionId": "woek-page-bf88e66162dfef68"
     },
+    "/wirkungsticker/analyse/nach-der-wahl-amerikas-demokratie-hat-noch-gegengewichte-und-verliert-spielraum-fae247/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nach-der-wahl-amerikas-demokratie-hat-noch-gegengewichte-und-verliert-spielraum-fae247/index.html",
+      "contentHash": "78dae86708448570",
+      "sectionId": "woek-page-409adeb35eaa0f59"
+    },
     "/wirkungsticker/analyse/nachgehort-das-ki-amt-braucht-mehr-als-schnelle-modelle-cd560d/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -322397,6 +322549,14 @@
       "contentHash": "476ab8603d6a6a5a",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/nachgehort-kinderschutz-braucht-mehr-als-ein-social-media-verbot-1758ab/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-kinderschutz-braucht-mehr-als-ein-social-media-verbot-1758ab/index.html",
+      "contentHash": "d5f7e9ea38c10a87",
+      "sectionId": "woek-page-ff65280749075168"
+    },
     "/wirkungsticker/analyse/nachgehort-lanz-und-precht-uber-antisemitismus-israelkritik-und-politische-instrumentalisierung-6e29b0/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -322476,6 +322636,22 @@
       "sourceFile": "wirkungsticker/analyse/nachgehort-vergesellschaftung-schafft-keinen-neuen-wohnraum-kann-aber-mieten-begrenzen-a4f28c/index.html",
       "contentHash": "c0852aac0607c5c1",
       "sectionId": "zwei-probleme-werden-voneinander-getrennt"
+    },
+    "/wirkungsticker/analyse/nachgehort-was-die-us-zwischenwahlen-uber-kosten-korruption-und-ki-macht-zeigen-a75b5c/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-was-die-us-zwischenwahlen-uber-kosten-korruption-und-ki-macht-zeigen-a75b5c/index.html",
+      "contentHash": "2c700c1c54274eaa",
+      "sectionId": "woek-page-22f693a39570595a"
+    },
+    "/wirkungsticker/analyse/nachgehort-was-ein-podcast-verandern-kann-und-wo-seine-wirkung-endet-b25229/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-was-ein-podcast-verandern-kann-und-wo-seine-wirkung-endet-b25229/index.html",
+      "contentHash": "037c7bc60b8f5ac6",
+      "sectionId": "woek-page-0189bea96df74323"
     },
     "/wirkungsticker/analyse/nachgehort-was-europa-von-chinas-industriepolitik-lernen-kann-und-was-nicht-83e20a/": {
       "documentType": "Referenz",
@@ -322629,6 +322805,14 @@
       "contentHash": "02a45485e1a27bea",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/nachgehort-wenn-lenkungssteuern-vor-allem-haushaltslocher-stopfen-757203/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wenn-lenkungssteuern-vor-allem-haushaltslocher-stopfen-757203/index.html",
+      "contentHash": "391a1ecaf58d2bb9",
+      "sectionId": "woek-page-8b3e7988115ab5cc"
+    },
     "/wirkungsticker/analyse/nachgehort-wenn-politische-fragen-zu-wirkungsfragen-werden-2865ab/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -322660,6 +322844,46 @@
       "sourceFile": "wirkungsticker/analyse/nachgehort-wenn-politische-fragen-zu-wirkungsfragen-werden-2865ab/index.html",
       "contentHash": "7a09fa908fd9fae4",
       "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/index.html",
+      "contentHash": "1a7e6e12d76249f2",
+      "sectionId": "woek-page-b2cfb7158a9de62d"
+    },
+    "/wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/index.html",
+      "contentHash": "1a7e6e12d76249f2",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/index.html",
+      "contentHash": "1a7e6e12d76249f2",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wenn-politische-macht-an-personen-verfahren-und-mehrheiten-hangt-93d4c7/index.html",
+      "contentHash": "1a7e6e12d76249f2",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421/index.html",
+      "contentHash": "47485dafe4908160",
+      "sectionId": "woek-page-4881ec3731c10d73"
     },
     "/wirkungsticker/analyse/nachgehort-zwischen-au-enkanzler-und-stromsteuer-wo-machtwechsel-wirkung-vermutet-und-belege-fe-27b9f7/": {
       "documentType": "Referenz",
@@ -322700,6 +322924,62 @@
       "sourceFile": "wirkungsticker/analyse/nachgesehen-die-denkzettelwahl-was-muss-sich-andern-358de7/index.html",
       "contentHash": "b0a767498d606036",
       "sectionId": "woek-page-22efa45bbea55cf7"
+    },
+    "/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/index.html",
+      "contentHash": "0e1b17106913951a",
+      "sectionId": "woek-page-644c5ce5ece76d88"
+    },
+    "/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/#aussenpolitik-der-kongress-kontrolliert-nicht-jeden-schritt": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/index.html",
+      "contentHash": "0e1b17106913951a",
+      "sectionId": "aussenpolitik-der-kongress-kontrolliert-nicht-jeden-schritt"
+    },
+    "/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/index.html",
+      "contentHash": "0e1b17106913951a",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/#ein-machtverlust-mit-begrenzter-sperrwirkung": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/index.html",
+      "contentHash": "0e1b17106913951a",
+      "sectionId": "ein-machtverlust-mit-begrenzter-sperrwirkung"
+    },
+    "/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/index.html",
+      "contentHash": "0e1b17106913951a",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/#miller-als-signal": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/index.html",
+      "contentHash": "0e1b17106913951a",
+      "sectionId": "miller-als-signal"
+    },
+    "/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/index.html",
+      "contentHash": "0e1b17106913951a",
+      "sectionId": "planet"
     },
     "/wirkungsticker/analyse/nachgesehen-maithink-x-macht-me-cfs-sichtbar-und-zeigt-die-grenzen-des-wissens-179b02/": {
       "documentType": "Referenz",
@@ -322781,6 +323061,22 @@
       "contentHash": "c8a3ddac13a86f7b",
       "sectionId": "vertrauen-fuehrung-und-politische-stabilitaet"
     },
+    "/wirkungsticker/analyse/nachgesehen-was-an-ki-unzuverlassig-ist-und-warum-das-eine-machtfrage-wird-3ee53a/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-was-an-ki-unzuverlassig-ist-und-warum-das-eine-machtfrage-wird-3ee53a/index.html",
+      "contentHash": "28cf3d42d996567b",
+      "sectionId": "woek-page-870983d3562b827b"
+    },
+    "/wirkungsticker/analyse/nachgesehen-was-der-darm-wirklich-braucht-und-wo-das-mikrobiom-zur-verkaufsstory-wird-450f4d/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-was-der-darm-wirklich-braucht-und-wo-das-mikrobiom-zur-verkaufsstory-wird-450f4d/index.html",
+      "contentHash": "49726c01eb21fb34",
+      "sectionId": "woek-page-15c2d6ed2ed4137f"
+    },
     "/wirkungsticker/analyse/nachgesehen-was-der-presseclub-uber-sabotage-schutz-und-eskalation-zeigt-3cd8ee/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -322861,6 +323157,70 @@
       "contentHash": "c1c3064e680611f4",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/index.html",
+      "contentHash": "5c2fc4985583a3a5",
+      "sectionId": "woek-page-38b746423c710834"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/index.html",
+      "contentHash": "5c2fc4985583a3a5",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/index.html",
+      "contentHash": "5c2fc4985583a3a5",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/index.html",
+      "contentHash": "5c2fc4985583a3a5",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/index.html",
+      "contentHash": "20d492a134b930f3",
+      "sectionId": "woek-page-1798e79ea1328960"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/index.html",
+      "contentHash": "20d492a134b930f3",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/index.html",
+      "contentHash": "20d492a134b930f3",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-eine-wahlniederlage-die-macht-nicht-beendet-82caa2/index.html",
+      "contentHash": "20d492a134b930f3",
+      "sectionId": "planet"
+    },
     "/wirkungsticker/analyse/nachgesehen-wenn-emporung-politik-ersetzt-4dfeac/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -322923,6 +323283,46 @@
       "version": "2026.1",
       "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-emporung-politik-ersetzt-4dfeac/index.html",
       "contentHash": "1bee25ef2916e2d8",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-gute-nachrichten-die-harten-entscheidungen-nicht-kleiner-machen-3d48fd/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-gute-nachrichten-die-harten-entscheidungen-nicht-kleiner-machen-3d48fd/index.html",
+      "contentHash": "44d57500e6002e29",
+      "sectionId": "woek-page-2685bc90a055a30e"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/index.html",
+      "contentHash": "c3622ced0f4dbe77",
+      "sectionId": "woek-page-c8b9271e36e82c9d"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/index.html",
+      "contentHash": "c3622ced0f4dbe77",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/index.html",
+      "contentHash": "c3622ced0f4dbe77",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/index.html",
+      "contentHash": "c3622ced0f4dbe77",
       "sectionId": "planet"
     },
     "/wirkungsticker/analyse/nachgesehen-wenn-rote-linien-verhandelbar-werden-a32e79/": {
@@ -323084,6 +323484,14 @@
       "sourceFile": "wirkungsticker/analyse/nachgesehen-wenn-wohnungsnot-machtfragen-und-abgrenzung-zusammenkommen-498e80/index.html",
       "contentHash": "84d18ee9385a4912",
       "sectionId": "wohnen-vergesellschaftung-gegen-wohnungsbau"
+    },
+    "/wirkungsticker/analyse/nachgesehen-zwischen-kontrolle-schutz-und-auslagerung-f99aa8/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-zwischen-kontrolle-schutz-und-auslagerung-f99aa8/index.html",
+      "contentHash": "e1016b93168208ca",
+      "sectionId": "woek-page-2507969d7cf62385"
     },
     "/wirkungsticker/analyse/nachgesehen-zwischen-rentenstreit-parteikrise-und-kriegsalltag-1331ef/": {
       "documentType": "Referenz",
@@ -323364,6 +323772,38 @@
       "sourceFile": "wirkungsticker/analyse/schweden-2026-der-rechtsruck-ist-nicht-verschwunden-aber-der-aufstieg-der-sd-wurde-gebremst-5c2cb0/index.html",
       "contentHash": "811e929a93112a41",
       "sectionId": "woek-page-b738c44e43b6f101"
+    },
+    "/wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/index.html",
+      "contentHash": "8370d539dc20e0c3",
+      "sectionId": "woek-page-090cc77cfdd8ddab"
+    },
+    "/wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/index.html",
+      "contentHash": "8370d539dc20e0c3",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/index.html",
+      "contentHash": "8370d539dc20e0c3",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/index.html",
+      "contentHash": "8370d539dc20e0c3",
+      "sectionId": "planet"
     },
     "/wirkungsticker/analyse/simsalasim-die-chance-liegt-nicht-nur-im-zehn-euro-tarif-4c5e1a/": {
       "documentType": "Referenz",
@@ -323709,6 +324149,22 @@
       "contentHash": "318ac88aae0a2220",
       "sectionId": "woek-page-50a03d4512ca28e6"
     },
+    "/wirkungsticker/analyse/was-eine-wahl-nicht-automatisch-verandert-42e366/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-eine-wahl-nicht-automatisch-verandert-42e366/index.html",
+      "contentHash": "3b2739d6a900259f",
+      "sectionId": "woek-page-78d5b9a2beb4fe0d"
+    },
+    "/wirkungsticker/analyse/was-maischberger-am-17-november-2026-uber-prioritaten-mieten-und-macht-sichtbar-macht-a761ce/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-maischberger-am-17-november-2026-uber-prioritaten-mieten-und-macht-sichtbar-macht-a761ce/index.html",
+      "contentHash": "3ac81eacc76afafc",
+      "sectionId": "woek-page-2b57cc3d08236603"
+    },
     "/wirkungsticker/analyse/was-meinen-wir-wenn-wir-den-westen-sagen-23442a/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -323973,6 +324429,14 @@
       "contentHash": "2e434ab4336d8621",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/wenn-der-alltag-die-politik-pruft-5c0c84/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-der-alltag-die-politik-pruft-5c0c84/index.html",
+      "contentHash": "677a271d1bd63c56",
+      "sectionId": "woek-page-71fafc7e1c90036a"
+    },
     "/wirkungsticker/analyse/wenn-der-ausweichweg-ausfallt-was-die-olkrise-uber-echte-resilienz-zeigt-76f94e/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -324013,6 +324477,14 @@
       "contentHash": "def40f09dd36b562",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/wenn-der-haushalt-zum-stresstest-wird-4aca30/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-der-haushalt-zum-stresstest-wird-4aca30/index.html",
+      "contentHash": "7ddc55905cf237f9",
+      "sectionId": "woek-page-077f7342bd9123a2"
+    },
     "/wirkungsticker/analyse/wenn-der-markt-verschwindet-verschwinden-die-bedurfnisse-nicht-ec1819/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -324020,6 +324492,14 @@
       "sourceFile": "wirkungsticker/analyse/wenn-der-markt-verschwindet-verschwinden-die-bedurfnisse-nicht-ec1819/index.html",
       "contentHash": "ab3e6b9fac18b710",
       "sectionId": "woek-page-ca1fa709f9a033da"
+    },
+    "/wirkungsticker/analyse/wenn-der-staat-zum-geheimdienst-wird-lanz-und-precht-uber-spionage-freiheit-und-kontrolle-ceb102/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-der-staat-zum-geheimdienst-wird-lanz-und-precht-uber-spionage-freiheit-und-kontrolle-ceb102/index.html",
+      "contentHash": "74a8d66428be8835",
+      "sectionId": "woek-page-f181125428e2fdf2"
     },
     "/wirkungsticker/analyse/wenn-die-antwort-sofort-da-ist-was-aus-dem-denken-werden-konnte-8f911a/": {
       "documentType": "Referenz",
@@ -324060,6 +324540,46 @@
       "sourceFile": "wirkungsticker/analyse/wenn-die-brandmauer-im-ungefahren-endet-ab743b/index.html",
       "contentHash": "b968c2d4b42c2e23",
       "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/index.html",
+      "contentHash": "c32b6788b6713db5",
+      "sectionId": "woek-page-39260f306a439203"
+    },
+    "/wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/index.html",
+      "contentHash": "c32b6788b6713db5",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/index.html",
+      "contentHash": "c32b6788b6713db5",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/index.html",
+      "contentHash": "c32b6788b6713db5",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/wenn-die-ki-zum-taschengott-wird-nachgehort-mit-sascha-lobo-und-elisabeth-l-orange-a5af43/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-ki-zum-taschengott-wird-nachgehort-mit-sascha-lobo-und-elisabeth-l-orange-a5af43/index.html",
+      "contentHash": "1bc28323a537b63b",
+      "sectionId": "woek-page-5a970d3acef44a2a"
     },
     "/wirkungsticker/analyse/wenn-die-mitte-nur-noch-verwaltet-verlieren-am-ende-alle-eff98a/": {
       "documentType": "Referenz",
@@ -324149,6 +324669,54 @@
       "contentHash": "fd69823b7e795d4d",
       "sectionId": "woek-page-73a0bc8ae3e345d5"
     },
+    "/wirkungsticker/analyse/wenn-ein-wahlsieg-noch-keine-veranderung-ist-8fc9dc/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-ein-wahlsieg-noch-keine-veranderung-ist-8fc9dc/index.html",
+      "contentHash": "69bd2f2db54dbf40",
+      "sectionId": "woek-page-b8f1af085e6b5af7"
+    },
+    "/wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/index.html",
+      "contentHash": "cdd0d7149c48e2c8",
+      "sectionId": "woek-page-28af986684bee4c5"
+    },
+    "/wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/index.html",
+      "contentHash": "cdd0d7149c48e2c8",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/index.html",
+      "contentHash": "cdd0d7149c48e2c8",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/index.html",
+      "contentHash": "cdd0d7149c48e2c8",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/wenn-energiepolitik-zur-vertrauensfrage-wird-5aa31e/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-energiepolitik-zur-vertrauensfrage-wird-5aa31e/index.html",
+      "contentHash": "7a37e63ffe2e6849",
+      "sectionId": "woek-page-fc8c6302d0c8a764"
+    },
     "/wirkungsticker/analyse/wenn-jeder-zum-narzissten-wird-hilft-keine-diagnose-mehr-71a749/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -324156,6 +324724,22 @@
       "sourceFile": "wirkungsticker/analyse/wenn-jeder-zum-narzissten-wird-hilft-keine-diagnose-mehr-71a749/index.html",
       "contentHash": "b8f3e327e1bc761e",
       "sectionId": "woek-page-c04d218e49aa9f9d"
+    },
+    "/wirkungsticker/analyse/wenn-jedes-schwierige-gegenuber-plotzlich-narzisstisch-ist-5ecca9/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-jedes-schwierige-gegenuber-plotzlich-narzisstisch-ist-5ecca9/index.html",
+      "contentHash": "e0f062bcc6696765",
+      "sectionId": "woek-page-effff4ce4a3ea53f"
+    },
+    "/wirkungsticker/analyse/wenn-junge-menschen-nicht-mehr-zuhoren-sondern-nicht-mehr-gehort-werden-d44d17/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-junge-menschen-nicht-mehr-zuhoren-sondern-nicht-mehr-gehort-werden-d44d17/index.html",
+      "contentHash": "41ecdf70d120c5ab",
+      "sectionId": "woek-page-2d4fbe2a8a6b1327"
     },
     "/wirkungsticker/analyse/wenn-ki-agenten-handeln-die-lanz-runde-zwischen-aufbruch-und-kontrollverlust-62f51a/": {
       "documentType": "Referenz",
@@ -324180,6 +324764,38 @@
       "sourceFile": "wirkungsticker/analyse/wenn-menschen-zu-verhandlungsmasse-werden-eed599/index.html",
       "contentHash": "eb8a1324cee174c8",
       "sectionId": "woek-page-35bc4bfbac42c913"
+    },
+    "/wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/index.html",
+      "contentHash": "11eb65266d59d68b",
+      "sectionId": "woek-page-6685231d8a171ef5"
+    },
+    "/wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/index.html",
+      "contentHash": "11eb65266d59d68b",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/index.html",
+      "contentHash": "11eb65266d59d68b",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/index.html",
+      "contentHash": "11eb65266d59d68b",
+      "sectionId": "planet"
     },
     "/wirkungsticker/analyse/wenn-politische-unruhe-selbst-zum-thema-wird-47be86/": {
       "documentType": "Referenz",
@@ -324541,6 +325157,46 @@
       "contentHash": "b1f003414f262af8",
       "sectionId": "woek-page-6e58e1a0c3b77986"
     },
+    "/wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/index.html",
+      "contentHash": "aaf39af283793a85",
+      "sectionId": "woek-page-a3b7183af2eccd4f"
+    },
+    "/wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/index.html",
+      "contentHash": "aaf39af283793a85",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/index.html",
+      "contentHash": "aaf39af283793a85",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/index.html",
+      "contentHash": "aaf39af283793a85",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/zwischen-gipfelsymbolik-und-regierungsrisiko-was-machtwechsel-sichtbar-macht-704eb0/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/zwischen-gipfelsymbolik-und-regierungsrisiko-was-machtwechsel-sichtbar-macht-704eb0/index.html",
+      "contentHash": "ed5df2f3ca4e8860",
+      "sectionId": "woek-page-ded6c4b484e20c16"
+    },
     "/wirkungsticker/analyse/zwischen-politischem-streit-und-sicherheitsverdacht-was-markus-lanz-am-13-oktober-2026-sichtbar-0b00ab/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -324618,7 +325274,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/analysen/index.html",
-      "contentHash": "ce9c5f465e4897d0",
+      "contentHash": "672cf63e0c0d08a8",
       "sectionId": "woek-page-720f8d43d23be330"
     },
     "/wirkungsticker/angriff-an-schule-in-frankreich-14-jahriger-soll-schulleiter-und-lehrerin-angeschossen-h-a48894/": {
@@ -324962,7 +325618,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/antrag-auf-amtsenthebungsverfahren-gegen-pentagonchef-hegseth-eingebracht-9ae184/index.html",
-      "contentHash": "baec0e3c2f9bc4c8",
+      "contentHash": "c5464e01da388dd3",
       "sectionId": "woek-page-3d505dc9df3f14ca"
     },
     "/wirkungsticker/arbeitsmarkt-fachkraftemangel-konnte-bis-2029-auf-723-000-steigen-438d2d/": {
@@ -325994,7 +326650,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/bundeskanzler-merz-empfangt-den-ungarischen-ministerprasidenten-magyar-5c9d11/index.html",
-      "contentHash": "37b91201c1a42464",
+      "contentHash": "b0813b2fc1ec1792",
       "sectionId": "woek-page-66e079169a68d7cf"
     },
     "/wirkungsticker/bundeslander-einigung-auf-neuen-staatsvertrag-fur-die-digitale-medienwelt-488061/": {
@@ -327434,7 +328090,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/explosion-vor-supermarkt-in-lorrach-kriminalpolizei-ermittelt-7a2223/index.html",
-      "contentHash": "018f5179ca4580ee",
+      "contentHash": "f442d618541b2ef5",
       "sectionId": "woek-page-f6f354b7f83a4c1f"
     },
     "/wirkungsticker/explosion-vor-supermarkt-in-lorrach-kriminalpolizei-ermittelt-7a2223/#news-related-title": {
@@ -327442,7 +328098,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/explosion-vor-supermarkt-in-lorrach-kriminalpolizei-ermittelt-7a2223/index.html",
-      "contentHash": "018f5179ca4580ee",
+      "contentHash": "f442d618541b2ef5",
       "sectionId": "news-related-title"
     },
     "/wirkungsticker/explosion-vor-veranstaltungsgebaude-in-rheinfelden-eine-person-leicht-verletzt-98f233/": {
@@ -328074,7 +328730,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/gerard-depardieu-und-michel-houellebecq-vorwurf-der-gemeinschaftliche-vergewaltigung-jus-8e402d/index.html",
-      "contentHash": "fe8dfab8f9ba43b8",
+      "contentHash": "48baf2798095e99e",
       "sectionId": "woek-page-6ed72fdc3a1da5b8"
     },
     "/wirkungsticker/germany-s-merz-admits-disaster-in-state-elections-vows-to-press-ahead-with-reforms-e6f014/": {
@@ -328338,7 +328994,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/grosseinsatz-der-polizei-in-hamburg-zwei-verletzte-nach-schussen-nahe-der-elbphilharmoni-573500/index.html",
-      "contentHash": "403180b6a5f872b2",
+      "contentHash": "de0322c24f5c7b16",
       "sectionId": "woek-page-a43ebee5b77fb820"
     },
     "/wirkungsticker/grosseinsatz-der-polizei-in-hamburg-zwei-verletzte-nach-schussen-nahe-der-elbphilharmoni-573500/#news-related-title": {
@@ -328346,7 +329002,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/grosseinsatz-der-polizei-in-hamburg-zwei-verletzte-nach-schussen-nahe-der-elbphilharmoni-573500/index.html",
-      "contentHash": "403180b6a5f872b2",
+      "contentHash": "de0322c24f5c7b16",
       "sectionId": "news-related-title"
     },
     "/wirkungsticker/grosshandelspreise-im-august-2026-6-8-gegenuber-august-2025-9a9d57/": {
@@ -328738,7 +329394,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/im-medizinischen-notfall-optimal-versorgt-d933e3/index.html",
-      "contentHash": "6bd95d69cf8d06f8",
+      "contentHash": "ef47212b2fcfadad",
       "sectionId": "woek-page-f1e0f20ff53f05f6"
     },
     "/wirkungsticker/immer-wieder-schusse-in-berlin-woher-bekommen-die-kriminellen-ihre-waffen-7be065/": {
@@ -329322,7 +329978,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/kaniber-nachtragshaushalt-2027-setzt-wichtige-impulse-fur-landwirtschaft-tierwohl-und-la-68fffd/index.html",
-      "contentHash": "d15c0c5ae94fce6d",
+      "contentHash": "af80d0e304be673c",
       "sectionId": "woek-page-64e112ad40c2c7c1"
     },
     "/wirkungsticker/kaniber-nachtragshaushalt-2027-setzt-wichtige-impulse-fur-landwirtschaft-tierwohl-und-la-68fffd/#news-related-title": {
@@ -329330,7 +329986,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/kaniber-nachtragshaushalt-2027-setzt-wichtige-impulse-fur-landwirtschaft-tierwohl-und-la-68fffd/index.html",
-      "contentHash": "d15c0c5ae94fce6d",
+      "contentHash": "af80d0e304be673c",
       "sectionId": "news-related-title"
     },
     "/wirkungsticker/kann-ein-umstieg-auf-grunen-stahl-international-gelingen-ba0c12/": {
@@ -330066,7 +330722,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/kriminalitat-schusse-gemeldet-sek-durchsucht-wohnung-in-berlin-steglitz-ebcf11/index.html",
-      "contentHash": "79ce2fcea66dc6c8",
+      "contentHash": "288ab5150403b7d7",
       "sectionId": "woek-page-301288ac7b8a3884"
     },
     "/wirkungsticker/kriminalitat-schusse-gemeldet-sek-durchsucht-wohnung-in-berlin-steglitz-ebcf11/#news-related-title": {
@@ -330074,7 +330730,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/kriminalitat-schusse-gemeldet-sek-durchsucht-wohnung-in-berlin-steglitz-ebcf11/index.html",
-      "contentHash": "79ce2fcea66dc6c8",
+      "contentHash": "288ab5150403b7d7",
       "sectionId": "news-related-title"
     },
     "/wirkungsticker/kriminalitat-schusse-in-schoneberg-vierte-festnahme-in-darmstadt-79f2bc/": {
@@ -331602,7 +332258,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/lehrkrafte-und-schulerinnen-teils-evakuiert-bombendrohungen-an-hunderten-schulen-in-ital-7b8095/index.html",
-      "contentHash": "9c21c89311cb4898",
+      "contentHash": "722455b3b81a507d",
       "sectionId": "woek-page-214ec400fc48dec5"
     },
     "/wirkungsticker/lehrkrafte-und-schulerinnen-teils-evakuiert-bombendrohungen-an-hunderten-schulen-in-ital-7b8095/#news-related-title": {
@@ -331610,7 +332266,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/lehrkrafte-und-schulerinnen-teils-evakuiert-bombendrohungen-an-hunderten-schulen-in-ital-7b8095/index.html",
-      "contentHash": "9c21c89311cb4898",
+      "contentHash": "722455b3b81a507d",
       "sectionId": "news-related-title"
     },
     "/wirkungsticker/letzter-tag-der-parlamentswahl-in-russland-zwei-tote-bei-drohnenangriffen-in-moskau-2d6795/": {
@@ -331714,7 +332370,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/lufthansa-will-1000-stellen-an-drehkreuzen-streichen-48ca99/index.html",
-      "contentHash": "59fdfccb520b6d28",
+      "contentHash": "bc6335f3ad6537f2",
       "sectionId": "woek-page-3135d26e532e5d6a"
     },
     "/wirkungsticker/lufthansa-will-1000-stellen-an-drehkreuzen-streichen-48ca99/#news-related-title": {
@@ -331722,7 +332378,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/lufthansa-will-1000-stellen-an-drehkreuzen-streichen-48ca99/index.html",
-      "contentHash": "59fdfccb520b6d28",
+      "contentHash": "bc6335f3ad6537f2",
       "sectionId": "news-related-title"
     },
     "/wirkungsticker/mann-mit-pistole-in-rathaus-nach-schussen-in-tuttlingen-27-jahriger-wird-obduziert-9fe818/": {
@@ -332442,7 +333098,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/nach-cas-urteil-eishockey-wm-in-deutschland-mit-russland-weltverband-iihf-spielt-auf-zei-e09dd1/index.html",
-      "contentHash": "74980071399ae7ba",
+      "contentHash": "4e54c0698f08641c",
       "sectionId": "woek-page-100b696335a213bb"
     },
     "/wirkungsticker/nach-cyberangriff-auf-berlins-verwaltung-stundenzettel-im-darknet-f283b4/": {
@@ -332754,7 +333410,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/nachrichten-fur-nrw-schadstoffe-in-tagebau-seen-2aad48/index.html",
-      "contentHash": "65814b632163ce3a",
+      "contentHash": "39135a0b49788577",
       "sectionId": "woek-page-2dc3555d61205425"
     },
     "/wirkungsticker/nachtliche-evakuierung-nach-kampfmittelfung-in-nideggen-b2f858/": {
@@ -332986,7 +333642,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/news/index.html",
-      "contentHash": "3f6a0263d86e9eb5",
+      "contentHash": "01c13d2058fdf08b",
       "sectionId": "woek-page-7d87c87ddaa7be64"
     },
     "/wirkungsticker/newsblog-zur-landtagswahl-in-sachsen-anhalt-ministerprasident-schulze-cdu-raumt-niederla-0e1751/": {
@@ -337482,7 +338138,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/ukraine-news-einschlage-in-polen-und-schaden-an-botschaften-in-kiew-a34954/index.html",
-      "contentHash": "4680d95a65e1b7bf",
+      "contentHash": "c03fface02bf6588",
       "sectionId": "woek-page-39be75e912a507b7"
     },
     "/wirkungsticker/ukraine-news-russland-will-mit-afd-bei-gaslieferungen-kooperieren-71ef0f/": {
@@ -338242,7 +338898,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/vertreter-der-ukraine-und-russlands-verhandeln-unter-us-vermittlung-in-abu-dhabi-31144b/index.html",
-      "contentHash": "55bd14cc83656f5d",
+      "contentHash": "07d42393e14535f7",
       "sectionId": "woek-page-7397c25ee6371902"
     },
     "/wirkungsticker/vertreter-der-ukraine-und-russlands-verhandeln-unter-us-vermittlung-in-abu-dhabi-31144b/#news-related-title": {
@@ -338250,7 +338906,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/vertreter-der-ukraine-und-russlands-verhandeln-unter-us-vermittlung-in-abu-dhabi-31144b/index.html",
-      "contentHash": "55bd14cc83656f5d",
+      "contentHash": "07d42393e14535f7",
       "sectionId": "news-related-title"
     },
     "/wirkungsticker/verwaltungsgerichtsverfahren-sollen-schneller-werden-2ee8d2/": {
