@@ -38,12 +38,7 @@
       "active": false
     }
   },
-  "outbox": [
-    {
-      "id": "f03fbb6945f23395252e9b9a",
-      "content": "✓ WÖk-Störung behoben\nRedaktionelle Themenabdeckung\nPrüfung: 2026-11-22T23:09:14.039Z"
-    }
-  ],
+  "outbox": [],
   "dailyDate": "2026-11-22",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
