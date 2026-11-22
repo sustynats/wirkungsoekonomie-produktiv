@@ -114,6 +114,13 @@ jobs:
       - name: Install Python build dependencies
         # Shared artifact checks import PDF libraries on both release paths.
         run: python -m pip install --upgrade pip openpyxl pymupdf pypdf python-docx reportlab Pillow
+      - name: Install media metadata verifier
+        run: |
+          if ! command -v ffprobe >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install --no-install-recommends --yes ffmpeg
+          fi
+          ffprobe -version
       - name: Check public source privacy and hidden document metadata
         run: npm run test:privacy && npm run check:privacy:source
       - name: Hydrate verified ticker data for this repository
