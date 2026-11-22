@@ -215,9 +215,20 @@ for (const sharded of [false, true, 'release']) test(`real git race merges diffe
 
 test('rebase verification isolates mocked unit-test mode while all real generators retain the bridge cost guard', async () => {
   const { rebuildPublication } = await import('../../scripts/news/publish-git.mjs');
-  const env={WIRKUNGSTICKER_PROCESSING_MODE:'dropbox_chatgpt_bridge',VISUAL_GENERATION_PROVIDER:'higgsfield'},calls=[];
+  const env={WIRKUNGSTICKER_PROCESSING_MODE:'dropbox_chatgpt_bridge',VISUAL_GENERATION_PROVIDER:'higgsfield',WOEK_NEWS_ONLY:'true'},calls=[];
   await rebuildPublication({env,run:async(command,args,options)=>{calls.push({command,args,env:options.env});return {stdout:''};}});
-  assert.equal(calls[0].args[1],'news:test');assert.equal(calls[0].env.WIRKUNGSTICKER_PROCESSING_MODE,'api');
+  assert.equal(calls[0].env.WOEK_NEWS_ONLY,'');assert.equal(calls[0].args[1],'news:test');assert.equal(calls[0].env.WIRKUNGSTICKER_PROCESSING_MODE,'api');
   assert.ok(calls.length>1);assert.ok(calls.slice(1).every(c=>c.env.WIRKUNGSTICKER_PROCESSING_MODE==='dropbox_chatgpt_bridge'));
   assert.equal(env.WIRKUNGSTICKER_PROCESSING_MODE,'dropbox_chatgpt_bridge');
+});
+
+
+test('Actions rebase verification uses the network-isolated credential-free initial test runner', async () => {
+  const {rebuildPublication} = await import('../../scripts/news/publish-git.mjs');
+  const calls=[], env={GITHUB_ACTIONS:'true',WOEK_NEWS_ONLY:'true'};
+  await rebuildPublication({env,run:async (command,args,options)=>{calls.push({command,args,env:options.env});return {stdout:''};}});
+  assert.equal(calls[0].command,'bash');
+  assert.deepEqual(calls[0].args,['scripts/news/run-isolated-unit-tests.sh']);
+  assert.ok(calls.slice(1).every(c=>c.command==='npm'&&c.env.WOEK_NEWS_ONLY==='true'));
+  assert.equal(env.WOEK_NEWS_ONLY,'true');
 });

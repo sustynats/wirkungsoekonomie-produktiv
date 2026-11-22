@@ -97,6 +97,28 @@ jobs:
       - name: Unit and security tests
         if: steps.slot.outputs.should_run == 'true'
         run: bash scripts/news/run-isolated-unit-tests.sh
+      # Publish already approved editions independently of paid news work.
+      # A run importing editions spends no provider budget. The same checked
+      # build/commit/Pages path below publishes them; later runs verify live hashes.
+      - name: Take over editions approved in the private editorial desk
+        id: approved
+        # News-only constrains paid discovery, not already approved manuscripts.
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+        run: node scripts/news/import-approved-editorials.mjs --claim
+      # Receipt checks the live content hash from an earlier durable publication.
+      # It remains available even while new paid news work is held.
+      - name: Acknowledge approved editions after the durable push
+        id: approval_receipt
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+        run: node scripts/news/import-approved-editorials.mjs --finalize
       - name: Queue potential reassessments for the newest online stories
         # Fester Bestandteil jedes Laufs (seit 16.09.): die jüngsten Online-Meldungen
         # ohne vollständiges freigegebenes Profil bleiben eingereiht, bis die Neufassung
@@ -106,11 +128,11 @@ jobs:
           REASSESS_LIMIT: ${{ inputs.reassess_limit || vars.WOEK_NEWS_REASSESS_LIMIT || '30' }}
         run: node scripts/news/queue-reassessment.mjs --limit="$REASSESS_LIMIT"
       - name: Validate the existing archive encryption key before paid work
-        if: steps.slot.outputs.should_run == 'true'
+        if: steps.slot.outputs.should_run == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
         run: node scripts/news/sealed-raw-output.mjs --check-key
       - name: Verify interrupted paid work before another provider request
         id: paid_preflight
-        if: steps.slot.outputs.should_run == 'true'
+        if: steps.slot.outputs.should_run == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/news/retained-failed-paid-work.mjs --preflight
@@ -127,7 +149,7 @@ jobs:
           WOEK_NEWS_ORDER_FILE: ${{ runner.temp }}/meldungsauftraege/auftraege.json
         run: node scripts/news/meldungsauftraege.mjs holen
       - name: Import, analyze (one call per story) and build
-        if: steps.slot.outputs.should_run == 'true'
+        if: steps.slot.outputs.should_run == 'true' && steps.paid_preflight.outcome == 'success'
         env:
           # Privat, nur im Runner: Auftraege hinein, fertige Meldungen hinaus.
           # Der Schlüssel liegt ausschließlich im Repository-Secret WIRKUNGSTICKER.
@@ -189,15 +211,6 @@ jobs:
           WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
           WOEK_NEWS_ORDER_RESULT_FILE: ${{ runner.temp }}/meldungsauftraege/ergebnisse.json
         run: node scripts/news/meldungsauftraege.mjs abgeben
-      - name: Take over editions approved in the private editorial desk
-        id: approved
-        # News-only constrains paid discovery, not already approved manuscripts.
-        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
-        continue-on-error: true
-        env:
-          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
-          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
-        run: node scripts/news/import-approved-editorials.mjs --claim
       # #1080 fixed the St.-Pauli sentence check, not the already paid held
       # answer. Replay only its pinned bytes through every existing gate.
       # The serial worker owns the write; no competing data-PR snapshot.
@@ -216,7 +229,7 @@ jobs:
           fi
       - name: Read public ticker outcome
         id: outcome
-        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && steps.paid_preflight.outcome == 'success'
         run: node -e 'const fs=require("node:fs"); const report=require("./reports/wirkungsticker-latest-run.json"); fs.appendFileSync(process.env.GITHUB_OUTPUT, "public_changed=" + Boolean(report.public_changed) + "\n");'
       # Die redaktionelle Lage ist eine Ableitung aus den bereits
       # veroeffentlichten Wirkungsakten: kein Modellaufruf, keine Kosten.
@@ -230,7 +243,7 @@ jobs:
       # Deshalb bricht er nicht ab. Stumm bleibt der Fehler trotzdem nicht: der
       # Betriebsmonitor prueft, ob eine Lage fuer das laufende Fenster vorliegt.
       - name: Redaktionelle Lage schreiben und Seiten erneuern
-        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && steps.paid_preflight.outcome == 'success'
         continue-on-error: true
         run: |
           set -euo pipefail
@@ -298,20 +311,6 @@ jobs:
           echo "commit=$RELEASE_COMMIT" >> "$GITHUB_OUTPUT"
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "public_files=$PUBLIC_FILES" >> "$GITHUB_OUTPUT"
-      # Die Quittung laeuft in JEDEM Lauf, nicht nur wenn dieser Lauf etwas
-      # uebernommen hat. Sie prueft die Seite live, und die Seite ist zum
-      # Zeitpunkt der Uebernahme noch nicht ausgeliefert - die Bestaetigung
-      # gehoert deshalb zwangslaeufig einem spaeteren Lauf, der selbst nichts
-      # uebernimmt. Mit der alten Bedingung blieb jede Freigabe dauerhaft auf
-      # "wird veroeffentlicht" stehen.
-      - name: Acknowledge approved editions after the durable push
-        id: approval_receipt
-        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
-        continue-on-error: true
-        env:
-          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
-          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
-        run: node scripts/news/import-approved-editorials.mjs --finalize
       - name: Publish the committed ticker automatically
         if: steps.commit.outputs.changed == 'true' && (steps.outcome.outputs.public_changed == 'true' || steps.polls.outputs.changed == 'true' || steps.approved.outputs.changed == 'true' || steps.commit.outputs.public_files == 'true')
         env:
@@ -322,7 +321,7 @@ jobs:
           [[ "$TICKER_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Missing exact published commit; refusing an unbound release." >&2; exit 1; }
           gh workflow run deploy.yml --ref main -f ticker_only=true -f "ticker_commit=$TICKER_COMMIT"
       - name: Verify ticker run health
-        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
         run: npm run news:health -- --started-after="$WOEK_NEWS_EXPECTED_AFTER"
       - name: Seal paid originals for private recovery
         id: sealed_raw

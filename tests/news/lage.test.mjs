@@ -228,7 +228,7 @@ test('nachgeholte Lagen behalten ihren transparenten Hinweis auch im normalen Fo
 test('eine Lage ohne neue Meldung wird ausgeliefert', async () => {
   const fs = await import('node:fs');
   const yaml = fs.readFileSync(new URL('../../.github/workflows/wirkungsticker.yml', import.meta.url), 'utf8');
-  const commit = yaml.slice(yaml.indexOf('name: Commit one atomic update'), yaml.indexOf('name: Acknowledge approved editions'));
+  const commit = yaml.slice(yaml.indexOf('name: Commit one atomic update'), yaml.indexOf('name: Publish the committed ticker automatically'));
   assert.match(commit, /STAGED_FILES="\$\(git diff --cached --name-only\)"/,
     'der Commit-Schritt liest die vollständige Dateiliste ohne frühes Pipe-Ende');
   assert.match(commit, /grep -qE '\^\(news\/\|wirkungsticker\/\)' <<< "\$STAGED_FILES"/,

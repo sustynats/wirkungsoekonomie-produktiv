@@ -13,13 +13,12 @@ const block = (name) => {
   return { start, value: workflow.slice(start, next < 0 ? undefined : next) };
 };
 
-test('cross-repository paid guard succeeds before personal orders or provider work', () => {
+test('cross-repository paid guard succeeds before new orders or provider work', () => {
   const guard = block('Verify interrupted paid work before another provider request');
   assert.match(guard.value, /^        id: paid_preflight$/m);
   assert.doesNotMatch(guard.value, /^        continue-on-error:\s*(?:true|\$\{\{)/m);
   for (const name of ["Fetch Natalie's news orders from the private editorial desk",
-    'Import, analyze (one call per story) and build',
-    'Take over editions approved in the private editorial desk']) {
+    'Import, analyze (one call per story) and build']) {
     const later = block(name);
     assert.ok(guard.start < later.start, `${name} must follow guard`);
     assert.doesNotMatch(later.value.match(/^        if:.*$/m)?.[0] ?? '', /(?:always|failure|cancelled)\s*\(/);
@@ -50,4 +49,27 @@ test('failure recovery uploads only after the paid preflight has succeeded', () 
   assert.equal(evaluate('success', false, true), true);
   assert.equal(evaluate('success', false, false), false);
   assert.equal(evaluate('success', true, false, 'false'), false);
+});
+
+
+test('approved editions and live receipts stay independent of paid news holds without opening provider work', () => {
+  const guard = block('Verify interrupted paid work before another provider request');
+  for (const name of ['Take over editions approved in the private editorial desk', 'Acknowledge approved editions after the durable push']) {
+    const publication = block(name);
+    assert.ok(block('Unit and security tests').start < publication.start);
+    assert.ok(publication.start < guard.start);
+    assert.doesNotMatch(publication.value, /run-api|paid_preflight|always\(\)|failure\(\)/);
+  }
+  const guardCondition = guard.value.match(/^        if:\s*(.*)$/m)[1];
+  const providerCondition = block('Import, analyze (one call per story) and build').value.match(/^        if:\s*(.*)$/m)[1];
+  for (const changed of ['true', 'false', '']) for (const outcome of ['success', 'failure', 'skipped']) {
+    const steps = {slot:{outputs:{should_run:'true'}},approved:{outcome,outputs:{changed}}};
+    const guarded = runInNewContext(guardCondition, {steps,inputs:{dry_run:false}});
+    assert.equal(guarded, changed !== 'true' && outcome === 'success');
+    assert.equal(runInNewContext(guardCondition, {steps,inputs:{dry_run:true}}), changed !== 'true');
+    for (const paid of ['success','failure','skipped']) {
+      const provider = runInNewContext(providerCondition, {steps:{...steps,paid_preflight:{outcome:paid}}});
+      assert.equal(provider, paid === 'success');
+    }
+  }
 });

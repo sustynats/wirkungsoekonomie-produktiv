@@ -76,8 +76,11 @@ export async function rebuildPublication({ run = exec, env = process.env } = {})
   for (const script of ["news:test", "news:build", "polls:build", "build:search", "taxonomy:build", "news:source-integrity:audit", "news:source-portfolio:audit", "news:validate"]) {
     // Match the regular workflow's isolated test configuration. Only mocked
     // unit tests use API mode; every real build keeps the production mode.
-    const childEnv = script === "news:test" ? { ...env, WIRKUNGSTICKER_PROCESSING_MODE: "api", VISUAL_GENERATION_PROVIDER: "higgsfield" } : env;
-    const result = await run("npm", ["run", script, ...(script.endsWith(":audit") ? ["--", "--strict"] : [])], { maxBuffer: 16 * 1024 * 1024, env: childEnv });
+    const childEnv = script === "news:test" ? { ...env, WOEK_NEWS_ONLY: "", WIRKUNGSTICKER_PROCESSING_MODE: "api", VISUAL_GENERATION_PROVIDER: "higgsfield" } : env;
+    const isolated = script === "news:test" && env.GITHUB_ACTIONS === "true";
+    const result = await run(isolated ? "bash" : "npm", isolated
+      ? ["scripts/news/run-isolated-unit-tests.sh"]
+      : ["run", script, ...(script.endsWith(":audit") ? ["--", "--strict"] : [])], { maxBuffer: 16 * 1024 * 1024, env: childEnv });
     if (result.stdout) process.stdout.write(result.stdout);
   }
 }
