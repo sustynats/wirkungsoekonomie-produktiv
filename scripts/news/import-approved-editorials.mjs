@@ -15,9 +15,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const SKIP = new Set(['BRIDGE_RUN_LOCKED', 'BRIDGE_SLOT_ALREADY_COMPLETED', 'BRIDGE_REMOTE_CONFIG_REQUIRED']);
 // The editorial worker and private preview poll share this lane. A definite
 // lock rejection has not claimed or written anything: retry ONLY acquisition,
-// for at most one minute. Never repeat a claim/write after an uncertain result,
+// for at most two minutes. Never repeat a claim/write after an uncertain result,
 // release somebody else's lock, or spend another model call.
-export const EDITORIAL_LANE_WAIT = { retries: 12, waitMs: 5000 };
+export const EDITORIAL_LANE_WAIT = { retries: 24, waitMs: 5000 };
 
 export async function claimApprovedEditorials({ session = null, root = ROOT, now = new Date().toISOString(), env = process.env, laneWait = null } = {}) {
   let store;

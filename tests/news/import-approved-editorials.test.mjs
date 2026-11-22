@@ -61,7 +61,7 @@ test('persistent contention remains bounded, touches no files and never releases
     const result = await operation({ session, laneWait: { wait: async ms => { waited += ms; } } });
     assert.equal(result.reason, 'BRIDGE_RUN_LOCKED');
     assert.equal(attempts, EDITORIAL_LANE_WAIT.retries + 1);
-    assert.equal(waited, 60_000);
+    assert.equal(waited, 120_000);
   }
 });
 
@@ -175,4 +175,20 @@ test('an invalid approved edition is reported back to Oracle and never written',
   assert.equal(result.failed.length, 1);
   assert.ok(calls.some(([kind]) => kind === 'failure'));
   assert.deepEqual(calls.at(-1), ['release', true]);
+});
+
+
+test('a preview import lasting over a minute still hands off one approved publication', async t => {
+  const calls = [], root = fs.mkdtempSync(path.join(os.tmpdir(), 'woek-approved-preview-handoff-'));
+  t.after(() => fs.rmSync(root, {recursive:true,force:true}));
+  const edition = JSON.parse(fs.readFileSync(new URL('./fixtures/approved-personal-edition.json', import.meta.url), 'utf8'));
+  const session = fakeSession([edition], calls), acquire = session.store.acquire;
+  let attempts=0, waited=0;
+  session.store.acquire=async (...args)=>{if(++attempts<=16)throw Error('BRIDGE_RUN_LOCKED');return acquire(...args);};
+  const result=await claimApprovedEditorials({session,root,laneWait:{wait:async ms=>{waited+=ms;}}});
+  assert.equal(waited,80_000);
+  assert.equal(result.changed,true);
+  assert.equal(calls.filter(([kind])=>kind==='claim').length,1);
+  assert.equal(calls.filter(([kind])=>kind==='release').length,1);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(root,'data/news/personal-editorials.json'),'utf8')).editions[0].content_hash,edition.content_hash);
 });
