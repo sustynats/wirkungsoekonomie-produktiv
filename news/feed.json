@@ -6,6 +6,70 @@
   "language": "de",
   "items": [
     {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/explosion-auf-russischem-schiff-in-libyen-behorden-vermuten-drohnenangriff-d49a54/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/explosion-auf-russischem-schiff-in-libyen-behorden-vermuten-drohnenangriff-d49a54/",
+      "title": "Explosion auf russischem Schiff in Libyen: Behörden vermuten Drohnenangriff",
+      "summary": "In Bengasi wurde laut mehreren Berichten ein russisches Schiff durch eine Explosion beschädigt; Behörden vermuten einen Drohnenangriff. Verletzte werden gemeldet, eine Urheberschaft ist jedoch nicht bestätigt.",
+      "date_published": "2026-11-22T19:00:05.000Z",
+      "date_modified": "2026-11-22T19:00:05.000Z",
+      "_woek_released_at": "2026-11-22T21:12:00.246Z",
+      "tags": [
+        "Gesundheit",
+        "Geopolitik"
+      ],
+      "_woek_type": "Wirkungsakte",
+      "_woek_late_delivery": true,
+      "_woek_impact_profile": {
+        "human": {
+          "magnitude": 4,
+          "direction": "negative",
+          "status": "observed"
+        },
+        "planet": {
+          "magnitude": 1,
+          "direction": "negative",
+          "status": "potential"
+        },
+        "democracy": {
+          "magnitude": 4,
+          "direction": "negative",
+          "status": "potential"
+        }
+      }
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/libyen-explosion-auf-russischem-schiff-ukrainischer-angriff-vermutet-2143b6/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/libyen-explosion-auf-russischem-schiff-ukrainischer-angriff-vermutet-2143b6/",
+      "title": "Laut Behörden: Libyen: Behörden vermuten Drohnenangriff auf russisches Kriegsschiff",
+      "summary": "In Bengasi wurde eine Explosion auf einem russischen Kriegsschiff gemeldet. Behörden vermuten laut zwei Berichten einen Drohnenangriff; Ursache und Folgen bleiben unbestätigt.",
+      "date_published": "2026-11-22T19:00:05.000Z",
+      "date_modified": "2026-11-22T19:00:05.000Z",
+      "_woek_released_at": "2026-11-22T21:12:43.393Z",
+      "tags": [
+        "Gesundheit",
+        "Geopolitik"
+      ],
+      "_woek_type": "Wirkungsakte",
+      "_woek_late_delivery": true,
+      "_woek_impact_profile": {
+        "human": {
+          "magnitude": 2,
+          "direction": "negative",
+          "status": "potential"
+        },
+        "planet": {
+          "magnitude": 1,
+          "direction": "negative",
+          "status": "potential"
+        },
+        "democracy": {
+          "magnitude": 2,
+          "direction": "mixed",
+          "status": "potential"
+        }
+      }
+    },
+    {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/starke-rauchentwicklung-in-hochhaus-menschen-werden-teilweise-evakuiert-bf2499/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/starke-rauchentwicklung-in-hochhaus-menschen-werden-teilweise-evakuiert-bf2499/",
       "title": "Rauchentwicklung in Hochhaus in Eppelheim: Teilweise Evakuierung, Ursache laut Polizei unklar",
