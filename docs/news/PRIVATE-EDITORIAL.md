@@ -79,9 +79,10 @@ unter denselben Locks. Erst der Nachweis des passenden Hash-Markers in der
 Die Isolation des allgemeinen Nachrichtenlaufs darf die Übernahme bereits
 fassungsgebunden freigegebener Manuskripte nicht abschalten. Der normale
 Nachrichtenworkflow führt deshalb `import-approved-editorials.mjs --claim`
-vor dem Seitenbau und `--finalize` nach dem dauerhaften Push aus. Die Quittung
-prüft weiterhin die tatsächlich ausgelieferte HTML-Fassung; ein Push allein
-ist keine Veröffentlichung. Ein späterer Lauf bestätigt noch offene Ausgaben.
+vor dem Seitenbau aus. `--finalize` prüft bereits in früheren Läufen dauerhaft
+gepushte Fassungen, ebenfalls vor neuer bezahlter Arbeit. Die Quittung prüft
+die tatsächlich ausgelieferte HTML-Fassung; ein Push allein ist keine
+Veröffentlichung. Ein späterer Lauf bestätigt neu übernommene Ausgaben.
 Dabei werden keine Texte erzeugt, Freigaben ersetzt oder Quellen aktiviert.
 Private Auftragsrecherche, Modellaufrufe und historische Wiederaufnahmen
 bleiben durch ihre eigenen Kosten-, Zugriffs- und Freigaberegeln begrenzt.
@@ -215,3 +216,13 @@ geaendert. Ausgabe und ACK duerfen nicht bereits vorhanden sein. Es gibt keinen
 Modellaufruf, keinen Budget-/Versionsreset und keine Publikationsfreigabe.
 Unbekannte gestartete Versuche, HOLDs und bereits uebernommene oder freigegebene
 Fassungen sind ausgeschlossen. Alle bisherigen Inhalts-/Importgates gelten.
+
+
+Die Übernahme und Live-Quittung erfolgen nach Hydration und isolierten Tests,
+aber vor der Vorprüfung für neue bezahlte Nachrichtenarbeit. Übernimmt der Lauf
+neue freigegebene Fassungen, veröffentlicht er sie über denselben seriellen,
+commitgebundenen Build-/Pages-Pfad und startet in diesem Lauf keine neue
+Nachrichtenanalyse. Ein offener Paid-Hold bleibt unverändert und schützt spätere
+Anbieteraufrufe. Quittungen prüfen weiterhin ausschließlich den live sichtbaren
+Hash. Bei einem Fehler der Übernahme startet ebenfalls keine bezahlte Verarbeitung.
+Die persönliche Freigabe, Quellen- und Inhaltsprüfungen bleiben erforderlich.
