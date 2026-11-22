@@ -33,12 +33,17 @@
       "firstSeen": "2026-11-22T22:50:46.968Z",
       "active": true
     },
-    "editorial-status": {
-      "firstSeen": "2026-11-22T23:09:14.039Z",
-      "active": false
+    "run": {
+      "firstSeen": "2026-11-22T23:20:51.984Z",
+      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "74f7ee16aba2410a23e262ca",
+      "content": "⚠ WÖk-Betriebsstörung\nAutomatische Nachrichtenläufe: Seit über 45 Minuten kein abgeschlossener Laufbericht.\nSeit: 2026-11-22T23:20:51.984Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
+    }
+  ],
   "dailyDate": "2026-11-22",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4182,10 +4187,14 @@
       "https://wirkungsoekonomie.de/wirkungsticker/angriffe-und-explosionen-im-mittelmeer-seedrohnen-zerstoren-russisches-kriegsschiff-und--ad3307/": {
         "first_seen_at": "2026-11-22T22:20:51.616Z",
         "source_at": "2026-11-22T20:30:09.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/drohnenangriff-auf-russischen-frachter-in-der-ostsee-b263ff/": {
+        "first_seen_at": "2026-11-22T23:20:51.984Z",
+        "source_at": "2026-11-21T19:15:01.000Z"
       }
     },
-    "last_new_at": "2026-11-22T22:20:51.616Z",
-    "checked_at": "2026-11-22T23:09:14.039Z",
+    "last_new_at": "2026-11-22T23:20:51.984Z",
+    "checked_at": "2026-11-22T23:20:51.984Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
