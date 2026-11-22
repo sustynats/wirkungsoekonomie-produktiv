@@ -9,10 +9,6 @@
       "firstSeen": "2026-10-10T17:51:12.919Z",
       "active": true
     },
-    "delivery-redaktionsworker.yml": {
-      "firstSeen": "2026-10-11T07:15:14.451Z",
-      "active": true
-    },
     "queue": {
       "firstSeen": "2026-10-24T14:51:24.993Z",
       "active": true
@@ -25,25 +21,38 @@
       "firstSeen": "2026-11-02T05:36:17.145Z",
       "active": true
     },
-    "delivery-wirkungsticker.yml": {
-      "firstSeen": "2026-11-02T05:36:17.145Z",
-      "active": true
-    },
     "lage": {
       "firstSeen": "2026-11-04T16:50:56.708Z",
       "active": true
     },
-    "institute": {
-      "firstSeen": "2026-11-04T20:35:57.230Z",
+    "images": {
+      "firstSeen": "2026-11-22T21:06:04.924Z",
       "active": false
     },
-    "self-healing": {
-      "firstSeen": "2026-11-04T20:35:57.230Z",
-      "active": true
+    "freigabe-quittung": {
+      "firstSeen": "2026-11-22T21:06:04.924Z",
+      "active": false
     }
   },
-  "outbox": [],
-  "dailyDate": "2026-11-04",
+  "outbox": [
+    {
+      "id": "27c1b81039c763e68c821dca",
+      "content": "✓ WÖk-Störung behoben\nNachrichtenimport\nPrüfung: 2026-11-22T21:06:04.924Z"
+    },
+    {
+      "id": "a45dde7c3b12b8e154d1c9f9",
+      "content": "✓ WÖk-Störung behoben\nRedaktionslauf\nPrüfung: 2026-11-22T21:06:04.924Z"
+    },
+    {
+      "id": "75481ee1f7bc0d676b90a8b7",
+      "content": "✓ WÖk-Störung behoben\nSelbstheilung\nPrüfung: 2026-11-22T21:06:04.924Z"
+    },
+    {
+      "id": "45d243d86b5c763f11689e5e",
+      "content": "WÖk Tagesbericht · 2026-11-22 · Europe/Berlin\n✓ Hauptseite: erreichbar\n✓ Wirkungsticker: erreichbar\n✓ Ticker-RSS: erreichbar\n✓ Akademie: erreichbar\n✓ Parlament: erreichbar\n✓ Institut: erreichbar\n✓ Oracle-API: erreichbar\n✓ Push-Konfiguration: erreichbar\nTicker: 1211 live · 1006 aktuelle Lagen und Einzelakten aus 1032 aktiven Wirkungsakten · 8 Lageakten.\nIm Redaktionsbestand als veröffentlicht vermerkt: gestern (2026-11-21) 9; heute bisher 3 (inkl. später archivierter/zusammengeführter Akten; Live-Nachweis separat).\nLetzter Lauf: 2026-11-22T02:34:43.296Z; 1056 offene Prüfungen, 41 aktive Quellen.\nQueue: 1057 offen (69 Kapazität · 665 technisch · 323 redaktionell); Status technical_delay.\nQuellen-Funnel heute: 1262 Feed-Einträge → 173 neu/aktualisiert → 167 Story-Kandidaten → 928 geeignet → 4 KI → 3 Veröffentlichungen/Aktualisierungen. Lokal verworfen: 136; redaktionelle Quellenbeiträge: 0.\nProduktive Quellen im letzten Lauf: stern, Deutschlandfunk, SWR Aktuell.\nEreignischeck (begrenzter Quellenbestand): 17 größere Ereignisse · 6 mit Veröffentlichung · 11 nachzuprüfen (einschließlich berechtigter Qualitätsvorbehalte).\nKI-Gesamtschätzung inkl. offener Reserven: gestern $1.22 · heute $0.51 · Monat $8.88.\nDirekte Nachrichtenverarbeitung seit 2026-09-06T05:24:43.333Z: 208 Erstveröffentlichungen · 31 Aktualisierungen · 422 KI-Anfragen, inklusive Ablehnungen und Wiederholungen.\nKI-Kosten je Erstveröffentlichung inkl. Prüf-/Updateaufwand: geschätzt 6.98 Cent inkl. Steuerreserve; Ziel unter 4 Cent. 6 Läufe mit Ersatzschätzung.\nWÖk-Analysen separat: 0 neu · 0 aktualisiert · $0.00 geschätzter KI-Aufwand. Keine Anbieterabrechnung; Einrichtungsverbrauch bleibt im Monatsbudget enthalten.\nBatch-Hintergrundjobs separat im Messfenster: 0 abgeglichen · 0 angewendet · $0.000 nach Anbieter-Nutzungsdaten; $0.000 für 0 Aufträge reserviert. Enthält auch bezahlte Qualitätsablehnungen; keine neuen Nachrichten durch reine Nachprüfungen.\nDirekte Nachrichtenverarbeitung: geschätzte KI-Kosten je heutiger Erstveröffentlichung/Aktualisierung $0.170; WÖk-Analysen und Batch separat.\nMonat umgerechnet inkl. 19 % Steuerreserve: ca. €9.62 (Limit €25.00).\nKosten ohne Higgsfield-Abo/Bildcredits und Hosting; 0 KI-Läufe ohne verwertbaren Kostenwert. Keine Abrechnung.\nBesucher/Besuche, Installationen, aktive Push-Nutzer und RSS-Nutzung: noch nicht in diesen Bericht integriert; nicht als null gezählt.\n⚠ Automatische Nachrichtenläufe: Seit über 45 Minuten kein abgeschlossener Laufbericht.\n⚠ Nachrichten-Warteschlange: 665 technisch blockierte Akte(n); älteste technische Blockade seit 106997 Minuten. Kapazitätswarteschlange: 69; redaktionelle Ablehnungen: 323.\n⚠ Titelbilder: 47 veröffentlichte Meldung(en) ohne nutzbares Titelbild; 2 mit Kartenfallback, weil der Bilddienst nicht lieferte.\n⚠ Quittung freigegebener Fassungen: 6 freigegebene Fassung(en) stehen veroeffentlicht, gelten in der Redaktions-App seit 432 Stunden aber weiter als offen. Die Quittung an den Schreibtisch greift nicht.\n⚠ Liegengebliebene Redaktionsauftraege: 2 Auftrag/Auftraege haben ihren bezahlten Versuch verbraucht, ohne einen Entwurf abzuliefern (aeltester seit 2026-10-09T21:03:10.095Z; Grund: AI_MALFORMED_JSON). Sie kehren erst mit einer Vertragskorrektur zurueck und stehen bis dahin in keiner Freigabeliste.\n⚠ Kanonischer Lagenbestand: Im kanonischen Bestand fehlen fällige Ausgaben: 2026-11-22-morgenlage, 2026-11-22-mittagslage, 2026-11-22-abendlage. Öffentliche Auslieferung ungeprüft.\nhttps://wirkungsoekonomie.de/wirkungsticker/"
+    }
+  ],
+  "dailyDate": "2026-11-22",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
     "entries": {
@@ -3986,10 +3995,198 @@
       "https://wirkungsoekonomie.de/wirkungsticker/us-notenbank-analysten-wetten-schon-auf-die-nachste-erhohung-der-zinsen-bcc7f2/": {
         "first_seen_at": "2026-10-29T02:06:18.194Z",
         "source_at": "2026-10-28T22:01:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/starke-rauchentwicklung-in-hochhaus-menschen-werden-teilweise-evakuiert-bf2499/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-22T01:44:17.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/nach-igh-urteil-frankreich-will-uno-sicherheitsrat-zu-myanmar-einberufen-46815f/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-22T01:37:20.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/rhein-neckar-kreis-dichter-rauch-feuerwehr-evakuiert-hochhaus-in-eppelheim-3b89a2/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-22T01:32:38.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/weltwirtschaft-eu-und-indonesien-besiegeln-umfassendes-handelsabkommen-d25d74/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-21T16:52:31.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/gerard-depardieu-und-michel-houellebecq-vorwurf-der-gemeinschaftliche-vergewaltigung-jus-8e402d/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-21T15:46:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/ukraine-news-einschlage-in-polen-und-schaden-an-botschaften-in-kiew-a34954/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-21T09:39:29.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/soziales-justiz-zieht-bilanz-mehr-als-27-000-zwangsraumungen-2025-fdc932/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-21T09:37:31.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/fussball-bundesliga-bayern-star-harry-kane-fallt-monatelang-aus-beim-spiel-gegen-koln-ve-92d643/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-21T09:11:46.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/demonstrationen-frankfurter-jugendproteste-bleiben-trotz-warnungen-friedlich-104bc4/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-21T00:34:19.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/frankreich-gesetz-zur-rechtmassigen-verteidigung-fur-polizisten-verabschiedet-83c4a8/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-21T00:34:01.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/leute-berichte-kevin-allein-zu-haus-soll-fortgesetzt-werden-00c66b/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-20T23:42:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/schusse-in-owl-13-jahriger-stellt-sich-nach-flucht-95e2bd/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-20T19:58:39.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/explosion-vor-veranstaltungsgebaude-in-rheinfelden-eine-person-leicht-verletzt-98f233/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-20T19:18:09.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/dem-un-klimagipfel-droht-eine-historische-pleite-5f6726/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-20T13:10:08.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/im-medizinischen-notfall-optimal-versorgt-d933e3/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-20T12:15:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/lufthansa-will-1000-stellen-an-drehkreuzen-streichen-48ca99/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-20T05:33:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/explosion-vor-supermarkt-in-lorrach-kriminalpolizei-ermittelt-7a2223/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-11T19:43:08.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/eu-streit-um-ukraine-hilfen-wutbriefe-befindlichkeiten-und-streit-ums-geld-bb42bf/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-11T18:41:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/lehrkrafte-und-schulerinnen-teils-evakuiert-bombendrohungen-an-hunderten-schulen-in-ital-7b8095/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-11T11:28:28.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/kaniber-nachtragshaushalt-2027-setzt-wichtige-impulse-fur-landwirtschaft-tierwohl-und-la-68fffd/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-11T10:03:39.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/372-000-ohne-job-zahl-der-arbeitslosen-akademiker-erreicht-hochststand-bb2224/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-11T03:03:11.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/polizeieinsatz-suche-nach-motiv-fur-schusse-in-hamburger-hafencity-ebe283/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-11T03:02:50.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/ukraine-krieg-europaischer-rechnungshof-kritisiert-defizite-bei-sanktionen-gegen-russlan-e0ab64/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-10T23:54:39.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/drohnen-angriffe-und-hacker-attacken-was-bereitet-den-leipzigern-sorgen-2ee200/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-10T16:13:05.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/schusse-in-der-hamburger-hafencity-sek-einsatz-an-der-elbphilharmonie-69a3c3/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-10T11:42:12.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/polizei-razzia-gegen-schusswaffenkriminalitat-in-berlin-auch-hells-angels-vereinsheim-du-a95de5/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-10T11:14:51.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/grosseinsatz-der-polizei-in-hamburg-zwei-verletzte-nach-schussen-nahe-der-elbphilharmoni-573500/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-10T09:35:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/vertreter-der-ukraine-und-russlands-verhandeln-unter-us-vermittlung-in-abu-dhabi-31144b/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-10T03:05:21.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/mobilfunkanbieter-vodafone-will-rund-2-300-stellen-streichen-d716f9/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-09T21:01:09.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/grossrazzia-gegen-waffengewalt-spezialkrafte-der-polizei-durchsuchen-objekte-in-ganz-ber-d0823f/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-09T20:02:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/ukraine-news-ukraine-entdeckt-zahlreiche-westliche-bauteile-in-russischer-drohne-5443f7/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-09T19:40:37.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/antrag-auf-amtsenthebungsverfahren-gegen-pentagonchef-hegseth-eingebracht-9ae184/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-09T19:39:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/kriminalitat-schusse-gemeldet-sek-durchsucht-wohnung-in-berlin-steglitz-ebcf11/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-09T10:09:49.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/ol-und-spritpreise-deutlich-gesunken-d6117a/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-09T09:15:02.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/israel-oppositionspolitiker-eisenkot-erhalt-offiziell-auftrag-zur-regierungsbildung-werd-040ba7/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-08T19:27:18.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/koalition-verhandelt-uber-haushalt-was-auf-dem-spiel-steht-ae4943/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-08T18:12:00.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/eliteserien-tribune-bricht-ein-verletzter-bei-norwegischem-fussballspiel-f7e51b/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-08T17:43:20.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/ukraine-krieg-erneut-russischer-angriff-auf-ukrainische-energieversorgung-600-000-mensch-1282af/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-08T14:57:48.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/unbekannte-schiessen-auf-autohaus-in-koln-ostheim-5f6fce/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-08T14:22:55.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/nachrichten-fur-nrw-schadstoffe-in-tagebau-seen-2aad48/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-08T06:28:17.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/nach-cas-urteil-eishockey-wm-in-deutschland-mit-russland-weltverband-iihf-spielt-auf-zei-e09dd1/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-07T22:02:37.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/versuchter-mord-gewerkschaft-kritisiert-haftstrafe-nach-angriff-auf-polizisten-bei-fussb-a24394/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-07T22:02:37.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/trump-will-kampfsportler-dana-white-als-pressesprecher-d9281a/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-07T21:05:29.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/weitere-leichen-entdeckt-tote-nach-schussen-in-krakau-9fd9f6/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-07T18:22:27.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/menschenrechtler-zweifeln-an-beweisen-iran-richtet-mann-nach-mutmasslichem-angriff-auf-p-b4a7dc/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-07T15:02:49.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/ukraine-krieg-selenskyj-nennt-trumps-friedensplan-gefahrlich-62c563/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-07T12:15:13.000Z"
+      },
+      "https://wirkungsoekonomie.de/wirkungsticker/bundeskanzler-merz-empfangt-den-ungarischen-ministerprasidenten-magyar-5c9d11/": {
+        "first_seen_at": "2026-11-22T21:06:04.924Z",
+        "source_at": "2026-11-06T11:45:00.000Z"
       }
     },
-    "last_new_at": "2026-10-29T02:06:18.194Z",
-    "checked_at": "2026-11-04T20:35:57.230Z",
+    "last_new_at": "2026-11-22T21:06:04.924Z",
+    "checked_at": "2026-11-22T21:06:04.924Z",
     "last_current_new_at": "2026-10-29T02:06:18.194Z"
   },
   "recovery_attempts": [
