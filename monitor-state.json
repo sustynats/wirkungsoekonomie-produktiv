@@ -38,12 +38,7 @@
       "active": true
     }
   },
-  "outbox": [
-    {
-      "id": "8e741aef65e7c1ada4945e60",
-      "content": "⚠ WÖk-Betriebsstörung\nNachrichtenimport: Der letzte Lauf ist fehlgeschlagen. Fertige Ergebnisse sind damit nicht als ausgeliefert bestätigt.\nSeit: 2026-11-22T22:50:46.968Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
-    }
-  ],
+  "outbox": [],
   "dailyDate": "2026-11-22",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
