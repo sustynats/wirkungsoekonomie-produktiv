@@ -36,10 +36,6 @@
   },
   "outbox": [
     {
-      "id": "389f6e225342451f3fddede9",
-      "content": "⚠ WÖk-Betriebsstörung\nRedaktionslauf: Der letzte Lauf ist fehlgeschlagen. Fertige Ergebnisse sind damit nicht als ausgeliefert bestätigt.\nSeit: 2026-11-22T21:21:00.804Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
-    },
-    {
       "id": "aa4396b24d28f6fe1c5b0cf2",
       "content": "✓ WÖk-Störung behoben\nKanonischer Lagenbestand\nPrüfung: 2026-11-22T21:21:00.804Z"
     }
