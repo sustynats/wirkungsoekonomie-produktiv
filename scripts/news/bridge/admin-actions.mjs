@@ -9,20 +9,23 @@ export function resolveAdminRepository(env = process.env) {
   const runtime = env.GITHUB_ACTIONS === 'true' ? env.GITHUB_REPOSITORY : null;
   if (env.GITHUB_ACTIONS === 'true' && !runtime) throw Error('BRIDGE_RUNTIME_REPOSITORY_REQUIRED');
   if (configured && runtime && configured !== runtime) throw Error('BRIDGE_RUNTIME_REPOSITORY_MISMATCH');
-  const chosen = configured || runtime || LEGACY_REPOSITORY;
+  const chosen = configured || runtime || NEW_REPOSITORY;
+  if (chosen === LEGACY_REPOSITORY) throw Error('BRIDGE_REPOSITORY_RETIRED');
   if (![LEGACY_REPOSITORY, NEW_REPOSITORY].includes(chosen)) throw Error('BRIDGE_REPOSITORY_INVALID');
   return chosen;
 }
 
-export async function runAdminAction(action, {gh, watch, log = console.log, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), repo = 'sustynats/wirkungsoekonomie.de'}) {
+export async function runAdminAction(action, {gh, watch, log = console.log, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), repo = NEW_REPOSITORY}) {
   if (!['DISCOVERY_NOW','IMPORT_NOW','SERVER_CYCLE_NOW'].includes(action)) throw Error('BRIDGE_ADMIN_ACTION_INVALID');
+  if (repo === LEGACY_REPOSITORY) throw Error('BRIDGE_REPOSITORY_RETIRED');
   if (![LEGACY_REPOSITORY, NEW_REPOSITORY].includes(repo)) throw Error('BRIDGE_REPOSITORY_INVALID');
   const workflows = action === 'DISCOVERY_NOW' ? ['wirkungsticker-discovery.yml'] : action === 'IMPORT_NOW' ? ['wirkungsticker.yml'] : ['wirkungsticker-discovery.yml','wirkungsticker.yml'];
   for (const workflow of workflows) {
-    // A new-repository dispatch must first see both locations. An inaccessible
-    // repository or a truncated list is uncertainty, not an empty queue.
-    const checkRepositories = repo === NEW_REPOSITORY ? [LEGACY_REPOSITORY, NEW_REPOSITORY] : [LEGACY_REPOSITORY];
-    const checkWorkflows = repo === NEW_REPOSITORY ? ['wirkungsticker-discovery.yml', 'wirkungsticker.yml'] : [workflow];
+    // Only production accepts dispatches after the original repositories are
+    // retired. The worker separately verifies retained historical spending
+    // before any provider request; this dispatcher never performs paid work.
+    const checkRepositories = [NEW_REPOSITORY];
+    const checkWorkflows = ['wirkungsticker-discovery.yml', 'wirkungsticker.yml'];
     for (const checkRepo of checkRepositories) {
       for (const checkWorkflow of checkWorkflows) {
         // Filtering each active state avoids mistaking a full page of older

@@ -1,5 +1,5 @@
 const LEGACY_REPOSITORY = 'sustynats/wirkungsoekonomie.de';
-const PRIVATE_REPOSITORY = 'sustynats/wirkungsoekonomie-produktiv';
+const PRODUCTION_REPOSITORY = 'sustynats/wirkungsoekonomie-produktiv';
 const OWNER = /^\d{1,20}:\d{1,5}$/;
 
 // A missing or inaccessible run is never proof that its owner has stopped.
@@ -12,7 +12,9 @@ export async function ownerCompleted(owner, {
   if (!OWNER.test(owner || '')) return false;
   const [id] = owner.split(':');
   const repositories = [{ name: LEGACY_REPOSITORY, token: null }];
-  if (privateReadToken) repositories.push({ name: PRIVATE_REPOSITORY, token: privateReadToken });
+  // Production is public after the reviewed repository replacement. Read its
+  // exact run identity even when no private-repository credential is supplied.
+  repositories.push({ name: PRODUCTION_REPOSITORY, token: privateReadToken || null });
   for (const { name, token } of repositories) {
     try {
       const headers = { Accept: 'application/vnd.github+json' };

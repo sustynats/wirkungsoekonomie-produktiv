@@ -5,6 +5,7 @@ import { gunzipSync } from 'node:zlib';
 import path from 'node:path';
 import {isDeepStrictEqual} from 'node:util';
 import {projectMissingEvidenceCorrection} from './missing-evidence-zero.mjs';
+import {loerrachObservationCorrection} from './observation-context.mjs';
 
 const ROOT = process.cwd();
 const base = String(process.env.WOEK_LIVE_BASE_URL || 'https://wirkungsoekonomie.de').replace(/\/$/, '');
@@ -68,17 +69,23 @@ const mainContent = html => String(html || '').match(/<main(?:\s[^>]*)?>([\s\S]*
 // This path is entered only for the canonical, hash-bound historical correction.
 // It compares the whole article main/card with the exact deployment artifact;
 // an arbitrary null profile or a correction marker cannot authorize it.
-export function correctedPotentialErrors(html, expected, label, {article = false} = {}) {
+export function correctedPotentialErrors(html, expected, label, {article = false, dimension = 'planet', at = '2026-10-27T00:00:00Z', kind = 'zero'} = {}) {
   const actual = article ? mainContent(html) : String(html || '');
   const target = article ? mainContent(expected) : String(expected || '');
+  if (kind === 'withdrawn') {
+    if (!target || /data-magnitude=|data-potential-model=/.test(target)
+      || article && !target.includes('data-impact-context-correction')) return [`${label}:HISTORICAL_WITHDRAWAL_ARTIFACT_INVALID`];
+    return actual === target ? [] : [`${label}:HISTORICAL_CORRECTION_READBACK_MISMATCH`];
+  }
   const sections = String(target || '').split(/(?=class="wt-dim wt-dim--(?:human|planet|democracy)")/);
-  const planet = sections.filter(s=>s.startsWith('class="wt-dim wt-dim--planet"'));
+  const corrected = sections.filter(s=>s.startsWith(`class="wt-dim wt-dim--${dimension}"`));
   const opens = value => (String(value).match(/data-magnitude="open"/g) || []).length;
-  const planetOpens = planet.reduce((n,s)=>n+opens(s),0);
-  if (!target || !planetOpens || opens(target)!==planetOpens
-    || planet.some(s=>opens(s) && !s.includes('data-path-status="insufficient_basis"'))
+  const correctedOpens = corrected.reduce((n,s)=>n+opens(s),0);
+  const date = String(at).slice(0,10).split('-').reverse().join('.');
+  if (!DIMENSIONS.includes(dimension) || !target || !correctedOpens || opens(target)!==correctedOpens
+    || corrected.some(s=>opens(s) && !s.includes('data-path-status="insufficient_basis"'))
     || (target.match(/data-magnitude="[0-5]"/g) || []).length < 2
-    || article && (!target.includes('data-impact-zero-evidence-correction') || !target.includes('Darstellungskorrektur vom 27.10.2026'))) {
+    || article && (!target.includes('data-impact-zero-evidence-correction') || !target.includes(`Darstellungskorrektur vom ${date}`))) {
     return [`${label}:HISTORICAL_CORRECTION_ARTIFACT_INVALID`];
   }
   return actual === target ? [] : [`${label}:HISTORICAL_CORRECTION_READBACK_MISMATCH`];
@@ -87,7 +94,9 @@ export function correctedPotentialErrors(html, expected, label, {article = false
 export function readExpectedCorrection(record, manifest, {
   artifactTar = process.env.WOEK_LIVE_EXPECTED_ARTIFACT_TAR, root = ROOT,
 } = {}) {
-  if (projectMissingEvidenceCorrection(record,record.impact_assessment) === record.impact_assessment)
+  const withdrawn = loerrachObservationCorrection(record);
+  const projected = projectMissingEvidenceCorrection(record,record.impact_assessment);
+  if (!withdrawn && projected === record.impact_assessment)
     throw new Error('UNBOUND_HISTORICAL_CORRECTION');
   if (!/^[a-z0-9][a-z0-9-]*$/.test(record.slug || '')) throw new Error('CORRECTION_SLUG_INVALID');
   const read = relative => {
@@ -99,7 +108,9 @@ export function readExpectedCorrection(record, manifest, {
   };
   const relative=`/wirkungsticker/${record.slug}/`, id=manifest.lookup?.[relative]?.id;
   if (id && !/^[a-f0-9]{20}$/.test(id)) throw new Error('CORRECTION_APP_ID_INVALID');
-  return {article:read(relative.slice(1)+'index.html').toString('utf8'),
+  return {kind:withdrawn ? 'withdrawn' : 'zero',
+    dimension:projected.zero_evidence_correction?.dimension, at:withdrawn?.at || projected.zero_evidence_correction?.at,
+    article:read(relative.slice(1)+'index.html').toString('utf8'),
     item:id ? JSON.parse(gunzipSync(read(`wirkungsticker/data/app/items/${id}.json.gz`)).toString('utf8')) : null};
 }
 
@@ -151,23 +162,24 @@ export async function livePotentialCheck({
   let visible = 0, corrections = 0;
   for (const record of reviewed) {
     const relative = `/wirkungsticker/${record.slug}/`;
-    const correction = projectMissingEvidenceCorrection(record,record.impact_assessment) !== record.impact_assessment
+    const correction = loerrachObservationCorrection(record) || projectMissingEvidenceCorrection(record,record.impact_assessment) !== record.impact_assessment
       ? correctionReader(record,expectedManifest) : null;
+    const correctionOptions = correction ? {kind:correction.kind,dimension:correction.dimension,at:correction.at} : null;
     if (correction) corrections++;
     const article = await fetchText(cacheBust(`${base}${relative}`));
-    errors.push(...(correction ? correctedPotentialErrors(article,correction.article,`${record.story_id}:article`,{article:true}) : renderedPotentialErrors(article, `${record.story_id}:article`)));
+    errors.push(...(correction ? correctedPotentialErrors(article,correction.article,`${record.story_id}:article`,{...correctionOptions,article:true}) : renderedPotentialErrors(article, `${record.story_id}:article`)));
     const expectedLookup = expectedManifest.lookup?.[relative];
     if (!expectedLookup) continue; // Case-file member: article is public, card is represented by its visible case.
     visible += 1;
     const liveLookup = liveManifest.lookup?.[relative];
     if (!liveLookup?.id) { errors.push(`${record.story_id}:LIVE_LOOKUP_MISSING`); continue; }
     const item = await fetchJson(cacheBust(`${base}/wirkungsticker/data/app/items/${liveLookup.id}.json.gz`));
-    errors.push(...(correction ? correctedPotentialErrors(item?.html,correction.item?.html,`${record.story_id}:bookmark-item`) : renderedPotentialErrors(item?.html, `${record.story_id}:bookmark-item`)));
+    errors.push(...(correction ? correctedPotentialErrors(item?.html,correction.item?.html,`${record.story_id}:bookmark-item`,correctionOptions) : renderedPotentialErrors(item?.html, `${record.story_id}:bookmark-item`)));
     if (correction && !isDeepStrictEqual(item,correction.item)) errors.push(`${record.story_id}:BOOKMARK_CORRECTION_ITEM_MISMATCH`);
     const feed = feedByUrl.get(relative);
     if (!feed) errors.push(`${record.story_id}:NEWS_FEED_CARD_MISSING`);
     else {
-      errors.push(...(correction ? correctedPotentialErrors(feed.html,correction.item?.html,`${record.story_id}:news-feed`) : renderedPotentialErrors(feed.html, `${record.story_id}:news-feed`)));
+      errors.push(...(correction ? correctedPotentialErrors(feed.html,correction.item?.html,`${record.story_id}:news-feed`,correctionOptions) : renderedPotentialErrors(feed.html, `${record.story_id}:news-feed`)));
       if (correction && !isDeepStrictEqual(feed,correction.item)) errors.push(`${record.story_id}:FEED_CORRECTION_ITEM_MISMATCH`);
     }
   }

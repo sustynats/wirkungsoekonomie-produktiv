@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 const atomic=(file,value)=>{fs.mkdirSync(path.dirname(file),{recursive:true});const tmp=file+'.tmp-'+process.pid;fs.writeFileSync(tmp,JSON.stringify(value,null,2)+'\n',{mode:0o600});fs.renameSync(tmp,file);};
-const repo=process.env.GITHUB_REPOSITORY||'sustynats/wirkungsoekonomie.de';
+const repo=process.env.GITHUB_REPOSITORY||'sustynats/wirkungsoekonomie-produktiv';
 const api=route=>JSON.parse(execFileSync('gh',['api',`repos/${repo}/${route}`],{encoding:'utf8'}));
 function active(){
  for(const d of api('deployments?environment=github-pages&per_page=100')){
