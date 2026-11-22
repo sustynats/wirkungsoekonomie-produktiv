@@ -1,0 +1,792 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { advanceState, monitorRepository, berlinParts, evaluateChecks, summarizeNews, dailyReport, probe, sendDiscord, publicationFlow, lageCheck, selbsttestCheck, readEditorialMonitorStatus, writeEditorialMonitorStatus } from '../../scripts/ops/discord-monitor.mjs';
+
+const now = '2026-09-04T06:00:00Z';
+const fixture = () => ({ report: { status: 'ok', operational_status: 'ok', completed_at: now, source_failures: 0, monthly_budget_usd: 18.9, budget_policy: { status: 'ok', fx: { rate_date: '2026-09-03', rate_usd_per_eur: 1.16 } }, source_health: [], queue: { status: 'clear', total: 0, capacity: 0, technical: 0, editorial: 0 }, source_funnel: [] }, usage: { runs: [] }, stories: [], liveFeed: { items: [] }, probes: [] });
+const healthy = [{ id: 'main', name: 'Hauptseite', ok: true }];
+const failed = [{ id: 'main', name: 'Hauptseite', ok: false, reason: 'HTTP 503' }];
+
+test('monitor permits the two migration repositories and links alerts to the active one', () => {
+  const repository = 'sustynats/wirkungsoekonomie-produktiv';
+  assert.equal(monitorRepository(repository), repository);
+  assert.equal(monitorRepository(), 'sustynats/wirkungsoekonomie-produktiv');
+  assert.throws(() => monitorRepository('other/repository'), /MONITOR_REPOSITORY_NOT_ALLOWED/);
+  const summary = { ...fixture().report, queue: {} };
+  const previous = {schema: 1, incidents: {}, outbox: [], dailyDate: berlinParts(now).date};
+  const state = advanceState(previous, [{...failed[0], immediate: true}], summary, now, {repository});
+  assert.match(state.outbox[0].content, /sustynats\/wirkungsoekonomie-produktiv\/actions\/workflows/);
+});
+
+test('editorial monitor owns a short lane for journal reads and a separate slot for status delivery', async () => {
+  const calls = [], env = { GITHUB_RUN_ID: '123', GITHUB_RUN_ATTEMPT: '1' };
+  let locked = false;
+  const session = { store: {
+    acquire: async (...args) => { assert.equal(locked, false); locked = true; calls.push(['acquire', ...args]); },
+    observation: async key => { assert.equal(locked, true); return key === 'editorial-parked'
+      ? { parked: [{ code: 'TEST_HOLD' }], awaiting: 2, awaiting_since: now } : { orders: [{ job_id: 'test' }] }; },
+    observe: async (key, value) => { assert.equal(locked, true); calls.push(['observe', key, value]); },
+    release: async success => { assert.equal(locked, true); locked = false; calls.push(['release', success]); },
+  } };
+  const result = await readEditorialMonitorStatus({ session, env, now });
+  assert.equal(result.available, true); assert.equal(result.awaitingReceipt, 2);
+  assert.equal(result.exhaustedOrders.length, 1); assert.equal(locked, false);
+  await writeEditorialMonitorStatus({ session, env, now, status: { checked_at: now } });
+  assert.equal(locked, false);
+  assert.deepEqual(calls.filter(c => c[0] === 'acquire').map(c => c[3].manualRunId), ['123:17', '123:18']);
+  assert.equal(calls.find(c => c[0] === 'observe')[1], 'ops-status');
+});
+
+test('blocked or unreadable editorial state is unknown, never an empty healthy queue', async () => {
+  const env = { GITHUB_RUN_ID: '123' };
+  const locked = await readEditorialMonitorStatus({ env, now, session: { store: {
+    acquire: async () => { throw Error('BRIDGE_RUN_LOCKED'); },
+    observation: () => assert.fail('must not read without ownership'),
+    release: () => assert.fail('must not release another writer'),
+  } } });
+  assert.deepEqual(locked, { available: false, error: 'BRIDGE_RUN_LOCKED' });
+  const { checks } = evaluateChecks({ ...fixture(), processing_mode: 'api', editorialStatus: locked }, now);
+  assert.equal(checks.find(c => c.id === 'editorial-status').ok, false);
+  assert.ok(!checks.some(c => ['parked-editions', 'freigabe-quittung', 'liegengebliebene-auftraege'].includes(c.id)));
+  let released;
+  const unreadable = await readEditorialMonitorStatus({ env, now, session: { store: {
+    acquire: async () => {}, observation: async () => { throw Error('BROKEN_JOURNAL'); },
+    release: async success => { released = success; },
+  } } });
+  assert.equal(unreadable.available, false); assert.equal(released, false);
+});
+
+test('monitor sparse checkout includes the complete local module dependency graph', () => {
+  const root = fileURLToPath(new URL('../../', import.meta.url));
+  const workflowPath = '.github/workflows/ops-discord-monitor.yml';
+  const workflow = fs.readFileSync(path.join(root, workflowPath), 'utf8');
+  const checkout = workflow.split('sparse-checkout: |')[1].split('sparse-checkout-cone-mode:')[0]
+    .trim().split('\n').map(line => line.trim());
+  assert.ok(checkout.includes(workflowPath));
+  const visited = new Set();
+  function visit(file) {
+    if (visited.has(file)) return;
+    visited.add(file);
+    assert.ok(checkout.includes(file), `Monitor checkout is missing ${file}`);
+    const code = fs.readFileSync(path.join(root, file), 'utf8');
+    for (const match of code.matchAll(/(?:from\s*|import\s*\(\s*|import\s*)['"](\.[^'"]+\.(?:mjs|cjs|js))['"]/g)) {
+      visit(path.posix.normalize(path.posix.join(path.posix.dirname(file), match[1])));
+    }
+    // Nicht nur Module: am 17.09.2026 las ein Test die Ticker-Workflow-Datei
+    // per new URL(...), sie fehlte im Checkout, und der Monitor schwieg 30 Stunden.
+    for (const match of code.matchAll(/new URL\(\s*['"](\.\.?\/[^'"]+)['"]\s*,\s*import\.meta\.url\s*\)/g)) {
+      const target = path.posix.normalize(path.posix.join(path.posix.dirname(file), match[1]));
+      if (target.endsWith('/') || target === '.' || /\.(?:mjs|cjs|js)$/.test(target)) { if (/\.(?:mjs|cjs|js)$/.test(target)) visit(target); continue; }
+      assert.ok(checkout.includes(target), `Monitor checkout is missing ${target} (read by ${file})`);
+    }
+  }
+  visit('scripts/ops/discord-monitor.mjs');
+  visit('tests/ops/discord-monitor.test.mjs');
+  visit('tests/ops/news-recovery.test.mjs');
+  assert.ok(visited.has('assets/js/ticker-order.js'), 'auch gemeinsame Browser-/Node-JS-Module gehoeren zum Laufzeitbaum');
+  // Die Daten, die der Monitor zur Laufzeit liest (read('...')): am 18.09.2026
+  // fehlte data/news/lagen.json, und die Lage-Pruefung meldete "keine Lage".
+  const monitor = fs.readFileSync(path.join(root, 'scripts/ops/discord-monitor.mjs'), 'utf8');
+  const gelesen = [...monitor.matchAll(/\bread\(\s*['"]([^'"]+)['"]\s*\)/g)].map((match) => match[1]);
+  assert.ok(gelesen.includes('data/news/lagen.json'), 'das Muster erkennt die Laufzeitlesungen');
+  for (const file of gelesen) assert.ok(checkout.includes(file), `Monitor checkout is missing ${file} (read at runtime)`);
+});
+
+test('ein gescheiterter Selbsttest wird gemeldet, statt den Monitor stumm zu schalten', () => {
+  assert.equal(selbsttestCheck('failure').ok, false);
+  assert.equal(selbsttestCheck('failure').immediate, true);
+  assert.equal(selbsttestCheck('success').ok, true);
+  assert.equal(selbsttestCheck(undefined).ok, true, 'lokal ohne Workflow kein Fehlalarm');
+  const workflow = fs.readFileSync(new URL('../../.github/workflows/ops-discord-monitor.yml', import.meta.url), 'utf8');
+  const selbsttest = workflow.slice(workflow.indexOf('id: selbsttest'));
+  assert.match(selbsttest.slice(0, 200), /continue-on-error: true/, 'der Selbsttest darf die Meldungen nicht abbrechen');
+  assert.match(workflow, /WOEK_MONITOR_SELFTEST: \$\{\{ steps\.selbsttest\.outcome \}\}/);
+  assert.match(workflow, /if: steps\.selbsttest\.outcome == 'failure'[\s\S]*exit 1/, 'der Lauf bleibt trotzdem rot');
+});
+
+test('Berlin daily boundary honors winter, summer and DST transitions', () => {
+  assert.equal(berlinParts(now).hour, 8);
+  assert.equal(berlinParts('2026-01-04T07:00:00Z').hour, 8);
+  assert.equal(berlinParts('2026-03-29T06:00:00Z').hour, 8);
+  assert.equal(berlinParts('2026-10-25T07:00:00Z').hour, 8);
+});
+test('daily Batch costs use admission after a free refusal and preserve the old journal date', () => {
+  const d = fixture();
+  d.usage.runs = [{ run_id: 'media-backfill-batch-later', started_at: '2026-09-03T20:00:00Z',
+    cost_started_at: '2026-09-03T23:30:00Z', cost_started_at_basis: 'provider_created_at',
+    ai: { requests: 1, processing_mode: 'batch', estimated_cost_usd: .006, token_source: 'batch_provider_usage' } },
+  { run_id: 'news-yesterday', started_at: '2026-09-03T20:00:00Z', ai: { requests: 1, estimated_cost_usd: .03 } }];
+  const before = structuredClone(d);
+  const summary = summarizeNews(d, now);
+  assert.equal(summary.usdToday, .006);
+  assert.equal(summary.usdYesterday, .03);
+  assert.equal(summary.usdMonth, .036);
+  assert.deepEqual(d, before);
+});
+test('daily delivery queues once, not before eight, and retries via durable outbox', () => {
+  const summary = summarizeNews(fixture(), now);
+  let s = advanceState(null, healthy, summary, '2026-09-04T05:59:00Z');
+  assert.equal(s.outbox.length, 0);
+  s = advanceState(s, healthy, summary, now);
+  assert.equal(s.outbox.length, 1);
+  assert.deepEqual(advanceState(s, healthy, summary, '2026-09-04T07:00:00Z'), s);
+  s.outbox.shift();
+  assert.equal(advanceState(s, healthy, summary, '2026-09-04T08:00:00Z').outbox.length, 0);
+});
+test('transient outage stays quiet; confirmed outage and recovery each notify once', () => {
+  const summary = summarizeNews(fixture(), now);
+  let s = advanceState(null, failed, summary, '2026-09-04T04:00:00Z');
+  assert.equal(s.outbox.length, 0);
+  assert.equal(advanceState(s, healthy, summary, '2026-09-04T04:03:00Z').outbox.length, 0);
+  s = advanceState(s, failed, summary, '2026-09-04T04:15:00Z');
+  assert.equal(s.outbox.length, 1);
+  assert.equal(advanceState(s, failed, summary, '2026-09-04T04:30:00Z').outbox.length, 1);
+  s.outbox = [];
+  s = advanceState(s, healthy, summary, '2026-09-04T04:45:00Z');
+  assert.equal(s.outbox.length, 1);
+  assert.match(s.outbox[0].content, /behoben/);
+  assert.equal(advanceState(s, healthy, summary, '2026-09-04T05:00:00Z').outbox.length, 1);
+});
+test('no new articles is not a pipeline failure', () => {
+  assert.ok(evaluateChecks(fixture(), now).checks.every(c => c.ok));
+});
+test('bridge pending ignores deliberately stopped API and old image failures, retires alarms without recovery spam',()=>{
+  const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';d.discovery_enabled=false;
+  d.report.ai_error='AI_PROVIDER_ERROR:503';d.report.budget_blocked=true;d.report.completed_at='2026-09-03T00:00:00Z';
+  d.stories=[{published:true,published_at:now,last_updated:now,title_image:{fallback_reason:'HIGGSFIELD_PROVIDER_UNAVAILABLE'}}];
+  d.bridge={reachable:true,poll_at:now,status:'PROCESSING_PENDING',oldest_open_minutes:20,errors:0};
+  const {checks,summary}=evaluateChecks(d,now);
+  assert.ok(checks.filter(c=>c.id.startsWith('bridge-')).every(c=>c.ok));
+  const previous={schema:1,incidents:{provider:{active:true,firstSeen:now},images:{active:true,firstSeen:now},run:{active:true,firstSeen:now}},outbox:[],dailyDate:'2026-09-04'};
+  const next=advanceState(previous,checks,summary,now);assert.deepEqual(next.outbox,[]);assert.deepEqual(next.incidents,{});
+  assert.match(dailyReport(summary,checks),/Keine Text-KI-API/);
+});
+test('bridge incidents still detect real unavailability, stale work and cost violations, once per incident',()=>{
+  const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';d.report.processing_mode='dropbox_chatgpt_bridge';
+  d.bridge={reachable:true,poll_at:now,discovery_last_success:now,status:'PROCESSING_PENDING',oldest_open_minutes:121,oldest_claim_minutes:121,output_wait_minutes:11,errors:1};
+  const {checks,summary}=evaluateChecks(d,now);
+  for(const id of ['bridge-queue','bridge-import','bridge-errors'])assert.equal(checks.find(c=>c.id===id).ok,false);
+  let state=advanceState({schema:1,incidents:{},outbox:[],dailyDate:'2026-09-04'},checks,summary,now);
+  state=advanceState(state,checks,summary,'2026-09-04T06:15:00Z');const count=state.outbox.length;
+  assert.equal(count,3);assert.equal(advanceState(state,checks,summary,'2026-09-04T06:30:00Z').outbox.length,count);
+  d.report.ai_calls=1;assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-cost').ok,false);
+  d.bridge={reachable:false};const missing=evaluateChecks(d,now).checks;
+  assert.equal(missing.find(c=>c.id==='bridge-access').ok,false);
+  assert.equal(missing.find(c=>c.id==='bridge-discovery').ok,true,'no cascade of derivative alarms');
+});
+test('fresh coverage gaps are distinct editorial alerts, not provider outages or stale alarms',()=>{
+  const d=fixture();d.report.event_coverage={checked_at:now,counts:{clustered_major:4,published:1,potential_missed:3},alerts:[{code:'CATEGORY_COVERAGE_GAP',severity:'warning',category:'economy'}]};
+  const result=evaluateChecks(d,now);
+  assert.equal(result.checks.find(check=>check.id==='editorial-coverage').ok,false);
+  assert.equal(result.checks.find(check=>check.id==='provider').ok,true);
+  assert.match(dailyReport(result.summary,result.checks),/Ereignischeck/);
+  const first=advanceState(null,result.checks,result.summary,now);
+  const again=advanceState(first,result.checks,result.summary,'2026-09-04T06:15:00Z');
+  assert.ok(again.outbox.some(row=>row.content.includes('WÖk-Abdeckungshinweis')));
+  d.report.event_coverage.checked_at='2026-09-03T12:00:00Z';
+  assert.equal(evaluateChecks(d,now).checks.find(check=>check.id==='editorial-coverage').ok,true);
+});
+
+test('reachable Dropbox with 62 jobs and no writable automation raises processor and capacity alerts',()=>{
+  const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';
+  d.bridge={reachable:true,poll_at:now,discovery_last_success:now,open_count:62,oldest_claim_minutes:0,errors:0};
+  let checks=evaluateChecks(d,now).checks;
+  assert.equal(checks.find(c=>c.id==='bridge-access').ok,true);
+  assert.equal(checks.find(c=>c.id==='bridge-processor').ok,false);
+  assert.equal(checks.find(c=>c.id==='bridge-queue-size').ok,false);
+  assert.match(checks.find(c=>c.id==='bridge-queue-size').reason,/QUEUE_CRITICAL/);
+  d.bridge.processor_health={processor_available:true,checked_at:now,alerts:[]};
+  assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-processor').ok,true);
+  d.bridge.processor_health.checked_at='2026-09-04T04:00:00Z';
+  assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-processor').ok,false);
+});
+
+test('one fresh worker cannot mask missing shards or stalled news publication',()=>{
+ const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';
+ d.bridge={reachable:true,poll_at:now,discovery_last_success:now,open_count:242,
+   metrics:{last_publication_at:'2026-09-03T06:00:00Z'},processor_health:{processor_available:true,all_shards_available:false,checked_at:now,current_news_open:150,completed_jobs_last_hour:15,alerts:[]}};
+ let checks=evaluateChecks(d,now).checks;
+ assert.equal(checks.find(c=>c.id==='bridge-processor').ok,true);
+ assert.equal(checks.find(c=>c.id==='bridge-shards').ok,false);
+ assert.equal(checks.find(c=>c.id==='bridge-publication-flow').ok,false,'15 completed technical/review jobs are not 15 published news articles');
+ d.bridge.metrics.last_publication_at=now;
+ checks=evaluateChecks(d,now).checks;
+ assert.equal(checks.find(c=>c.id==='bridge-publication-flow').ok,false,'an import ACK is not proof of publication');
+ d.publicDelivery={verified:true,observed_since:'2026-09-04T03:00:00Z',last_new_at:now,last_current_new_at:now};
+ checks=evaluateChecks(d,now).checks;
+ assert.equal(checks.find(c=>c.id==='bridge-publication-flow').ok,true);
+ assert.equal(checks.find(c=>c.id==='bridge-shards').ok,false);
+});
+
+test('a new baseline or late historical delivery cannot clear a stale current-news incident', () => {
+ const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';
+ d.bridge={reachable:true,processor_health:{current_news_open:5}};
+ d.publicDelivery={verified:true,observed_since:now,last_new_at:null,last_current_new_at:null,latest_source_at:'2026-09-03T06:00:00Z'};
+ assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-publication-flow').ok,false);
+ d.publicDelivery.last_new_at=now;
+ assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-publication-flow').ok,false);
+ d.publicDelivery.last_current_new_at=now;
+ assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-publication-flow').ok,true);
+});
+test('proven API worker covers news but never hides personal work or stalled publication',()=>{
+ const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';
+ const api={actor:'oracle_api',enabled:true,news_only:true,at:now,status:'RUN_COMPLETED',
+   preflight:{status:'PASS',write_ok:true,reads:Object.fromEntries(['98_CONFIG','00_INBOX','10_CLAIMED','20_OUTPUT_READY','30_ACK'].map(k=>[k,true]))}};
+ d.bridge={reachable:true,poll_at:now,open_count:8,open_personal_count:0,
+   processor_health:{current_news_open:8,all_shards_available:false},api_processor_health:api};
+ let result=evaluateChecks(d,now),check=id=>result.checks.find(c=>c.id===id);
+ assert.equal(check('bridge-processor').ok,true);
+ assert.equal(check('bridge-shards').ok,true);
+ assert.equal(check('bridge-publication-flow').ok,false);
+ assert.match(dailyReport(result.summary,result.checks),/Oracle-API-Redaktionsworker/);
+ assert.doesNotMatch(dailyReport(result.summary,result.checks),/Keine Text-KI-API/);
+ d.bridge.open_personal_count=2;result=evaluateChecks(d,now);
+ assert.equal(check('bridge-processor').ok,false);
+ assert.equal(check('bridge-shards').ok,false);
+ d.bridge.open_personal_count=0;api.status='ATTENTION';result=evaluateChecks(d,now);
+ assert.equal(check('bridge-processor').ok,true,'available process and incomplete result are distinct');
+ assert.equal(check('bridge-api-results').ok,false);
+ api.at='2026-09-04T04:00:00Z';result=evaluateChecks(d,now);
+ assert.equal(check('bridge-processor').ok,false);
+ api.at=now;api.preflight.write_ok=false;result=evaluateChecks(d,now);
+ assert.equal(check('bridge-processor').ok,false);
+});
+
+test('old news alone does not alert without waiting current news; missing publication proof does',()=>{
+ const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';
+ d.bridge={reachable:true,poll_at:now,discovery_last_success:now,open_count:12,processor_health:{processor_available:true,all_shards_available:true,checked_at:now,current_news_open:0}};
+ assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-publication-flow').ok,true);
+ d.bridge.processor_health.current_news_open=5;
+ assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-publication-flow').ok,false);
+ d.bridge.reachable=false;
+ assert.equal(evaluateChecks(d,now).checks.find(c=>c.id==='bridge-publication-flow').ok,true,'access failure has its own alert');
+});
+test('green runs without queue progress trigger a distinct flow warning, not a provider failure', () => {
+  const data = fixture();
+  data.report.queue = { before: 27, after: 28, capacity: 26, oldest_minutes: 900, status: 'draining' };
+  data.usage.runs = [0, 60, 125].map((minutes, i) => ({ run_id: `r${i}`,
+    started_at: new Date(Date.parse(now) - minutes * 60000 - 1000).toISOString(), completed_at: new Date(Date.parse(now) - minutes * 60000).toISOString(),
+    queue: { before: 26, after: 27 }, counts: { published_stories: 0, updated_stories: 0 } }));
+  const checks = evaluateChecks(data, now).checks;
+  assert.equal(checks.find(c => c.id === 'publication-flow').ok, false);
+  assert.equal(checks.find(c => c.id === 'provider').ok, true);
+  assert.equal(checks.find(c => c.id === 'run').ok, true);
+  for (const counts of [{ queue_completed: 1 }, { published_stories: 1 }, { updated_stories: 1 }]) {
+    const progress = structuredClone(data);
+    progress.usage.runs[0].counts = counts;
+    assert.equal(publicationFlow(progress.usage, progress.report, now).stalled, false);
+  }
+  const shrinking = structuredClone(data);
+  shrinking.usage.runs[0].queue = { before: 28, after: 27 };
+  assert.equal(publicationFlow(shrinking.usage, shrinking.report, now).stalled, false);
+  const quiet = structuredClone(data);
+  quiet.report.queue.capacity = 0;
+  assert.equal(publicationFlow(quiet.usage, quiet.report, now).stalled, false);
+  assert.equal(publicationFlow({ runs: data.usage.runs.slice(0, 2) }, data.report, now).stalled, false);
+});
+
+test('background Batch, synchronous backfills and deep dives cannot mask a stalled immediate news queue', () => {
+  const rows = [0, 60, 125].map((minutes, i) => ({ run_id: `news-run-${i}`,
+    started_at: new Date(Date.parse(now) - minutes * 60000 - 1000).toISOString(),
+    completed_at: new Date(Date.parse(now) - minutes * 60000).toISOString(), counts: {} }));
+  const report = { queue: { capacity: 20, oldest_minutes: 900 } };
+  for (const [run_id, ai] of [['media-backfill-batch-paid', { processing_mode: 'batch' }],
+    ['media-backfill-sync-paid', {}], ['editorial-paid', {}]]) {
+    const background = { run_id, ai, started_at: now, completed_at: now, counts: { updated_stories: 1 } };
+    const result = publicationFlow({ runs: [...rows, background] }, report, now);
+    assert.equal(result.stalled, true, run_id);
+    assert.equal(result.observed_runs, 3);
+    assert.equal(result.publication_actions, 0);
+  }
+});
+
+test('daily report separates Batch reserves and uses the current reported budget, never a fixed 25 EUR', () => {
+  const at = '2026-09-07T16:00:00Z';
+  const d = fixture();
+  d.report.completed_at = at;
+  d.report.budget_policy.authorized_eur = 50;
+  d.report.budget_policy.fx = { rate_date: '2026-09-04', rate_usd_per_eur: 1.19 };
+  d.report.cost_monitoring = { started_at: at };
+  d.stories = [{ published: true, story_id: 'one', slug: 'one', published_at: at, last_updated: at, sources: [] }];
+  d.usage.runs = [
+    { run_id: 'news-run-paid', started_at: at, counts: { published_stories: 1 }, ai: { requests: 1, estimated_cost_usd: .03, token_source: 'provider_reported_usage' } },
+    { run_id: 'editorial-paid', started_at: at, counts: {}, ai: { requests: 1, estimated_cost_usd: .5 } },
+    { run_id: 'media-backfill-batch-open', started_at: at, counts: {}, ai: { requests: 1, processing_mode: 'batch', estimated_cost_usd: .125, token_source: 'batch_reserved_pending' } },
+    { run_id: 'media-backfill-batch-applied', started_at: at, counts: { updated_stories: 1 }, ai: { requests: 0, processing_mode: 'batch', estimated_cost_usd: 0, token_source: 'batch_provider_usage' }, publication_applied_at: at },
+  ];
+  let summary = summarizeNews(d, at);
+  assert.equal(summary.usdMonth, .655, 'reserves and deep dives remain in the budget total');
+  assert.equal(summary.usdPerNewsAction, .03, 'background costs do not change the immediate-news unit cost');
+  assert.equal(summary.authorizedBudgetEur, 50);
+  assert.equal(summary.newsActionsToday, 1);
+  assert.equal(summary.dailyPipeline.publicationActions, 1, 'background updates have their own funnel');
+  let text = dailyReport(summary, healthy);
+  assert.match(text, /Limit €50\.00/);
+  assert.match(text, /Batch.*separat/);
+  assert.match(text, /\$0\.125.*reserviert/);
+  assert.doesNotMatch(text, /Limit €25/);
+  assert.equal(summarizeNews(d, '2026-10-01T01:00:00Z').authorizedBudgetEur, null,
+    'a stale September report cannot authorize the October exception');
+  d.report.completed_at = '2026-10-01T01:00:00Z';
+  d.report.budget_policy.authorized_eur = 25;
+  d.report.budget_policy.fx.rate_date = '2026-09-30';
+  assert.equal(summarizeNews(d, d.report.completed_at).authorizedBudgetEur, 25);
+  delete d.report.budget_policy.authorized_eur;
+  assert.equal(summarizeNews(d, d.report.completed_at).authorizedBudgetEur, null);
+  d.report.budget_policy.authorized_eur = 50;
+  d.report.completed_at = '2026-10-02T01:00:00Z';
+  assert.equal(summarizeNews(d, '2026-10-01T01:00:00Z').authorizedBudgetEur, null, 'future reports are not evidence of authorization');
+});
+test('the existing 95 percent budget reserve is observable as a budget stop', () => {
+  const data = fixture(); data.report.budget_stage = 3;
+  assert.equal(evaluateChecks(data, now).checks.find(c => c.id === 'budget').ok, false);
+  data.report.budget_stage = 1;
+  assert.equal(evaluateChecks(data, now).checks.find(c => c.id === 'budget').ok, true);
+});
+
+test('budget stops are explicit and cannot hide overdue technical holds', () => {
+  const data = fixture();
+  data.report.budget_blocked = true;
+  data.report.queue = {status:'budget_blocked', after:4, capacity:3, technical:1, oldest_technical_minutes:120};
+  let checks = evaluateChecks(data, now).checks;
+  assert.equal(checks.find(c=>c.id==='queue').ok, false);
+  assert.equal(checks.find(c=>c.id==='budget').ok, false);
+  assert.equal(checks.find(c=>c.id==='provider').ok, true);
+  data.report.queue.technical = 0;
+  data.report.queue.status = 'draining'; // older stored report
+  assert.equal(summarizeNews(data, now).queue.status, 'budget_blocked');
+  assert.equal(data.report.queue.status, 'draining', 'historical report is not mutated');
+  checks = evaluateChecks(data, now).checks;
+  assert.match(checks.find(c=>c.id==='queue').reason, /wartet auf Budgetfreigabe/);
+  assert.equal(checks.find(c=>c.id==='queue').ok, true, 'the separate budget check carries the budget alert');
+  data.report.budget_blocked = false;
+  assert.equal(summarizeNews(data, now).queue.status, 'draining');
+});
+test('worker queue after-count is not misreported as zero in Discord',()=>{
+  const data=fixture();
+  data.report.queue={status:'draining',before:21,after:17,capacity:2,technical:15,editorial:0};
+  const summary=summarizeNews(data,now);
+  assert.equal(summary.queue.total,17);
+  assert.match(dailyReport(summary,healthy),/Queue: 17 offen/);
+});
+test('one transient source throttle stays observable without a false outage alarm', () => {
+  const d = fixture();
+  d.report = { ...d.report, status: 'degraded', source_failures: 1, source_successes: 32, sources_scheduled: 33, source_errors: [{ source_id: 'berlin', error: 'FEED_HTTP_429' }] };
+  const checks = evaluateChecks(d, now).checks;
+  assert.equal(checks.find(c => c.id === 'run').ok, true);
+  assert.equal(checks.find(c => c.id === 'sources').ok, true);
+  d.report = { ...d.report, source_failures: 4, source_successes: 12, sources_scheduled: 16 };
+  const degraded = evaluateChecks(d, now).checks;
+  assert.equal(degraded.find(c => c.id === 'run').ok, false);
+  assert.equal(degraded.find(c => c.id === 'sources').ok, false);
+});
+
+test('a lone throttled retry with fresh portfolio evidence does not hide the separate budget alarm', () => {
+  const d = fixture();
+  Object.assign(d.report, { started_at: now, sources_scheduled: 1, sources_not_due: 8,
+    source_successes: 0, source_failures: 1, budget_blocked: true,
+    source_errors: [{source_id:'retry',error:'ROBOTS_UNAVAILABLE_429'}],
+    source_health: [{source_id:'retry',status:'governance_hold',last_error:'ROBOTS_UNAVAILABLE_429'},
+      ...['a','b','c'].map(id=>({source_id:id,publisher_id:id,status:'active',last_success:'2026-09-04T05:50:00Z',interval_minutes:15,last_error:null}))] });
+  const checks = evaluateChecks(d, now).checks;
+  assert.equal(checks.find(c=>c.id==='run').ok, true);
+  assert.equal(checks.find(c=>c.id==='sources').ok, true);
+  assert.match(checks.find(c=>c.id==='sources').reason, /1 fehlgeschlagene/);
+  assert.equal(checks.find(c=>c.id==='budget').ok, false);
+  assert.equal(d.report.source_health[0].status, 'governance_hold');
+});
+test('gemessen wird das nutzbare Titelbild, nicht der Zustand des Bildanbieters', () => {
+  // Natalies Entscheidung: kein KI-Titelfoto, sondern Wirkungskarte. Ein nicht
+  // eingerichteter Anbieter ist damit der gewollte Zustand, kein Fehler.
+  const card = (extra = {}) => ({ published: true, title_image: { mode: 'impact_card',
+    og: { url: 'https://example.org/og.png' }, square: { url: 'https://example.org/square.png' }, ...extra } });
+  const d = fixture();
+  d.stories = [card({ fallback_reason: 'IMAGE_CONTAINS_TEXT' }), card({ fallback_reason: 'HIGGSFIELD_NOT_CONFIGURED' }), card({ refresh_failure: 'HIGGSFIELD_RETRY_EXHAUSTED' })];
+  const fine = evaluateChecks(d, now).checks.find((c) => c.id === 'images');
+  assert.equal(fine.ok, true, fine.reason);
+  assert.match(fine.reason, /0 veröffentlichte Meldung\(en\) ohne nutzbares Titelbild/);
+  assert.match(fine.reason, /2 mit Kartenfallback/);
+  // Fehlt der Leserin das Bild, ist es ein Fehler - unabhängig vom Grund.
+  d.stories.push({ published: true, title_image: { mode: 'impact_card', og: { url: 'https://example.org/og.png' } } });
+  d.stories.push({ published: true });
+  const broken = evaluateChecks(d, now).checks.find((c) => c.id === 'images');
+  assert.equal(broken.ok, false);
+  assert.match(broken.reason, /2 veröffentlichte Meldung\(en\) ohne nutzbares Titelbild/);
+  // Nicht gelistete oder unveröffentlichte Meldungen zählen nicht.
+  d.stories.push({ published: true, listed: false }, { published: false });
+  assert.match(evaluateChecks(d, now).checks.find((c) => c.id === 'images').reason, /2 veröffentlichte Meldung\(en\)/);
+});
+test('stale or missing report, provider failure, and missing feed are detected', () => {
+  const d = fixture(); d.report.completed_at = '2026-09-04T04:00:00Z'; d.report.ai_error = 'HTTP503'; d.liveFeed = null;
+  const c = evaluateChecks(d, now).checks;
+  for (const id of ['run', 'provider', 'publication']) assert.equal(c.find(x => x.id === id).ok, false);
+});
+test('publication lag has grace period and compares versions rather than unchanged article count', () => {
+  const d = fixture();
+  d.stories = [{ published: true, slug: 'test', published_at: '2026-09-03T10:00:00Z', last_updated: '2026-09-04T04:00:00Z' }];
+  assert.equal(summarizeNews(d, now).pendingPublication, 1);
+  d.liveFeed.items = [{ url: 'https://wirkungsoekonomie.de/wirkungsticker/test/', date_modified: '2026-09-04T04:00:00Z' }];
+  assert.equal(summarizeNews(d, now).pendingPublication, 0);
+  d.stories[0].last_updated = '2026-09-04T05:50:00Z';
+  assert.equal(summarizeNews(d, now).pendingPublication, 0);
+});
+test('a delivered source date is not compared with a later import or MPD correction', () => {
+  const d = fixture();
+  d.stories = [{ published: true, slug: 'test', source_published_at: '2026-09-03T10:00:00Z',
+    published_at: '2026-09-03T20:00:00Z', last_updated: '2026-09-04T04:00:00Z' }];
+  d.liveFeed.items = [{ url: 'https://wirkungsoekonomie.de/wirkungsticker/test/', date_modified: '2026-09-03T10:00:00Z' }];
+  assert.equal(summarizeNews(d, now).pendingPublication, 0);
+  d.stories[0].news_update_at = '2026-09-04T04:00:00Z';
+  assert.equal(summarizeNews(d, now).pendingPublication, 1, 'a documented new event still must reach the feed');
+});
+test('case timeline members are not mistaken for missing live-feed publications', () => {
+  const d = fixture();
+  d.stories = [
+    ['eins', 'Sabotage an Umspannwerk Jänschwalde: Polizei ermittelt', '2026-09-03T10:00:00Z'],
+    ['zwei', 'Sabotage an Umspannwerk Jänschwalde: Bekennerschreiben gefunden', '2026-09-03T11:00:00Z'],
+    ['drei', 'Sabotage an Umspannwerk Jänschwalde: Verdächtiger gesucht', '2026-09-03T12:00:00Z'],
+  ].map(([story_id, title, last_updated]) => ({
+    story_id, slug: story_id, title, last_updated, published_at: last_updated,
+    published: true, listed: true, topic: ['Energie'], analysis: { summary: title }, sources: [],
+  }));
+  d.liveFeed.items = [{
+    url: 'https://wirkungsoekonomie.de/wirkungsticker/drei/',
+    date_modified: '2026-09-03T12:00:00Z',
+  }];
+  const summary = summarizeNews(d, now);
+  assert.equal(summary.underlyingActive, 3);
+  assert.equal(summary.caseCount, 1);
+  assert.equal(summary.active, 1);
+  assert.equal(summary.pendingPublication, 0);
+  d.liveFeed.items = [];
+  assert.equal(summarizeNews(d, now).pendingPublication, 1);
+});
+test('AI alerts distinguish local input failures from HTTP responses and identify the report time', () => {
+  const d = fixture(); d.report.ai_error = 'AI_INPUT_TOO_LARGE';
+  let c = evaluateChecks(d, now).checks.find(c => c.id === 'provider');
+  assert.equal(c.ok, false);
+  assert.match(c.reason, /lokale KI-Eingabelimit/);
+  assert.match(c.reason, /keine KI-Anfrage/);
+  assert.match(c.reason, /2026-09-04T06:00:00\.000Z/);
+  assert.doesNotMatch(c.reason, /KI-Anbieterfehler/);
+  d.report.ai_error = 'AI_PROVIDER_ERROR:503';
+  c = evaluateChecks(d, now).checks.find(c => c.id === 'provider');
+  assert.match(c.reason, /HTTP 503/);
+  assert.doesNotMatch(c.reason, /lokale KI-Eingabelimit/);
+  d.report.ai_error = 'untrusted error @everyone private-token';
+  c = evaluateChecks(d, now).checks.find(c => c.id === 'provider');
+  assert.match(c.reason, /nicht nachgewiesen/);
+  assert.doesNotMatch(c.reason, /@everyone|private-token/);
+});
+test('cost report deduplicates runs, counts missing usage, and does not invent analytics', () => {
+  const d = fixture(); const row = { run_id: 'one', started_at: '2026-09-03T23:30:00Z', counts: { ai_stories: 1 }, ai: { estimated_cost_usd: 0.2 } };
+  d.usage.runs = [row, row, { run_id: 'two', started_at: now, counts: { ai_stories: 1 }, ai: null }];
+  const s = summarizeNews(d, now);
+  assert.equal(s.usdMonth, 0.2); assert.equal(s.usdToday, 0.2); assert.equal(s.missingCostRuns, 1);
+  assert.match(dailyReport(s, healthy), /nicht als null gezählt/);
+  d.report.budget_policy.fx.rate_date = '2026-08-01';
+  assert.equal(summarizeNews(d, now).eurMonthWithTaxReserve, null);
+});
+test('preflight holds are not provider outages or unknown paid requests', () => {
+  const d=fixture(); d.report.input_holds=[{story_id:'test',reason:'AI_INPUT_TOO_LARGE'}]; d.report.queue={status:'draining',total:1,capacity:0,technical:1,editorial:0,oldest_technical_minutes:20};
+  const checks=evaluateChecks(d,now).checks;
+  assert.equal(checks.find(c=>c.id==='queue').ok,true);
+  assert.equal(checks.find(c=>c.id==='run').ok,true);
+  assert.equal(checks.find(c=>c.id==='provider').ok,true);
+  d.usage.runs=[{run_id:'local-only',started_at:now,counts:{ai_stories:1,ai_requests:0},ai:null}];
+  assert.equal(summarizeNews(d,now).missingCostRuns,0);
+});
+test('only an aged technical queue creates an incident; capacity and editorial holds stay in reporting', () => {
+  const d=fixture();
+  d.report.queue={status:'editorial_holds',total:7,capacity:3,technical:0,editorial:4,oldest_minutes:240};
+  let checks=evaluateChecks(d,now).checks;
+  assert.equal(checks.find(c=>c.id==='queue').ok,true);
+  d.report.queue={status:'technical_delay',total:2,capacity:0,technical:2,editorial:0,oldest_technical_minutes:120};
+  checks=evaluateChecks(d,now).checks;
+  const queue=checks.find(c=>c.id==='queue');
+  assert.equal(queue.ok,false);
+  assert.match(queue.reason,/2 technisch blockierte/);
+  assert.match(queue.reason,/120 Minuten/);
+});
+test('daily report contains exact pipeline, source funnel, queue and unit-cost monitoring', () => {
+  const d=fixture();
+  d.report.source_funnel=[{source_id:'heise-security',name:'heise Security',feed_items:10,new_items:2,eligible_stories:1,ai_selected:1,published_stories:1}];
+  d.report.queue={status:'draining',total:3,capacity:3,technical:0,editorial:0};
+  d.usage.runs=[{run_id:'today',started_at:now,counts:{feed_entries_fetched:10,feed_entries_new:2,feed_entries_updated:1,story_clusters:2,eligible_stories:1,locally_rejected:1,ai_stories:1,published_stories:1,updated_stories:0},ai:{estimated_cost_usd:0.12},source_funnel:d.report.source_funnel}];
+  d.stories=[{published:true,listed:true,story_id:'eins',slug:'eins',published_at:now,last_updated:now,title:'Neue Akte',analysis:{summary:'Neue Akte'},sources:[]}];
+  d.liveFeed.items=[{url:'https://wirkungsoekonomie.de/wirkungsticker/eins/',date_modified:now}];
+  const summary=summarizeNews(d,now);
+  const report=dailyReport(summary,evaluateChecks(d,now).checks);
+  assert.match(report,/Queue: 3 offen/);
+  assert.match(report,/10 Feed-Einträge → 3 neu\/aktualisiert → 2 Story-Kandidaten/);
+  assert.match(report,/heise Security/);
+  assert.match(report,/\$0\.120/);
+});
+test('probe validates content and retries one transient connection failure', async () => {
+  let calls = 0;
+  assert.equal((await probe({ id: 'x', name: 'X', url: 'https://example.test', marker: /works/ }, async () => { if (++calls === 1) throw new Error('private upstream detail'); return new Response('works'); })).ok, true);
+  assert.equal(calls, 2);
+  const bad = await probe({ id: 'x', name: 'X', url: 'https://example.test', marker: /works/ }, async () => new Response('maintenance'));
+  assert.equal(bad.ok, false);
+});
+test('DM sends only to explicit recipient, with stable nonce and no public mention fallback', async () => {
+  const calls = [];
+  const fetchImpl = async (url, options) => { calls.push({ url, body: JSON.parse(options.body) }); return Response.json({ id: '123456789012345678' }); };
+  await assert.rejects(sendDiscord({ id: 'nonce', content: 'test' }, { token: 'test', recipient: null, fetchImpl }), /CONFIGURATION/);
+  await sendDiscord({ id: 'nonce', content: 'test' }, { token: 'test', recipient: '123456789012345679', fetchImpl });
+  assert.equal(calls[0].body.recipient_id, '123456789012345679');
+  assert.equal(calls[1].body.enforce_nonce, true);
+  assert.deepEqual(calls[1].body.allowed_mentions, { parse: [] });
+});
+
+test('long daily reports keep their final budget and warnings, with stable per-part retry identities', async () => {
+  const calls = [];
+  let failSecond = true;
+  const fetchImpl = async (url, options) => {
+    if (!url.endsWith('/messages')) return Response.json({ id: '123456789012345678' });
+    const body = JSON.parse(options.body);
+    calls.push(body);
+    if (calls.length === 2 && failSecond) { failSecond = false; return new Response('', { status: 503 }); }
+    return Response.json({ id: '123456789012345680' });
+  };
+  const event = { id: '123456789012345678901234',
+    content: `${'x'.repeat(1949)}🌍\n${'Kosten und Quellen\n'.repeat(120)}Limit €50.00\n⚠ Offene Störung\nhttps://wirkungsoekonomie.de/wirkungsticker/` };
+  const options = { token: 'test', recipient: '123456789012345679', fetchImpl };
+  await assert.rejects(sendDiscord(event, options), /MONITOR_DM_SEND_HTTP_503/);
+  const firstAttempt = calls.splice(0);
+  await sendDiscord(event, options);
+  assert.equal(calls.map(call => call.content).join(''), event.content, 'no silent truncation');
+  assert.equal(calls[0].nonce, event.id, 'the existing first-part identity stays stable');
+  assert.equal(calls[0].nonce, firstAttempt[0].nonce);
+  assert.equal(calls[1].nonce, firstAttempt[1].nonce);
+  assert.equal(new Set(calls.map(call => call.nonce)).size, calls.length);
+  for (const call of calls) {
+    assert.ok(call.content.length > 0 && call.content.length <= 1950);
+    assert.ok(call.nonce.length <= 25);
+    assert.equal(call.enforce_nonce, true);
+    assert.deepEqual(call.allowed_mentions, { parse: [] });
+    assert.doesNotMatch(call.content, /[\uD800-\uDBFF]$/u, 'do not split an icon surrogate pair');
+  }
+});
+
+// 17.09.2026: Der Lage-Schritt im Ticker-Lauf laeuft VOR dem Commit. Wuerde er
+// den Lauf abbrechen, ginge die bereits bezahlte Analyse dieses Laufs verloren.
+// Deshalb bricht er nicht ab - und deshalb muss sein Ausfall hier auffallen.
+test('canonical Lage inventory detects missing morning despite present noon', () => {
+  const check = lageCheck({
+    lagen: [{ lage_id: '2026-11-21-mittagslage', date: '2026-11-21', slot: 'mittagslage', stand: '2026-11-21T11:00:00.000Z' }],
+    now: '2026-11-21T13:00:00Z',
+  });
+  assert.equal(check.ok, false, 'a recent noon edition cannot cover the missing morning edition');
+  assert.deepEqual(check.missing_ids, ['2026-11-21-morgenlage']);
+  assert.equal(check.public_delivery, 'not_checked');
+});
+
+test('eine fehlende oder veraltete Lage faellt auf, vor 06:00 aber nicht', () => {
+  const morning = { lage_id: '2026-09-17-morgenlage', slot: 'morgenlage', date: '2026-09-17', stand: '2026-09-17T04:00:00Z' };
+  const noon = { lage_id: '2026-09-17-mittagslage', slot: 'mittagslage', date: '2026-09-17', stand: '2026-09-17T10:00:00Z' };
+
+  // 14:00 Berlin: Morgen- UND Mittagslage muessen kanonisch vorliegen.
+  let check = lageCheck({ lagen: [morning, noon], now: '2026-09-17T12:00:00Z' });
+  assert.equal(check.ok, true);
+  assert.match(check.reason, /kanonischen Bestand vorhanden/);
+  assert.equal(check.public_delivery, 'not_checked');
+
+  // Eine valide Ausgabe von gestern ersetzt keine heute faellige ID.
+  check = lageCheck({ lagen: [{ lage_id: '2026-09-16-abendlage', slot: 'abendlage', date: '2026-09-16', stand: '2026-09-16T16:00:00Z' }], now: '2026-09-17T12:00:00Z' });
+  assert.equal(check.ok, false);
+  assert.deepEqual(check.missing_ids, ['2026-09-17-morgenlage', '2026-09-17-mittagslage']);
+
+  // Gar keine Lage: nicht in Ordnung, mit klarer Aussage.
+  check = lageCheck({ lagen: [], now: '2026-09-17T12:00:00Z' });
+  assert.equal(check.ok, false);
+  assert.match(check.reason, /Im kanonischen Bestand fehlen fällige Ausgaben/);
+  assert.deepEqual(check.missing_ids, ['2026-09-17-morgenlage', '2026-09-17-mittagslage']);
+
+  // 04:00 Berlin: keine neue Lage fällig, also kein Befund.
+  check = lageCheck({ lagen: [], now: '2026-09-17T02:00:00Z' });
+  assert.equal(check.ok, true);
+  assert.match(check.reason, /Vor 06:00/);
+
+  // Der Check ist keine Sofortmeldung: er weckt niemanden nachts.
+  assert.equal(lageCheck({ lagen: [], now: '2026-09-17T12:00:00Z' }).immediate, false);
+
+  // Unlesbare Datei: blind, nicht "keine Lage" (18.09.2026).
+  check = lageCheck({ lagen: null, now: '2026-09-17T12:00:00Z' });
+  assert.equal(check.ok, false);
+  assert.match(check.reason, /nicht lesbar/);
+});
+
+test('canonical Lage inventory requires all three IDs, without changing stored editions', () => {
+  const rows = [
+    { lage_id: '2026-11-20-abendlage', date: '2026-11-20', slot: 'abendlage', stand: '2026-11-20T17:00:00Z' },
+    { lage_id: '2026-11-21-morgenlage', date: '2026-11-21', slot: 'morgenlage', stand: '2026-11-21T05:00:00Z' },
+    { lage_id: '2026-11-21-abendlage', date: '2026-11-21', slot: 'abendlage', stand: '2026-11-21T17:00:00Z' },
+  ];
+  const before = structuredClone(rows);
+  rows.forEach(Object.freeze); Object.freeze(rows);
+  const check = lageCheck({ lagen: rows, now: '2026-11-21T18:00:00Z' });
+  assert.equal(check.ok, false);
+  assert.deepEqual(check.missing_ids, ['2026-11-21-mittagslage']);
+  assert.equal(check.due_ids.length, 3);
+  assert.deepEqual(rows, before);
+});
+
+test('canonical Lage inventory uses Berlin 06/12/18 cutoffs in winter, summer and both DST transitions', () => {
+  for (const [date, offset] of [['2026-01-15', 1], ['2026-07-15', 2], ['2026-03-29', 2], ['2026-10-25', 1]]) {
+    const slots = [['morgenlage', 6], ['mittagslage', 12], ['abendlage', 18]];
+    const rows = slots.map(([slot, hour]) => ({ lage_id: `${date}-${slot}`, date, slot,
+      stand: `${date}T${String(hour - offset).padStart(2, '0')}:00:00.000Z` }));
+    for (let i = 0; i < rows.length; i++) {
+      const beforeCutoff = new Date(Date.parse(rows[i].stand) - 1).toISOString();
+      const before = lageCheck({ lagen: rows.slice(0, i), now: beforeCutoff });
+      assert.equal(before.ok, true, `${date} before ${slots[i][1]}`);
+      assert.equal(before.due_ids.length, i);
+      const missing = lageCheck({ lagen: rows.slice(0, i), now: rows[i].stand });
+      assert.equal(missing.ok, false, `${date} at ${slots[i][1]}`);
+      assert.deepEqual(missing.missing_ids, [rows[i].lage_id]);
+      const complete = lageCheck({ lagen: rows.slice(0, i + 1), now: rows[i].stand });
+      assert.equal(complete.ok, true);
+      assert.equal(complete.status, 'complete');
+      assert.equal(complete.public_delivery, 'not_checked');
+    }
+  }
+});
+
+test('canonical Lage inventory rejects unreadable or malformed stores even before six', () => {
+  for (const lagen of [null, undefined, {}, 'invalid', 0, [null], [{}]]) {
+    for (const now of ['2026-11-21T03:00:00Z', '2026-11-21T18:00:00Z']) {
+      const check = lageCheck({ lagen, now });
+      assert.equal(check.ok, false);
+      assert.equal(check.status, 'invalid');
+      assert.equal(check.public_delivery, 'not_checked');
+    }
+  }
+  for (const now of [undefined, null, '', 'invalid', '2026-11-21', '2026-11-21T03:00:00']) {
+    assert.equal(lageCheck({ lagen: [], now }).ok, false);
+  }
+});
+
+test('canonical Lage inventory rejects mismatched identities and cutoff timestamps', () => {
+  const valid = { lage_id: '2026-11-21-morgenlage', date: '2026-11-21', slot: 'morgenlage', stand: '2026-11-21T05:00:00Z' };
+  const changes = [
+    { lage_id: 'other' }, { date: '2026-11-20' }, { slot: 'mittagslage' },
+    { stand: null }, { stand: 'invalid' }, { stand: '2026-11-21T05:00:00' },
+    { stand: '2026-11-21T04:00:00Z' }, { stand: '2026-11-21T05:01:00Z' },
+    { stand: '2026-11-21T05:00:01Z' }, { stand: '2026-11-21T05:00:00.001Z' },
+    { date: '2026-02-30', lage_id: '2026-02-30-morgenlage', stand: '2026-02-30T05:00:00Z' },
+  ];
+  for (const change of changes) {
+    assert.equal(lageCheck({ lagen: [{ ...valid, ...change }], now: '2026-11-21T06:00:00Z' }).status, 'invalid', JSON.stringify(change));
+  }
+  assert.equal(lageCheck({ lagen: [{ ...valid, stand: '2026-11-21T06:00:00+01:00' }], now: '2026-11-21T06:00:00Z' }).ok, true);
+});
+
+test('canonical Lage inventory rejects future editions and duplicate IDs', () => {
+  const morning = { lage_id: '2026-11-21-morgenlage', date: '2026-11-21', slot: 'morgenlage', stand: '2026-11-21T05:00:00Z' };
+  const noon = { lage_id: '2026-11-21-mittagslage', date: '2026-11-21', slot: 'mittagslage', stand: '2026-11-21T11:00:00Z' };
+  for (const [lagen, now] of [
+    [[morning], '2026-11-21T04:59:59Z'],
+    [[morning, noon], '2026-11-21T06:00:00Z'],
+    [[morning, { ...morning }], '2026-11-21T06:00:00Z'],
+  ]) {
+    const check = lageCheck({ lagen, now });
+    assert.equal(check.ok, false);
+    assert.equal(check.status, 'invalid');
+  }
+});
+
+test('canonical Lage inventory rejects normalized calendar dates and hour 24', () => {
+  const morning = { lage_id: '2026-03-02-morgenlage', date: '2026-03-02', slot: 'morgenlage', stand: '2026-03-02T05:00:00Z' };
+  for (const args of [
+    { lagen: [{ ...morning, stand: '2026-02-30T05:00:00Z' }], now: '2026-03-02T06:00:00Z' },
+    { lagen: [morning], now: '2026-02-30T06:00:00Z' },
+    { lagen: [], now: '2026-02-29T00:00:00Z' },
+    { lagen: [{ ...morning, stand: '2026-03-01T24:00:00-05:00' }], now: '2026-03-02T06:00:00Z' },
+    { lagen: [], now: '2026-03-01T24:00:00Z' },
+    { lagen: [{ lage_id: '2026-05-01-morgenlage', date: '2026-05-01', slot: 'morgenlage', stand: '2026-04-31T04:00:00Z' }], now: '2026-05-01T06:00:00Z' },
+  ]) {
+    const check = lageCheck(args);
+    assert.equal(check.ok, false, 'normalization must not turn an invalid timestamp into canonical evidence');
+    assert.equal(check.status, 'invalid');
+  }
+  const leapDay = { lage_id: '2028-02-29-morgenlage', date: '2028-02-29', slot: 'morgenlage', stand: '2028-02-29T06:00:00+01:00' };
+  const valid = lageCheck({ lagen: [leapDay], now: '2028-02-29T05:00:00Z' });
+  assert.equal(valid.ok, true);
+  assert.equal(valid.public_delivery, 'not_checked');
+});
+
+test('canonical Lage inventory resets the current-day obligation at Berlin midnight', () => {
+  const previous = { lage_id: '2026-11-20-abendlage', date: '2026-11-20', slot: 'abendlage', stand: '2026-11-20T17:00:00Z' };
+  const check = lageCheck({ lagen: [previous], now: '2026-11-20T23:00:00Z' });
+  assert.equal(check.date, '2026-11-21');
+  assert.equal(check.ok, true);
+  assert.equal(check.status, 'not_due');
+  assert.deepEqual(check.due_ids, []);
+  assert.deepEqual(check.missing_ids, []);
+  assert.match(check.reason, /Öffentliche Auslieferung ungeprüft/);
+});
+
+test('canonical Lage inventory keeps the existing incident confirmation and claims only canonical recovery', () => {
+  const at = '2026-11-21T13:00:00Z';
+  const noon = { lage_id: '2026-11-21-mittagslage', date: '2026-11-21', slot: 'mittagslage', stand: '2026-11-21T11:00:00Z' };
+  const morning = { lage_id: '2026-11-21-morgenlage', date: '2026-11-21', slot: 'morgenlage', stand: '2026-11-21T05:00:00Z' };
+  const missing = lageCheck({ lagen: [noon], now: at });
+  assert.equal(missing.immediate, false);
+  let state = advanceState({ schema: 1, incidents: {}, outbox: [], dailyDate: berlinParts(at).date }, [missing], {}, at);
+  assert.equal(state.outbox.length, 0);
+  state = advanceState(state, [missing], {}, '2026-11-21T13:15:00Z');
+  assert.equal(state.outbox.length, 1);
+  assert.match(state.outbox[0].content, /kanonischen Bestand fehlen/);
+  assert.match(state.outbox[0].content, /Öffentliche Auslieferung ungeprüft/);
+  const complete = lageCheck({ lagen: [morning, noon], now: '2026-11-21T13:30:00Z' });
+  state = advanceState(state, [complete], {}, '2026-11-21T13:30:00Z');
+  assert.equal(state.outbox.length, 2);
+  assert.match(state.outbox[1].content, /Kanonischer Lagenbestand/);
+  assert.equal(complete.public_delivery, 'not_checked');
+  assert.deepEqual(complete.missing_ids, []);
+});
+
+// Die Gegenprobe zur geparkten Fassung: hier steht die Freigabe live, gilt auf
+// dem Schreibtisch aber weiter als offen. Am 17.09.2026 lief genau das
+// dauerhaft, und keine der 20 Pruefungen sagte etwas dazu.
+test('eine unquittierte Freigabe faellt nach zwei Stunden auf, vorher nicht', () => {
+  const befund = (data) => evaluateChecks({ ...fixture(), ...data }, '2026-09-17T18:00:00Z')
+    .checks.find((check) => check.id === 'freigabe-quittung');
+
+  assert.equal(befund({}).ok, true, 'ohne Vermerk keine Meldung');
+  assert.match(befund({}).reason, /Keine Freigabe wartet/);
+
+  const frisch = befund({ awaitingReceipt: 4, awaitingSince: '2026-09-17T17:30:00Z' });
+  assert.equal(frisch.ok, true, 'die Quittung gehoert planmaessig einem spaeteren Lauf');
+  assert.match(frisch.reason, /4 Fassung\(en\) warten/);
+
+  const haengt = befund({ awaitingReceipt: 4, awaitingSince: '2026-09-17T13:00:00Z' });
+  assert.equal(haengt.ok, false);
+  assert.match(haengt.reason, /seit 5 Stunden/);
+  assert.match(haengt.reason, /Quittung an den Schreibtisch greift nicht/);
+
+  // Ohne belastbaren Beginn wird nicht alarmiert, sondern gezaehlt.
+  assert.equal(befund({ awaitingReceipt: 4, awaitingSince: 'kaputt' }).ok, true);
+});
+
+// Der Befund vom 16.09.2026: drei Auftraege standen auf verbrauchtem Versuch
+// ohne Entwurf, einer seit dem 13.09. - und keine Pruefung sagte etwas dazu.
+test('ein Auftrag mit verbrauchtem Versuch ohne Entwurf faellt auf', () => {
+  const befund = (orders) => evaluateChecks({ ...fixture(), exhaustedOrders: orders }, '2026-09-17T18:00:00Z')
+    .checks.find((check) => check.id === 'liegengebliebene-auftraege');
+
+  assert.equal(befund([]).ok, true);
+  const offen = befund([{ job_id: 'wt_a', seit: '2026-09-17T05:59:26Z', grund: 'EDITORIAL_MARKDOWN_DUPLICATE_TITLE' },
+    { job_id: 'wt_b', seit: '2026-09-13T09:00:00Z', grund: 'EDITORIAL_MARKDOWN_DUPLICATE_TITLE' }]);
+  assert.equal(offen.ok, false);
+  assert.match(offen.reason, /2 Auftrag/);
+  assert.match(offen.reason, /2026-09-13/, 'der aelteste steht drin, nicht der neueste');
+  assert.match(offen.reason, /keiner Freigabeliste/);
+  // Der Grund gehoert in die Meldung: sonst weiss sie, dass etwas liegt, aber
+  // nicht, was zu tun ist. Gleiche Gruende werden nicht wiederholt.
+  assert.match(offen.reason, /Grund: EDITORIAL_MARKDOWN_DUPLICATE_TITLE\)/);
+});

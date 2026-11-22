@@ -1,0 +1,390 @@
+{
+  "article": "https://wirkungsoekonomie.de/blog/r21-energiewende-gutachten-faktencheck.html",
+  "date": "2026-11-20",
+  "author": "Natalie Weber",
+  "repository": "sustynats/wirkungsoekonomie-produktiv",
+  "pdfRepository": "sustynats/wirkungsoekonomie-medien",
+  "sourceManuscriptSha256": "666cfc594975cafb0339e6bb555e723d4edf27c74e47c33a9ae5ea7597208fe9",
+  "imageSha256": "38d184e132ad50fbe62186316ae588c4eaa2530eb34829b47c77c1526e446483",
+  "sourceEntries": 46,
+  "embeddedCharts": 2,
+  "tocComponents": 1,
+  "trackedChanges": 0,
+  "comments": 0,
+  "editorialPrecisions": [
+    {
+      "before": "Die grundlegende Gleichung lautet:",
+      "after": "Für eine erweiterte Kosten-Nutzen-Bilanz gilt:"
+    },
+    {
+      "before": "Gesamtwirkung einer Transformation = zusätzliche Investitionen + zusätzliche Betriebskosten - eingesparte Brennstoff- und sonstige Betriebskosten - vermiedene Schäden + weitere wirtschaftliche und gesellschaftliche Effekte.",
+      "after": "Zusätzliche Investitionen und Betriebskosten müssen den eingesparten Brennstoff- und sonstigen Betriebskosten sowie vermiedenen Schäden gegenübergestellt werden - über denselben Zeitraum und gegenüber demselben Referenzszenario. Nicht monetarisierbare gesellschaftliche und ökologische Veränderungen sind gesondert auszuweisen. Eine solche Bilanz ist noch keine Gesamtbewertung der Wirkung."
+    },
+    {
+      "before": "Wirkung erster Ordnung entsteht direkt: erzeugter Strom, bezahlter Preis, Emissionen, Flächenbedarf, Betriebsausgaben und Arbeitsplätze. Hier sind klare Messwerte möglich.",
+      "after": "Wirkungen erster Ordnung sind unmittelbare Zustandsveränderungen, etwa bei Emissionen, Flächennutzung, finanzieller Belastung oder Beschäftigung. Die erzeugte Strommenge ist zunächst eine Leistung, noch kein Wirkungsnachweis. Messwerte brauchen eine Ausgangslage, einen Vergleich und eine begründete Zurechnung."
+    },
+    {
+      "before": "Wirkung zweiter Ordnung entsteht durch die Folgen dieser Leistungen:",
+      "after": "Mögliche Wirkungen zweiter Ordnung sind indirekte Folgen:"
+    },
+    {
+      "before": "Wirkung dritter Ordnung verändert das System selbst:",
+      "after": "Mögliche Wirkungen dritter Ordnung verändern Regeln, Anreize und künftige Entscheidungsbedingungen:"
+    },
+    {
+      "before": "Genau dafür verbindet die Wirkungsökonomie die 17 Nachhaltigkeitsziele mit weiteren gesellschaftlichen Wirkungsdimensionen wie Demokratie, Transparenz, Resilienz, Kooperation und Technologieverantwortung.",
+      "after": "Als globale Referenz dienen die Agenda 2030 und ihre 17 Nachhaltigkeitsziele; im deutschen Fall zusätzlich die Deutsche Nachhaltigkeitsstrategie. SDG+ ist die WÖk-eigene Konkretisierung und Ergänzung vorhandener UN-Bezüge, etwa für Demokratie, Transparenz, Resilienz, Kooperation und Technologieverantwortung. Ein Zielbezug allein ist kein Kausalitätsnachweis."
+    },
+    {
+      "before": "Sie verlangt im Gegenteil besonders strenge Nachweise.",
+      "after": "Sie verlangt im Gegenteil besonders strenge Nachweise. Die Reverse Merit Order unterstützt dabei die Priorisierung materieller Defizite und begrenzt die Gesamtbewertung bei kritischen Schwächen. Ziel bleibt positive Netto-Wirkung unter nicht verrechenbaren Schutzgrenzen. Die beschriebenen indirekten und systemischen Pfade sind zunächst Potenziale und Risiken; ihre tatsächliche Realisierung und Zurechnung müssen gesondert geprüft werden."
+    },
+    {
+      "before": "81 Milliarden Euro jährlich für Nettoimporte fossiler Brennstoffe",
+      "after": "81 Milliarden Euro jährlich für Importe fossiler Brennstoffe"
+    },
+    {
+      "before": "Der gesamte Endenergieverbrauch war noch weit stärker fossil geprägt, der erneuerbare Anteil betrug vorläufig 23,8 Prozent.",
+      "after": "Der Bruttoendenergieverbrauch war noch weit stärker fossil geprägt, der erneuerbare Anteil betrug vorläufig 23,8 Prozent."
+    },
+    {
+      "before": "anhand der vom Leser bereitgestellten vollständigen Screenshots, öffentlich zugänglicher R21-Texte und unabhängiger Fachquellen.",
+      "after": "anhand der im Ausgangsmanuskript ausgewerteten Artikelfassung, öffentlich zugänglicher R21-Texte und unabhängiger Fachquellen. Bei der technischen Veröffentlichung war der vollständige BILD-Text nicht frei zugänglich; die Prüfung der vollständigen Artikelfassung kann deshalb hier nicht unabhängig bestätigt werden."
+    }
+  ],
+  "sourceClarifications": [
+    "Drucksache 21/6164, Frage 1, Druckseite 1: drei Förderbeträge ergeben 107.500 Euro.",
+    "OECD-NEA-Link ohne unauflösbares www vor cms; zusätzliche direkte Originalbelege für Geschäftsführerwechsel, Methan-Einigung, ISE-Studie und SAIDI 2024.",
+    "Kostenkennzahlen sind keine Gesamtwirkung; Strommenge ist Output; indirekte/systemische Pfade sind Potenziale bis zum Einzelnachweis. Nichtkompensation, Reverse Merit Order und positive Netto-Wirkung gemäß Begriffsleitfaden v1.8 präzisiert.",
+    "Titelbild als Symbolmontage gekennzeichnet: kein Finanzierungs-/Steuerungsnachweis zum aktuellen R21-Gutachten.",
+    "BILD-Einleitung öffentlich geprüft; vollständige im Ausgangsmanuskript ausgewertete Artikelfassung bei Veröffentlichung nicht frei zugänglich. Diese Einschränkung steht im Artikel.",
+    "Unveröffentlichtes neues Gutachten und öffentliches Kernenergiepapier getrennt; Finanzierungs- und Kontaktbefunde nicht als Beleg einer gemeinsamen Steuerung ausgegeben.",
+    "Autorin Natalie Weber auch im redaktionellen Metatext genannt, damit die PDF-Lesefassung die Autorinnennennung enthält."
+  ],
+  "sourceUrls": [
+    {
+      "number": 1,
+      "text": "[1]  BILD / Oskar Luis Bender (20.11.2026): Experten warnen – Deutschland wird Energiewende „nicht überleben“.  Quelle öffnen",
+      "urls": [
+        "https://www.bild.de/politik/inland/exklusiv-deutschland-wird-energiewende-nicht-ueberleben-6afec00aa3767a11a0be9dcd"
+      ]
+    },
+    {
+      "number": 2,
+      "text": "[2]  Republik 21: Expertenrat für Klima und Energie – Selbstdarstellung und Mitglieder.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/r21-expertenrat-fuer-klima-und-energie/"
+      ]
+    },
+    {
+      "number": 3,
+      "text": "[3]  Republik 21: Policy-Paper des Expertenrats für Klima- und Energiepolitik.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/policy-paper-r21-expertenrat-fuer-klima-und-energiepolitik/"
+      ]
+    },
+    {
+      "number": 4,
+      "text": "[4]  Anna Veronika Wendland / R21 (10/2026): Energiereform mit Kernenergie für Deutschland – Diskussionspapier.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/wp-content/uploads/2026/10/Diskussionspapier_Kernenergie-2.pdf"
+      ]
+    },
+    {
+      "number": 5,
+      "text": "[5]  Republik 21: Leitung und Wechsel in der Geschäftsführung; R21-Mitteilungen.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/leitung/"
+      ]
+    },
+    {
+      "number": 6,
+      "text": "[6]  CORRECTIV (10.06.2026): Von der rechten Denkfabrik ins Bundeswirtschaftsministerium.  Quelle öffnen",
+      "urls": [
+        "https://correctiv.org/aktuelles/parteien/2026/06/10/von-der-rechten-denkfabrik-zu-katherina-reiche/"
+      ]
+    },
+    {
+      "number": 7,
+      "text": "[7]  Deutscher Bundestag, Lobbyregister: Republik 21 e. V., Eintrag 2025 mit Angaben zu Zuwendungen.  Quelle öffnen",
+      "urls": [
+        "https://www.lobbyregister.bundestag.de/suche/R004107/87259"
+      ]
+    },
+    {
+      "number": 8,
+      "text": "[8]  Deutscher Bundestag (2026): Bundestagsdrucksache 21/6164 – Förderdaten zu R21.  Quelle öffnen",
+      "urls": [
+        "https://dserver.bundestag.de/btd/21/061/2106164.pdf"
+      ]
+    },
+    {
+      "number": 9,
+      "text": "[9]  Republik 21 (11/2026): Programm der Energiekonferenz vom 4. November 2026.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/wp-content/uploads/2026/10/2026.10.08_R21_Energiekonferenz.pdf"
+      ]
+    },
+    {
+      "number": 10,
+      "text": "[10]  Republik 21: Stefan Kooths – Expertenprofil mit Hayek-Gesellschaft und Mont Pèlerin Society.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/koepfe/stefan-kooths/"
+      ]
+    },
+    {
+      "number": 11,
+      "text": "[11]  Republik 21 (17.11.2026): Podcast zur Bedeutung von Thinktanks mit Kristian Niemietz (IEA).  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/r21-podcast-warum-wir-think-tanks-dringend-brauchen/"
+      ]
+    },
+    {
+      "number": 12,
+      "text": "[12]  The Guardian (03.11.2025): Historische Dokumente zu ExxonMobil-Finanzierung und Atlas-Netzwerk.  Quelle öffnen",
+      "urls": [
+        "https://www.theguardian.com/environment/2025/nov/03/exxon-funded-thinktanks-to-spread-climate-denial-in-latin-america-documents-reveal"
+      ]
+    },
+    {
+      "number": 13,
+      "text": "[13]  Wissenschaftliche Untersuchung: Atlas Network und transnationale Thinktank-Vernetzung.  Quelle öffnen",
+      "urls": [
+        "https://onlinelibrary.wiley.com/doi/10.1111/cars.12467"
+      ]
+    },
+    {
+      "number": 14,
+      "text": "[14]  Europäische Kommission (2026): Liquefied Natural Gas – Einfuhranteile nach Herkunft.  Quelle öffnen",
+      "urls": [
+        "https://energy.ec.europa.eu/topics/carbon-management-and-fossil-fuels/liquefied-natural-gas_en"
+      ]
+    },
+    {
+      "number": 15,
+      "text": "[15]  Stiftung Wissenschaft und Politik: Energie zwischen Markt und Geopolitik – der Fall LNG.  Quelle öffnen",
+      "urls": [
+        "https://www.swp-berlin.org/publikation/energie-zwischen-markt-und-geopolitik-der-fall-lng"
+      ]
+    },
+    {
+      "number": 16,
+      "text": "[16]  EU-Kommission / USA (21.08.2025): Joint Statement on a framework for reciprocal, fair and balanced trade.  Quelle öffnen",
+      "urls": [
+        "https://policy.trade.ec.europa.eu/news/joint-statement-united-states-european-union-framework-agreement-reciprocal-fair-and-balanced-trade-2025-08-21_en"
+      ]
+    },
+    {
+      "number": 17,
+      "text": "[17]  The White House (2025): National Security Strategy of the United States of America.  Quelle öffnen",
+      "urls": [
+        "https://www.whitehouse.gov/wp-content/uploads/2025/12/2025-National-Security-Strategy.pdf"
+      ]
+    },
+    {
+      "number": 18,
+      "text": "[18]  Heritage Foundation: Project 2025 – Mandate for Leadership, Chapter 12: Department of Energy.  Quelle öffnen",
+      "urls": [
+        "https://static.project2025.org/2025_MandateForLeadership_CHAPTER-12.pdf"
+      ]
+    },
+    {
+      "number": 19,
+      "text": "[19]  Reuters (15.12.2025, via Investing.com): US demands EU exempt its gas from methane emissions law.  Quelle öffnen",
+      "urls": [
+        "https://www.investing.com/news/commodities-news/us-demands-eu-exempt-its-gas-from-methane-emissions-law-document-shows-4407618"
+      ]
+    },
+    {
+      "number": 20,
+      "text": "[20]  Reuters (19.11.2026): EU-Parlament und Mitgliedstaaten vereinbaren Aufschub bei Methanvorschriften.  Quelle öffnen",
+      "urls": [
+        "https://www.reuters.com/business/energy/eu-countries-parliament-agree-delay-eu-methane-regulation-by-two-years-2026-11-19/"
+      ]
+    },
+    {
+      "number": 21,
+      "text": "[21]  Reuters (14.02.2025): Vance meets with leader of German far-right AfD party.  Quelle öffnen",
+      "urls": [
+        "https://www.reuters.com/world/vance-meets-with-leader-german-far-right-afd-party-2025-02-14/"
+      ]
+    },
+    {
+      "number": 22,
+      "text": "[22]  Republik 21 (2026): Analyse zur heimischen Schiefergasförderung.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/r21-analyse-heimisches-schiefergas-koennte-milliarden-sparen-gasversorgung-sichern-und-treibhausgasemissionen-reduzieren/"
+      ]
+    },
+    {
+      "number": 23,
+      "text": "[23]  Joachim Weimann (2026), LinkedIn-Beitrag zur Unterstützung der Energiepolitik von Katherina Reiche und zur Kostenbehauptung.  Quelle öffnen",
+      "urls": [
+        "https://de.linkedin.com/posts/joachim-weimann-707637116_%F0%9D%97%94%F0%9D%98%82%F0%9D%97%B3%F0%9D%97%BF%F0%9D%98%82%F0%9D%97%B3-%F0%9D%97%9E%F0%9D%97%AE%F0%9D%98%81%F0%9D%97%B5e%F0%9D%97%BF%F0%9D%97%B6%F0%9D%97%BB%F0%9D%97%AE-%F0%9D%97%A5%F0%9D%97%B2%F0%9D%97%B6%F0%9D%97%B0%F0%9D%97%B5%F0%9D%97%B2-activity-7429501533580341248-OBY7"
+      ]
+    },
+    {
+      "number": 24,
+      "text": "[24]  Wissenschaftliche Dienste des Bundestages (16.09.2024): Zur Berechnung der Investitionskosten für die Energiewende, WD 5 – 135/24.  Quelle öffnen",
+      "urls": [
+        "https://www.bundestag.de/resource/blob/1019134/WD-5-135-24-pdf.pdf"
+      ]
+    },
+    {
+      "number": 25,
+      "text": "[25]  PwC Deutschland (2024): Klimaschutzinvestitionen lohnen sich – Modellvergleich der Gesamtkosten bis 2050.  Quelle öffnen",
+      "urls": [
+        "https://www.pwc.de/de/energiewirtschaft/klimaschutzinvestitionen-lohnen-sich.html"
+      ]
+    },
+    {
+      "number": 26,
+      "text": "[26]  Kopernikus-Projekt Ariadne (2025): Szenarien zur Klimaneutralität 2045 – Transformationskosten und Investitionsbedarf.  Quelle öffnen",
+      "urls": [
+        "https://ariadneprojekt.de/publikation/report-szenarien-zur-klimaneutralitat-2045/"
+      ]
+    },
+    {
+      "number": 27,
+      "text": "[27]  IRENA (07/2026): Renewable Power Generation Costs in 2025.  Quelle öffnen",
+      "urls": [
+        "https://www.irena.org/Publications/2026/Jul/Renewable-Power-Generation-Costs-in-2025"
+      ]
+    },
+    {
+      "number": 28,
+      "text": "[28]  Fraunhofer ISE (2024): Stromgestehungskosten Erneuerbare Energien – deutsche Technologievergleiche.  Quelle öffnen",
+      "urls": [
+        "https://www.ise.fraunhofer.de/de/veroeffentlichungen/studien/studie-stromgestehungskosten-erneuerbare-energien.html"
+      ]
+    },
+    {
+      "number": 29,
+      "text": "[29]  International Energy Agency (2026): Electricity 2026 – Flexibility.  Quelle öffnen",
+      "urls": [
+        "https://www.iea.org/reports/electricity-2026/flexibility"
+      ]
+    },
+    {
+      "number": 30,
+      "text": "[30]  OECD Nuclear Energy Agency (2026): The Costs of Generating Electricity 2025.  Quelle öffnen",
+      "urls": [
+        "https://www.cms.oecd-nea.org/jcms/pl_121713/the-costs-of-generating-electricity-2025"
+      ]
+    },
+    {
+      "number": 31,
+      "text": "[31]  OECD (2025): Economic Surveys EU and Euro Area – Strengthening electricity markets.  Quelle öffnen",
+      "urls": [
+        "https://www.oecd.org/en/publications/oecd-economic-surveys-european-union-and-euro-area-2025_5ec8dcc2-en/full-report/strengthening-electricity-markets_ebb6cc30.html"
+      ]
+    },
+    {
+      "number": 32,
+      "text": "[32]  International Energy Agency (2026): Affordable electricity is essential for EU electrification.  Quelle öffnen",
+      "urls": [
+        "https://www.iea.org/commentaries/affordable-electricity-is-essential-for-the-european-union-s-electrification-goals"
+      ]
+    },
+    {
+      "number": 33,
+      "text": "[33]  KfW Research (2025): Deutschlands fossile Energieimporte – Größenordnung und Abhängigkeiten.  Quelle öffnen",
+      "urls": [
+        "https://www.kfw.de/%C3%9Cber-die-KfW/Newsroom/Aktuelles/News-Details_847360.html"
+      ]
+    },
+    {
+      "number": 34,
+      "text": "[34]  Republik 21 (06.11.2026): Wohlstand braucht Energie – Rückblick auf die R21-Energiekonferenz.  Quelle öffnen",
+      "urls": [
+        "https://denkfabrik-r21.de/wohlstand-braucht-energie-r21-diskutiert-ueber-die-zukunft-der-deutschen-energiepolitik/"
+      ]
+    },
+    {
+      "number": 35,
+      "text": "[35]  Fraunhofer ISE (01/2026): Öffentliche Nettostromerzeugung Deutschlands 2025.  Quelle öffnen",
+      "urls": [
+        "https://www.ise.fraunhofer.de/content/dam/ise/en/documents/press-releases/2026/0126_ISE_e_PR_Net%20electricity%20generation%202025.pdf"
+      ]
+    },
+    {
+      "number": 36,
+      "text": "[36]  Umweltbundesamt (2026): Erneuerbare Energien in Deutschland – vorläufige Daten 2025.  Quelle öffnen",
+      "urls": [
+        "https://www.umweltbundesamt.de/themen/erneuerbare-energien-in-deutschland-wachstum-2025"
+      ]
+    },
+    {
+      "number": 37,
+      "text": "[37]  Umweltbundesamt: Durch erneuerbare Energien vermiedene Treibhausgasemissionen.  Quelle öffnen",
+      "urls": [
+        "https://www.umweltbundesamt.de/daten/umweltzustand-trends/energie/erneuerbare-energien-vermiedene-treibhausgase"
+      ]
+    },
+    {
+      "number": 38,
+      "text": "[38]  Umweltbundesamt: Treibhausgasemissionen in Deutschland – Zeitreihen bis 2025.  Quelle öffnen",
+      "urls": [
+        "https://www.umweltbundesamt.de/daten/umweltzustand-trends/klima/treibhausgas-emissionen-in-deutschland"
+      ]
+    },
+    {
+      "number": 39,
+      "text": "[39]  Umweltbundesamt (2026): Umweltkosten von Energie und Straßenverkehr – 2024.  Quelle öffnen",
+      "urls": [
+        "https://www.umweltbundesamt.de/indikator-umweltkosten-von-energie-strassenverkehr"
+      ]
+    },
+    {
+      "number": 40,
+      "text": "[40]  Bundesnetzagentur (2025): Versorgungsunterbrechungen Strom – SAIDI 2024.  Quelle öffnen",
+      "urls": [
+        "https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/Versorgungssicherheit/Versorgungsunterbrechungen/Auswertung_Strom/artikel.html"
+      ]
+    },
+    {
+      "number": 41,
+      "text": "[41]  International Energy Agency (2026): Strengthening supply chains for key energy technologies.  Quelle öffnen",
+      "urls": [
+        "https://www.iea.org/news/strengthening-supply-chains-can-improve-resilience-and-reduce-economic-security-risks-for-key-energy-technologies"
+      ]
+    },
+    {
+      "number": 42,
+      "text": "[42]  EU-Kommission (2026): EU ETS Market Stability Reserve – Regeln und Reformvorschlag.  Quelle öffnen",
+      "urls": [
+        "https://climate.ec.europa.eu/areas-action/carbon-markets/eu-emissions-trading-system-eu-ets/market-stability-reserve_en"
+      ]
+    },
+    {
+      "number": 43,
+      "text": "[43]  Umweltbundesamt (2025): Deutschland löscht über 500.000 Emissionsberechtigungen.  Quelle öffnen",
+      "urls": [
+        "https://www.umweltbundesamt.de/presse/pressemitteilungen/deutschland-loescht-ueber-500000"
+      ]
+    },
+    {
+      "number": 44,
+      "text": "[44]  UK House of Commons Public Accounts Committee (28.10.2026): Sizewell C – project costs and schedule.  Quelle öffnen",
+      "urls": [
+        "https://publications.parliament.uk/pa/cm5902/cmselect/cmpubacc/106/report.html"
+      ]
+    },
+    {
+      "number": 45,
+      "text": "[45]  Deutscher Presserat: Pressekodex, Ziffer 2 (Sorgfalt).  Quelle öffnen",
+      "urls": [
+        "https://www.presserat.de/pressekodex.html"
+      ]
+    },
+    {
+      "number": 46,
+      "text": "[46]  Ye et al. (2026), Nature Communications: Systematic review and meta-analysis of the illusory truth effect.  Quelle öffnen",
+      "urls": [
+        "https://www.nature.com/articles/s41467-026-70041-x"
+      ]
+    }
+  ],
+  "verification": "Quellenbezogene Publikationsprüfung; keine externe fachwissenschaftliche Validierung und keine neue persönliche Freigabe behauptet."
+}

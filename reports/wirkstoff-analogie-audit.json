@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-10-13T19:32:20.683Z",
+  "mode": "normalize",
+  "scannedIndexablePages": 3768,
+  "changedFiles": 23,
+  "preservedScopes": [
+    ".git",
+    "_site",
+    "api",
+    "assets",
+    "begriffe",
+    "bibliothek",
+    "blog",
+    "dokumente",
+    "journal",
+    "node_modules",
+    "public",
+    "quellenarchiv",
+    "referenz",
+    "reports",
+    "tmp"
+  ],
+  "findings": []
+}

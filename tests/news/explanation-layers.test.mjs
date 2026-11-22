@@ -1,0 +1,100 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import { buildSourcePages } from "../../scripts/news/source-pages.mjs";
+
+const read = (file) => fs.readFileSync(file, "utf8");
+const pages = ["wirkungsticker/index.html", "wirkungsticker/quellen/index.html", "methodik/index.html", "so-wirkt-wirkungsoekonomie/index.html", "verstehen/index.html", "verstehen/woek-auf-einer-seite/index.html", "modell.html", "wirkungswissenschaften/index.html"];
+
+test("Erklärungsebenen: unverändertes Ticker-Versprechen und kompakte Leselogik", () => {
+  const html = read(pages[0]);
+  for (const text of ["Nachrichten. Einordnen.", "Wirkung verstehen.", "Faktencheck", "Folgencheck", "Mensch", "Planet", "Demokratie", "Meinung &amp; Analyse", "Ring = Status", "Balken = Tragweite", 'id="methodik"']) assert.ok(html.includes(text), text);
+  assert.doesNotMatch(html, /WÖK-Analyse/);
+  assert.ok(html.includes('/wirkungsticker/methodik/'));
+});
+
+test("Erklärungsebenen: konkretes Methodikbeispiel und sechs Prüfschritte vor fachlicher Vertiefung", () => {
+  const html = read("methodik/index.html");
+  for (const text of ["Ein Bus mehr. Aber auch eine Verbesserung?", "Gedankenexperiment", "Wirkungspotenzial", "Wirkungsrisiko", "Problem prüfen", "Ziel prüfen", "Wirkpfade prüfen", "Blinde Stellen suchen", "Optionen unter gleichen Bedingungen vergleichen", "Entscheiden und nachprüfen", "Nichtkompensation", "Reverse Merit Order", "Beobachten → Annahmen prüfen → Entscheidung anpassen", "Vom Überblick zur Fachgrundlage", "staatliche-nachhaltigkeitsarchitektur", "materialitaet-statt-rechtsform"]) assert.ok(html.includes(text), text);
+  const steps = html.match(/<ol class="explanation-steps">(.*?)<\/ol>/s)?.[1] || "";
+  assert.equal((steps.match(/<li>/g) || []).length, 6);
+  assert.ok(html.indexOf('id="beispiel"') < html.indexOf('id="pruefweg"'));
+  assert.ok(html.indexOf('id="pruefweg"') < html.indexOf("Vom Überblick zur Fachgrundlage"));
+  assert.doesNotMatch(html, /Wirkung neutral bestimmen/);
+});
+
+test("Erklärungsebenen: optionale IOOI-Methode, offene Evidenz und versioniertes Methodensystem", () => {
+  const intro = read("so-wirkt-wirkungsoekonomie/index.html");
+  assert.ok(intro.includes("IOOI steht für Input, Output, Outcome und Impact"));
+  assert.match(intro, /Sechs Prüffragen/);
+  assert.match(intro, /sechs Prüf-Fragen, keine sechs Stationen/);
+  assert.ok(intro.includes("ambivalent"));
+  assert.ok(intro.includes("bleibt die Einordnung offen"));
+  assert.doesNotMatch(intro, /Die WÖk ergänzt Evidenz|Input, Aktivität, Output/);
+  const portal = read("verstehen/index.html");
+  assert.equal(portal.split("Der Apfel ist nicht nur ein Apfel.").length - 1, 1);
+  assert.ok(portal.includes("keine offizielle UN-Kategorie"));
+  assert.ok(portal.includes("Methodensystem &amp; Canvas"));
+  assert.doesNotMatch(portal, /152 Methoden|56 Canvas|20 Workshop-Journeys|Input, Aktivität, Output/);
+});
+
+test("Erklärungsebenen: Daten, Schutzprinzip und vorgeschlagene Institutionen", () => {
+  const model = read("modell.html");
+  for (const text of ["kein Wirkungsnachweis", "dokumentiertes Netto-Wirkungsprofil", "Nichtkompensation ist das Schutzprinzip", "Nicht jedes schwache Detailfeld blockiert automatisch", "Vorgeschlagene Zielarchitektur", "kein derzeit geltendes Steuer- oder Institutionensystem"]) assert.ok(model.includes(text), text);
+  assert.doesNotMatch(model, /Das schlechteste Wirkungsfeld zählt|unter dem Strich Nutzen oder Schaden|übersetzt vorhandene Daten in Wirkung/);
+  const overview = read("verstehen/woek-auf-einer-seite/index.html");
+  assert.ok(overview.includes("ambivalent"));
+  assert.ok(overview.includes("keine automatische Steuerentscheidung"));
+  const science = read("wirkungswissenschaften/index.html");
+  assert.ok(science.includes("vorgeschlagener inter- und transdisziplinärer Bezugsrahmen"));
+  assert.ok(science.includes("Der WÖk-eigene Beitrag"));
+  assert.doesNotMatch(science, /Die erste Steuerungsdisziplin|Neu ist jedoch der systemische Rahmen/);
+});
+
+test("Quellenstatus: deutsche öffentliche Labels und sicherer Fallback bei unbekanntem Code", () => {
+  for (const [status, label] of [["restricted", "Eingeschränkt nutzbar"], ["public", "Öffentlich zugänglich"], ["future_internal_status", "Status noch nicht geklärt"]]) {
+    const output = new Map();
+    buildSourcePages({ updated_at: "2026-09-05T12:00:00Z", sources: [{ source_id: "fixture", name: "Beispielquelle", url: "https://example.org", role: "C", enabled: false, access: { status } }] }, {}, {
+      pageShell: ({ body }) => body, write: (file, body) => output.set(file, body), escapeHtml: (text) => String(text), root: "/virtual", site: "https://example.org", formatDate: String,
+    });
+    const html = output.get("/virtual/wirkungsticker/quellen/index.html");
+    assert.ok(html.includes(label), label);
+    assert.ok(html.includes("Breit recherchiert, Quellen klar eingeordnet."));
+    assert.ok(html.includes("Agentur-/Provenienzhinweis"));
+    assert.ok(!html.includes(`>${status}<`));
+  }
+});
+
+test("Erklärungsebenen: eindeutige IDs, JSON-LD und erreichbare neue Lesepfade", () => {
+  for (const file of pages) {
+    const html = read(file);
+    const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(ids.length, new Set(ids).size, `Doppelte IDs: ${file}`);
+    for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) assert.doesNotThrow(() => JSON.parse(match[1]), file);
+  }
+  const root = "wirkungsticker/analyse";
+  for (const dir of fs.readdirSync(root)) {
+    const file = path.join(root, dir, "index.html");
+    if (!fs.existsSync(file)) continue;
+    const html = read(file);
+    if (!html.includes('data-news-reader="analysis"')) continue;
+    for (const href of ["../../../so-wirkt-wirkungsoekonomie/", "../../../methodik/", "../../#methodik"]) {
+      assert.ok(html.includes(`href="${href}"`), `${file}: ${href}`);
+      const target = path.resolve(path.dirname(file), href.split("#")[0], "index.html");
+      assert.ok(fs.existsSync(target), target);
+      if (href.includes("#")) assert.ok(read(target).includes('id="methodik"'));
+    }
+    if (html.includes('data-manual-editorial="book_and_impact"')) {
+      // A signed book review is not a scored news event.
+      assert.ok(html.includes('"@type":"Book"'));
+      assert.ok(!html.includes('aria-label="Tragweite für Mensch:'));
+    } else if (html.includes('data-personal-editorial="true"')) {
+      assert.ok(html.includes('id="meine-einordnung"'));
+      assert.doesNotMatch(html, /Die persönliche Einordnung gibt ihre Auffassung wieder\./);
+      assert.doesNotMatch(html, /Recherchierte Fakten, wirkungsökonomische Analyse und persönliche Bewertung werden getrennt ausgewiesen\./);
+      assert.ok(html.includes('data-news-reader-back'));
+      assert.ok(!html.includes('aria-label="Tragweite für Mensch:'));
+    } else { assert.ok(!html.includes('Wir überarbeiten die Wirkungsprofile')); assert.ok(!html.includes('aria-label="Tragweite für Mensch:')); }
+  }
+});

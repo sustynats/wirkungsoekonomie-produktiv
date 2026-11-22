@@ -1,0 +1,595 @@
+{
+  "terms": [
+    {
+      "termId": "wirkungsnachweis",
+      "shortDefinition": "Ein Wirkungsnachweis prüft anhand von Belegen, ob eine behauptete Zustandsveränderung im betrachteten Wirkungsraum und Zeitraum tatsächlich eingetreten ist.",
+      "hoverDefinition": "Ein Wirkungsnachweis prüft anhand von Belegen, ob eine behauptete Zustandsveränderung im betrachteten Wirkungsraum und Zeitraum tatsächlich eingetreten ist.",
+      "definition": "Ein Wirkungsnachweis prüft anhand von Belegen, ob eine behauptete Zustandsveränderung im betrachteten Wirkungsraum und Zeitraum tatsächlich eingetreten ist. Ausgangszustand, Beobachtung, Messregel, Systemgrenze und Unsicherheit werden dokumentiert. Für eine Zurechnung zu einer Maßnahme braucht es zusätzlich einen belegten Wirkmechanismus, plausible Alternativerklärungen und einen geeigneten Vergleich mit der Entwicklung ohne Maßnahme.",
+      "longDefinition": "Ein Wirkungsnachweis prüft anhand von Belegen, ob eine behauptete Zustandsveränderung im betrachteten Wirkungsraum und Zeitraum tatsächlich eingetreten ist. Ausgangszustand, Beobachtung, Messregel, Systemgrenze und Unsicherheit werden dokumentiert. Für eine Zurechnung zu einer Maßnahme braucht es zusätzlich einen belegten Wirkmechanismus, plausible Alternativerklärungen und einen geeigneten Vergleich mit der Entwicklung ohne Maßnahme.",
+      "metaDescription": "Ein Wirkungsnachweis prüft anhand von Belegen, ob eine behauptete Zustandsveränderung im betrachteten Wirkungsraum und Zeitraum tatsächlich eingetreten ist.",
+      "reviewStatus": "Zustandsnachweis und kausale Zurechnung nach Begriffsleitfaden v1.8 getrennt",
+      "usageNote": "Aussagekraft und Grenzen der Evidenz ausweisen. Plausible künftige Veränderungen als Wirkungspotenzial oder Wirkungsrisiko beschreiben.",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14"
+    },
+    {
+      "termId": "woek-id",
+      "deepGlossarySections": [
+        {
+          "title": "Kennung und Messbezug",
+          "body": "Die WÖk-ID verbindet einen Prüfgegenstand mit den im Register dokumentierten Zustandsgrößen, Indikatoren, Quellen und Nachweisanforderungen. Datenstand, Regelversion und fachlicher Prüfstatus legen fest, welche Auswertung möglich ist."
+        }
+      ],
+      "version": "2.2",
+      "lastUpdated": "2026-11-14"
+    },
+    {
+      "termId": "wirkungsrat",
+      "shortDefinition": "Ein Wirkungsrat ist als unabhängige Institution zur Sicherung, Prüfung und Weiterentwicklung der Wirkungslogik vorgeschlagen.",
+      "hoverDefinition": "Ein Wirkungsrat ist als unabhängige Institution zur Sicherung, Prüfung und Weiterentwicklung der Wirkungslogik vorgeschlagen.",
+      "definition": "Ein Wirkungsrat ist als unabhängige Institution zur Sicherung, Prüfung und Weiterentwicklung der Wirkungslogik vorgeschlagen. Der WStG-3.0-Entwurf beschreibt dafür Aufgaben, Besetzung und Grenzen. Vorgesehen sind unter anderem die methodische Prüfung und Versionierung von Kriterien sowie die öffentliche Begründung von Empfehlungen.",
+      "longDefinition": "Ein Wirkungsrat ist als unabhängige Institution zur Sicherung, Prüfung und Weiterentwicklung der Wirkungslogik vorgeschlagen. Der WStG-3.0-Entwurf beschreibt dafür Aufgaben, Besetzung und Grenzen. Vorgesehen sind unter anderem die methodische Prüfung und Versionierung von Kriterien sowie die öffentliche Begründung von Empfehlungen.",
+      "metaDescription": "Ein Wirkungsrat ist als unabhängige Institution zur Sicherung, Prüfung und Weiterentwicklung der Wirkungslogik vorgeschlagen.",
+      "woekRelation": "Der Vorschlag soll methodische Integrität und die nachvollziehbare Weiterentwicklung der Wirkungslogik institutionell absichern.",
+      "usageNote": "Als Modellvorschlag und im Kontext des jeweiligen Entwurfs kennzeichnen. Die parlamentarische und gerichtliche Zuständigkeit bleibt maßgeblich.",
+      "reviewStatus": "Konzeptstatus nach Begriffsleitfaden v1.8 und WStG-3.0-Entwurf",
+      "examples": [
+        "Ein möglicher Wirkungsrat könnte die Eignung von Benchmarks überprüfen und begründete Änderungen empfehlen."
+      ],
+      "deepGlossarySections": [
+        {
+          "title": "Institutionelle Aufgaben im Entwurf",
+          "body": "Die §§ 43 bis 47 des WStG-3.0-Entwurfs beschreiben Aufgaben, Besetzung, Befugnisse und Ausschlüsse. Die konkrete Einrichtung und ihre Kompetenzen hängen von einer gesetzlichen Grundlage ab."
+        }
+      ],
+      "version": "2.2",
+      "lastUpdated": "2026-11-14"
+    },
+    {
+      "termId": "wirkung",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14",
+      "reviewStatus": "Fachlich mit Begriffsleitfaden v1.8 abgeglichen",
+      "shortDefinition": "Wirkung ist die tatsächliche Veränderung von Zuständen. Die Bewertung kann positiv, negativ oder neutral sein. Gegenläufige Folgen können zu einer ambivalenten Einordnung führen. Bei unzureichenden Belegen bleibt sie offen.",
+      "hoverDefinition": "Wirkung ist die tatsächliche Veränderung von Zuständen. Die Bewertung kann positiv, negativ oder neutral sein. Gegenläufige Folgen können zu einer ambivalenten Einordnung führen. Bei unzureichenden Belegen bleibt sie offen.",
+      "metaDescription": "Wirkung ist die tatsächliche Veränderung von Zuständen. Die Bewertung kann positiv, negativ oder neutral sein. Gegenläufige Folgen können zu einer ambivalenten Einordnung führen. Bei unzureichenden Belegen bleibt sie offen.",
+      "definition": "Wirkung bezeichnet in der Wirkungsökonomie die tatsächliche Veränderung eines Zustands. Sie betrifft zum Beispiel Menschen, natürliche Lebensgrundlagen oder demokratische Institutionen. Wirkung ist neutral und relational. Ihre Beschreibung nennt die Betroffenen, die Ausgangslage und die beobachtete Veränderung sowie den Wirkungsraum und den Zeitraum. Die Einordnung folgt einem offengelegten Referenzrahmen. Ob und in welchem Umfang die Veränderung einem Wirkungsträger zugerechnet werden kann, wird eigens begründet.",
+      "longDefinition": "Wirkung bezeichnet in der Wirkungsökonomie die tatsächliche Veränderung eines Zustands. Sie betrifft zum Beispiel Menschen, natürliche Lebensgrundlagen oder demokratische Institutionen. Wirkung ist neutral und relational. Ihre Beschreibung nennt die Betroffenen, die Ausgangslage und die beobachtete Veränderung sowie den Wirkungsraum und den Zeitraum. Die Einordnung folgt einem offengelegten Referenzrahmen. Ob und in welchem Umfang die Veränderung einem Wirkungsträger zugerechnet werden kann, wird eigens begründet.",
+      "usageNote": "Wirkung braucht einen offengelegten Bezug zu Wirkungsraum, Zeitraum und Betroffenen. Die Agenda 2030 und ihre SDGs sind ein globaler Referenzrahmen. SDG+ ist eine WÖk-Ergänzung. Bei einschlägigen deutschen öffentlichen Fällen gehört die DNS zum Referenzrahmen.",
+      "deepGlossarySections": [
+        {
+          "title": "Kurzdefinition / Hover",
+          "body": "Wirkung ist die tatsächliche Veränderung von Zuständen. Die Bewertung kann positiv, negativ oder neutral sein. Gegenläufige Folgen können zu einer ambivalenten Einordnung führen. Bei unzureichenden Belegen bleibt sie offen."
+        },
+        {
+          "title": "Auf einen Blick",
+          "items": [
+            "Wirkung ist nicht automatisch gut.",
+            "Wirkung beschreibt reale Zustandsveränderung, nicht Absicht, Image, Output, Bericht oder Haltung.",
+            "Wirkung wirkt immer auf jemanden oder etwas.",
+            "Die Bewertung berücksichtigt den belegten Befund sowie die einschlägigen Ziele und Schutzgrenzen des Referenzrahmens.",
+            "Ziel der WÖk ist positive Netto-Wirkung für Mensch, Planet und Demokratie.",
+            "Wirkung kann direkt, indirekt, verzögert, kumulativ, systemisch oder ambivalent sein."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Hauptdefinition",
+          "body": "Wirkung bezeichnet in der Wirkungsökonomie die tatsächliche Veränderung eines Zustands. Sie betrifft zum Beispiel Menschen, natürliche Lebensgrundlagen oder demokratische Institutionen. Wirkung ist neutral und relational. Ihre Beschreibung nennt die Betroffenen, die Ausgangslage und die beobachtete Veränderung sowie den Wirkungsraum und den Zeitraum. Die Einordnung folgt einem offengelegten Referenzrahmen. Ob und in welchem Umfang die Veränderung einem Wirkungsträger zugerechnet werden kann, wird eigens begründet."
+        },
+        {
+          "title": "Wirkungsökonomische Relevanz",
+          "body": "Wirkung ist der Grundbegriff der Wirkungsökonomie. Während klassische Systeme Erfolg an Kapital, Wachstum, Gewinn, Umsatz, Beschäftigung oder Reichweite messen, fragt die WÖk, was sich tatsächlich verändert. Erst wenn Wirkung sichtbar, bewertbar und rückkopplungsfähig wird, können Preise, Steuern, Kapital, Beschaffung, Förderung, Management und Politik auf Zukunftsfähigkeit ausgerichtet werden."
+        },
+        {
+          "title": "Wirkungsökonomische Sicht & Einordnung",
+          "body": "Absichten, Leistungen und Berichte erfüllen jeweils eine eigene Funktion. Für die Bewertung zählen belegte Zustandsveränderungen, ihre Zurechnung und die verbleibende Unsicherheit. Die Agenda 2030 mit ihren SDGs ist ein globaler Referenzrahmen. SDG+ ist die WÖk-Erweiterung für demokratische Voraussetzungen nachhaltiger Entwicklung. Bei einschlägigen deutschen öffentlichen Fällen ist die Deutsche Nachhaltigkeitsstrategie (DNS) einzubeziehen. Fallbezogene Schutzgrenzen können sich aus Grundrechten, gesetzlichen Grenzwerten und wissenschaftlichen Schwellen ergeben."
+        },
+        {
+          "title": "Abgrenzung: Nicht verwechseln mit",
+          "items": [
+            "Absicht",
+            "Output",
+            "Outcome als beobachtete Zustandsveränderung mit gesondert zu prüfender Zurechnung",
+            "Impact als unscharfer Anschlussbegriff",
+            "Image",
+            "Maßnahme",
+            "Bericht",
+            "Positive Wirkung"
+          ],
+          "body": ""
+        },
+        {
+          "title": "Beispiele",
+          "items": [
+            "Ein Klimabericht ist nicht die Wirkung; Wirkung liegt in tatsächlicher Emissionsreduktion.",
+            "Ein Gesetz wirkt erst, wenn Wohnkosten, Verfügbarkeit oder soziale Stabilität verändert werden.",
+            "Reichweite ist nicht Wirkung; ein Medienbeitrag wirkt, wenn Wissen, Vertrauen oder Polarisierung verändert werden.",
+            "Bei der Herstellung eines günstigen Produkts können Schadstoffe die Gesundheit von Beschäftigten gefährden. Das ist ein Wirkungsrisiko. Nachgewiesene und der Exposition zurechenbare Gesundheitsschäden sind eine negative Wirkung."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Mess- und Steuerungsbezug",
+          "body": "Operationalisiert wird Wirkung über Wirkungsträger, Wirkungsempfänger, Wirkungsraum, Wirkungsindikator, Bewertungsrahmen, Datenqualität und Rückkopplung. Rückkopplung bedeutet, dass Bewertung in Preise, Steuern, Kapital, Beschaffung, Förderung, Management oder Regulierung zurückgeführt wird."
+        },
+        {
+          "title": "Querverweise im Glossar",
+          "items": [
+            "Wirkungspotenzial",
+            "Wirkungsrisiko",
+            "Wirkmechanismus",
+            "Wirkungsträger",
+            "Wirkungsempfänger",
+            "Wirkungsraum",
+            "Wirkungsbewertung",
+            "Netto-Wirkung",
+            "Positive Netto-Wirkung",
+            "Transformationswirkung",
+            "Wirkungsrückkopplung",
+            "Wirkungslenkung",
+            "Wirkungsarchitektur",
+            "Wirkungswahrheit",
+            "Wirkungsblindheit",
+            "Mensch, Planet und Demokratie",
+            "SDGs",
+            "SDG+",
+            "WÖk-ID"
+          ],
+          "body": ""
+        },
+        {
+          "title": "Quellenbasis",
+          "body": "Interne Quellen: Führender Begriffsleitfaden, Die neue Ordnung des Wohlstands, Grundlagenpapier und Leitbild Mensch, Planet und Demokratie. Externe Quellen: UN SDGs/Agenda 2030, OECD DAC Impact, GRI und CSRD/ESRS."
+        },
+        {
+          "title": "Redaktionelle Metadaten",
+          "items": [
+            "Glossar-Pack: 003",
+            "Cluster: Wirkungssprache & Kernlogik",
+            "Version: 1.1",
+            "Status: professionalisiert",
+            "Review-Status: redaktionell zu prüfen",
+            "Sprache: de",
+            "Primäre Begriffseite: ja",
+            "No-Delete: ja",
+            "",
+            "Qualitätsniveau: deep_glossary_entry"
+          ],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "termId": "neutrale-wirkung",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14",
+      "reviewStatus": "Fachlich mit Begriffsleitfaden v1.8 abgeglichen",
+      "shortDefinition": "Eine neutrale Einordnung setzt ausreichende Belege voraus. Bei fehlenden Belegen bleibt die Bewertung offen.",
+      "hoverDefinition": "Eine neutrale Einordnung setzt ausreichende Belege voraus. Bei fehlenden Belegen bleibt die Bewertung offen.",
+      "metaDescription": "Eine neutrale Einordnung setzt ausreichende Belege voraus. Bei fehlenden Belegen bleibt die Bewertung offen.",
+      "definition": "Neutral heißt, dass eine ausreichend belegte Prüfung keine relevante positive oder negative Veränderung feststellt oder eine festgestellte Veränderung im gewählten Referenzrahmen neutral einordnet.",
+      "longDefinition": "Neutral heißt, dass eine ausreichend belegte Prüfung keine relevante positive oder negative Veränderung feststellt oder eine festgestellte Veränderung im gewählten Referenzrahmen neutral einordnet.",
+      "usageNote": "Die Einordnung gilt im angegebenen Wirkungsraum und Zeitraum. Relevanzgrenzen und mögliche gegenläufige Befunde getrennt dokumentieren."
+    },
+    {
+      "termId": "wirkungsdaten",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14",
+      "reviewStatus": "Fachlich mit Begriffsleitfaden v1.8 abgeglichen",
+      "definition": "Wirkungsdaten können Primärdaten, geprüfte Sekundärdaten, Produktdaten, Lieferkettendaten, Benchmarks, Prüfstatus und Unsicherheiten umfassen. Sie sind Grundlage für Scorecards, FinalScore, WÖk-Netto-Wirkungsindex und spätere Rückkopplung.",
+      "longDefinition": "Wirkungsdaten können Primärdaten, geprüfte Sekundärdaten, Produktdaten, Lieferkettendaten, Benchmarks, Prüfstatus und Unsicherheiten umfassen. Sie sind Grundlage für Scorecards, FinalScore, WÖk-Netto-Wirkungsindex und spätere Rückkopplung."
+    },
+    {
+      "termId": "referenzrahmen",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14",
+      "reviewStatus": "Fachlich mit Begriffsleitfaden v1.8 abgeglichen",
+      "definition": "Ein Referenzrahmen macht nachvollziehbar, anhand welcher Ziele und Schutzmaßstäbe eine festgestellte Veränderung eingeordnet wird. Wirkung braucht einen offengelegten Bezug zu Wirkungsraum, Zeitraum und Betroffenen. Die Agenda 2030 und ihre SDGs sind ein globaler Referenzrahmen. SDG+ ist eine WÖk-Ergänzung. Bei einschlägigen deutschen öffentlichen Fällen gehört die DNS zum Referenzrahmen. Je nach Fall sind etwa Grund- und Menschenrechte, gesetzliche Grenzwerte, wissenschaftliche Schwellen und fachliche Benchmarks maßgeblich. Der Zielbezug beantwortet eine andere Frage als der Nachweis und die kausale Zurechnung der Zustandsveränderung.",
+      "longDefinition": "Ein Referenzrahmen macht nachvollziehbar, anhand welcher Ziele und Schutzmaßstäbe eine festgestellte Veränderung eingeordnet wird. Wirkung braucht einen offengelegten Bezug zu Wirkungsraum, Zeitraum und Betroffenen. Die Agenda 2030 und ihre SDGs sind ein globaler Referenzrahmen. SDG+ ist eine WÖk-Ergänzung. Bei einschlägigen deutschen öffentlichen Fällen gehört die DNS zum Referenzrahmen. Je nach Fall sind etwa Grund- und Menschenrechte, gesetzliche Grenzwerte, wissenschaftliche Schwellen und fachliche Benchmarks maßgeblich. Der Zielbezug beantwortet eine andere Frage als der Nachweis und die kausale Zurechnung der Zustandsveränderung."
+    },
+    {
+      "termId": "wirkungsgesellschaft",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14",
+      "reviewStatus": "Fachlich mit Begriffsleitfaden v1.8 abgeglichen",
+      "shortDefinition": "Die Wirkungsgesellschaft ist ein Zukunftsbild der Wirkungsökonomie. Erkenntnisse über tatsächliche Folgen sollen demokratisch kontrolliert in Entscheidungen zurückfließen.",
+      "hoverDefinition": "Die Wirkungsgesellschaft ist ein Zukunftsbild der Wirkungsökonomie. Erkenntnisse über tatsächliche Folgen sollen demokratisch kontrolliert in Entscheidungen zurückfließen.",
+      "metaDescription": "Die Wirkungsgesellschaft ist ein Zukunftsbild der Wirkungsökonomie. Erkenntnisse über tatsächliche Folgen sollen demokratisch kontrolliert in Entscheidungen zurückfließen.",
+      "definition": "Die Wirkungsgesellschaft bezeichnet eine Gesellschaft, die Wissen, Daten, Forschung und Bildung nicht nur verfügbar macht, sondern in Rückkopplung übersetzt. Die Wissensgesellschaft fragt: Was wissen wir? Die Wirkungsgesellschaft fragt: Was bewirkt es? Was folgt daraus? Welche Entscheidung verändert sich? Welche Rückkopplung entsteht?\n\nSie richtet zentrale Entscheidungen nicht allein an Wachstum, Gewinn, Reichweite, Effizienz oder bloßer Wissensproduktion aus, sondern an tatsächlicher positiver Netto-Wirkung für Mensch, Planet und Demokratie. Erkenntnisse sollen nicht nur veröffentlicht, sondern wirksam gemacht werden: in Preisen, Steuern, Kapitalflüssen, Förderlogiken, Beschaffung, Medienverantwortung, politischer Entscheidung, Bildung, Unternehmensführung und öffentlichen Debatten.\n\nDie Wirkungsgesellschaft ist deshalb keine Planwirtschaft, kein Social-Credit-System und keine moralische Rangliste von Menschen. Sie bewertet keine Personen. Sie fragt nach Wirkungen von Produkten, Organisationen, Regeln, Investitionen, Medienräumen und öffentlichen Entscheidungen und hält demokratische Kontrolle, Rechtsschutz, Datenschutz und Korrekturfähigkeit fest.",
+      "longDefinition": "Die Wirkungsgesellschaft bezeichnet eine Gesellschaft, die Wissen, Daten, Forschung und Bildung nicht nur verfügbar macht, sondern in Rückkopplung übersetzt. Die Wissensgesellschaft fragt: Was wissen wir? Die Wirkungsgesellschaft fragt: Was bewirkt es? Was folgt daraus? Welche Entscheidung verändert sich? Welche Rückkopplung entsteht?\n\nSie richtet zentrale Entscheidungen nicht allein an Wachstum, Gewinn, Reichweite, Effizienz oder bloßer Wissensproduktion aus, sondern an tatsächlicher positiver Netto-Wirkung für Mensch, Planet und Demokratie. Erkenntnisse sollen nicht nur veröffentlicht, sondern wirksam gemacht werden: in Preisen, Steuern, Kapitalflüssen, Förderlogiken, Beschaffung, Medienverantwortung, politischer Entscheidung, Bildung, Unternehmensführung und öffentlichen Debatten.\n\nDie Wirkungsgesellschaft ist deshalb keine Planwirtschaft, kein Social-Credit-System und keine moralische Rangliste von Menschen. Sie bewertet keine Personen. Sie fragt nach Wirkungen von Produkten, Organisationen, Regeln, Investitionen, Medienräumen und öffentlichen Entscheidungen und hält demokratische Kontrolle, Rechtsschutz, Datenschutz und Korrekturfähigkeit fest.",
+      "deepGlossarySections": [
+        {
+          "title": "Auf einen Blick",
+          "items": [
+            "Die Wirkungsgesellschaft ist die Weiterentwicklung der Wissensgesellschaft.",
+            "Sie fragt nicht nur: Was wissen wir? Sondern: Was bewirkt es?",
+            "Sie fragt: Was folgt daraus, welche Entscheidung verändert sich und welche Rückkopplung entsteht?",
+            "Ihr Maßstab ist positive Netto-Wirkung für Mensch, Planet und Demokratie.",
+            "Sie übersetzt Erkenntnisse in Preise, Steuern, Kapitalflüsse, Förderlogiken, Beschaffung, Medienverantwortung, Bildung, Unternehmensführung, öffentliche Debatten und politische Entscheidungen.",
+            "Sie ist keine Planwirtschaft, keine Sprachpolizei, kein Social-Credit-System und keine Personenbewertung.",
+            "Sie braucht Wirkungsforschung, Wirkungsdaten, Wirkungskompetenz, Rechtsschutz, demokratische Kontrolle und Korrekturfähigkeit."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Leitgedanke",
+          "body": "Die Wissensgesellschaft war ein Fortschritt: Sie hat Wissen verfügbar gemacht, Forschung verbreitet, Daten zugänglich gemacht und Bildung geöffnet. Die Krisen unserer Zeit zeigen aber, dass Wissen allein nicht genügt. Die Wirkungsgesellschaft setzt genau an dieser Lücke an: Wissen muss in Entscheidungen zurückwirken."
+        },
+        {
+          "title": "Historische Einordnung",
+          "items": [
+            "Industriegesellschaft: Produktivität entsteht vor allem durch Maschinen, Energie, Fabriken und Arbeitsteilung.",
+            "Dienstleistungsgesellschaft: Wertschöpfung verschiebt sich zu Service, Organisation, Handel und Kommunikation.",
+            "Wissensgesellschaft: Wissen, Bildung, Daten, Forschung, Software und Innovation werden zentrale Produktivkräfte.",
+            "Wirkungsgesellschaft: Wissen wird in bessere Zustände zurückgekoppelt; entscheidend ist nicht nur, was wir wissen oder verdienen, sondern was daraus für Mensch, Planet und Demokratie folgt."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Der Maßstabswechsel",
+          "items": [
+            "Von Wissen zu Wirkung: Erkenntnis bleibt nicht Selbstzweck, sondern verändert Entscheidungen.",
+            "Von Reporting zu Rückkopplung: Berichte reichen nicht; Ergebnisse müssen Preise, Regeln, Kapital oder Handeln verändern.",
+            "Von Effizienz zu Netto-Wirkung: Nicht nur weniger Einsatz pro Einheit zählt, sondern tatsächliche Zustandsveränderung.",
+            "Von Reichweite zu Verantwortung: Sichtbarkeit ist nicht Wirkung; Medien und Plattformen brauchen Wirkungsbewusstsein.",
+            "Von Daten zu Demokratie: Daten informieren Entscheidungen, ersetzen aber keine demokratische Aushandlung."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Was wird zurückgekoppelt?",
+          "items": [
+            "Preise und Steuern",
+            "Kapitalflüsse und Finanzierung",
+            "Förderlogiken und öffentliche Haushalte",
+            "Beschaffung und Produktgestaltung",
+            "Unternehmensführung und Risikomanagement",
+            "Medienverantwortung, Reichweite und Korrektur",
+            "Bildung, Wirkungskompetenz und öffentliche Debatten",
+            "politische Entscheidungen und demokratische Lernschleifen"
+          ],
+          "body": ""
+        },
+        {
+          "title": "Wirkungsgesellschaft und SDG+",
+          "body": "Wirkung braucht einen offengelegten Bezug zu Wirkungsraum, Zeitraum und Betroffenen. Die Agenda 2030 und ihre SDGs sind ein globaler Referenzrahmen. SDG+ ist eine WÖk-Ergänzung. Bei einschlägigen deutschen öffentlichen Fällen gehört die DNS zum Referenzrahmen."
+        },
+        {
+          "title": "Rolle der Wirkungsforschung",
+          "body": "Ohne Wirkungsforschung bleibt Wirkungsgesellschaft ein Zielbild. Wirkungsforschung liefert die prüfbaren Wirkpfade, Quellen, Gegenargumente, Reviews und Veröffentlichungen, aus denen Rückkopplung entstehen kann. Das Wirkungsinstitut ist der Forschungs- und Arbeitsraum für diese Übersetzung."
+        },
+        {
+          "title": "Wirkmechanismus",
+          "items": [
+            "Wissen sichtbar machen: Daten, Forschung, Erfahrungswissen und Betroffenenwissen werden zusammengeführt.",
+            "Wirkung unterscheiden: Wirkung, Wirkungspotenzial, Wirkungsrisiko, Nebenwirkung und Netto-Wirkung werden getrennt betrachtet.",
+            "Bewertung rahmen: Positive Wirkung wird an SDGs, Agenda 2030 und SDG+ gespiegelt.",
+            "Nichtkompensation sichern: Schwere Schäden in einem Feld dürfen nicht durch Vorteile in einem anderen Feld unsichtbar werden.",
+            "Rückkopplung herstellen: Ergebnisse wirken auf Preise, Steuern, Kapital, Haushalte, Beschaffung, Regeln und öffentliche Entscheidungen zurück.",
+            "Lernen institutionalisieren: Monitoring, Audits, Versionierung, Einspruch und wissenschaftliche Prüfung halten das System korrigierbar."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Schutzmechanismen",
+          "items": [
+            "Keine Personenbewertung und kein Social Credit.",
+            "Keine geheimen Scores und keine intransparente Steuerung.",
+            "Datenschutz, Rechtsweg, Einspruchsmöglichkeiten und öffentliche Nachvollziehbarkeit.",
+            "Unabhängige Prüfung, offene Konsultation und wissenschaftliche Qualitätssicherung.",
+            "Trennung von Messung, Bewertung und politischer Entscheidung.",
+            "Versionierung statt Dogma: Wirkungsmodelle müssen lernfähig bleiben.",
+            "Wirkungsgesellschaft darf keine Überwachungsgesellschaft werden. Sie ist Rückkopplungsgesellschaft, nicht Kontrollgesellschaft."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Risiken und Missverständnisse",
+          "items": [
+            "Planwirtschaft: Die Wirkungsgesellschaft plant nicht alles zentral, sondern verbessert Rückkopplung in Märkten und Institutionen.",
+            "Moralisierung: Sie bewertet Wirkungen, nicht den Wert von Menschen.",
+            "Technokratie: Daten und Wissenschaft informieren, aber demokratische Aushandlung bleibt notwendig.",
+            "Messbarkeitsillusion: Nicht alles ist exakt messbar; qualitative Rückkopplung und informelles Wissen bleiben wichtig.",
+            "Wissensabwertung: Die Wirkungsgesellschaft wertet die Wissensgesellschaft nicht ab, sondern baut auf ihr auf."
+          ],
+          "body": ""
+        },
+        {
+          "title": "WÖk-Prüffragen",
+          "items": [
+            "Wird Wissen nur gesammelt oder verändert es Entscheidungen?",
+            "Welche tatsächlichen Zustände verändern sich für Mensch, Planet und Demokratie?",
+            "Welche Nebenwirkungen, Wirkungsrisiken und nichtkompensierbaren Grenzen bestehen?",
+            "Wie werden Wirkungsdaten demokratisch gesichert und transparent genutzt?",
+            "Welche Rückkopplung entsteht in Preisen, Steuern, Kapital, Beschaffung, Regeln oder Haushalten?",
+            "Wer kann widersprechen, prüfen, korrigieren oder Einspruch einlegen?",
+            "Wird positive Netto-Wirkung belohnt und schädliche Wirkung entlastet oder verteuert?"
+          ],
+          "body": ""
+        },
+        {
+          "title": "WÖk-Formulierung",
+          "body": "Die Wirkungsgesellschaft ist ein Zukunftsbild der Wirkungsökonomie. Erkenntnisse über tatsächliche Folgen sollen demokratisch kontrolliert in Entscheidungen zurückfließen."
+        }
+      ]
+    },
+    {
+      "termId": "wirkungsindikator",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14",
+      "reviewStatus": "Fachlich mit Begriffsleitfaden v1.8 abgeglichen",
+      "shortDefinition": "Ein Wirkungsindikator ist eine definierte Mess- oder Beobachtungsgröße für einen Wirkungsaspekt.",
+      "hoverDefinition": "Ein Wirkungsindikator ist eine definierte Mess- oder Beobachtungsgröße für einen Wirkungsaspekt.",
+      "metaDescription": "Ein Wirkungsindikator ist eine definierte Mess- oder Beobachtungsgröße für einen Wirkungsaspekt.",
+      "definition": "Ein Wirkungsindikator ist eine definierte Mess-, Beobachtungs- oder Bewertungsgröße, mit der ein bestimmter Wirkungsaspekt sichtbar gemacht wird. Er ist nicht selbst Wirkung, sondern ein strukturierter Zugang zu tatsächlichen Zustandsveränderungen.",
+      "longDefinition": "Ein Wirkungsindikator ist eine definierte Mess-, Beobachtungs- oder Bewertungsgröße, mit der ein bestimmter Wirkungsaspekt sichtbar gemacht wird. Er ist nicht selbst Wirkung, sondern ein strukturierter Zugang zu tatsächlichen Zustandsveränderungen.",
+      "deepGlossarySections": [
+        {
+          "title": "Kurzdefinition / Hover",
+          "body": "Ein Wirkungsindikator ist eine definierte Mess- oder Beobachtungsgröße für einen Wirkungsaspekt."
+        },
+        {
+          "title": "Auf einen Blick",
+          "body": "- macht einen Wirkungsaspekt messbar oder strukturiert bewertbar\n- ist nicht selbst Wirkung, sondern Beobachtungspunkt für Wirkung\n- kann ökologisch, sozial, gesundheitlich, demokratisch, ökonomisch oder systemisch sein\n- wird in der WÖk über eine WÖk-ID eindeutig adressierbar\n- braucht Einheit, Datenquelle, Systemgrenze, Datenqualität, Bewertungsrichtung und Version\n- erst Messwert, Benchmark, Archetyp und Bewertungslogik erzeugen einen Score\n- schützt vor vagen Claims, bleibt aber abhängig von Datenqualität und Einordnung"
+        },
+        {
+          "title": "Hauptdefinition",
+          "body": "Ein Wirkungsindikator beschreibt, was gemessen oder bewertet werden soll: etwa CO2-Emissionen pro Produkteinheit, Wasserverbrauch in einer Stressregion, existenzsichernde Löhne in der Lieferkette, Reparierbarkeit, Arbeitsunfallrate, Chemikaliensicherheit, Datenschutzqualität, Medienpluralität oder Barrierefreiheit. Wirkung ist die tatsächliche Zustandsveränderung; der Indikator ist ein prüfbarer Zugang zu einem Ausschnitt dieser Veränderung."
+        },
+        {
+          "title": "Wirkungsökonomische Relevanz",
+          "body": "Ohne Wirkungsindikatoren wäre die Wirkungsökonomie nicht steuerungsfähig. Sie ermöglichen WÖk-IDs, Produkt- und Unternehmensscorecards, Wirkungsregister, Datenqualitätsprüfung, Benchmarks, Archetypen, FinalScore, Wirkungsaudit, Assurance, Wirkungssteuer, Wirkungshaushalt, T-SROI, NWI, Responsible Marketing und Greenwashing-Prüfung."
+        },
+        {
+          "title": "Wirkungsökonomische Sicht & Einordnung",
+          "body": "Die WÖk unterscheidet Wirkung, Wirkungsindikator, WÖk-ID, Messwert, Benchmark, Archetyp, Score und FinalScore. Der Indikator ist ein Baustein, kein Urteil. Er gewinnt Bedeutung erst im Bewertungszusammenhang mit Systemgrenze, Datenqualität, Benchmark, Archetyp und Schutzlogik."
+        },
+        {
+          "title": "Abgrenzung: Nicht verwechseln mit",
+          "body": "Die WÖk-ID identifiziert den Prüfgegenstand. Das Register dokumentiert, welche Zustandsgrößen, Indikatoren und Daten mit ihm verbunden sind. Der Messwert ist eine konkrete Beobachtung."
+        },
+        {
+          "title": "Beispiele",
+          "body": "- Ein Produkt-CO2-Indikator misst Treibhausgasemissionen pro funktionaler Einheit.\n- Ein Wasserstress-Indikator verbindet Wasserverbrauch mit regionaler Knappheit.\n- Ein Living-Wage-Indikator misst existenzsichernde Bezahlung in relevanten Lieferkettenstufen.\n- Ein Reparierbarkeitsindikator misst Ersatzteilverfügbarkeit, Demontierbarkeit und Support.\n- Ein Medienqualitätsindikator beschreibt Quellenklarheit, Korrekturpraxis und Pluralität."
+        },
+        {
+          "title": "Mess- und Steuerungsbezug",
+          "body": "Mindestfelder sind indicator_id, wok_id, title, dimension, sdg_reference, sdgplus_reference, indicator_family, unit, polarity, data_type, source_reference, calculation_logic, system_boundary, lifecycle_stage, relevant_nace_codes, benchmark_reference, archetype_reference, data_quality_requirement, verification_requirement, valid_from, valid_until, version und governance_owner. Steuerungsbezüge sind WÖk-ID, Scorecard, Register, Benchmark, Archetyp, FinalScore, Steuer, Haushalt, T-SROI, NWI, Audit und Assurance."
+        },
+        {
+          "title": "Querverweise im Glossar",
+          "body": "- Wirkungsdaten\n- Wirkungspfad\n- Datenqualität\n- Scorecard\n- wirkungscontrolling\n- WÖk-ID\n- Benchmark\n- Archetyp\n- FinalScore\n- Wirkungsregister\n- Wirkungsbewertung\n- Produktdaten\n- Digitaler Produktpass\n- CSRD\n- ESRS\n- GRI\n- NACE\n- messwert\n- Systemgrenze\n- Wirkungsindikator\n- Produktscorecard\n- Wirkungsaudit\n- Wirkungsassurance\n- datenquelle\n- Reverse Merit Order\n- Wirkungsgrenze\n- Nichtkompensationsprinzip\n- Wirkungswahrheit\n- Wirkungsblindheit\n- Greenwashing\n- Impact-Washing\n- SDG-Washing\n- wirkungssimulation\n- Wirkungsdatenraum\n- EU-Taxonomie\n- SDGs\n- SDG+\n- Mensch, Planet und Demokratie\n- Wirkung\n- Wirkungspotenzial\n- Netto-Wirkung\n- positive Netto-Wirkung\n- Transformationswirkung\n- Wirkungslenkung\n- Wirkungsarchitektur\n- Wirkungsrückkopplung\n- Produktwirkung\n- Responsible Marketing\n- 5. P = Planet\n- Wirkungsrat"
+        },
+        {
+          "title": "Quellenbasis",
+          "body": "Interne Quellen:\n- Führender Begriffsleitfaden der Wirkungsökonomie\n- Die neue Ordnung des Wohlstands\n- Technische Leitlinien WUStG\n- WÖk-Master-Items\n- Produktbesteuerung durch Wirkung\n- Beispiel_Apfel_Wirkungssteuer_Bonusregel\n- BASF Polyamid Beispiel von der CSRD zur Produktscorecard\n- Wirkungsoekonomie in der Lieferkette\n- Wirkungsrat-Konzept\n- Systemmodell der Wirkungsökonomie\n- T-SROI-Whitepaper\n\nExterne Quellen:\n- UN Sustainable Development Goals / Agenda 2030\n- CSRD / ESRS\n- GRI Standards\n- Eurostat NACE\n- EU-Taxonomie\n- Digital Product Passport / ESPR\n- Product Environmental Footprint\n- ISO 14040 / ISO 14044\n- ISO 14064 / ISO 14067\n- GHG Protocol\n- OECD Guidelines for Multinational Enterprises on Responsible Business Conduct"
+        },
+        {
+          "title": "Redaktionelle Metadaten",
+          "body": "- Glossar-Pack: 006\n- Cluster: Daten, Indikatoren & technische Bewertungslogik\n- Version: 1.1\n- Review-Status: redaktionell zu prüfen\n- Qualitätsniveau: deep_glossary_entry\n- Status im Pack: professionalisiert\n- Keine Personenbewertung, kein Social Credit\n- SDG+ ist eine WÖk-Erweiterung, keine offizielle UN-Kategorie"
+        }
+      ]
+    },
+    {
+      "termId": "kapitalwirkung",
+      "version": "2.2",
+      "lastUpdated": "2026-11-14",
+      "reviewStatus": "Fachlich mit Begriffsleitfaden v1.8 abgeglichen",
+      "shortDefinition": "Kapitalwirkung bezeichnet die tatsächlichen Wirkungen, die Kapital durch Finanzierung, Investition, Kredit, Eigentum oder Versicherung auf Mensch, Planet und Demokratie auslöst.",
+      "hoverDefinition": "Kapitalwirkung bezeichnet die tatsächlichen Wirkungen, die Kapital durch Finanzierung, Investition, Kredit, Eigentum oder Versicherung auf Mensch, Planet und Demokratie auslöst.",
+      "metaDescription": "Kapitalwirkung bezeichnet die tatsächlichen Wirkungen, die Kapital durch Finanzierung, Investition, Kredit, Eigentum oder Versicherung auf Mensch, Planet und Demokratie auslöst.",
+      "definition": "Kapitalwirkung bezeichnet Zustandsveränderungen, die sich dem Einsatz oder der Nichtbereitstellung von Kapital zurechnen lassen. Eine Finanzierungsentscheidung kann einen Wirkpfad anstoßen. Der Eintritt einer Veränderung und die Rolle der Finanzierung brauchen jeweils einen Beleg.",
+      "longDefinition": "Kapitalwirkung bezeichnet Zustandsveränderungen, die sich dem Einsatz oder der Nichtbereitstellung von Kapital zurechnen lassen. Eine Finanzierungsentscheidung kann einen Wirkpfad anstoßen. Der Eintritt einer Veränderung und die Rolle der Finanzierung brauchen jeweils einen Beleg.",
+      "deepGlossarySections": [
+        {
+          "title": "Kurzdefinition / Hover",
+          "body": "Kapitalwirkung bezeichnet die tatsächlichen Wirkungen, die Kapital durch Finanzierung, Investition, Kredit, Eigentum oder Versicherung auf Mensch, Planet und Demokratie auslöst."
+        },
+        {
+          "title": "Auf einen Blick",
+          "items": [
+            "Kapital ist kein Selbstzweck, sondern gespeicherte Handlungsmöglichkeit.",
+            "Kapitalwirkung fragt, was Kapital ermöglicht, beschleunigt, verhindert oder stabilisiert.",
+            "Rendite allein zeigt nicht, ob Kapital Zukunft stärkt oder Zukunft verbraucht.",
+            "Kapitalwirkung ist nicht dasselbe wie ESG-Risiko.",
+            "Zentral sind NWI, T-SROI, Portfolio-Wirkung, Wirkungsrisiko, Datenqualität und Nichtkompensation."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Hauptdefinition",
+          "body": "Kapitalwirkung bezeichnet Zustandsveränderungen, die sich dem Einsatz oder der Nichtbereitstellung von Kapital zurechnen lassen. Eine Finanzierungsentscheidung kann einen Wirkpfad anstoßen. Der Eintritt einer Veränderung und die Rolle der Finanzierung brauchen jeweils einen Beleg."
+        },
+        {
+          "title": "Wirkungsökonomische Relevanz",
+          "body": "Kapitalwirkung ist zentral, weil Kapital entscheidet, welche Zukunft schneller wird. Was Kapital finanziert, kann wachsen, skalieren und Standards setzen. Klassische Größen wie Rendite, Risiko und Liquidität bleiben wichtig, sind aber unvollständig: Ein hoher finanzieller Return kann aus negativer Wirkung entstehen, während ein kurzfristig teures Transformationsprojekt langfristig Resilienz und positive Netto-Wirkung erzeugen kann."
+        },
+        {
+          "title": "Wirkungsökonomische Sicht & Einordnung",
+          "body": "Die WÖk verschiebt Kapital vom Kompass zum Werkzeug. Kapital soll nicht bestimmen, was gesellschaftlich wertvoll ist, sondern dem folgen, was positive Netto-Wirkung für Mensch, Planet und Demokratie erzeugt. Kapitalwirkung unterscheidet Finanzgröße, Steuerungsgröße und Wirkungskraft und geht damit über ESG-Risiko oder reine Reputationsfragen hinaus."
+        },
+        {
+          "title": "Abgrenzung: Nicht verwechseln mit",
+          "items": [
+            "Kapitalrendite: misst finanziellen Ertrag; Kapitalwirkung misst Zustandsveränderung.",
+            "ESG-Risiko: kann Teil der Kapitalwirkung sein, ersetzt sie aber nicht.",
+            "Impact Investing: Anschlussbegriff; Kapitalwirkung betrifft jede Kapitalallokation.",
+            "Philanthropie: Kapitalwirkung betrifft auch Kerngeschäft, Kredit, Versicherung, Fonds und Eigentum.",
+            "Moralisches Investieren: Kapitalwirkung ist keine private Moral, sondern Bewertung am Referenzrahmen SDGs, Agenda 2030 und SDG+."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Beispiele",
+          "items": [
+            "Ein Kredit für energieeffiziente Sanierung mit sozial stabiler Miete erzeugt Kapitalwirkung durch geringere Emissionen, Wohnstabilität und Resilienz.",
+            "Ein Fonds in fossile Infrastruktur erzeugt Emissionen, Lock-in, Abhängigkeiten und Klimarisiken.",
+            "Ein Venture-Capital-Fonds für KI kann Teilhabe stärken oder Überwachung, Desinformation und Machtkonzentration verstärken."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Mess- und Steuerungsbezug",
+          "body": "Mögliche Felder sind capital_impact_id, capital_provider, capital_recipient, instrument_type, asset_class, sector, nace_code, geography, time_horizon, capital_amount, use_of_proceeds, relevant_wok_ids, sdg_reference, sdgplus_reference, nwi_reference, t_sroi_relevance, portfolio_reference, positive_effects, negative_effects, transformative_effects, impact_risks, red_flags, reverse_merit_order_result, data_quality_class, assurance_status, impact_covenants, interest_or_return_adjustment, insurance_relevance, stewardship_actions, exit_conditions und version."
+        },
+        {
+          "title": "Schutzregeln",
+          "body": "Keine Anlageberatung, keine Kaufempfehlung und kein Renditeversprechen. Kapitalwirkung braucht Datenqualität, Systemgrenzen, Unsicherheit, Audit-Trail, Versionierung, Treuhandpflichten, Transparenz, Interessenkonfliktregeln, Rechtsschutz und Korrekturpfade. Schwere Schäden dürfen nicht durch gute Kapitalanteile kompensiert werden."
+        },
+        {
+          "title": "Querverweise im Glossar",
+          "items": [
+            "Wirkungsfonds",
+            "Portfolio-Wirkung",
+            "Wirkungsrendite",
+            "Versicherbarkeit",
+            "Wirkungskapital",
+            "Kapitalrendite",
+            "Wirkungsrisiko",
+            "Wirkungsresilienz",
+            "NWI",
+            "T-SROI",
+            "Positive Netto-Wirkung",
+            "Transformationswirkung",
+            "Wirkungsrückkopplung",
+            "Wirkungswahrheit",
+            "Wirkungsblindheit",
+            "Reverse Merit Order",
+            "Wirkungsgrenze",
+            "ESG",
+            "SFDR",
+            "EU-Taxonomie",
+            "CSRD",
+            "ESRS",
+            "GRI"
+          ],
+          "body": ""
+        },
+        {
+          "title": "Quellenbasis",
+          "items": [
+            "Interne Quellen: Die neue Ordnung des Wohlstands; Systemmodell der Wirkungsökonomie; T-SROI-Whitepaper; Arbeitspapier Rentensystem; Working-Paper Wirkungssteuergesetz; Führender Begriffsleitfaden.",
+            "Externe Quellen: UN SDGs / Agenda 2030; EU Sustainable Finance; EU Taxonomy; SFDR; CSRD / ESRS; GRI Standards; PRI; NGFS; OECD Responsible Business Conduct."
+          ],
+          "body": ""
+        },
+        {
+          "title": "Redaktionelle Metadaten",
+          "items": [
+            "status: professionalisiert",
+            "review_status: redaktionell zu prüfen",
+            "cluster: Kapital, Fonds & Versicherbarkeit nach Wirkung",
+            "pack: 011"
+          ],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "termId": "wirkungseinkommensteuer",
+      "shortDefinition": "Die Wirkungseinkommensteuer (WEstG) ist ein vorgeschlagenes Einkommensteuermodul für gesetzlich geregelte Entlastungen bei objektiv bestimmbaren Tätigkeiten, Prävention, Weiterbildung oder Übergängen.",
+      "hoverDefinition": "Die Wirkungseinkommensteuer ist ein vorgeschlagenes Modul. Die Einkommensteuer bleibt primär an Einkommenshöhe und finanzieller Leistungsfähigkeit orientiert.",
+      "definition": "Das WEstG-Modul nach § 78 des WStG-3.0-Entwurfs lässt die Einkommenshöhe und die finanzielle Leistungsfähigkeit als primäre Grundlagen der Einkommensteuer bestehen. Vorgesehen sind mögliche objektive, nachweisbare und befristete Entlastungen, sofern Gleichheit, Finanzierbarkeit und Abgrenzbarkeit gesichert sind. Negative Produkt- und Unternehmenswirkungen sollen vorrangig auf Produkt-, Unternehmens-, Verbrauchs- oder Kapitalebene behandelt werden. Beschäftigte werden für die Gesamtwirkung ihres Arbeitgebers nicht belastet.",
+      "longDefinition": "Das WEstG-Modul nach § 78 des WStG-3.0-Entwurfs lässt die Einkommenshöhe und die finanzielle Leistungsfähigkeit als primäre Grundlagen der Einkommensteuer bestehen. Vorgesehen sind mögliche objektive, nachweisbare und befristete Entlastungen, sofern Gleichheit, Finanzierbarkeit und Abgrenzbarkeit gesichert sind. Negative Produkt- und Unternehmenswirkungen sollen vorrangig auf Produkt-, Unternehmens-, Verbrauchs- oder Kapitalebene behandelt werden. Beschäftigte werden für die Gesamtwirkung ihres Arbeitgebers nicht belastet.",
+      "metaDescription": "Das WEstG-Modul ist Teil des WStG-3.0-Entwurfs. Es könnte gesetzlich bestimmte und zeitlich begrenzte Entlastungen innerhalb der Einkommensteuer ermöglichen.",
+      "woekRelation": "Wirkungseinkommen bezeichnet das Modell aus Grunddividende, Markteinkommen und Wirkungsbonus. Das WEstG ist ein vorgeschlagenes Einkommensteuermodul mit eigener gesetzlicher Grundlage.",
+      "usageNote": "Als Vorschlag nach § 78 einordnen. Die frühere 60:40-Kombination von Organisations- und Individualwirkung dokumentiert den historischen Stand von 2025.",
+      "statusNote": "Entwurfsmodul im WStG 3.0. Für eine Anwendung ist ein Gesetz erforderlich.",
+      "source": "Wirkungssteuer 3.0 und Wirkungssteuergesetz (WStG) 3.0",
+      "sourceDocument": "Wirkungssteuer 3.0 und Wirkungssteuergesetz (WStG) 3.0 · Gesamtneufassung 2026",
+      "sourceSection": "§ 78 Absätze 1–4 und Kommentierung",
+      "sourceProvenance": "Der WStG-3.0-Entwurf (17. August 2026) führt den aktuellen Modellstand. Frühere Arbeitspapiere dokumentieren frühere Modellfassungen.",
+      "relatedDocuments": [
+        "wirkungssteuer-wstg-3-0"
+      ],
+      "reviewStatus": "Mit den einschlägigen Abschnitten des WStG-3.0-Entwurfs abgeglichen",
+      "lastUpdated": "2026-11-14"
+    },
+    {
+      "termId": "wirkungssteuergesetz",
+      "definition": "Das WStG 3.0 ist ein Referenz- und Diskussionsentwurf mit 125 kommentierten Paragrafen. Er ordnet die Voraussetzungen für wirkungsbezogene Module innerhalb bestehender Steuerarten. Die bisherige Bemessungsgrundlage gilt fort, soweit das aktivierende Gesetz nichts anderes bestimmt. Scorecards und Schutzprüfungen liefern die fachliche Grundlage. Tarif und Rechtsfolgen regelt das jeweilige Gesetz. Für die Einführung sieht der Entwurf einen gesetzlich festzulegenden Korridor für das erwartete Aufkommen vor.",
+      "longDefinition": "Das WStG 3.0 ist ein Referenz- und Diskussionsentwurf mit 125 kommentierten Paragrafen. Er ordnet die Voraussetzungen für wirkungsbezogene Module innerhalb bestehender Steuerarten. Die bisherige Bemessungsgrundlage gilt fort, soweit das aktivierende Gesetz nichts anderes bestimmt. Scorecards und Schutzprüfungen liefern die fachliche Grundlage. Tarif und Rechtsfolgen regelt das jeweilige Gesetz. Für die Einführung sieht der Entwurf einen gesetzlich festzulegenden Korridor für das erwartete Aufkommen vor.",
+      "doNotConfuseWith": [
+        "WUStG-Modul",
+        "geltendes Steuerrecht",
+        "automatische Ableitung eines Tarifs aus dem FinalScore"
+      ],
+      "examples": [
+        "Ein Produktprofil kann die Anwendung eines gesetzlich aktivierten Moduls unterstützen. Der anzuwendende Tarif folgt aus dem einschlägigen Gesetz."
+      ],
+      "deepGlossarySections": [
+        {
+          "title": "Bemessungsgrundlage und Tarife",
+          "body": "Die vorhandene steuerliche Bemessungsgrundlage gilt nach § 54 grundsätzlich fort. Ein aktivierendes Einzelgesetz kann sie ändern. Welche Folgen ein gesetzlich bestimmtes Wirkungsprofil hat, regelt die Tarifnorm. Der FinalScore dokumentiert eine fachliche Bewertung.",
+          "links": [
+            {
+              "label": "WStG 3.0 §§ 54–57",
+              "href": "/bibliothek/wirkungssteuer-wstg-3-0/#54-fortgeltung-der-steuerlichen-bemessungsgrundlage"
+            }
+          ]
+        },
+        {
+          "title": "Produktbezogenes Beispiel",
+          "body": "Ein Produktprofil kann eine zulässige, gesetzlich eingeführte Differenzierung unterstützen. Maßgeblich sind die einschlägige nationale Tarifnorm und die unionsrechtlichen Vorgaben.",
+          "links": [
+            {
+              "label": "WStG 3.0 § 66",
+              "href": "/bibliothek/wirkungssteuer-wstg-3-0/#66-umsatzsteuer-und-produktwirkungssteuer-wustg-modul"
+            }
+          ]
+        }
+      ],
+      "sourceSection": "Teil B, insbesondere §§ 8, 54–57, 66 und 125",
+      "sourceProvenance": "Führende WÖk-Quelle zum Modell ist die Gesamtneufassung des WStG vom 17. August 2026.",
+      "reviewStatus": "Mit den einschlägigen Abschnitten des WStG-3.0-Entwurfs abgeglichen",
+      "lastUpdated": "2026-11-14"
+    },
+    {
+      "termId": "wirkungssteuerkonto",
+      "hoverDefinition": "Wirkungssteuerkonto bezeichnet die saldierende Wirkungsbilanz im historischen WStG-Arbeitspapier von 2025. Der Entwurf von 2026 verwendet ein Wirkungsnachweiskonto.",
+      "definition": "Im WStG-Arbeitspapier von Oktober 2025 bezeichnete Wirkungssteuerkonto eine saldierende Wirkungsbilanz. § 32 des WStG-3.0-Entwurfs sieht stattdessen ein Wirkungsnachweiskonto für geprüfte Nachweise, Datenstände, Versionen und Prüfpfade vor. Steuerfolgen werden je Steuerart nach den gesetzlichen Regeln bestimmt. Positive Nachweise einer Steuerart begründen nach § 58 keine automatische Verrechnung mit negativen Wirkungen einer anderen Steuerart.",
+      "longDefinition": "Im WStG-Arbeitspapier von Oktober 2025 bezeichnete Wirkungssteuerkonto eine saldierende Wirkungsbilanz. § 32 des WStG-3.0-Entwurfs sieht stattdessen ein Wirkungsnachweiskonto für geprüfte Nachweise, Datenstände, Versionen und Prüfpfade vor. Steuerfolgen werden je Steuerart nach den gesetzlichen Regeln bestimmt. Positive Nachweise einer Steuerart begründen nach § 58 keine automatische Verrechnung mit negativen Wirkungen einer anderen Steuerart.",
+      "metaDescription": "Historischer Begriff aus dem WStG-Arbeitspapier 2025. Im WStG-3.0-Entwurf ist ein Wirkungsnachweiskonto vorgesehen.",
+      "woekRelation": "Der Eintrag dokumentiert die Entwicklung des früheren Wirkungssteuerkontos zum Wirkungsnachweiskonto der Gesamtneufassung 3.0.",
+      "usageNote": "Für den Entwurf von 2026 den Begriff Wirkungsnachweiskonto verwenden. Wirkungssteuerkonto bezeichnet die Fassung von 2025.",
+      "statusNote": "Historischer Begriff aus dem WStG-Arbeitspapier 2025.",
+      "source": "Wirkungssteuer 3.0 und Wirkungssteuergesetz (WStG) 3.0",
+      "sourceDocument": "Wirkungssteuer 3.0 und Wirkungssteuergesetz (WStG) 3.0 · Gesamtneufassung 2026",
+      "sourceSection": "§§ 32 und 58, Teil D und Referenz I1 zum Arbeitspapier Oktober 2025",
+      "sourceProvenance": "Die Gesamtneufassung des WStG vom 17. August 2026 ordnet die Rückschau auf das historische Arbeitspapier ein.",
+      "relatedDocuments": [
+        "wirkungssteuer-wstg-3-0",
+        "wstg-oktober-2025"
+      ],
+      "relatedTerms": [
+        "wirkungsnachweiskonto",
+        "wirkungssteuergesetz"
+      ],
+      "reviewStatus": "Mit den einschlägigen Abschnitten des WStG-3.0-Entwurfs abgeglichen",
+      "lastUpdated": "2026-11-14",
+      "shortDefinition": "Wirkungssteuerkonto bezeichnet die saldierende Wirkungsbilanz im historischen WStG-Arbeitspapier von 2025. Der Entwurf von 2026 verwendet ein Wirkungsnachweiskonto."
+    },
+    {
+      "termId": "wustg",
+      "shortDefinition": "WUStG steht für Wirkungsumsatzsteuergesetz. Das vorgeschlagene Modul betrifft produktbezogene Steuerinstrumente innerhalb des nationalen und europäischen Rechtsrahmens.",
+      "hoverDefinition": "WUStG ist das vorgeschlagene Modul zur Umsatz- und Produktbesteuerung nach § 66 des WStG-3.0-Entwurfs.",
+      "definition": "§ 66 des WStG-3.0-Entwurfs beschreibt, wie Produktwirkungen in der Besteuerung berücksichtigt werden könnten. Nationale Mehrwertsteuerdifferenzierungen sind an die unionsrechtlich eröffneten Möglichkeiten gebunden. Daneben können rechtlich zulässige Verbrauchsteuern, Abgaben oder Rückvergütungen geprüft werden. Eine umfassende wirkungsbezogene Mehrwertsteuerstaffelung wäre Gegenstand einer möglichen EU-Reform. Scorecards und Reverse Merit Order liefern das Wirkungsprofil. Den Tarif regelt das jeweilige Gesetz.",
+      "longDefinition": "§ 66 des WStG-3.0-Entwurfs beschreibt, wie Produktwirkungen in der Besteuerung berücksichtigt werden könnten. Nationale Mehrwertsteuerdifferenzierungen sind an die unionsrechtlich eröffneten Möglichkeiten gebunden. Daneben können rechtlich zulässige Verbrauchsteuern, Abgaben oder Rückvergütungen geprüft werden. Eine umfassende wirkungsbezogene Mehrwertsteuerstaffelung wäre Gegenstand einer möglichen EU-Reform. Scorecards und Reverse Merit Order liefern das Wirkungsprofil. Den Tarif regelt das jeweilige Gesetz.",
+      "metaDescription": "Vorgeschlagenes Modul des WStG für produktbezogene Besteuerung im nationalen und unionsrechtlichen Rahmen.",
+      "woekRelation": "Das Modul verknüpft Produktwirkung mit gesetzlich zulässigen Steuer- und Abgabeninstrumenten.",
+      "usageNote": "Den Entwurfsstatus, die unionsrechtlichen Grenzen und die gesetzliche Tarifentscheidung benennen.",
+      "statusNote": "Entwurfsmodul im WStG 3.0. Für den geltenden Vorsteuerabzug ist § 15 UStG maßgeblich.",
+      "source": "Wirkungssteuer 3.0 und Wirkungssteuergesetz (WStG) 3.0",
+      "sourceDocument": "Wirkungssteuer 3.0 und Wirkungssteuergesetz (WStG) 3.0 · Gesamtneufassung 2026",
+      "sourceSection": "§§ 66–67 und Technische Leitlinien WUStG v2.1 §§ 8.4, 10.1–10.4",
+      "sourceProvenance": "Der Gesetzesentwurf belegt die WÖk-Modularchitektur. Für das geltende Recht sind insbesondere die Mehrwertsteuersystemrichtlinie und das UStG maßgeblich.",
+      "relatedDocuments": [
+        "wirkungssteuer-wstg-3-0",
+        "technische-leitlinien-wustg"
+      ],
+      "reviewStatus": "Mit den einschlägigen Abschnitten des WStG-3.0-Entwurfs abgeglichen",
+      "lastUpdated": "2026-11-14"
+    }
+  ]
+}

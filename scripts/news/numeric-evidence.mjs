@@ -1,0 +1,101 @@
+import { createHash } from 'node:crypto';
+
+// German is the unchanged default for reader copy and unknown source languages.
+// English grouping is accepted only with explicit source-language metadata.
+// Never infer magnitude, units or arithmetic from a translated claim.
+// Original source excerpts are never rewritten.
+const numberLocale = language => typeof language === 'string' && /^en(?:[-_][a-z0-9]+)*$/i.test(language) ? 'en' : 'de';
+
+export function numberTokens(value, language) {
+  const text = String(value ?? "");
+  const result = new Set();
+  const english = numberLocale(language) === 'en';
+  const pattern = english
+    ? /\b\d{1,3}(?:[ \u00a0\u202f]\d{3})+(?:\.\d+)?\b|\b\d+(?:[.,]\d+)*\b/g
+    : /\b\d{1,3}(?:[ \u00a0\u202f]\d{3})+(?:[.,]\d+)?\b|\b\d{1,3}(?:\.\d{3})+(?:,\d+)?\b|\b\d+(?:[.,]\d+)?\b/g;
+  for (const match of text.matchAll(pattern)) {
+    let token = match[0].replace(/[ \u00a0\u202f]/g, "");
+    if (english) {
+      if (/^\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(token)) token = token.replaceAll(',', '');
+      else if (!/^\d+(?:\.\d+)?$/.test(token)) continue;
+    } else {
+      const fractionalUnit = /^\s*(?:%|Prozent\b|Prozentpunkt|Grad\b)/i.test(text.slice(match.index + match[0].length));
+      if (/^\d{1,3}(?:\.\d{3})+(?:,\d+)?$/.test(token) && !fractionalUnit) token = token.replaceAll(".", "");
+      token = token.replace(",", ".");
+    }
+    const [whole, fraction] = token.split(".");
+    const tail = (fraction || "").replace(/0+$/, "");
+    result.add(`${whole.replace(/^0+(?=\d)/, "")}${tail ? `.${tail}` : ""}`);
+  }
+  return result;
+}
+
+export function sourceNumberTokens(source = {}, fields = ['title', 'summary', 'article_excerpt']) {
+  return new Set(fields.flatMap(field => [...numberTokens(source[field], source.language)]));
+}
+
+// Publication metadata proves when this publisher reported, not when the
+// event occurred or any quantity in the story. Exclude only the exact,
+// attributed reporting date from the numeric check; keep reader copy intact.
+// Ein Verlagsname ist keine journalistische Zahl. „France 24", „ZDF heute 19
+// Uhr", „n-tv" tragen Ziffern, die nichts behaupten. Die Prüfung der Lesetexte
+// nahm den Namen schon heraus, die Prüfung der Aussagen nicht: dort scheiterte
+// eine Meldung an der 24 in „laut France 24" (16.09., Lauf 12:05). Getrennte
+// Schreibweisen zählen mit, weil im Text „France-24-Bericht" steht.
+export function withoutPublisherNames(value, sources = []) {
+  const escape = (name) => name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let text = String(value || '');
+  const names = new Set();
+  for (const source of Array.isArray(sources) ? sources : []) {
+    for (const name of [source?.publisher, source?.name]) {
+      if (typeof name === 'string' && name.trim().length >= 3 && /\d/.test(name)) names.add(name.trim());
+    }
+  }
+  for (const name of [...names].sort((a, b) => b.length - a.length)) {
+    const pattern = escape(name).replace(/\s+/g, '[\\s\\u00a0\\u202f-]+');
+    text = text.replace(new RegExp(pattern, 'giu'), 'Quelle');
+  }
+  return text;
+}
+
+export function withoutVerifiedPublicationDates(value, sources = []) {
+  let text=String(value || '');
+  const escape=value=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  for(const source of sources) {
+    if(!source.publisher || !source.published_at || !Number.isFinite(Date.parse(source.published_at)))continue;
+    const date=new Intl.DateTimeFormat('de-DE',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Berlin'}).format(new Date(source.published_at));
+    const prefix=escape(source.publisher)+'\\s+berichtet(?:e)?\\s+am\\s+';
+    text=text.replace(new RegExp('('+prefix+')'+escape(date),'gu'),'$1Veröffentlichungstag');
+  }
+  return text;
+}
+
+export function evidenceNumberTokens(evidence, sources = []) {
+  return new Set((Array.isArray(evidence) ? evidence : []).flatMap(proof => {
+    const source = sources.find(entry => entry.source_id === proof?.source_id && entry.url === proof?.url);
+    // Never trust a locale supplied by the model alongside its evidence.
+    return [...numberTokens(proof?.excerpt, source?.language)];
+  }));
+}
+
+// Only numeric tokens, never a mirrored article. Created AFTER source/claim
+// validation, bound to that publication version and exact source identities.
+export function numericEvidenceReceipt(candidate, version, now) {
+  return { version: 1, analysis_version: version, checked_at: now,
+    sources: candidate.sources.filter(source => source.article_excerpt).map(source => ({
+      source_id: source.source_id, url: source.url, content_hash: source.content_hash || null,
+      excerpt_hash: createHash('sha256').update(source.article_excerpt).digest('hex'),
+      number_locale: numberLocale(source.language),
+      numbers: [...sourceNumberTokens(source, ['article_excerpt'])],
+    })) };
+}
+
+export function persistedNumericEvidence(story) {
+  const receipt = story.numeric_evidence;
+  if (receipt?.version !== 1 || receipt.analysis_version !== story.current_version || !receipt.checked_at) return [];
+  return (receipt.sources || []).filter(proof => /^[a-f0-9]{64}$/.test(proof.excerpt_hash || '')
+    && story.sources.some(source => source.source_id === proof.source_id && source.url === proof.url
+      && (source.content_hash || null) === proof.content_hash
+      && (proof.number_locale === undefined || proof.number_locale === numberLocale(source.language))))
+    .flatMap(proof => Array.isArray(proof.numbers) ? proof.numbers.filter(n => typeof n === 'string' && /^\d+(?:\.\d+)?$/.test(n)) : []);
+}

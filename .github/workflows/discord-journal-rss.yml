@@ -1,0 +1,54 @@
+name: Publish Journal to Discord
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+    inputs:
+      state_only:
+        description: Initialise or check publication state without sending any messages
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: discord-rss-state
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'sustynats/wirkungsoekonomie-produktiv' && github.ref == 'refs/heads/main' && vars.WOEK_DISCORD_PUBLISHER_MODE != 'oracle_bot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/discord/
+            /scripts/news/check-api-storage.mjs
+            /scripts/news/check-git-size.mjs
+            /scripts/news/newsroom-store.mjs
+            /scripts/news/release-part.mjs
+            /docs/ops/GIT-STORAGE-POLICY.json
+      - name: Publish feed with durable state
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_JOURNAL_WEBHOOK_URL }}
+          DISCORD_STATE_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.state_only }}
+        with:
+          script: |
+            const { pathToFileURL } = require("node:url");
+            const moduleUrl = (file) => pathToFileURL(`${process.env.GITHUB_WORKSPACE}/scripts/discord/${file}`).href;
+            const { loadFeed, webhookPayload } = await import(moduleUrl("publish-journal-rss.mjs"));
+            const { publishGitHubRss } = await import(moduleUrl("rss-publication.mjs"));
+            await publishGitHubRss({
+              github, context, core, loadFeed, payload: webhookPayload,
+              branch: "discord-rss-state",
+              path: ".github/discord-journal-state.json",
+              webhookUrl: process.env.DISCORD_WEBHOOK_URL,
+              stateOnly: process.env.DISCORD_STATE_ONLY === "true",
+            });

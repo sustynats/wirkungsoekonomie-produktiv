@@ -1,0 +1,50 @@
+{
+  "reference": "0123456789abcdef",
+  "payload": {
+    "name": "Private Test Person",
+    "phone": "+49 151 12345678",
+    "email": "private-person@example.test",
+    "discord": "private.discord",
+    "background": "PRIVATE_BACKGROUND",
+    "questions": "PRIVATE_QUESTION",
+    "outcome": "PRIVATE_OUTCOME",
+    "channel": "discord",
+    "replyVia": "discord",
+    "start": "2027-03-30T10:00:00+02:00",
+    "topic": "praxis"
+  },
+  "status": "confirmed",
+  "expires": "2026-11-13T08:00:00Z",
+  "recoveryRequired": false,
+  "calendarState": "synced",
+  "confirmationSent": null,
+  "confirmationDelivery": "not_sent",
+  "confirmationPreview": {
+    "email": "private-person@example.test",
+    "reference": "0123456789abcdef",
+    "kind": "confirmed",
+    "subject": "Bestätigung deines Gesprächstermins mit Natalie Weber",
+    "body": "Hallo Private Test Person,\n\nhiermit bestätige ich unser Gespräch am 30.03.2027 um 10:00 Uhr (Europe/Berlin) für 30 Minuten.\nWir sprechen per Discord-Sprachanruf (nur Audio). Dein Benutzername: private.discord.\nFalls du verhindert bist, gib mir bitte Bescheid.\n\nIn deinen Kalender übernehmen:\nGoogle Kalender: https://calendar.google.com/calendar/render?action=TEMPLATE&text=Gespr%C3%A4ch+mit+Natalie+Weber&dates=20270330T080000Z%2F20270330T083000Z&details=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&location=Discord-Sprachanruf&ctz=UTC\nOutlook / Microsoft 365: https://outlook.office.com/calendar/deeplink/compose?allday=false&body=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&enddt=2027-03-30T08%3A30%3A00Z&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2027-03-30T08%3A00%3A00Z&subject=Gespr%C3%A4ch+mit+Natalie+Weber&location=Discord-Sprachanruf\nOutlook.com: https://outlook.live.com/calendar/deeplink/compose?allday=false&body=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&enddt=2027-03-30T08%3A30%3A00Z&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2027-03-30T08%3A00%3A00Z&subject=Gespr%C3%A4ch+mit+Natalie+Weber&location=Discord-Sprachanruf\nPrüfe den Termin und speichere ihn in deinem Kalender. Ein importierter Eintrag wird bei Änderungen oder einer Absage nicht automatisch aktualisiert.\n\nViele Grüße\nNatalie Weber",
+    "calendar": {
+      "ics": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Wirkungsoekonomie//Teilnehmertermin//DE\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nSUMMARY:Gespräch mit Natalie Weber\r\nDTSTART:20270330T080000Z\r\nDTEND:20270330T083000Z\r\nDTSTAMP:20261110T080000Z\r\nUID:9676ab7ff28fc55534cbd279c89b3d7a610bafcf8c3a5b6c419a235a3dc3ff9d@wirku\r\n ngsoekonomie.de\r\nCLASS:PRIVATE\r\nLOCATION:Discord-Sprachanruf\r\nSTATUS:CONFIRMED\r\nURL:https://wirkungsoekonomie.de/w/natalie-weber/\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+      "links": [
+        {
+          "label": "Google Kalender",
+          "url": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Gespr%C3%A4ch+mit+Natalie+Weber&dates=20270330T080000Z%2F20270330T083000Z&details=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&location=Discord-Sprachanruf&ctz=UTC"
+        },
+        {
+          "label": "Outlook / Microsoft 365",
+          "url": "https://outlook.office.com/calendar/deeplink/compose?allday=false&body=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&enddt=2027-03-30T08%3A30%3A00Z&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2027-03-30T08%3A00%3A00Z&subject=Gespr%C3%A4ch+mit+Natalie+Weber&location=Discord-Sprachanruf"
+        },
+        {
+          "label": "Outlook.com",
+          "url": "https://outlook.live.com/calendar/deeplink/compose?allday=false&body=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&enddt=2027-03-30T08%3A30%3A00Z&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&startdt=2027-03-30T08%3A00%3A00Z&subject=Gespr%C3%A4ch+mit+Natalie+Weber&location=Discord-Sprachanruf"
+        }
+      ]
+    },
+    "html": "<!doctype html><html lang=\"de\"><body style=\"font-family:Arial,sans-serif;font-size:16px;line-height:1.6;color:#20362d;background:#ffffff\"><div style=\"max-width:620px;margin:24px auto;padding:24px\"><p>Hallo Private Test Person,</p><p>hiermit bestätige ich unser Gespräch am 30.03.2027 um 10:00 Uhr (Europe/Berlin) für 30 Minuten.<br>Wir sprechen per Discord-Sprachanruf (nur Audio). Dein Benutzername: private.discord.<br>Falls du verhindert bist, gib mir bitte Bescheid.</p><h2 style=\"font-size:20px\">In deinen Kalender übernehmen</h2><p><a style=\"display:inline-block;margin:0 8px 10px 0;padding:12px 18px;background:#175541;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:bold\" href=\"https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Gespr%C3%A4ch+mit+Natalie+Weber&amp;dates=20270330T080000Z%2F20270330T083000Z&amp;details=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&amp;location=Discord-Sprachanruf&amp;ctz=UTC\">Google Kalender</a> <a style=\"display:inline-block;margin:0 8px 10px 0;padding:12px 18px;background:#175541;color:#ffffff;border-radius:6px;text-decoration:none;font-weight:bold\" href=\"https://outlook.office.com/calendar/deeplink/compose?allday=false&amp;body=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&amp;enddt=2027-03-30T08%3A30%3A00Z&amp;path=%2Fcalendar%2Faction%2Fcompose&amp;rru=addevent&amp;startdt=2027-03-30T08%3A00%3A00Z&amp;subject=Gespr%C3%A4ch+mit+Natalie+Weber&amp;location=Discord-Sprachanruf\">Outlook / Teams</a></p><p>Kalender auswählen, Termin prüfen und speichern.</p><p style=\"font-size:14px\">Privates Microsoft-Konto? <a href=\"https://outlook.live.com/calendar/deeplink/compose?allday=false&amp;body=https%3A%2F%2Fwirkungsoekonomie.de%2Fw%2Fnatalie-weber%2F&amp;enddt=2027-03-30T08%3A30%3A00Z&amp;path=%2Fcalendar%2Faction%2Fcompose&amp;rru=addevent&amp;startdt=2027-03-30T08%3A00%3A00Z&amp;subject=Gespr%C3%A4ch+mit+Natalie+Weber&amp;location=Discord-Sprachanruf\">Outlook.com öffnen</a>. Alternativ die angehängte Datei gespraech-natalie-weber.ics öffnen.</p><p style=\"font-size:14px\">Wir sprechen per Telefon oder Discord-Audio. Ein importierter Eintrag wird bei Änderungen oder einer Absage nicht automatisch aktualisiert.</p><p>Viele Grüße<br>Natalie Weber</p></div></body></html>"
+  },
+  "notificationSent": null,
+  "verified": "2026-11-10T08:15:00Z",
+  "discordVerified": "12345"
+}

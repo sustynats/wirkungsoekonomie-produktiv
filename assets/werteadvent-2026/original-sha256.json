@@ -1,0 +1,194 @@
+[
+  {
+    "path": "icons/Mit_Beschriftung/01_menschenwurde.png",
+    "sha256": "3d6fa977ad389813ce8d15ec4310b70360822b50cd92745c792465c83cafff29"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/01_menschenwurde.png",
+    "sha256": "6efa0852ca901a125e2c9aada040da674d542d5a0c226e4fe2f8d14273828e44"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/02_respekt.png",
+    "sha256": "058c324e3d109dd624b1c455894e1e2e1c7022dadb2fee6d5357e5343db0e017"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/02_respekt.png",
+    "sha256": "3b145a2443a3123c6de131839f5dcdc96b5f44db773c56c0cac58fd4ec15a4f6"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/03_solidaritat.png",
+    "sha256": "d41d67532d6cfcd67acc4a8831c93a0985aa9073411288e5faf78edd7969c901"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/03_solidaritat.png",
+    "sha256": "cc867c572ad05952b0baa8c1a4a2ef3c0ad88faa6aaa0b09faebb08d6b91dc05"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/04_gerechtigkeit.png",
+    "sha256": "f7efc931c20fcd9fcd85d06c639f6c1018825ffdb6406e5aafd95bd03e612767"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/04_gerechtigkeit.png",
+    "sha256": "19890259f3a97a1cb05d95d8e47d3f0aa56303140412110f47ee862a22c56fd7"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/05_freiheit.png",
+    "sha256": "7e5018b274b9486deb6fdabe6d9dc4dc13bcd788ec062cc2c5fac4674fb46160"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/05_freiheit.png",
+    "sha256": "56b35e84ded027f4a3d24bced6e29dde8309a0cc8e132aa5ab82c164b6141cc0"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/06_sicherheit.png",
+    "sha256": "891d20da194d7b8c0d9213df85347ed06cc07fa7f30d4dd4254185b240173118"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/06_sicherheit.png",
+    "sha256": "6417c73268e145e1988457aaba75b07c68142872ec6d9c8c9c7a89bb35a95113"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/07_vertrauen.png",
+    "sha256": "d7bf8d4c7ac4a6887a90d7688f4aaa8c19ba55ac45d19279cb4b9ccf3ddcdfd4"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/07_vertrauen.png",
+    "sha256": "cfdc8be977f97cf0364520e3756291ec3a27f5064e65a617338d3ddaaf79c591"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/08_gesundheit.png",
+    "sha256": "1b3c65353142424a1c1e5d637c4b7b6d5b6e1d5232c87f13eb34ba3dddbab1be"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/08_gesundheit.png",
+    "sha256": "9035eb3f4eb6dc13470217e13630eceb798a94d28bf3863777c6e42c0fdea7c6"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/09_bildung.png",
+    "sha256": "146311a25587ce5b4426b4494d24c8667d3d969787190591eb91811b9cb46ed2"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/09_bildung.png",
+    "sha256": "97d64c4cd7545b2be8303073d2740c9ae9b5812c9e9f481d15a150b9af1a4664"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/10_gleichberechtigung.png",
+    "sha256": "2cf85cd1936ff539185d292fc68c06f708327a656c0dc07f775dd2a490331b95"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/10_gleichberechtigung.png",
+    "sha256": "70562f1e3d8a4d372b92b1b58daf9ec428f11289921aff4dea37d3942a9552cc"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/11_vielfalt.png",
+    "sha256": "95b653bef8c9c164ffdd80c611264caa21850e85191c822e7db05b8b2b2198db"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/11_vielfalt.png",
+    "sha256": "8b95174259a1a04db9d8a37f3e9d016f7fc317fef4acd7c531abe569581809f6"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/12_nachhaltigkeit.png",
+    "sha256": "56954627eec75c487421d09344ed0010998a54d8c07ea8172be516519cd8dafe"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/12_nachhaltigkeit.png",
+    "sha256": "9fdd616e17acac183c36188a5770999e4f1f0c245bfffe4103af588a87d67b28"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/13_klimaschutz.png",
+    "sha256": "da2b63a3f6aef5ed941936eb7e2cc524f8c4e2bc5f6cf5778c708350f137f0ff"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/13_klimaschutz.png",
+    "sha256": "148c46cf6288e0c3feb5c90553454e91a4d6729a08a3f22751fc6866cbe0fc1a"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/14_ressourcenschutz.png",
+    "sha256": "1afab683128cb4b8768c9c5eb860a07e565d1a649c0219fc9666786a04cc6043"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/14_ressourcenschutz.png",
+    "sha256": "8bc8e0d34140d5adc6f71bb8444f424cbfccefc0513551ddf3a5b4fbd61c5c6a"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/15_natur-und-tierschutz.png",
+    "sha256": "5597cf41d21f0893990cdca5083c27e6387166bc70b8f55ad4187791a02ab544"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/15_natur-und-tierschutz.png",
+    "sha256": "6d5a2162886eaa5f9431e9a5b0946115b9419372fc9a1a70f363ab67e81dcf37"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/16_kreislaufwirtschaft.png",
+    "sha256": "71fcd79376745c88b7b2e66feb0b7a5600e75b76f6564256117a029e6d669b7c"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/16_kreislaufwirtschaft.png",
+    "sha256": "47929956ec3776a1257e55fc884d69f3b0d5840c168005d42f243cfba78fdc85"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/17_saubere-energie.png",
+    "sha256": "fa7755cecf2cb9a4c1a97f57e5551fef1cd738d03146a3b5db61bb2d58390162"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/17_saubere-energie.png",
+    "sha256": "9f07884d8c6abfa9d6bb018695f23aa3451e2af7c566a69120b377d5d1520e46"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/18_ernahrungssicherheit.png",
+    "sha256": "0106cfb4a9c14ae5204c1581705484ab7f157515c91b8746ac21d7565cc67c81"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/18_ernahrungssicherheit.png",
+    "sha256": "c8423221d8d5d93de4aa002d88c99c9f094655c42f53eef5704502abf76d8738"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/19_demokratie.png",
+    "sha256": "4c18e395081b1bed27464873e7b5d4c24df34eadb80b9a759d23df902cf7179f"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/19_demokratie.png",
+    "sha256": "b188b17a87b743b70eed5d0287405bb1658d6ffeff30aba41cf5c74170474bb7"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/20_rechtsstaatlichkeit.png",
+    "sha256": "28128dbe93e70e17baf9625361d9ab23dd378e6daeff4834dc18c7bfffb3e550"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/20_rechtsstaatlichkeit.png",
+    "sha256": "fc5a20b5efaa5bdfd39ee0f8e9cce1da539efad87145135d89bb6822ab170ef7"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/21_meinungsfreiheit-und-dialog.png",
+    "sha256": "deff7eb1e56f734160db342a0e5a99c19a0d8fb5aa75498516301164bcb39bfb"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/21_meinungsfreiheit-und-dialog.png",
+    "sha256": "4f262609204d80d262e8b26fdd844db4949dc30f8a22837cba929271cb36fadb"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/22_teilhabe-und-mitgestaltung.png",
+    "sha256": "98f3245560e953b397a1f42f0f31a7198ec0c667f7a53cb00fb15e58cd1cebca"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/22_teilhabe-und-mitgestaltung.png",
+    "sha256": "78466c1779e6cdf7cbfe6efcdd79c55c7536bbc03248221b12473de4b15b478c"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/23_globale-verantwortung.png",
+    "sha256": "2bb093dac4e2102512ebca40798b7004ebd9439b98d8cdc5f996cdde926c505e"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/23_globale-verantwortung.png",
+    "sha256": "7575747f15a526ecb32313dd39e6fdb8363562cc3d81be61f4c2e167fe95c203"
+  },
+  {
+    "path": "icons/Mit_Beschriftung/24_zukunftsfahigkeit.png",
+    "sha256": "f2b25bed7fda4c86362fe72b4b3d1847d66f13fea2e65acef5ac3b90f9f56167"
+  },
+  {
+    "path": "icons/Ohne_Beschriftung/24_zukunftsfahigkeit.png",
+    "sha256": "15dcd17c7378b81f337f70441c0b628633e63c6da2c211c59a517b53e4f4040c"
+  }
+]

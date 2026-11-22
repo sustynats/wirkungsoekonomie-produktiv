@@ -1,0 +1,95 @@
+import { readRepositoryJson } from '../../scripts/news/newsroom-store.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { syntheticImpact21 } from './fixtures/impact21.mjs';
+import { SEMANTIC_CHECKS } from '../../scripts/news/impact-publication.mjs';
+import { reviewPreflight } from '../../scripts/news/bridge/review-preflight.mjs';
+import {syntheticMediaReview} from './fixtures/media-review.mjs';
+
+const now='2026-09-13T12:00:00Z';
+function fixture() {
+ const r=readRepositoryJson('content/news/reviews/2026-09-10-impact-semantics.json').reviews[0];
+ const record=structuredClone(readRepositoryJson('data/news/stories.json').stories.find(s=>s.story_id===r.story_id));
+ record.impact_sources=r.assessment_sources;
+ const output={impact_assessment:syntheticImpact21(r.impact_assessment),
+  review:{status:'ready',checks:Object.fromEntries(SEMANTIC_CHECKS.map(k=>[k,{status:'pass',rationale:'Dieser konkrete Prüfpunkt wurde anhand der gelieferten Belege geprüft.'}])),findings:[]},
+  research_sources:[]};
+ const cache=new Map();
+ return {record,output,cache,bridge:{store:{observation:async k=>cache.get(k),observe:async(k,v)=>cache.set(k,v)}}};
+}
+const research={source_id:'research-preflight-test',url:'https://independent-research.example/record',title:'Public research document',publisher:'Research publisher',
+ source_function:'mechanism',quote:'A specific quoted mechanism must exist in the actual public research source.',supports:'This excerpt would support the described mechanism in the specified setting.'};
+test('review feedback combines source failure, missing factors and missing research documentation in one pass',async()=>{
+ const f=fixture();f.output.research_sources=[research];
+ delete f.output.impact_assessment.dimensions.human.primary_paths[0].magnitude_factors;
+ delete f.output.impact_assessment.research_check;
+ await assert.rejects(reviewPreflight(f.bridge,f.output,f.record,now,{fetchDocument:async()=>({body:'Unrelated original text.'})}),e=>{
+  assert.equal(e.message,'BRIDGE_PUBLICATION_GATE_FAILED');
+  assert.ok(e.issues.includes('IMPACT_RESEARCH_QUOTE_NOT_FOUND:research-preflight-test'));
+  assert.ok(e.issues.includes('IMPACT_FACTOR_REQUIRED:reach:human'));
+  assert.ok(e.issues.includes('IMPACT_RESEARCH_CHECK_REQUIRED'));
+  const context=e.issues.find(i=>i.startsWith('SOURCE_REPAIR_CONTEXT:'));
+  assert.ok(context.includes('Unrelated original text.'));
+  assert.ok(context.includes('"claim_verified":false'));
+  return true;
+ });
+ assert.equal(f.cache.size,0);assert.ok(!f.record.impact_sources.some(s=>s.source_id===research.source_id));
+});
+test('complete verified review passes the same gate used by the importer',async()=>{
+ const f=fixture(),result=await reviewPreflight(f.bridge,f.output,f.record,now);
+ assert.equal(result.gate.status,'ready');assert.deepEqual(result.gate.issues,[]);
+});
+test('valid structure never substitutes for a verified research source',async()=>{
+ const f=fixture();f.output.research_sources=[research];
+ await assert.rejects(reviewPreflight(f.bridge,f.output,f.record,now,{fetchDocument:async()=>({body:'Unrelated original text.'})}),/BRIDGE_PUBLICATION_GATE_FAILED/);
+ assert.equal(f.cache.size,0);
+});
+test('an oversized supplementary document names the blocked source and preserves paid content',async()=>{
+ const f=fixture();f.output.research_sources=[research];
+ const original=structuredClone(f.output);
+ await assert.rejects(reviewPreflight(f.bridge,f.output,f.record,now,{fetchDocument:async()=>{throw Error('FEED_TOO_LARGE');}}),e=>{
+  assert.equal(e.message,'BRIDGE_PUBLICATION_GATE_FAILED');
+  assert.ok(e.issues.includes('FEED_TOO_LARGE:research-preflight-test'));
+  return true;
+ });
+ assert.deepEqual(f.output,original);assert.equal(f.cache.size,0);
+});
+test('temporary source outages preserve retry classification instead of asking for a new article',async()=>{
+ const f=fixture();f.output.research_sources=[research];
+ const unavailable=Object.assign(Error('SOURCE_TEMPORARILY_UNAVAILABLE'),{retryable:true,retry_after_seconds:120});
+ await assert.rejects(reviewPreflight(f.bridge,f.output,f.record,now,{fetchDocument:async()=>{throw unavailable;}}),e=>e===unavailable);
+});
+test('a genuine failed editorial check remains held, never automatically changed to ready',async()=>{
+ const f=fixture();f.output.review.status='needs_review';f.output.review.checks.source_fidelity.status='fail';
+ const result=await reviewPreflight(f.bridge,f.output,f.record,now);
+ assert.equal(result.gate.status,'needs_review');assert.equal(f.output.review.checks.source_fidelity.status,'fail');
+});
+
+test('an unresolved first-pass media obligation blocks even an otherwise ready MPD review',async()=>{
+ const f=fixture();f.record.media_review_required=true;f.record.analysis={...f.record.analysis,media_impact:null};
+ await assert.rejects(reviewPreflight(f.bridge,f.output,f.record,now),e=>e.issues?.includes('MEDIA_INDEPENDENT_REVIEW_REQUIRED'));
+ f.output.media_applicability={relevant:false,reason:'Der unabhängig geprüfte synthetische Ereigniskern benötigt keine zusätzliche Medienwirkungsanalyse.'};
+ const result=await reviewPreflight(f.bridge,f.output,f.record,now);
+ assert.equal(result.gate.status,'ready');assert.deepEqual(result.reviewRecord.analysis.media_impact,f.output.media_applicability);
+ assert.equal(f.record.analysis.media_impact,null);
+ f.output.review.status='needs_review';f.output.review.checks.source_fidelity.status='fail';
+ assert.equal((await reviewPreflight(f.bridge,f.output,f.record,now)).gate.status,'needs_review');
+});
+test('a relevant but missing media check cannot be downgraded to an optional notice',async()=>{
+ const f=fixture();f.record.media_review_required=true;f.record.analysis={...f.record.analysis,media_impact:null};
+ f.output.media_applicability={relevant:true,reason:'Der unabhängige Prüfbefund erkennt einen relevanten Frame, dessen konkrete Prüfung hier noch fehlt.'};
+ await assert.rejects(reviewPreflight(f.bridge,f.output,f.record,now),e=>e.issues?.includes('MEDIA_IMPACT_REQUIRED'));
+ f.output.review.status='needs_review';f.output.review.checks.source_fidelity.status='fail';
+ assert.equal((await reviewPreflight(f.bridge,f.output,f.record,now)).gate.status,'needs_review');
+});
+
+test('a complete media review passes with the final assessment; failed independent checks still block it',async()=>{
+ const f=fixture();f.record.media_review_required=true;f.record.title='Im Beispiel wird vor einer Katastrophe gewarnt';
+ f.record.analysis={...f.record.analysis,media_impact:null};f.output.media_applicability=syntheticMediaReview();
+ let result=await reviewPreflight(f.bridge,f.output,f.record,now);
+ assert.equal(result.gate.status,'ready');assert.equal(result.reviewRecord.analysis.media_impact.relevant,true);
+ f.output.review.checks.counterpaths_and_dominance.status='fail';f.output.review.status='needs_review';
+ result=await reviewPreflight(f.bridge,f.output,f.record,now);
+ assert.equal(result.gate.status,'needs_review');assert.equal(f.record.analysis.media_impact,null);
+});

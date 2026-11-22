@@ -1,0 +1,160 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
+import { recordProcessorThroughput } from './processor.mjs';
+
+// One authoritative private SQLite database on the existing Oracle host.
+// A separate SQLite write lock is held for the complete run: no expiring lease
+// can admit a second writer while the first worker is still executing.
+export class BridgeStore {
+  constructor(file, { lane = 'global' } = {}) {
+    if (!path.isAbsolute(file)) throw new Error('BRIDGE_DB_ABSOLUTE_PATH_REQUIRED');
+    if (!['global','discovery','import','intake'].includes(lane)) throw new Error('BRIDGE_LANE_INVALID');
+    fs.mkdirSync(path.dirname(file), { recursive: true, mode: 0o700 });
+    this.db = new DatabaseSync(file);
+    fs.chmodSync(file, 0o600);
+    // Import, intake and the API processor share short journal transactions.
+    // Wait briefly for those writes; only the separate lane lock is fail-fast.
+    this.db.exec(`PRAGMA busy_timeout=5000; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;
+      CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, body TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS slots (slot TEXT PRIMARY KEY, status TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS observations (key TEXT PRIMARY KEY, body TEXT NOT NULL);`);
+    // The journal includes large archived manuscripts. Frequent editorial
+    // lookups must not scan every JSON body on the small shared Oracle host.
+    // Additive indexes only: no queue state, approval or lane ownership changes.
+    this.db.exec(`
+      CREATE INDEX IF NOT EXISTS jobs_intake_owner_created ON jobs
+        (json_extract(body,'$.intake.owner'), json_extract(body,'$.created_at') DESC);
+      CREATE INDEX IF NOT EXISTS jobs_intake_kind ON jobs (json_extract(body,'$.intake.kind'));
+      CREATE INDEX IF NOT EXISTS jobs_type ON jobs (json_extract(body,'$.input.job_type'));
+      CREATE INDEX IF NOT EXISTS jobs_state ON jobs (json_extract(body,'$.status'));
+      CREATE INDEX IF NOT EXISTS jobs_intake_news_link ON jobs
+        (json_extract(body,'$.intake.news_job_id'))
+        WHERE json_extract(body,'$.intake.news_job_id') IS NOT NULL;
+    `);
+    const lockFile = `${file}.${lane}.lock`;
+    this.lock = new DatabaseSync(lockFile);
+    fs.chmodSync(lockFile, 0o600);
+    this.lock.exec('PRAGMA busy_timeout=0; CREATE TABLE IF NOT EXISTS singleton (id INTEGER PRIMARY KEY);');
+  }
+  acquire(now, phase = 'combined', { manualRunId = null } = {}) {
+    try { this.lock.exec('BEGIN IMMEDIATE'); } catch { throw new Error('BRIDGE_RUN_LOCKED'); }
+    this.locked = true;
+    try {
+      if (!['discovery','import','combined','test'].includes(phase) || !Number.isFinite(Date.parse(now))) throw new Error('BRIDGE_SLOT_INVALID');
+      const interval = phase === 'discovery' ? 900000 : phase === 'test' ? 3600000 : 300000;
+      const offset = phase === 'discovery' ? 300000 : 0;
+      this.slot = `v2:${phase}:${Math.floor((Date.parse(now) - offset) / interval)}`;
+      if (manualRunId !== null) {
+        if (!/^\d{1,20}:\d{1,5}$/.test(manualRunId)) throw new Error('BRIDGE_MANUAL_RUN_INVALID');
+        this.slot = `manual:${phase}:${manualRunId}`;
+      }
+      if (this.db.prepare('SELECT status FROM slots WHERE slot=?').get(this.slot)?.status === 'completed') {
+        throw new Error('BRIDGE_SLOT_ALREADY_COMPLETED');
+      }
+      this.db.prepare("INSERT INTO slots VALUES (?, 'running') ON CONFLICT(slot) DO UPDATE SET status='running'").run(this.slot);
+    } catch (error) {
+      // Slot bookkeeping uses the shared journal, while lane ownership lives in
+      // a separate connection. A journal error must not strand that lane lock.
+      try { this.lock.exec('ROLLBACK'); } finally { this.locked = false; this.slot = null; }
+      throw error;
+    }
+  }
+  release(success) {
+    if (!this.locked) return;
+    try {
+      this.db.prepare('UPDATE slots SET status=? WHERE slot=?').run(success ? 'completed' : 'failed', this.slot);
+    } finally {
+      // Keep the journal failure visible, but always release the process lock.
+      try { this.lock.exec('ROLLBACK'); } finally { this.locked = false; }
+    }
+  }
+  get(id) { const row = this.db.prepare('SELECT body FROM jobs WHERE id=?').get(id); return row ? JSON.parse(row.body) : null; }
+  put(job) {
+    const existing = this.get(job.input.job_id);
+    if (existing?.staging && !job.staging) job = { ...job, staging: existing.staging };
+    this.db.exec('BEGIN IMMEDIATE');
+    try {
+      this.db.prepare('INSERT INTO jobs VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET body=excluded.body').run(job.input.job_id, JSON.stringify(job));
+      if (!existing || job.completed_at && !existing.completed_at) {
+        this.observe('processor-throughput', recordProcessorThroughput(this.observation('processor-throughput'), existing, job, new Date().toISOString()));
+      }
+      if (job.completed_at && !existing?.completed_at) {
+        const metrics = this.observation('completion-metrics') || { completed: 0, average_queue_minutes: 0, last_publication_at: null };
+        metrics.average_queue_minutes = (metrics.average_queue_minutes * metrics.completed + (Date.parse(job.completed_at) - Date.parse(job.created_at)) / 60000) / (metrics.completed + 1);
+        metrics.completed++;
+        metrics.output_detected_at = job.output_detected_at || null;
+        metrics.output_imported_at = job.output_imported_at || null;
+        metrics.processing_latency = job.processing_latency ?? null;
+        metrics.import_pickup_latency = job.import_pickup_latency ?? null;
+        if (job.ack?.status === 'imported') metrics.last_publication_at = job.completed_at;
+        this.observe('completion-metrics', metrics);
+      }
+      this.db.exec('COMMIT');
+    } catch (error) { this.db.exec('ROLLBACK'); throw error; }
+  }
+  all(page) {
+    const select = "SELECT id, json_remove(body,'$.staging') AS body FROM jobs WHERE json_extract(body,'$.archived_at') IS NULL";
+    if (page === undefined) return this.db.prepare(select + ' ORDER BY id').all().map(row => JSON.parse(row.body));
+    if (!page || !Number.isInteger(page.page_size) || page.page_size < 1 || page.page_size > 20
+      || typeof page.after !== 'string' || page.after.length > 180) throw Error('BRIDGE_QUEUE_PAGE_INVALID');
+    const rows = this.db.prepare(select + ' AND id > ? ORDER BY id LIMIT ?').all(page.after, page.page_size + 1);
+    const visible = rows.slice(0, page.page_size);
+    return { page_version: 1, items: visible.map(row => JSON.parse(row.body)),
+      next_cursor: rows.length > page.page_size ? visible.at(-1).id : null };
+  }
+  // Polling and health checks must never materialize full articles, source
+  // packets or review histories. The legacy queue can exceed the server heap.
+  statusJobs() {
+    return this.db.prepare(`SELECT id, json_extract(body,'$.status') AS status,
+      json_extract(body,'$.input.job_type') AS job_type,
+      json_extract(body,'$.created_at') AS created_at,
+      json_extract(body,'$.publication_gate.status') AS gate_status,
+      json_extract(body,'$.publication_gate.review_job_id') AS review_job_id,
+      json_extract(body,'$.semantic_review.assessment.version') AS assessment_version,
+      json_extract(body,'$.semantic_review.assessment.semantics_revision') AS assessment_revision,
+      json_type(body,'$.accepted') AS accepted_type,
+      json_type(body,'$.ack') AS ack_type,
+      COALESCE(json_array_length(body,'$.corrections'),0) AS correction_count
+      FROM jobs WHERE json_extract(body,'$.archived_at') IS NULL ORDER BY id`).all().map(row => ({
+        input: {job_id: row.id, job_type: row.job_type}, status: row.status, created_at: row.created_at,
+        publication_gate: {status: row.gate_status, review_job_id: row.review_job_id},
+        semantic_review: row.assessment_version ? {assessment: {version: row.assessment_version,
+          semantics_revision: row.assessment_revision}} : null,
+        accepted: row.accepted_type != null && row.accepted_type !== 'null',
+        ack: row.ack_type != null && row.ack_type !== 'null', correction_count: row.correction_count,
+      }));
+  }
+  // The editorial worker needs open request identities, not the complete
+  // historical news queue. Bodies are fetched individually only when needed.
+  editorialJobs(page) {
+    if (!page || !Number.isInteger(page.page_size) || page.page_size<1 || page.page_size>20
+      || typeof page.after!=='string' || page.after.length>180) throw Error('BRIDGE_QUEUE_PAGE_INVALID');
+    const rows=this.db.prepare(`SELECT id, json_extract(body,'$.status') AS status,
+      json_extract(body,'$.created_at') AS created_at,
+      json_extract(body,'$.intake.draft_id') AS draft_id,
+      json_extract(body,'$.intake.trigger_type') AS trigger_type,
+      json_extract(body,'$.intake.manual_research') AS manual_research,
+      json_type(body,'$.ack') AS ack_type, json_type(body,'$.accepted') AS accepted_type
+      FROM jobs WHERE json_extract(body,'$.input.job_type')='editorial_request'
+      AND json_extract(body,'$.status') IN ('queued','correction_pending')
+      AND json_extract(body,'$.archived_at') IS NULL AND id>? ORDER BY id LIMIT ?`)
+      .all(page.after,page.page_size+1);
+    const visible=rows.slice(0,page.page_size);
+    return {page_version:1,items:visible.map(r=>({input:{job_id:r.id,job_type:'editorial_request'},
+      status:r.status,created_at:r.created_at,intake:{draft_id:r.draft_id,trigger_type:r.trigger_type,manual_research:r.manual_research===1},
+      ack:r.ack_type!=null&&r.ack_type!=='null',accepted:r.accepted_type!=null&&r.accepted_type!=='null'})),
+      next_cursor:rows.length>page.page_size?visible.at(-1).id:null};
+  }
+  impactStagingIndex() {
+    return this.db.prepare("SELECT id, json_extract(body,'$.staging.impact_record_hash') AS record_hash FROM jobs WHERE json_extract(body,'$.input.job_type')='impact_reassessment' AND json_extract(body,'$.staging.impact_record.impact_assessment.version')='2.1' AND json_extract(body,'$.accepted.decision')='publish' ORDER BY id").all();
+  }
+  semanticReviews(parentJobId) {
+    if (!/^wt_\d{8}T\d{6}Z_[a-f0-9]{24}$/.test(parentJobId || '')) throw Error('BRIDGE_PARENT_JOB_INVALID');
+    return this.db.prepare("SELECT json_remove(body,'$.staging') AS body FROM jobs WHERE json_extract(body,'$.input.job_type')='impact_semantic_review' AND json_extract(body,'$.input.parent_job_id')=? AND json_extract(body,'$.archived_at') IS NULL ORDER BY id")
+      .all(parentJobId).map(row => JSON.parse(row.body));
+  }
+  observe(key, value) { this.db.prepare('INSERT INTO observations VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET body=excluded.body').run(key, JSON.stringify(value)); }
+  observation(key) { const row = this.db.prepare('SELECT body FROM observations WHERE key=?').get(key); return row ? JSON.parse(row.body) : null; }
+  close() { this.release(false); this.lock.close(); this.db.close(); }
+}

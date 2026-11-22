@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "warning_bytes": 5368709120,
+  "stop_automated_writes_bytes": 8589934592,
+  "enforce_total_repository_after_cleanup": false,
+  "activation_requires": "Measured cleaned baseline and regular reviewed release; until activation block raw stores and oversized pushes immediately",
+  "maximum_staged_transport_bytes": 8388608,
+  "maximum_manifest_bytes": 524288,
+  "per_file_limit_bytes": 99614720,
+  "repository": "sustynats/wirkungsoekonomie-produktiv",
+  "maximum_outgoing_commits": 64,
+  "maximum_outgoing_transport_bytes": 8388608,
+  "maximum_api_state_bytes": 524288
+}

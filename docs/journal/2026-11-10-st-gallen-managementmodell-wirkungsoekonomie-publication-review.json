@@ -1,0 +1,70 @@
+{
+  "article": "https://wirkungsoekonomie.de/blog/st-gallen-managementmodell-wirkungsoekonomie.html",
+  "date": "2026-11-10",
+  "author": "Natalie Weber",
+  "sourceManuscriptSha256": "5f011d37448daf89b769a4af226d27bfb15cdd3a557e0028022dae343c780e71",
+  "imageSha256": "dae1f210222a410bdfe213d7b07202b5f7bace4117e2d2b153612b70f432fe81",
+  "manuscriptPreserved": "Vollständig übernommen, mit dokumentierten begrifflichen Präzisierungen",
+  "sourceCount": 7,
+  "sources": [
+    {
+      "number": "1",
+      "urls": [
+        "https://www.unisg.ch/de/universitaet/schools/management/fachbereiche-und-forschung/lehrstuhl-fuer-organizational-behavior/das-st-galler-management-modell/"
+      ]
+    },
+    {
+      "number": "2",
+      "urls": [
+        "https://alexandria.unisg.ch/entities/publication/93baee3f-1fd5-40dc-9ccc-6590ad024977"
+      ]
+    },
+    {
+      "number": "3",
+      "urls": [
+        "https://doi.org/10.1002/sres.70076"
+      ]
+    },
+    {
+      "number": "4",
+      "urls": [
+        "https://alexandria.unisg.ch/entities/publication/41b086aa-a2d2-4319-b22c-16f73d2de7f5"
+      ]
+    },
+    {
+      "number": "5",
+      "urls": [
+        "https://alexandria.unisg.ch/entities/publication/d9bc8e7e-d678-49e2-ba6f-cfb8aeaab6bc"
+      ]
+    },
+    {
+      "number": "6",
+      "urls": [
+        "https://wirkungsoekonomie.de/methodik/"
+      ]
+    },
+    {
+      "number": "7",
+      "urls": [
+        "https://wirkungsoekonomie.de/methodenraum.html"
+      ]
+    }
+  ],
+  "changes": [
+    "Word-Manuskript vollständig in die bestehende Journalvorlage übernommen; das separat bereitgestellte Titelbild als redaktionelles Asset eingebunden.",
+    "Quellenanker, ein aufklappbares Inhaltsverzeichnis sowie PDF-, Feed- und Suchmetadaten ergänzt.",
+    "SDG+ als WÖk-eigene Erweiterung präzisiert; Nichtkompensation, Reverse Merit Order und positive Netto-Wirkung ergänzt. Quellen 6 und 7 um direkte Werkverweise erweitert."
+  ],
+  "checks": {
+    "trackedChanges": 0,
+    "comments": 0,
+    "mainTextWords": 1231,
+    "headings": 7,
+    "sourceEntries": 8,
+    "numberedSources": 7,
+    "tocComponents": 1
+  },
+  "deployment": "GitHub Pages; Live-Abnahme nach erfolgreichem Deployment",
+  "repository": "sustynats/wirkungsoekonomie-produktiv",
+  "pdfRepository": "sustynats/wirkungsoekonomie-medien"
+}

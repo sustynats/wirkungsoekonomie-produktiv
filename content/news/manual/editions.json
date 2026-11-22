@@ -1,0 +1,369 @@
+{
+  "schema_version": "1.0",
+  "entries": [
+    {
+      "slug": "deutschland-2033-justus-bender",
+      "source_file": "2026-09-09_deutschland-2033_buch-und-wirkung.md",
+      "sha256": "7ec3f6e4edb94b1e0536070e1f12c8575adc0b366531db64227ddca44ffe6f74",
+      "book_cover": {
+        "file": "deutschland-2033-justus-bender.jpg",
+        "source": "https://www.chbeck.de/bender-deutschland-2033/product/40847634",
+        "download_url": "https://imageservice.ecom-api.beck-shop.de/api/getimage?productId=40847634",
+        "credit": "Offizielles Verlagscover · © C.H.Beck",
+        "sha256": "afb6680b23158774fc856408e653037877c91f206e7e0e6b24e7b2dc8dace85f",
+        "width": 1179,
+        "height": 1950
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "published_at": "2026-09-09T20:10:00Z",
+      "related_analysis_slugs": [
+        "werte-maja-goepel",
+        "kurzschluss-claudia-kemfert",
+        "wenn-aus-programm-staatsmacht-wird-sachsen-anhalt"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-09",
+          "note": "Redaktionell freigegebene Erstveröffentlichung. Originalmanuskript unverändert übernommen."
+        }
+      ]
+    },
+    {
+      "slug": "werte-maja-goepel",
+      "source_file": "2026-09-09_werte-maja-goepel_buch-und-wirkung.md",
+      "sha256": "10954fb61c5f6a5bca1879a6d9a92b87679f8d16b51ea62036d463074e7b9305",
+      "book_cover": {
+        "file": "werte-maja-goepel.jpg",
+        "source": "https://www.brandstaetterverlag.com/buch/werte/",
+        "download_url": "https://www.brandstaetterverlag.com/wp-content/uploads/2026/09/9783710608315-1.jpg",
+        "credit": "Offizielles Verlagscover · © Brandstätter Verlag",
+        "sha256": "7ccf60fdd2d37a587bbad290292294827045a346f1f041dc684602551fc33243",
+        "width": 600,
+        "height": 750
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "published_at": "2026-09-09T20:10:00Z",
+      "related_analysis_slugs": [
+        "deutschland-2033-justus-bender",
+        "kurzschluss-claudia-kemfert"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-09",
+          "note": "Redaktionell freigegebene Erstveröffentlichung. Originalmanuskript unverändert übernommen."
+        }
+      ]
+    },
+    {
+      "slug": "kurzschluss-claudia-kemfert",
+      "source_file": "2026-09-09_kurzschluss-claudia-kemfert_buch-und-wirkung.md",
+      "sha256": "5c49b712b861780e9311397f44627a8db044391c7d21e85e2538a61da985f17d",
+      "book_cover": {
+        "file": "kurzschluss-claudia-kemfert.jpg",
+        "source": "https://campus.de/wirtschaft-gesellschaft/wirtschaftssachbuch/kurzschluss/CAM52185",
+        "download_url": "https://media.pim.beltz.de/Produktdaten/Cover/9783593521855.jpg",
+        "credit": "Offizielles Verlagscover · © Campus Verlag",
+        "sha256": "90ec955ede0624317fd91ca5144dd06b7dd235877dc830243c136217b1fd35f5",
+        "width": 600,
+        "height": 956
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "published_at": "2026-09-09T20:10:00Z",
+      "related_analysis_slugs": [
+        "deutschland-2033-justus-bender",
+        "werte-maja-goepel"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-09",
+          "note": "Redaktionell freigegebene Erstveröffentlichung. Originalmanuskript unverändert übernommen."
+        }
+      ]
+    },
+    {
+      "slug": "die-neue-ordnung-des-wohlstands-natalie-weber",
+      "source_file": "2026-09-09_die-neue-ordnung-des-wohlstands_autorinnenbeitrag.md",
+      "sha256": "d9932f8ee160989add96912958418b356e50c520a02562bec6b9eb30992aa2a8",
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "publication_approved": true,
+      "published_at": "2026-09-10T10:14:00Z",
+      "book_volumes": [
+        {
+          "label": "Band I",
+          "title": "Die neue Ordnung des Wohlstands. Band I: Grundlagen, System und Wertschöpfung",
+          "url": "https://www.amazon.de/dp/B0HF6MTN9H",
+          "book_cover": {
+            "file": "die-neue-ordnung-des-wohlstands-band-1.jpg",
+            "source": "https://www.amazon.de/dp/B0HF6MTN9H",
+            "download_url": "https://m.media-amazon.com/images/I/61ZLNH1ClCL._SL1499_.jpg",
+            "credit": "Band I · Grundlagen, System und Wertschöpfung · © Natalie Weber",
+            "sha256": "0766a3e208bdf17eac95cc99a9c7eabfddabf57f5c2fefe3c1af0670aa03a4ca",
+            "width": 1000,
+            "height": 1499,
+            "verified_at": "2026-09-10"
+          }
+        },
+        {
+          "label": "Band II",
+          "title": "Die neue Ordnung des Wohlstands. Band II: Volkswirtschaft, Gesellschaft und Ausblick",
+          "url": "https://www.amazon.de/dp/B0HF6RMYTR",
+          "book_cover": {
+            "file": "die-neue-ordnung-des-wohlstands-band-2.jpg",
+            "source": "https://www.amazon.de/dp/B0HF6RMYTR",
+            "download_url": "https://m.media-amazon.com/images/I/61+THOVgrGL._SL1499_.jpg",
+            "credit": "Band II · Volkswirtschaft, Gesellschaft und Ausblick · © Natalie Weber",
+            "sha256": "bd970e293e4c2780b77815a47bc6f162514135943800981d595fbf61020715f0",
+            "width": 1000,
+            "height": 1499,
+            "verified_at": "2026-09-10"
+          }
+        }
+      ],
+      "related_analysis_slugs": [
+        "deutschland-2033-justus-bender",
+        "werte-maja-goepel",
+        "kurzschluss-claudia-kemfert"
+      ],
+      "internal_notes": [
+        "Die persönlichen Wertungen und Wünsche sind ein zur Freigabe durch die Autorin formulierter Entwurf."
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-10",
+          "note": "Erstveröffentlichung des persönlichen Autorinnenbeitrags mit den von der Autorin gewünschten aktuellen Covern der zweibändigen Ausgabe. Originalmanuskript erhalten; interner ausstehender Freigabevermerk aus der öffentlichen Darstellung entfernt."
+        }
+      ]
+    },
+    {
+      "slug": "die-empoerungsfalle-cheema-mendel",
+      "visual_labels": {
+        "empoerungs-feedback-loop": "Konzeptionelles Wirkungsmodell – keine empirische Kausalitätsmessung."
+      },
+      "source_file": "2026-09-24_die-empoerungsfalle_buch-und-wirkung.md",
+      "sha256": "6c03736067d6f6bab31e58b5e7547bed7236e26b4b77a62fa0431c146fe71bc6",
+      "book_cover": {
+        "file": "die-empoerungsfalle-cheema-mendel.png",
+        "source": "https://www.kiwi-verlag.de/buch/saba-nur-cheema-meron-mendel-die-empoerungsfalle-9783462013375",
+        "download_url": "https://res.cloudinary.com/holtzbrinck-buchverlage/image/fetch/w_520%2Cc_fill%2Cg_auto%2Cq_auto%2Cf_png/https%3A//pondus-hpg.s3.eu-central-1.amazonaws.com/kiwi/public/WZzmEGFjijnZRUeuywXtSd9w2wmyPUoHOeq5F7ihJC2/U1_978-3-462-01337-5.png",
+        "credit": "Offizielles Verlagscover · © Kiepenheuer & Witsch",
+        "sha256": "fd7b0d1716ec5b058679cbd01b93a76e72ea93f6c037d2291baf889679d7b295",
+        "width": 520,
+        "height": 853,
+        "rights_checked_at": "2026-09-24",
+        "rights_source": "https://www.kiwi-verlag.de/buch/saba-nur-cheema-meron-mendel-die-empoerungsfalle-9783462013375",
+        "rights_basis": "Coverdownload für Pressezwecke im Zusammenhang mit Titel/Autor, honorarfrei und unverändert."
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "publication_approved": true,
+      "approval_basis": "Expliziter Veröffentlichungsauftrag der Autorin vom 24.09.2026; unverändertes Manuskript und vorgegebene Visualisierung.",
+      "published_at": "2026-09-24T21:35:00Z",
+      "related_analysis_slugs": [
+        "orca-franziska-gaensler",
+        "code-null-florian-schwiecker"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-24",
+          "note": "Manuell freigegebene Erstveröffentlichung. Originalmanuskript unverändert; vorgegebene Visualisierung technisch umgesetzt."
+        }
+      ]
+    },
+    {
+      "slug": "orca-franziska-gaensler",
+      "visual_labels": {
+        "orca-wirkpfad": "Literarisches Wirkungsmodell – keine empirische Radikalisierungsformel und keine Aussage über reale Klimaaktivist:innen als Gruppe."
+      },
+      "source_file": "2026-09-24_orca-franziska-gaensler_buch-und-wirkung.md",
+      "sha256": "9583163e395ec8892420daf321d8e1aa479778cc492a546d5a1930b7fe8eef74",
+      "book_cover": {
+        "file": "orca-franziska-gaensler.webp",
+        "source": "https://www.keinundaber.ch/buecher/orca",
+        "download_url": "https://www.keinundaber.ch/media/books/9263/_thumb768/21473850/9783036950990.webp",
+        "credit": "Offizielles Verlagscover · © Kein & Aber",
+        "sha256": "bce72e605b83824cd34d502b23df16689461ea8f8ecc36e2990ca5bc94b06634",
+        "width": 484,
+        "height": 768,
+        "rights_checked_at": "2026-09-24",
+        "rights_source": "https://www.keinundaber.ch/bloggerinnen",
+        "rights_basis": "Verlagsrichtlinien Blogs & Social Media: Website-Inhalte dürfen für Beiträge frei verwendet werden. Originaldatei unverändert."
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "publication_approved": true,
+      "approval_basis": "Expliziter Veröffentlichungsauftrag der Autorin vom 24.09.2026; unverändertes Manuskript und vorgegebene Visualisierung.",
+      "published_at": "2026-09-24T21:35:00Z",
+      "related_analysis_slugs": [
+        "die-empoerungsfalle-cheema-mendel",
+        "code-null-florian-schwiecker"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-24",
+          "note": "Manuell freigegebene Erstveröffentlichung. Originalmanuskript unverändert; vorgegebene Visualisierung technisch umgesetzt."
+        }
+      ]
+    },
+    {
+      "slug": "code-null-florian-schwiecker",
+      "visual_labels": {
+        "code-null-abhaengigkeitsnetz": "Konzeptionelles Abhängigkeitsnetz. Nicht jeder Galileo-Ausfall führt automatisch zum Ausfall aller dargestellten Sektoren; die Wirkung hängt von Architektur, Redundanz und Backups ab."
+      },
+      "source_file": "2026-09-24_code-null-florian-schwiecker_buch-und-wirkung.md",
+      "sha256": "85e7a2cbce5d48cd07da548dc8ebb4b302b8488b0db2220804ea6450e62f94ad",
+      "book_cover": {
+        "file": "code-null-florian-schwiecker.png",
+        "source": "https://www.droemer-knaur.de/buch/florian-schwiecker-code-null-dieses-spiel-kennt-keine-regeln-9783426563380",
+        "download_url": "https://res.cloudinary.com/holtzbrinck-buchverlage/image/fetch/w_520%2Cc_fill%2Cg_auto%2Cq_auto%2Cf_png/https%3A//pondus-hpg.s3.eu-central-1.amazonaws.com/droemer/public/VanT7WnDUElCceaiX6B8cz8zBoVcB7t4RXfPEjtHiA8/U1_978-3-426-56338-0.png",
+        "credit": "Offizielles Verlagscover · © Knaur",
+        "sha256": "4f837529817242a89beac156225a7dd3699336492b9cc599565549a762837b11",
+        "width": 520,
+        "height": 791,
+        "rights_checked_at": "2026-09-24",
+        "rights_source": "https://www.droemer-knaur.de/buch/florian-schwiecker-code-null-dieses-spiel-kennt-keine-regeln-9783426563380",
+        "rights_basis": "Coverdownload für Pressezwecke im Zusammenhang mit Titel/Autor, honorarfrei und unverändert."
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "publication_approved": true,
+      "approval_basis": "Expliziter Veröffentlichungsauftrag der Autorin vom 24.09.2026; unverändertes Manuskript und vorgegebene Visualisierung.",
+      "published_at": "2026-09-24T21:35:00Z",
+      "related_analysis_slugs": [
+        "die-empoerungsfalle-cheema-mendel",
+        "orca-franziska-gaensler"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-24",
+          "note": "Manuell freigegebene Erstveröffentlichung. Originalmanuskript unverändert; vorgegebene Visualisierung technisch umgesetzt."
+        }
+      ]
+    },
+    {
+      "slug": "arctic-meltdown-robert-habeck",
+      "source_file": "2026-09-28_arctic-meltdown-robert-habeck_buch-und-wirkung.md",
+      "sha256": "e0a8b973d539c00be50e9a151bbe12dd2ac280feeeefa1ef098fd5acda7f575a",
+      "book_cover": {
+        "file": "arctic-meltdown-robert-habeck.jpg",
+        "source": "https://www.kiwi-verlag.de/buch/robert-habeck-arctic-meltdown-9783462014846",
+        "download_url": "https://res.cloudinary.com/holtzbrinck-buchverlage/image/fetch/w_520%2Cc_fill%2Cg_auto%2Cq_auto%2Cf_png/https%3A//pondus-hpg.s3.eu-central-1.amazonaws.com/kiwi/public/GaD3ZKsKARFNpTIwUO2UXMLWST9ehsxGUaUD8tGk6FX/U1_978-3-462-01484-6.png",
+        "credit": "Offizielles Verlagscover · © Kiepenheuer & Witsch",
+        "sha256": "daa96c873dfb0a2bf86290d79fe1c72bcb11853787bccee4a035dc67105e3adb",
+        "width": 520,
+        "height": 839,
+        "rights_checked_at": "2026-09-28",
+        "rights_source": "https://www.kiwi-verlag.de/buch/robert-habeck-arctic-meltdown-9783462014846",
+        "rights_basis": "Coverdownload für Pressezwecke im Zusammenhang mit Titel/Autor, honorarfrei und unverändert.",
+        "acquisition": "Von Natalie am 28.09.2026 als Datei bereitgestellt; hochgeladene JPEG-Datei bytegetreu übernommen. Download-URL dokumentiert das offizielle Coverangebot."
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "status": "published",
+      "publication_approved": true,
+      "approval_basis": "Expliziter Veröffentlichungsauftrag von Natalie vom 28.09.2026 als Vorab-Einordnung mit Erscheinungstermin. Offizielles Cover ausdrücklich freigegeben und anschließend von Natalie hochgeladen.",
+      "published_at": "2026-09-29T04:00:00Z",
+      "related_analysis_slugs": [
+        "habeck-bei-miosga-ein-zukunftsplan-muss-im-alltag-ankommen-75bdbd",
+        "werte-maja-goepel"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-09-29",
+          "note": "Freigegebene Erstveröffentlichung als Vorab-Einordnung der offiziellen Leseprobe, mit Erscheinungstermin 01.10.2026 und separat belegtem Hinweis auf das Gespräch mit Caren Miosga vom 27.09.2026. Keine vollständige Buchrezension. Von der Autorin bereitgestelltes offizielles Cover unverändert übernommen."
+        }
+      ]
+    },
+    {
+      "slug": "arctic-meltdown-der-preis-der-abhaengigkeit",
+      "source_file": "2026-10-13_arctic-meltdown-vollrezension.md",
+      "sha256": "aea9fd77c7b37681c1a08aafbecbadfe0ecd2f92c81e2198c4c0a4a1969b9d55",
+      "book_cover": {
+        "file": "arctic-meltdown-robert-habeck.jpg",
+        "source": "https://www.kiwi-verlag.de/buch/robert-habeck-arctic-meltdown-9783462014846",
+        "download_url": "https://res.cloudinary.com/holtzbrinck-buchverlage/image/fetch/w_520%2Cc_fill%2Cg_auto%2Cq_auto%2Cf_png/https%3A//pondus-hpg.s3.eu-central-1.amazonaws.com/kiwi/public/GaD3ZKsKARFNpTIwUO2UXMLWST9ehsxGUaUD8tGk6FX/U1_978-3-462-01484-6.png",
+        "credit": "Offizielles Verlagscover · © Kiepenheuer & Witsch",
+        "sha256": "daa96c873dfb0a2bf86290d79fe1c72bcb11853787bccee4a035dc67105e3adb",
+        "width": 520,
+        "height": 839,
+        "rights_checked_at": "2026-10-13",
+        "rights_source": "https://www.kiwi-verlag.de/buch/robert-habeck-arctic-meltdown-9783462014846",
+        "rights_basis": "Coverdownload für Pressezwecke im Zusammenhang mit Titel/Autor, honorarfrei und unverändert.",
+        "acquisition": "Von Natalie am 28.09.2026 als Datei bereitgestellt; hochgeladene JPEG-Datei bytegetreu übernommen. Download-URL dokumentiert das offizielle Coverangebot."
+      },
+      "format": "book_and_impact",
+      "manual_only": true,
+      "editorial_mode": "manual_manuscript",
+      "source_layout": "approved_attachment",
+      "section_diagrams": [
+        {
+          "section": "Erschließung ist noch kein Wohlstand",
+          "caption": "Der Zusammenhang in drei Schritten",
+          "items": [
+            "Veränderte Eis- und Bodenbedingungen",
+            "veränderte Mobilität, Nutzung und Verwundbarkeit",
+            "neue Investitionen, Abhängigkeiten und politische Ansprüche."
+          ],
+          "note": "Diese eigene Verdichtung der Buchargumentation erklärt einen Wirkpfad, keinen zwangsläufigen Kriegsverlauf."
+        }
+      ],
+      "publication_approved": true,
+      "status": "published",
+      "approval_basis": "Expliziter Veröffentlichungsauftrag der Autorin vom 13.10.2026 für das angehängte unveränderte Manuskript.",
+      "published_at": "2026-10-13T10:47:12.140Z",
+      "publication_metadata": {
+        "slug": "arctic-meltdown-der-preis-der-abhaengigkeit",
+        "format": "Buch & Wirkung",
+        "content_type": "buchbesprechung",
+        "manual_only": true,
+        "section": "Meinung & Analyse",
+        "author_profile": "reuse_existing_meinung_analyse_profile",
+        "book_title": "Arctic Meltdown. Die Neuvermessung der Welt",
+        "book_author": "Robert Habeck",
+        "publisher": "Kiepenheuer & Witsch",
+        "isbn": "978-3-462-01484-6",
+        "pages": 416,
+        "year": 2026,
+        "publication_date": "2026-10-13",
+        "seo_description": "Vollständige Hörbuchrezension von Natalie Weber: Habecks Arctic Meltdown aus wirkungsökonomischer Perspektive."
+      },
+      "related_analysis_slugs": [
+        "arctic-meltdown-robert-habeck",
+        "arctic-meltdown-nach-erscheinen-habecks-arktis-these-im-wirkungscheck-49cb81"
+      ],
+      "versions": [
+        {
+          "version": 1,
+          "date": "2026-10-13",
+          "note": "Neue freigegebene Vollrezension auf Grundlage des vollständigen Hörbuchtranskripts; frühere Vorbesprechung bleibt unverändert."
+        }
+      ]
+    }
+  ]
+}

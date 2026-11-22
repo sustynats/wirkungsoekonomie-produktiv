@@ -1,0 +1,1560 @@
+{
+  "schema_version": "1.0",
+  "execute": true,
+  "bootstrap": false,
+  "started_at": "2026-09-10T07:23:55.335Z",
+  "scanned_stories": 224,
+  "scanned_subjects": 199,
+  "editorial_candidates": 35,
+  "ready_for_research": 11,
+  "research_pending": 14,
+  "retry_deferred": 7,
+  "editorial_research_sources_discovered": 55,
+  "selected": 0,
+  "editorial_research_started": 0,
+  "editorial_analyses_published": 0,
+  "editorial_analyses_updated": 0,
+  "research_calls": 0,
+  "research_tokens": 0,
+  "analysis_tokens": 0,
+  "estimated_cost_usd": 0,
+  "quality_retries": 0,
+  "economy_version": "1.0",
+  "background_only": true,
+  "full_generations": 0,
+  "targeted_repairs": 0,
+  "batch_results_reviewed": 0,
+  "background_waiting": 4,
+  "quality_held": 5,
+  "unchanged_research_skipped": 12,
+  "requested": [],
+  "publication_deferred": false,
+  "failed": [],
+  "candidates": [
+    {
+      "story_id": "wt-32f0aa5f0a6a7761",
+      "story_slug": "nach-afd-wahlsieg-soder-lehnt-verbot-ab-und-nennt-brandmauer-konzept-gescheitert-6a7761",
+      "story_title": "Nach AfD-Wahlsieg: Söder lehnt Verbot ab und nennt Brandmauer-Konzept gescheitert",
+      "editorial_analysis_score": 68,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 0,
+        "macro_relevance": 0,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 6,
+        "discourse_relevance": 6,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 9,
+        "primary_source_count": 5,
+        "cited_claim_count": 5,
+        "primary_source_expected": true,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "3d0198b25074b8e43006503adb85eaea4b323cbb5615a7b9e96b9e9182e74c4a",
+      "status": "research_pending",
+      "review": {
+        "status": "research_pending",
+        "automatic_short_form_rewrite": false,
+        "reason": "commissioned_analysis_new_origin_material",
+        "story_id": "wt-32f0aa5f0a6a7761",
+        "analysis_id": "woek-analysis-814079fbdc30"
+      },
+      "analysis_id": "woek-analysis-814079fbdc30"
+    },
+    {
+      "story_id": "wt-63cb95e544d260ce",
+      "story_slug": "so-lauft-die-generaldebatte-im-bundestag-merz-gegen-weidel-d260ce",
+      "story_title": "Generaldebatte zum Haushalt 2027: Merz verteidigt Reformkurs, Opposition kritisiert Prioritäten",
+      "editorial_analysis_score": 77,
+      "analysis_gain": 64,
+      "factors": {
+        "systemic_relevance": 11,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 0,
+        "macro_relevance": 6,
+        "MPD_interdependence": 8,
+        "distribution_relevance": 8,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 8,
+        "primary_source_count": 2,
+        "cited_claim_count": 3,
+        "primary_source_expected": true,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "79fdaa6ce2f010e2460fedae5b6302ab8ed9e57ecdb97108e471802abbe5322a",
+      "status": "research_pending",
+      "review": {
+        "status": "research_pending",
+        "automatic_short_form_rewrite": false,
+        "reason": "commissioned_analysis_new_origin_material",
+        "story_id": "wt-63cb95e544d260ce",
+        "analysis_id": "woek-analysis-7db837acf47c"
+      },
+      "analysis_id": "woek-analysis-7db837acf47c"
+    },
+    {
+      "story_id": "wt-026d11d680622587",
+      "story_slug": "bundestag-neuer-sportstaatsminister-rauhe-will-olympia-nach-deutschland-holen-afd-kritis-622587",
+      "story_title": "Bundestag - Neuer Sportstaatsminister Rauhe will Olympia nach Deutschland holen, AfD kritisiert Benennung",
+      "editorial_analysis_score": 72,
+      "analysis_gain": 48,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 4,
+        "mpd_relevance": 7,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 0,
+        "distribution_relevance": 6,
+        "discourse_relevance": 4,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 4,
+        "primary_source_count": 0,
+        "cited_claim_count": 3,
+        "primary_source_expected": true,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "f59a51e4095c09724caedc9511362e289d0d194d7f8ab66912c6d2ba9d9a2633",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-0158090dd70e734e",
+      "story_slug": "nach-anschlagen-auf-stromversorgung-verdachtiger-in-untersuchungshaft-0e734e",
+      "story_title": "Nach Anschlägen auf Stromversorgung: Verdächtiger in Untersuchungshaft",
+      "editorial_analysis_score": 77,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 8,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 4,
+        "evidence_quality": 7
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 0,
+        "cited_claim_count": 9,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "039549c69990c4e5080d210638c414b43130c8ff97855ba92a6dfb1e7bf63998",
+      "status": "ready_for_research",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-84ac3f26c7762712",
+      "story_slug": "milliarden-lucke-im-klimafonds-762712",
+      "story_title": "Milliarden-Lücke im Klimafonds",
+      "editorial_analysis_score": 83,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 6,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 8,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 0,
+        "cited_claim_count": 5,
+        "primary_source_expected": true,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "c3f74df61b002cc86ac7f47c7c401c23eb05bf0f2aec0a1c95c92cedb28d025b",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-5a2fe52ebad137c3",
+      "story_slug": "us-gericht-stoppt-weitergabe-von-migranten-steuerdaten-an-ice-d137c3",
+      "story_title": "US-Gericht stoppt Weitergabe von Migranten-Steuerdaten an ICE",
+      "editorial_analysis_score": 72,
+      "analysis_gain": 59,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 4,
+        "primary_source_count": 0,
+        "cited_claim_count": 4,
+        "primary_source_expected": true,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "2aa0c15fd34ae5053f3226f790aa62f1d2bf0670becbbfe9c1e5f3b4946b96f4",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-e01e1e77e702edc3",
+      "story_slug": "mutmasslicher-strom-saboteur-daniel-v-festgenommen-02edc3",
+      "story_title": "Mutmaßlicher Strom-Saboteur Daniel V. festgenommen",
+      "editorial_analysis_score": 68,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 0,
+        "cited_claim_count": 5,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "a752701ac2c4d543850ad7d2b8fdffcfb48818ccd622bf1856a3051797b1ea90",
+      "status": "ready_for_research",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-4409a2f6e240d133",
+      "story_slug": "polizei-nimmt-mutmasslichen-strom-saboteur-fest-40d133",
+      "story_title": "Polizei nimmt mutmaßlichen Strom-Saboteur fest",
+      "editorial_analysis_score": 73,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 0,
+        "discourse_relevance": 4,
+        "case_depth": 0,
+        "evidence_quality": 7
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 0,
+        "cited_claim_count": 6,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "8794d0fc4cbe173ebd1a54a39b73af37bb666bc4ded7a2311a14a1fdccf74965",
+      "status": "published",
+      "analysis_id": "woek-analysis-a06942993891"
+    },
+    {
+      "story_id": "wt-e820bef62dd96612",
+      "story_slug": "angriff-mit-stichwaffe-in-ahrensburg-tatverdachtiger-festgenommen-d96612",
+      "story_title": "Angriff mit Stichwaffe in Ahrensburg: Tatverdächtiger festgenommen",
+      "editorial_analysis_score": 70,
+      "analysis_gain": 51,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 8,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 7
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 0,
+        "cited_claim_count": 6,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "22d7ee4a94428d084bc81b30bbf84cca58301a92d789296771c08cab898f81d5",
+      "status": "ready_for_research",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-366b1fbfa120e44f",
+      "story_slug": "sabotage-am-stromnetz-polizei-nimmt-verdachtigen-bei-aachen-fest-20e44f",
+      "story_title": "Sabotage am Stromnetz: Polizei nimmt Verdächtigen bei Aachen fest",
+      "editorial_analysis_score": 82,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 6,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 0,
+        "cited_claim_count": 5,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "646e57265ef9d91effe3156b7596482215484833cf1ebaeb842893539a96f6eb",
+      "status": "quality_hold",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-db0e00874c2fe321",
+      "story_slug": "insolvenzen-firmeninsolvenzen-sinken-im-august-aber-mehr-betroffene-2fe321",
+      "story_title": "Insolvenzen: Firmeninsolvenzen sinken im August - aber mehr Betroffene",
+      "editorial_analysis_score": 68,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 4,
+        "mpd_relevance": 7,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 6,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 3
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 1,
+        "primary_source_count": 0,
+        "cited_claim_count": 2,
+        "primary_source_expected": false,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "fewer_than_two_source_origins",
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "bff7982d4b9bd35b25b74855cf076ee66786b94a7b8906a67f312c964ac5f4e1",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-4c0a09f9ce090af7",
+      "story_slug": "schule-deutschland-in-neuer-pisa-studie-so-schlecht-wie-nie-090af7",
+      "story_title": "Schule - Deutschland in neuer Pisa-Studie so schlecht wie nie",
+      "editorial_analysis_score": 70,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 8,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 7,
+        "primary_source_count": 0,
+        "cited_claim_count": 4,
+        "primary_source_expected": true,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "ce8e16fc0f3589f271a395fbf7f08592b2319d9d5558e04982f7f8abd08ab3c3",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-de413d33343f350b",
+      "story_slug": "ukraine-krieg-russland-nimmt-angriffe-auf-kiew-nach-dreitagiger-feuerpause-wieder-auf-uk-3f350b",
+      "story_title": "Ukraine-Krieg - Russland nimmt Angriffe auf Kiew nach dreitägiger Feuerpause wieder auf - Ukrainischer Drohnenangriff auf Saratow",
+      "editorial_analysis_score": 75,
+      "analysis_gain": 51,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 5,
+        "primary_source_count": 0,
+        "cited_claim_count": 8,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "13c0196dc69c9e71bc6f7ec72a20464d820b7ce7d0dcfc8fc8a1d0e9672a26b0",
+      "status": "ready_for_research",
+      "analysis_id": "woek-analysis-58daf5723737"
+    },
+    {
+      "story_id": "wt-6fc066364494ba73",
+      "story_slug": "ukraine-news-ukrainischer-generalstaatsanwalt-tritt-nach-korruptionsvorwurfen-zuruck-94ba73",
+      "story_title": "Ukraine-News: Ukrainischer Generalstaatsanwalt tritt nach Korruptionsvorwürfen zurück",
+      "editorial_analysis_score": 74,
+      "analysis_gain": 53,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 0,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 4,
+        "primary_source_count": 0,
+        "cited_claim_count": 4,
+        "primary_source_expected": true,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "29c47e326c59d83af349e96af5653755d026c0869e9079f25dfddaeb388a214c",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-7b385f58748f3d32",
+      "story_slug": "ard-informationen-polizeibehorden-halten-bekennerschreiben-fur-authentisch-8f3d32",
+      "story_title": "Polizei hält Bekennerschreiben zu Strom-Sabotage für echt",
+      "editorial_analysis_score": 76,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 4,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 5,
+        "primary_source_count": 0,
+        "cited_claim_count": 6,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "e1b1db1771ed604af4ad505ac35099d79339d3599224ead111a589923e4b9bed",
+      "status": "published",
+      "analysis_id": "woek-analysis-dab9cdd59202"
+    },
+    {
+      "story_id": "wt-4b5d0962d323432a",
+      "story_slug": "kommission-genehmigt-deutschen-kapazitatsmechanismus-von-bis-zu-35-mrd-eur-zur-gewahrlei-23432a",
+      "story_title": "Kommission genehmigt deutschen Kapazitätsmechanismus von bis zu 35 Mrd. EUR zur Gewährleistung einer sicheren Stromversorgung",
+      "editorial_analysis_score": 85,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 9,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 2,
+        "cited_claim_count": 2,
+        "primary_source_expected": true,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "bc3aa055d45bb27ba557af536d2f08e367bdfdc5258362d4cdc9a088013bcdbb",
+      "status": "published",
+      "analysis_id": "woek-analysis-0bfd0f9a3434"
+    },
+    {
+      "story_id": "wt-811d4815cfd8d70d",
+      "story_slug": "graustein-weitere-sprengvorrichtung-nahe-stromtrassen-gefunden-d8d70d",
+      "story_title": "Weitere Sprengvorrichtung nahe Stromtrassen gefunden",
+      "editorial_analysis_score": 75,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 4,
+        "case_depth": 0,
+        "evidence_quality": 7
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 0,
+        "cited_claim_count": 3,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "1f7a45328266d4d80707aa786cf916dd09fe0662a4c47902551be8f631bcb21a",
+      "status": "published",
+      "analysis_id": "woek-analysis-e8a3a0294255"
+    },
+    {
+      "story_id": "wt-1c2c187d0b858b7c",
+      "story_slug": "anschlage-auf-stromleitungen-21-sprengsatze-an-stromleitungen-entdeckt-und-entscharft-858b7c",
+      "story_title": "Anschläge auf Stromleitungen: 21 Sprengsätze an Stromleitungen entdeckt und entschärft",
+      "editorial_analysis_score": 80,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 4,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 6,
+        "primary_source_count": 0,
+        "cited_claim_count": 13,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "045570fb2ba7f213e6e005e3b04558f9c2175bbb4b0ec60987446cbb2b4bcc9d",
+      "status": "quality_hold",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-aa6c2b7b8a381223",
+      "story_slug": "eu-to-boost-greenland-investment-amid-trump-annexation-claims-381223",
+      "story_title": "EU to boost Greenland investment amid Trump annexation claims",
+      "editorial_analysis_score": 70,
+      "analysis_gain": 48,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 4,
+        "mpd_relevance": 8,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 9,
+        "MPD_interdependence": 0,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 3
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 1,
+        "primary_source_count": 0,
+        "cited_claim_count": 2,
+        "primary_source_expected": false,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "fewer_than_two_source_origins",
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "a5048fb060872143207b7ea8c81f06964c48cbc3b31c97fa61679adb3da22246",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-a030a1d903caa413",
+      "story_slug": "sabotage-an-stromleitungen-grosseinsatz-am-hambacher-forst-in-nordrhein-westfalen-caa413",
+      "story_title": "Sabotage an Stromleitungen - Großeinsatz am Hambacher Forst in Nordrhein-Westfalen",
+      "editorial_analysis_score": 69,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 0,
+        "cited_claim_count": 8,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "3fea231ac7ff3b3e8940c80c748eab1bccc21dc3b1e980ca578eb653d50073c9",
+      "status": "published",
+      "analysis_id": "woek-analysis-340bd54aa1fd"
+    },
+    {
+      "story_id": "wt-cf03acddb911d861",
+      "story_slug": "ozdemir-fordert-hochdruck-beim-schutz-sicherheitsrelevanter-infrastruktur-11d861",
+      "story_title": "Özdemir fordert „Hochdruck“ beim Schutz sicherheitsrelevanter Infrastruktur",
+      "editorial_analysis_score": 78,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 6,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 0,
+        "cited_claim_count": 4,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "08d448f08f13394941e996b9e703740d3916b112119994e4b69f99fe069b9680",
+      "status": "quality_hold",
+      "analysis_id": "woek-analysis-219f434ceb61"
+    },
+    {
+      "story_id": "wt-8f7ac0654a780960",
+      "story_slug": "witkoff-fordert-russland-und-ukraine-zu-kompromissen-fur-kriegsende-auf-780960",
+      "story_title": "Witkoff fordert Russland und Ukraine zu „Kompromissen“ für Kriegsende auf",
+      "editorial_analysis_score": 71,
+      "analysis_gain": 51,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 7
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 0,
+        "cited_claim_count": 3,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "4cd19962c3203bd2251e26ad111814836f8b98000124c49715cc1ca33d0581a3",
+      "status": "ready_for_research",
+      "analysis_id": "woek-analysis-7c4918d1134c"
+    },
+    {
+      "story_id": "wt-f7d7115a53ff2c2f",
+      "story_slug": "wachsende-risiken-jedes-funfte-unternehmen-spurt-hybride-bedrohung-ff2c2f",
+      "story_title": "Bericht nennt wachsende Risiken durch Cyberangriffe, Desinformation, Spionage und Sabotage für Unternehmen",
+      "editorial_analysis_score": 74,
+      "analysis_gain": 48,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 4,
+        "mpd_relevance": 7,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 0,
+        "distribution_relevance": 6,
+        "discourse_relevance": 4,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 1,
+        "cited_claim_count": 2,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "0ea71472a448a07bb78d90dd83f286f6029c3828610e97f86e67dc315f4aa93f",
+      "status": "published",
+      "analysis_id": "woek-analysis-17508db58ecc"
+    },
+    {
+      "story_id": "wt-60f4e4d7d43fad99",
+      "story_slug": "angriffe-aufs-stromnetz-pressekonferenz-mit-dobrindt-und-reul-3fad99",
+      "story_title": "Angriffe aufs Stromnetz: Pressekonferenz mit Dobrindt und Reul",
+      "editorial_analysis_score": 68,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 8,
+        "macro_relevance": 0,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 4,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 0,
+        "cited_claim_count": 6,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "f68e99ac37a8b6579dd16fe4bca19cb8fe88ce840c7370004d3e4896b72b5653",
+      "status": "published",
+      "analysis_id": "woek-analysis-36e98d72ae20"
+    },
+    {
+      "story_id": "wt-995822cc0b71a7f8",
+      "story_slug": "statement-of-denmark-germany-the-netherlands-austria-finland-and-sweden-on-the-multiannu-71a7f8",
+      "story_title": "Statement of Denmark, Germany, the Netherlands, Austria, Finland, and Sweden on the Multiannual Financial Framework 2028-2034",
+      "editorial_analysis_score": 72,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 8,
+        "macro_relevance": 9,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 7,
+        "primary_source_count": 1,
+        "cited_claim_count": 5,
+        "primary_source_expected": true,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "edd6ae7dd4bc2116c0a32bc24deb9909a5131506c69f8c4adf231ad77911bc57",
+      "status": "published",
+      "analysis_id": "woek-analysis-2e9b2581831c"
+    },
+    {
+      "story_id": "wt-6a7145e6dc679f95",
+      "story_slug": "hitzeschutz-in-kitas-und-pflegeheimen-land-hessen-fordert-klimaanlagen-679f95",
+      "story_title": "Hitzeschutz in Kitas und Pflegeheimen: Land Hessen fördert Klimaanlagen",
+      "editorial_analysis_score": 72,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 4,
+        "mpd_relevance": 9,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 6,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 8,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 3
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 1,
+        "primary_source_count": 0,
+        "cited_claim_count": 6,
+        "primary_source_expected": true,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "fewer_than_two_source_origins",
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "b50187c093be64689e1da2999b5780b8cb3848810ebe15c6ec3a7b5dd8dabecd",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-6c26e428b894e714",
+      "story_slug": "anschlage-auf-stromleitungen-angriffe-aufs-stromnetz-einsatz-in-sachsen-geht-weiter-94e714",
+      "story_title": "Anschläge auf Stromleitungen: Angriffe aufs Stromnetz: Einsatz in Sachsen geht weiter",
+      "editorial_analysis_score": 68,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 0,
+        "cited_claim_count": 4,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "3031bdbc2b26f28be8820df22c322a833a7f75e8bd57366cf4751be6200c44b4",
+      "status": "quality_hold",
+      "analysis_id": "woek-analysis-1b3323ad407f"
+    },
+    {
+      "story_id": "wt-f2edeab46d126d83",
+      "story_slug": "hackergruppe-veroffentlicht-daten-nach-angriff-auf-berliner-landesnetz-126d83",
+      "story_title": "Hackergruppe veröffentlicht Daten nach Angriff auf Berliner Landesnetz",
+      "editorial_analysis_score": 83,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 1,
+        "cited_claim_count": 5,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "32ca0d447cbc4a1cc4b5adb1679c3dbb378e35288ed8e670640ede74a03579ac",
+      "status": "published",
+      "analysis_id": "woek-analysis-061f61c466cf"
+    },
+    {
+      "story_id": "wt-d80fd849c477e2ad",
+      "story_slug": "gesundheitscheck-vor-ausbildung-thuringen-ubernimmt-kosten-fur-untersuchung-77e2ad",
+      "story_title": "Gesundheitscheck vor Ausbildung: Thüringen übernimmt Kosten für Untersuchung",
+      "editorial_analysis_score": 68,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 4,
+        "mpd_relevance": 8,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 8,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 3
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 1,
+        "primary_source_count": 0,
+        "cited_claim_count": 5,
+        "primary_source_expected": false,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "fewer_than_two_source_origins",
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "7c2991fc7b77ebae7a8805a3db3d8895afd14bdd9fdb5471144bcd440912ce82",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-b5e0a39f46388642",
+      "story_slug": "speech-by-commissioner-lahbib-at-the-european-parliament-on-the-2026-wildfire-season-388642",
+      "story_title": "Speech by Commissioner Lahbib at the European Parliament on the 2026 Wildfire Season",
+      "editorial_analysis_score": 84,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 6,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 2,
+        "primary_source_count": 5,
+        "cited_claim_count": 2,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "0c84ebc213e0cfe23df7b7b13f8f92b03195ca82b3eb35be19ce6fac58341ae3",
+      "status": "ready_for_research",
+      "analysis_id": "woek-analysis-852ebdd0a0aa"
+    },
+    {
+      "story_id": "wt-1fbb056ccaaf351d",
+      "story_slug": "anschlage-auf-umspannwerke-polizei-halt-bekennerschreiben-fur-authentisch-bundesweite-fa-af351d",
+      "story_title": "Anschläge auf Umspannwerke - Polizei hält Bekennerschreiben für authentisch - bundesweite Fahndung läuft",
+      "editorial_analysis_score": 80,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 4,
+        "primary_source_count": 0,
+        "cited_claim_count": 6,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "4b256264125a1295f6188f73f8891a2359eb991d6c6315bd560ac00e91a4ebdb",
+      "status": "quality_hold",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-79a8fce4900e254f",
+      "story_slug": "france-announces-1-billion-aid-for-farmers-after-climate-hit-summer-0e254f",
+      "story_title": "France announces €1 billion aid for farmers after climate-hit summer",
+      "editorial_analysis_score": 77,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 6,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 3
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 1,
+        "primary_source_count": 0,
+        "cited_claim_count": 3,
+        "primary_source_expected": false,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "fewer_than_two_source_origins",
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "e3acd3f26402baf58b3653cf6114aad29f93707a951e7599e46481fc2ed36140",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-9cca0ad92ad1a84a",
+      "story_slug": "das-macht-die-bundesregierung-fur-entlastungen-bei-den-energiepreisen-d1a84a",
+      "story_title": "Das macht die Bundesregierung für Entlastungen bei den Energiepreisen",
+      "editorial_analysis_score": 70,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 8,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 0,
+        "resilience_relevance": 8,
+        "macro_relevance": 9,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 6,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 5
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 1,
+        "primary_source_count": 1,
+        "cited_claim_count": 5,
+        "primary_source_expected": false,
+        "primary_source_satisfied": true,
+        "reasons": [
+          "fewer_than_two_source_origins"
+        ]
+      },
+      "fingerprint": "8d84b7a038b7c685eeabd968d242133739320d8411c4dfef80756e2e5f4093ad",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-34e360cdb996a299",
+      "story_slug": "france-agriculture-production-sees-economic-hit-from-heatwaves-96a299",
+      "story_title": "France agriculture production sees economic hit from heatwaves",
+      "editorial_analysis_score": 84,
+      "analysis_gain": 60,
+      "factors": {
+        "systemic_relevance": 14,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 9,
+        "MPD_interdependence": 6,
+        "distribution_relevance": 8,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 3
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": false,
+        "source_integrity": "verified",
+        "independent_origin_count": 1,
+        "primary_source_count": 0,
+        "cited_claim_count": 3,
+        "primary_source_expected": false,
+        "primary_source_satisfied": false,
+        "reasons": [
+          "fewer_than_two_source_origins",
+          "primary_source_missing"
+        ]
+      },
+      "fingerprint": "fe9b18304408338d6da0b51543e667e77e633f8313cd094f05fc971c90cf9078",
+      "status": "research_pending",
+      "analysis_id": null
+    },
+    {
+      "story_id": "wt-98ff7e403362fdf9",
+      "story_slug": "starkerer-schutz-kritischer-infrastrukturen-62fdf9",
+      "story_title": "Stärkerer Schutz kritischer Infrastrukturen",
+      "editorial_analysis_score": 76,
+      "analysis_gain": 52,
+      "factors": {
+        "systemic_relevance": 16,
+        "impact_potential": 0,
+        "impact_risk": 0,
+        "editorial_priority": 8,
+        "mpd_relevance": 10,
+        "observed_impact": 0,
+        "third_order_relevance": 10,
+        "transformation_relevance": 8,
+        "resilience_relevance": 8,
+        "macro_relevance": 3,
+        "MPD_interdependence": 2,
+        "distribution_relevance": 3,
+        "discourse_relevance": 0,
+        "case_depth": 0,
+        "evidence_quality": 8
+      },
+      "factor_status": {
+        "impact_potential": "open",
+        "impact_risk": "open",
+        "observed_impact": "not_established"
+      },
+      "evidence_gate": {
+        "passed": true,
+        "source_integrity": "verified",
+        "independent_origin_count": 3,
+        "primary_source_count": 1,
+        "cited_claim_count": 6,
+        "primary_source_expected": true,
+        "primary_source_satisfied": true,
+        "reasons": []
+      },
+      "fingerprint": "6ed79b91bef11cc5feadb07f866643db995bb11b3d4bb5c24f73a0060df65c54",
+      "status": "published",
+      "analysis_id": "woek-analysis-39ddf0b6cc39"
+    }
+  ],
+  "batch": {
+    "submitted": 0,
+    "pending": 4,
+    "completed": 0,
+    "failed": 0,
+    "applied": 0,
+    "polling_errors": 1,
+    "timing_reconciled": 0,
+    "attention_required": []
+  },
+  "completed_at": "2026-09-10T07:25:32.542Z"
+}

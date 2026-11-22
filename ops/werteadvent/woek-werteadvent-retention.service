@@ -1,0 +1,14 @@
+[Unit]
+Description=Erase private Werte-Advent self-report links after campaign retention
+[Service]
+Type=oneshot
+User=woek-advent
+Group=woek-advent
+Environment=WA_DATABASE=/var/lib/woek-werteadvent/campaign.sqlite3
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 /opt/woek-werteadvent/current/service.py --prune
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/woek-werteadvent
+NoNewPrivileges=true
+MemoryMax=64M

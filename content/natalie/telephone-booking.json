@@ -1,0 +1,25 @@
+{
+  "timezone": "Europe/Berlin",
+  "minDays": 7,
+  "maxMonths": 3,
+  "blockedDateRanges": [{"from": "2026-12-15", "through": "2027-01-15"}],
+  "weekdays": [1, 2, 3],
+  "times": ["10:00", "10:30", "11:00", "11:30"],
+  "durationMinutes": 30,
+  "pendingHours": 72,
+  "verificationMinutes": 4320,
+  "retentionDays": 30,
+  "topics": [
+    {"id": "fachfrage", "label": "Fachfrage / Verständnisfrage"},
+    {"id": "praxis", "label": "Konkretes Projekt / Anwendung in der Praxis"},
+    {"id": "forschung", "label": "Forschung / fachlicher Austausch"},
+    {"id": "kooperation", "label": "Kooperation / Zusammenarbeit"},
+    {"id": "medien", "label": "Medienanfrage / Hintergrundgespräch"},
+    {"id": "sonstiges", "label": "Anderes Anliegen"}
+  ],
+  "questions": [
+    {"id": "background", "label": "Worum geht es konkret, und in welchem Zusammenhang stellst du die Anfrage?", "hint": "Beschreibe kurz dein Anliegen und gegebenenfalls deine Rolle oder dein Projekt.", "minLength": 20, "maxLength": 1600},
+    {"id": "questions", "label": "Welche ein bis drei konkreten Fragen möchtest du mit mir besprechen?", "hint": "Bitte formuliere deine Vorfragen so, dass ich mich auf unser Gespräch vorbereiten kann.", "minLength": 10, "maxLength": 1600},
+    {"id": "outcome", "label": "Was möchtest du nach dem Gespräch geklärt haben?", "hint": "Welche Entscheidung, welcher nächste Schritt oder welches Verständnis soll daraus entstehen?", "minLength": 10, "maxLength": 800}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "assets": {
+    "assets/pdf/journal/st-gallen-managementmodell-wirkungsoekonomie.pdf": "sustynats/wirkungsoekonomie-medien",
+    "assets/pdf/journal/zwei-t-shirts-true-cost-wirkungssteuer.pdf": "sustynats/wirkungsoekonomie-medien",
+    "assets/pdf/journal/r21-energiewende-gutachten-faktencheck.pdf": "sustynats/wirkungsoekonomie-medien",
+    "assets/pdf/journal/wirkungsbrachistochrone-kuerzester-weg-transformation.pdf": "sustynats/wirkungsoekonomie-medien",
+    "assets/pdf/journal/wirkungsbrachistochrone.pdf": "sustynats/wirkungsoekonomie-medien",
+    "assets/pdf/journal/lernfaehige-demokratie-politische-kurskorrekturen.pdf": "sustynats/wirkungsoekonomie-medien",
+    "assets/pdf/journal/lernfaehige-demokratie.pdf": "sustynats/wirkungsoekonomie-medien"
+  }
+}

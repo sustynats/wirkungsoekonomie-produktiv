@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0",
+  "run_id": "2026-09-23-PM",
+  "generated_at": "2026-09-23T14:01:40.082Z",
+  "overall_status": "DEGRADED",
+  "domains": {
+    "federal": {
+      "status": "OK",
+      "last_run_at": "2026-09-23T14:01:40.082Z",
+      "detail": "Bund: COMPLETED"
+    },
+    "parliament": {
+      "status": "OK",
+      "last_run_at": "2026-09-23T14:01:40.082Z",
+      "detail": "Parlament: COMPLETED"
+    },
+    "states": {
+      "status": "DEGRADED",
+      "last_run_at": "2026-09-23T14:05:46.372Z",
+      "detail": "8 von 8 aktivierten Länder-Wahlzyklen besitzen einen amtlichen Kalender- oder Ergebnisadapter; eigenständige Regierungsadapter bleiben getrennt als offene Abdeckung ausgewiesen."
+    },
+    "eu": {
+      "status": "DEGRADED",
+      "last_run_at": "2026-09-23T14:05:46.372Z",
+      "detail": "0 von 3 definierten EU-Quellen sind als produktive Adapter freigegeben. Der EU-Backfill wird bis dahin nicht als vollständig ausgewiesen."
+    },
+    "observatory": {
+      "status": "DEGRADED",
+      "last_run_at": "2026-09-23T14:01:40.082Z",
+      "detail": "Wirkungsobservatorium: DEGRADED"
+    }
+  },
+  "last_verified_deployment_at": null,
+  "open_data_issues": 0,
+  "open_fach_reviews": 0,
+  "next_election_triggers": [
+    {
+      "jurisdiction_id": "DE-SH",
+      "name": "Schleswig-Holstein",
+      "date": "2027-04-18",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "PRE_ELECTION_WATCH"
+    },
+    {
+      "jurisdiction_id": "DE-SL",
+      "name": "Saarland",
+      "date": "2027-04-18",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "PRE_ELECTION_WATCH"
+    },
+    {
+      "jurisdiction_id": "DE-NW",
+      "name": "Nordrhein-Westfalen",
+      "date": "2027-04-25",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "PRE_ELECTION_WATCH"
+    },
+    {
+      "jurisdiction_id": "DE-HB",
+      "name": "Bremen",
+      "date": "2027-05-30",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "PRE_ELECTION_WATCH"
+    },
+    {
+      "jurisdiction_id": "DE-NI",
+      "name": "Niedersachsen",
+      "date": "2027-09-26",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "PRE_ELECTION_WATCH"
+    },
+    {
+      "jurisdiction_id": "DE-BY",
+      "name": "Bayern",
+      "date": "2028-AUTUMN",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "DORMANT"
+    },
+    {
+      "jurisdiction_id": "DE-HE",
+      "name": "Hessen",
+      "date": "2028-AUTUMN",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "DORMANT"
+    },
+    {
+      "jurisdiction_id": "DE-BB",
+      "name": "Brandenburg",
+      "date": "2029-AUTUMN",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "DORMANT"
+    },
+    {
+      "jurisdiction_id": "DE-SN",
+      "name": "Sachsen",
+      "date": "2029-AUTUMN",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "DORMANT"
+    },
+    {
+      "jurisdiction_id": "DE-TH",
+      "name": "Thüringen",
+      "date": "2029-AUTUMN",
+      "government_lifecycle_state": "OUT_OF_INITIAL_SCOPE",
+      "election_cycle_state": "DORMANT"
+    }
+  ],
+  "next_reality_checks": [],
+  "observatory": {
+    "last_observation_sync": "2026-09-23T14:01:40.082Z",
+    "last_evidence_review": null,
+    "last_reality_check_trigger": "2026-09-23T14:01:40.082Z",
+    "open_reality_candidates": 7,
+    "blocked_attributions": 0,
+    "source_failures": 3,
+    "stale_indicators": 0
+  }
+}

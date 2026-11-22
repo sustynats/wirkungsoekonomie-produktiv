@@ -1,0 +1,210 @@
+name: State sustainability architecture audit
+
+env:
+  SOURCE_DATE_EPOCH: '1787270400'
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+      # Journal discovery/card repairs do not change approved #253 source
+      # projections. This branch-writing job otherwise rewrites thousands of
+      # unrelated pages and stale news feeds, conflicting with live ingestion.
+      # The complete PR build and release still run every semantic gate.
+      - '!blog.html'
+      # The private editorial app does not project public #253 content. Its
+      # source-only fixes must not receive stale generated news from this writer.
+      - '!admin/redaktion/**'
+      # Internal UX reference artboards are excluded from public deployment.
+      # They must not trigger unrelated, branch-writing site projections.
+      - '!docs/parlament/ux/**'
+      - 'content/**'
+      - '!content/taxonomy/site-map.json'
+      # Die Quellen- und Medienlisten des Wirkungstickers sind Betriebsdaten der
+      # Nachrichtenspur und kein #253-Inhalt: keiner der Projektionsgeneratoren
+      # liest content/news. Ohne diesen Ausschluss haengt der branchschreibende
+      # Job seinen Projektionscommit an jeden Ticker-PR, der eine Quelle
+      # abschaltet - mit hunderten fremden Dateien und einem Konflikt gegen den
+      # main, der sich alle 15 Minuten bewegt (16.09.: PR #829 und #839).
+      # Dieselbe Begruendung wie bei scripts/news/** weiter unten.
+      - '!content/news/**'
+      - 'scripts/**'
+      - '!scripts/blog/**'
+      # News ingestion and operational monitoring do not change #253 content.
+      # Keep the branch-writing projection job off these server-only changes;
+      # their tests and the complete PR website gates still run independently.
+      - '!scripts/news/**'
+      - '!scripts/ops/**'
+      # Snapshot transport/build repairs do not change the #253 source content.
+      # Their complete PR build and semantic gates still run without this writer.
+      - '!scripts/quellenarchiv/source-snapshot.mjs'
+      - '!scripts/quellenarchiv/build-quellenarchiv-pages.mjs'
+      - '!scripts/chatgpt_dropbox_bridge.py'
+      - '!scripts/chatgpt_bridge_crypto.py'
+      - '!scripts/chatgpt_processor_receipt.py'
+      # Parliament image candidates do not project state sustainability content.
+      # Keep this branch-writing audit off that isolated provider/QA lane.
+      - '!scripts/parliament/impact-visuals/**'
+      # Protecting immutable source bytes does not change #253 Fach projections.
+      # Its normal PR quality tests remain mandatory, without a branch writer.
+      - '!scripts/lib/public-typography.mjs'
+      # Read-only navigation measurements do not change #253 source content.
+      # Their full PR build still runs the same semantic and historical gates.
+      # A projection commit here would alter the head after the checked report.
+      - '!scripts/quality/check-navigation-discovery.mjs'
+      - '!scripts/quality/navigation-report.py'
+      # Reader layout and current-route discovery do not change #253 content.
+      # The full PR build still runs all semantic and historical gates. Keep
+      # this extra branch writer from committing generated sitemap snapshots
+      # against the independently advancing newsroom on main.
+      - '!scripts/site/build-two-shirts.mjs'
+      - '!scripts/lib/method-version-indexability.mjs'
+      - '!verstehen/preise-und-wirkungsfonds/index.html'
+      - 'tools/apply_state_sustainability_architecture.py'
+      - 'tools/apply_state_sustainability_sources.py'
+      - 'tools/apply_state_sustainability_precision.py'
+      - 'tools/apply_state_sustainability_public_precision.py'
+      - 'tools/apply_state_sustainability_wiwi_generator.py'
+      - 'tools/apply_state_sustainability_wiwi_scope.py'
+      - 'tools/apply_state_sustainability_build_integration.py'
+      - 'tools/apply_nwi_disambiguation.py'
+      - 'tools/audit_state_sustainability_architecture.py'
+      - 'tools/audit_state_sustainability_architecture_fast.py'
+      - 'tools/audit_state_sustainability_support_files.py'
+      - 'tools/finalize_state_sustainability_matrix.py'
+      - 'tools/check_state_sustainability_architecture.py'
+      - 'tools/check_state_sustainability_wiwi_scope.py'
+      - '.github/workflows/deploy.yml'
+      - 'sitemap.xml'
+      - 'llms.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: state-sustainability-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          # Keep all commits for merge-base/historical guards, but retrieve old
+          # file blobs only when actually compared. The full 25-GiB history
+          # download took 32 minutes in run 36915755153 before any gate ran.
+          filter: blob:none
+          fetch-depth: 0
+      - name: Fetch exact main baseline for historical-diff guards
+        run: git fetch --filter=blob:none origin main:refs/remotes/origin/main --force
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Normalize current-route discovery before section projections
+        # News ingestion can omit the two current explanation routes from its
+        # sitemap snapshot. Add and validate them before the glossary/archive
+        # generators replace their sections, so both audit passes use the same
+        # route order. The final normalization and strict second-pass diff stay.
+        run: node scripts/quality/sync-sitemap-indexability.mjs
+      - name: Capture operational news sources outside #253
+        run: node scripts/quality/scope-state-projection-news.mjs capture --snapshot=${{ runner.temp }}/woek-state-news.json
+      - name: Apply approved #253 deterministic projections
+        run: |
+          python tools/apply_state_sustainability_architecture.py
+          python tools/apply_state_sustainability_wiwi_generator.py
+          python tools/apply_state_sustainability_wiwi_scope.py
+          python tools/apply_state_sustainability_sources.py
+          python tools/apply_state_sustainability_precision.py
+          python tools/apply_state_sustainability_public_precision.py
+          python tools/apply_state_sustainability_build_integration.py
+          python tools/apply_nwi_disambiguation.py
+          node scripts/glossary/build-glossary-registry.mjs
+          node scripts/glossary/build-glossary-pages.mjs
+          node scripts/glossary/build-glossary-lookup.mjs
+          node scripts/quellenarchiv/build-quellenarchiv-pages.mjs
+          node scripts/quellenarchiv/check-quellenarchiv-quality.mjs
+          python tools/apply_nwi_disambiguation.py
+          # Finish partial projections with the same current content/navigation rules as the full build.
+          node scripts/site/build-methodik-explainer.mjs
+          node scripts/site/apply-state-benchmark-update.mjs
+          node scripts/site/apply-model-definition-update.mjs
+          node scripts/site/normalize-site-header.mjs --prefix=begriffe/ --prefix=quellenarchiv/ --prefix=methodik/index.html --prefix=wirkungsfelder/staat-recht-demokratie/wirkungshaushalt/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/politische-wirkungspruefung/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/detailkonzepte/politische-wirkungspruefung/index.html
+          node scripts/site/normalize-site-footer.mjs --prefix=begriffe/ --prefix=quellenarchiv/ --prefix=methodik/index.html --prefix=wirkungsfelder/staat-recht-demokratie/wirkungshaushalt/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/politische-wirkungspruefung/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/detailkonzepte/politische-wirkungspruefung/index.html
+          # Operational news sources are maintained by ingestion, outside #253.
+          # Preserve them here; the complete release artifact still normalizes
+          # and checks all public typography with no exclusions.
+          node scripts/quality/normalize-publication-typography.mjs . --tracked --exclude-source-prefix=wirkungsticker/ --exclude-source-prefix=news/ --exclude-source-prefix=data/news/ --exclude-source-prefix=content/news/ --exclude-source-prefix=reports/
+          node scripts/quality/sync-sitemap-indexability.mjs
+          npm run build:search
+          npm run taxonomy:build
+      - name: Preserve unchanged operational news metadata
+        run: node scripts/quality/scope-state-projection-news.mjs restore --snapshot=${{ runner.temp }}/woek-state-news.json
+      - name: Generate exhaustive #253 URL/file matrix for this checked commit
+        run: |
+          python tools/audit_state_sustainability_architecture_fast.py --root . --output content/audits/state-sustainability-architecture-url-matrix.json --markdown content/audits/state-sustainability-architecture-url-matrix.md
+          python tools/audit_state_sustainability_support_files.py --root . --matrix content/audits/state-sustainability-architecture-url-matrix.json --markdown content/audits/state-sustainability-architecture-url-matrix.md
+          python tools/finalize_state_sustainability_matrix.py --root . --matrix content/audits/state-sustainability-architecture-url-matrix.json --markdown content/audits/state-sustainability-architecture-url-matrix.md
+      - name: Run hard #253 semantic gates
+        run: |
+          python tools/check_state_sustainability_architecture.py
+          python tools/check_state_sustainability_wiwi_scope.py
+      - name: Snapshot deterministic projections for the second-pass check
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Keep the first complete projection in the local index. The next
+          # pass must reproduce it exactly, using the same strict diff check.
+          # Generated discovery data is reported as an artifact; this audit
+          # never rewrites the PR head after its publication tests start.
+          git add -A
+          git reset -- .github/workflows/
+      - name: Verify projections and audit matrix are idempotent
+        run: |
+          node scripts/quality/scope-state-projection-news.mjs capture --snapshot=${{ runner.temp }}/woek-state-news.json
+          python tools/apply_state_sustainability_architecture.py
+          python tools/apply_state_sustainability_wiwi_generator.py
+          python tools/apply_state_sustainability_wiwi_scope.py
+          python tools/apply_state_sustainability_sources.py
+          python tools/apply_state_sustainability_precision.py
+          python tools/apply_state_sustainability_public_precision.py
+          python tools/apply_state_sustainability_build_integration.py
+          python tools/apply_nwi_disambiguation.py
+          node scripts/glossary/build-glossary-registry.mjs
+          node scripts/glossary/build-glossary-pages.mjs
+          node scripts/glossary/build-glossary-lookup.mjs
+          node scripts/quellenarchiv/build-quellenarchiv-pages.mjs
+          node scripts/quellenarchiv/check-quellenarchiv-quality.mjs
+          python tools/apply_nwi_disambiguation.py
+          # Finish partial projections with the same current content/navigation rules as the full build.
+          node scripts/site/build-methodik-explainer.mjs
+          node scripts/site/apply-state-benchmark-update.mjs
+          node scripts/site/apply-model-definition-update.mjs
+          node scripts/site/normalize-site-header.mjs --prefix=begriffe/ --prefix=quellenarchiv/ --prefix=methodik/index.html --prefix=wirkungsfelder/staat-recht-demokratie/wirkungshaushalt/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/politische-wirkungspruefung/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/detailkonzepte/politische-wirkungspruefung/index.html
+          node scripts/site/normalize-site-footer.mjs --prefix=begriffe/ --prefix=quellenarchiv/ --prefix=methodik/index.html --prefix=wirkungsfelder/staat-recht-demokratie/wirkungshaushalt/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/politische-wirkungspruefung/index.html --prefix=werkstatt/dossiers/staat-recht-demokratie/detailkonzepte/politische-wirkungspruefung/index.html
+          node scripts/quality/normalize-publication-typography.mjs . --tracked --exclude-source-prefix=wirkungsticker/ --exclude-source-prefix=news/ --exclude-source-prefix=data/news/ --exclude-source-prefix=content/news/ --exclude-source-prefix=reports/
+          node scripts/quality/sync-sitemap-indexability.mjs
+          npm run build:search
+          npm run taxonomy:build
+          node scripts/quality/scope-state-projection-news.mjs restore --snapshot=${{ runner.temp }}/woek-state-news.json
+          python tools/audit_state_sustainability_architecture_fast.py --root . --output content/audits/state-sustainability-architecture-url-matrix.json --markdown content/audits/state-sustainability-architecture-url-matrix.md
+          python tools/audit_state_sustainability_support_files.py --root . --matrix content/audits/state-sustainability-architecture-url-matrix.json --markdown content/audits/state-sustainability-architecture-url-matrix.md
+          python tools/finalize_state_sustainability_matrix.py --root . --matrix content/audits/state-sustainability-architecture-url-matrix.json --markdown content/audits/state-sustainability-architecture-url-matrix.md
+          python tools/check_state_sustainability_architecture.py
+          python tools/check_state_sustainability_wiwi_scope.py
+          git diff --exit-code
+      - name: Upload #253 audit matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: state-sustainability-architecture-audit
+          path: |
+            content/audits/state-sustainability-architecture-url-matrix.json
+            content/audits/state-sustainability-architecture-url-matrix.md

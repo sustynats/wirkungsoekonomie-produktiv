@@ -1,0 +1,927 @@
+{
+  "version": 1,
+  "reviews": [
+    {
+      "guide": "lexikon-schutz-kurz",
+      "asset": "wirkungslexikon-schutz-kurz.mp3",
+      "sha256": "cd8d1de33c6c91d6344c6fd8e3e1b182c9eb2ad7e1e3e1b7cb4000086cb3279a",
+      "seconds": 77.96,
+      "humanReview": {
+        "date": "2026-10-18",
+        "scope": [
+          "Stimmen",
+          "Schnitt"
+        ],
+        "answer": "Stimmen und Schnitt passen",
+        "question": "Wie klingt der verlinkte 78-Sekunden-Lexikon-Entwurf für dich – insbesondere die Stimmen und die Übergänge?",
+        "file": "wirkungslexikon-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellgebundener Schnitt aus veröffentlichten Primärtexten; keine historischen Entwürfe freigegeben.",
+        "transcript": "Redaktionell geglättetes Transkript der tatsächlichen Schnittfolge; keine Zuordnung ungeprüfter Sprecherwechsel.",
+        "cast": "Keine gesprochenen Namen in dieser Fassung; Mara weiblich/Jonas männlich im Format. Vorherige vertauschte Selbstvorstellung nicht verwendet.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "website-rundgang",
+      "asset": "website-rundgang.mp4",
+      "sha256": "f0b17b9b5bb3a7640b8c15a36bd8d5379e26a7958c28a9b7937eaaa52b6efc6b",
+      "seconds": 81.76,
+      "humanReview": {
+        "date": "2026-10-18",
+        "scope": [
+          "Video",
+          "Sprechfluss",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Video passt, veröffentlichen",
+        "question": "Passt auch der verlinkte 82-Sekunden-Videoentwurf für die Startseite – insbesondere Sprechfluss und Übergänge?",
+        "file": "website-rundgang-v3-entwurf.mp4"
+      },
+      "technicalReview": {
+        "video": "1920x1080 H.264/AAC; vollständige Decodierung erfolgreich; eigene Website-Grafiken mit vier Zielgruppen.",
+        "transcript": "Redaktionell geglätteter Text der tatsächlichen Schnittfolge, nicht das ursprünglich gewünschte Skript.",
+        "listeningByTool": false
+      },
+      "status": "SUPERSEDED_AFTER_USER_CAST_CORRECTION",
+      "supersededBySha256": "87ba7983962bd1760bcede0ac34166208371e935ce57d3f51fc3483dcbb5b551",
+      "reason": "Nutzer meldete Jonas teilweise in beiden Parts; neue konkrete V5 ersetzt diese Fassung."
+    },
+    {
+      "guide": "buerger-einstieg-kurz",
+      "asset": "buerger-einstieg-kurz.mp3",
+      "sha256": "76bf32b0fedd65b0d6d59a5548989cd2232b0fff42920da6fdc14a06a3294ec8",
+      "seconds": 87.54,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Schnitt",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle vier passen, veröffentlichen",
+        "question": "In der privaten Hörvorschau http://127.0.0.1:8774/zielgruppen.html stehen vier neue Kurz-Audios für Bürger, Journalismus, Wissenschaft und Politik (je 77–89 Sekunden). Passen Stimmen, Verständlichkeit und Schnitt für die Veröffentlichung?",
+        "file": "buerger-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; bestätigte Audiodatei unverändert.",
+        "transcript": "Redaktionell geglätteter Text der tatsächlichen Schnittfolge; keine Zuordnung ungeprüfter Sprecherwechsel.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "journalismus-einstieg-kurz",
+      "asset": "journalismus-einstieg-kurz.mp3",
+      "sha256": "799cb80237b092629cde994ba9d66ac3cb91940a2a95076e0306f17dee6f05f1",
+      "seconds": 77,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Schnitt",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle vier passen, veröffentlichen",
+        "question": "In der privaten Hörvorschau http://127.0.0.1:8774/zielgruppen.html stehen vier neue Kurz-Audios für Bürger, Journalismus, Wissenschaft und Politik (je 77–89 Sekunden). Passen Stimmen, Verständlichkeit und Schnitt für die Veröffentlichung?",
+        "file": "journalismus-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; bestätigte Audiodatei unverändert.",
+        "transcript": "Redaktionell geglätteter Text der tatsächlichen Schnittfolge; keine Zuordnung ungeprüfter Sprecherwechsel.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wissenschaft-einstieg-kurz",
+      "asset": "wissenschaft-einstieg-kurz.mp3",
+      "sha256": "b008a5bfd703d6c00c692f6d0d5e23a45a3fff0237da041462afd2d8a6633f47",
+      "seconds": 88.24,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Schnitt",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle vier passen, veröffentlichen",
+        "question": "In der privaten Hörvorschau http://127.0.0.1:8774/zielgruppen.html stehen vier neue Kurz-Audios für Bürger, Journalismus, Wissenschaft und Politik (je 77–89 Sekunden). Passen Stimmen, Verständlichkeit und Schnitt für die Veröffentlichung?",
+        "file": "wissenschaft-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; bestätigte Audiodatei unverändert.",
+        "transcript": "Redaktionell geglätteter Text der tatsächlichen Schnittfolge; keine Zuordnung ungeprüfter Sprecherwechsel.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "politik-einstieg-kurz",
+      "asset": "politik-einstieg-kurz.mp3",
+      "sha256": "b4af7a119909c3da91fdd7c4850bd513536d58867fe3fdb083da4ca0ca19b82f",
+      "seconds": 88.28,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Schnitt",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle vier passen, veröffentlichen",
+        "question": "In der privaten Hörvorschau http://127.0.0.1:8774/zielgruppen.html stehen vier neue Kurz-Audios für Bürger, Journalismus, Wissenschaft und Politik (je 77–89 Sekunden). Passen Stimmen, Verständlichkeit und Schnitt für die Veröffentlichung?",
+        "file": "politik-kurz-v3c-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; bestätigte Audiodatei unverändert.",
+        "transcript": "Redaktionell geglätteter Text der tatsächlichen Schnittfolge; keine Zuordnung ungeprüfter Sprecherwechsel.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "website-rundgang",
+      "asset": "website-rundgang-v5.mp4",
+      "sha256": "87ba7983962bd1760bcede0ac34166208371e935ce57d3f51fc3483dcbb5b551",
+      "seconds": 75.85,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Beide passen, veröffentlichen",
+        "question": "Startseitenfilm V5 (76 Sekunden) und Staat/Recht/Demokratie V4 (80 Sekunden): Passen bei beiden die Stimmen und Übergänge für die Veröffentlichung?",
+        "file": "website-rundgang-v5-entwurf.mp4"
+      },
+      "technicalReview": {
+        "content": "Tatsächliche Schnittfolge und vollständige Roh-/Endschnitt-ASR gegen veröffentlichte Primärtexte geprüft.",
+        "transcript": "Wortlaut der konkreten neuen Fassung; getrennte Sprecherbeiträge im Schnittplan.",
+        "cast": "Konkrete neue Fassung durch menschliches Hörurteil bestätigt. Keine gesprochenen Selbstvorstellungen.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "staat-recht-demokratie-kurz",
+      "asset": "staat-recht-demokratie-kurz-v4.mp3",
+      "sha256": "a73520a2b8ec4c556531729333a2cd7a37c6d6b0322855837e7bf764e6b073aa",
+      "seconds": 79.79,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Beide passen, veröffentlichen",
+        "question": "Startseitenfilm V5 (76 Sekunden) und Staat/Recht/Demokratie V4 (80 Sekunden): Passen bei beiden die Stimmen und Übergänge für die Veröffentlichung?",
+        "file": "staat-recht-demokratie-kurz-v4-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Tatsächliche Schnittfolge und vollständige Roh-/Endschnitt-ASR gegen veröffentlichte Primärtexte geprüft.",
+        "transcript": "Wortlaut der konkreten neuen Fassung; getrennte Sprecherbeiträge im Schnittplan.",
+        "cast": "Konkrete neue Fassung durch menschliches Hörurteil bestätigt. Keine gesprochenen Selbstvorstellungen.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "verstehen-kurz",
+      "asset": "verstehen-reviewed.mp3",
+      "sha256": "ca1fa8b82794f55d885a160e224b5672d81a2f68aa1ab2525a8be4282138c3aa",
+      "seconds": 88.46,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "verstehen-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wirkungsfelder-kurz",
+      "asset": "wirkungsfelder-reviewed.mp3",
+      "sha256": "de6b39b1d798c88f6f2ec176cb8fc9d2e24181cfce045cd649eae4c6f8863f34",
+      "seconds": 82.23,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "wirkungsfelder-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "debatte-radar-kurz",
+      "asset": "debatte-radar-reviewed.mp3",
+      "sha256": "429154de42dcb0d132e940fa2f4b9935b487b1d77783c5c0b87f1ef3c33848ee",
+      "seconds": 76.68,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "debatte-radar-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "institut-kurz",
+      "asset": "institut-reviewed.mp3",
+      "sha256": "d8a344807195655d339e713a3870557a4d6bb3c954e63e27d4d8c54d73977ba6",
+      "seconds": 88.33,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "institut-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "mitmachen-kurz",
+      "asset": "mitmachen-reviewed.mp3",
+      "sha256": "d47ab016a7ccb3af43f32c2c86b79c69b7e380677cbd38df4f5d902d6a84eb82",
+      "seconds": 89.73,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "mitmachen-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "arbeit-einkommen-kurz",
+      "asset": "arbeit-einkommen-reviewed.mp3",
+      "sha256": "e828bbbec372cfe74e91e82b42fc1de1db39e629855a15aa1d7d64dc9b78aec8",
+      "seconds": 83.9,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "arbeit-einkommen-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "bildung-kurz",
+      "asset": "bildung-reviewed.mp3",
+      "sha256": "ed3f731c7627a75bd873048e17967738e2b331c702e87d5327e1bbc113127fa6",
+      "seconds": 87.48,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "bildung-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "finanzsystem-kapital-kurz",
+      "asset": "finanzsystem-kapital-reviewed.mp3",
+      "sha256": "4af21226c1bae46020ca56281aba19b353d7693a671fce6859784633efecdd1f",
+      "seconds": 79,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "finanzsystem-kapital-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "gesundheit-pflege-kurz",
+      "asset": "gesundheit-pflege-reviewed.mp3",
+      "sha256": "ccb612a22d9932ca201fd1409ddcca6538aca56e704e32a3a9c815fa6534d89f",
+      "seconds": 83.1,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "gesundheit-pflege-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "klima-energie-ressourcen-kurz",
+      "asset": "klima-energie-ressourcen-reviewed.mp3",
+      "sha256": "143938983d31baff726cd06335f2a8e55e88d601892a3dd3e3fdb77a90465cd5",
+      "seconds": 81.48,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "klima-energie-ressourcen-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "produkte-konsum-kurz",
+      "asset": "produkte-konsum-reviewed.mp3",
+      "sha256": "9204dc283591ccbe34f452b576035ee252a6f42c4f0637490113636b64445b81",
+      "seconds": 88.14,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "produkte-konsum-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "rente-soziale-sicherung-kurz",
+      "asset": "rente-soziale-sicherung-reviewed.mp3",
+      "sha256": "54796b1e95a166797289dc22649279da1553451917ceebca54d7db814ae6abb8",
+      "seconds": 88.5,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "rente-soziale-sicherung-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "bibliothek-kurz",
+      "asset": "bibliothek-v3c.mp3",
+      "sha256": "44155dccef5c496df4f8b3a70d7b1a7db9420f1f5072b28279950fe014483050",
+      "seconds": 60.9,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "bibliothek-kurz-v3c-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "kultur-identitaet-resonanz-kurz",
+      "asset": "kultur-identitaet-resonanz-v3c.mp3",
+      "sha256": "e35c480848a639f87900c4b961d0b116d3f3004ab0d779f086f39cc497fc1cd8",
+      "seconds": 77.34,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "kultur-identitaet-resonanz-kurz-v3c-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "werkzeuge-kurz",
+      "asset": "werkzeuge-v3c.mp3",
+      "sha256": "303628ba4e067f403efb79fb94f50e370b5622733947bf47eb92bf993442e7de",
+      "seconds": 70.28,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "werkzeuge-kurz-v3c-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "lernen-kurz",
+      "asset": "lernen-v3c.mp3",
+      "sha256": "ae36ac24b290c00d663faef614b5f72982183d2f9376c2a8d0a49fa80abe131f",
+      "seconds": 68.46,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "lernen-kurz-v3c-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "medien-oeffentlichkeit-kurz",
+      "asset": "medien-oeffentlichkeit-v3d.mp3",
+      "sha256": "875f216b25c460139c5c7359cc8bb078d24128a1aacd9b9b997a5f724b5d5873",
+      "seconds": 82.63,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "medien-oeffentlichkeit-kurz-v3d-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "fuer-kurz",
+      "asset": "fuer-v4b.mp3",
+      "sha256": "fdf8223a563a4c08f08a942053101d9eb471b8f16063519362e163d0857a27b1",
+      "seconds": 62.7,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "fuer-kurz-v4b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wirkungsfinanzpolitik-kurz",
+      "asset": "wirkungsfinanzpolitik-v3b.mp3",
+      "sha256": "e860d8daf303560966783176023c4592bd591cd60ed467a2b8ebf7a02c6df64c",
+      "seconds": 85.5,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "wirkungsfinanzpolitik-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wirtschaft-unternehmen-kurz",
+      "asset": "wirtschaft-unternehmen-v3b.mp3",
+      "sha256": "d54beb42d48790713f298dfe372724d161f83dcdfb2d473b29e6ddefb869ba25",
+      "seconds": 87.54,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "wirtschaft-unternehmen-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wissenschaft-innovation-digitalisierung-kurz",
+      "asset": "wissenschaft-innovation-digitalisierung-v3.mp3",
+      "sha256": "e39fb84e9eb01009463a87acd55037a68a8eca4f7b26774033e3fbf2f65a5e1a",
+      "seconds": 87.8,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle 21 passen, veröffentlichen",
+        "file": "wissenschaft-innovation-digitalisierung-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Quellengebundene Kurzfassung aus veröffentlichten Primärtexten; Roh- und Endtranskript vollständig gegen die dokumentierten Grundlagen geprüft.",
+        "transcript": "Text der tatsächlich bestätigten Schnittfassung.",
+        "media": "Datei unverändert, vollständige Dekodierung, gemessene Dauer und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wohnen-stadt-kurz",
+      "asset": "wohnen-stadt-v3b.mp3",
+      "sha256": "f02194cea6301f994f3eac9b3391af57b030f6c153a536fa815f70ad9ac76c14",
+      "seconds": 84.62,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle sechs passen, veröffentlichen",
+        "file": "wohnen-stadt-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "kommunen-kurz",
+      "asset": "kommunen-v3.mp3",
+      "sha256": "85324d1db2b54f5312267c1fece43dd1961a8a69f01362b32173c537ba6ff052",
+      "seconds": 86.52,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle sechs passen, veröffentlichen",
+        "file": "kommunen-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "iooi-und-wirkungsoekonomie-kurz",
+      "asset": "iooi-und-wirkungsoekonomie-v3b.mp3",
+      "sha256": "0d154f26bdfae79ab71da6967b12e172677f1882493c085ec17e8fba3edfb177",
+      "seconds": 84.44,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle sechs passen, veröffentlichen",
+        "file": "iooi-und-wirkungsoekonomie-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "sdgs-sdgplus-kurz",
+      "asset": "sdgs-sdgplus-v3.mp3",
+      "sha256": "6b8478af59bc59e56ecea6dc51d677461b64a63538b8af678d20a9f733c4fe24",
+      "seconds": 86.84,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle sechs passen, veröffentlichen",
+        "file": "sdgs-sdgplus-kurz-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "methodik-kurz",
+      "asset": "methodik-v3b.mp3",
+      "sha256": "3c55bf77280e9f6017c16676e20603e04ac9e98979873859c7cc39e47d8632b0",
+      "seconds": 89.27,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle sechs passen, veröffentlichen",
+        "file": "methodik-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "ausgangslage-kurz",
+      "asset": "ausgangslage-v3b.mp3",
+      "sha256": "3232e6494b92f5ebb9506205faecb4d14f00671711eb1e33004907b8e5880630",
+      "seconds": 88.54,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle sechs passen, veröffentlichen",
+        "file": "ausgangslage-kurz-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "methodenraum-kurz",
+      "asset": "methodenraum-v3b-reviewed.mp3",
+      "sha256": "3dedfc4796b8eb31d290f1a6a1b0cb34b53ece78aa94c6b9d0b7afd88da23a70",
+      "seconds": 87.26,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle fünf passen, veröffentlichen",
+        "file": "methodenraum-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wirkungssteuerung-kurz",
+      "asset": "wirkungssteuerung-v3b-reviewed.mp3",
+      "sha256": "d7915690540ca85af3942232c05dd7c191ea3cec659e01f22176e5b20ed496c4",
+      "seconds": 85.239977,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle fünf passen, veröffentlichen",
+        "file": "wirkungssteuerung-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "erleben-kurz",
+      "asset": "erleben-v3b-reviewed.mp3",
+      "sha256": "9c07e40c8e941486656d7f550e94803d4c160425c19ca0024f110fbeef7553ce",
+      "seconds": 87.84,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle fünf passen, veröffentlichen",
+        "file": "erleben-v3b-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "begriffe-kurz",
+      "asset": "begriffe-v3-reviewed.mp3",
+      "sha256": "bb1aa26aec7368af1bb7be65a0e21a2081e4993373782553baf48a0db4560ef1",
+      "seconds": 82.54,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle fünf passen, veröffentlichen",
+        "file": "begriffe-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    },
+    {
+      "guide": "wissensgesellschaft-wirkungsgesellschaft-kurz",
+      "asset": "wissensgesellschaft-wirkungsgesellschaft-v3-reviewed.mp3",
+      "sha256": "7afc3c5fe8e42fc582cd51e6e5b272e1f2054e64b5ce7bc680a7accac139f16b",
+      "seconds": 86.84,
+      "humanReview": {
+        "date": "2026-10-19",
+        "scope": [
+          "Stimmen",
+          "Verständlichkeit",
+          "Übergänge",
+          "Veröffentlichung"
+        ],
+        "answer": "Alle fünf passen, veröffentlichen",
+        "file": "wissensgesellschaft-wirkungsgesellschaft-v3-entwurf.mp3"
+      },
+      "technicalReview": {
+        "content": "Veröffentlichte Primärquellen und vollständige Roh-/Endtranskripte gegen die führenden Grundlagen geprüft.",
+        "transcript": "Text der konkret bestätigten Schnittfassung.",
+        "media": "Unveränderte Datei, gemessene Dauer, vollständige Dekodierung und SHA256 geprüft.",
+        "listeningByTool": false
+      }
+    }
+  ]
+}

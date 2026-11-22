@@ -1,0 +1,10 @@
+[Unit]
+Description=Schedule expiration of telephone booking data
+
+[Timer]
+OnCalendar=*-*-* *:0/5:00
+Persistent=true
+Unit=woek-telephone-booking-retention.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,192 @@
+name: Wirkungsticker Lagen
+run-name: Wirkungsticker Tageslagen
+
+on:
+  schedule:
+    # Berlin 06/12/18 plus four minutes; select the matching DST schedule below.
+    # GitHub may delay cron. The writer catches up missing editions of today.
+    - cron: "4 4,10,16 * * *"
+    - cron: "4 5,11,17 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+# Share the existing canonical publication lane; never cancel an active writer.
+# GitHub retains only one pending run per group. Keep this to three daily
+# season-matched triggers, with the normal news writer as another catch-up path.
+concurrency:
+  group: wirkungsticker-main
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      WIRKUNGSTICKER_PROCESSING_MODE: api
+      WOEK_NEWS_ONLY: "true"
+      WOEK_NEWS_AI_ENABLED: "false"
+      VISUAL_GENERATION_PROVIDER: disabled
+      WOEK_NEWS_BRIDGE_URL: ""
+      WOEK_NEWS_BRIDGE_TOKEN: ""
+      WOEK_NEWS_ANALYSIS_TOKEN: ""
+      WOEK_NEWS_VISUAL_API_URL: ""
+      SOURCE_DATE_EPOCH: "1787270400"
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check season and missing editions
+        id: due
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          const now = new Date();
+          const hour = Number(new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Europe/Berlin', hour: '2-digit', hourCycle: 'h23'
+          }).format(now));
+          const offset = (hour - now.getUTCHours() + 24) % 24;
+          if (![1, 2].includes(offset)) throw Error('LAGEN_TIMEZONE_INVALID');
+          const matchingSchedule = offset === 2 ? '4 4,10,16 * * *' : '4 5,11,17 * * *';
+          let needed = false;
+          if (process.env.EVENT_NAME === 'workflow_dispatch'
+              || process.env.EVENT_NAME === 'schedule' && process.env.EVENT_SCHEDULE === matchingSchedule) {
+            const result = JSON.parse(execFileSync(process.execPath,
+              ['scripts/news/lage-schreiben.mjs', '--check-due'],
+              {encoding: 'utf8', maxBuffer: 65536}));
+            if (result.status !== 'ok' || typeof result.publication_needed !== 'boolean') {
+              throw Error('LAGEN_DUE_CONTRACT_INVALID');
+            }
+            needed = result.publication_needed;
+          }
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, 'publication_needed=' + needed + '\n');
+          NODE
+      - name: Check repository storage
+        if: steps.due.outputs.publication_needed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/news/check-git-size.mjs --preflight
+      - name: Record immutable canonical store bytes and base
+        if: steps.due.outputs.publication_needed == 'true'
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import {createHash} from 'node:crypto';
+          import {execFileSync} from 'node:child_process';
+          const base = execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim();
+          if (!/^[0-9a-f]{40}$/.test(base)) throw Error('LAGEN_BASE_INVALID');
+          const files = execFileSync('git', ['ls-files', '-z', '--', 'data/news'],
+            {encoding: 'utf8'}).split('\0').filter(file => file && file !== 'data/news/lagen.json');
+          const records = files.map(file => [file, createHash('sha256').update(fs.readFileSync(file)).digest('hex')]);
+          fs.writeFileSync(path.join(process.env.RUNNER_TEMP, 'lagen-canonical-before.json'),
+            JSON.stringify({base, records}), {mode: 0o600, flag: 'wx'});
+          fs.appendFileSync(process.env.GITHUB_ENV, 'LAGEN_SOURCE_BASE=' + base + '\n');
+          NODE
+      - name: Hydrate verified immutable ticker data
+        if: steps.due.outputs.publication_needed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/news/release-hydrate.mjs
+      - name: Write missing editions of the current Berlin day
+        id: write
+        if: steps.due.outputs.publication_needed == 'true'
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          const result = JSON.parse(execFileSync(process.execPath,
+            ['scripts/news/lage-schreiben.mjs', '--missing-only'],
+            {encoding: 'utf8', maxBuffer: 65536}));
+          if (!['ok', 'keine_lage_faellig', 'keine_aenderung'].includes(result.status)
+              || typeof result.changed !== 'boolean') throw Error('LAGEN_WRITE_CONTRACT_INVALID');
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, 'changed=' + result.changed + '\n');
+          NODE
+      - name: Build and validate public edition output
+        if: steps.write.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          npm run news:build
+          npm run build:search
+          npm run taxonomy:build
+          npm run news:source-integrity:audit -- --strict
+          npm run news:source-portfolio:audit -- --strict
+          npm run news:validate
+      - name: Verify canonical stores remain byte-identical
+        if: steps.due.outputs.publication_needed == 'true'
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+          import {createHash} from 'node:crypto';
+          import {execFileSync} from 'node:child_process';
+          const before = JSON.parse(fs.readFileSync(path.join(process.env.RUNNER_TEMP, 'lagen-canonical-before.json')));
+          const files = execFileSync('git', ['ls-files', '-z', '--', 'data/news'],
+            {encoding: 'utf8'}).split('\0').filter(file => file && file !== 'data/news/lagen.json');
+          const records = files.map(file => [file, createHash('sha256').update(fs.readFileSync(file)).digest('hex')]);
+          if (JSON.stringify(records) !== JSON.stringify(before.records)) throw Error('LAGEN_CANONICAL_STORE_CHANGED');
+          NODE
+      - name: Commit and push only this publication
+        id: commit
+        if: steps.write.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git add -- data/news/lagen.json news wirkungsticker sitemap.xml assets/search/search-index.json public/data/woek-search-meta.json content/taxonomy/site-map.json
+          # Pages rebuilds the app projection from the committed canonical stores.
+          git restore --source=HEAD --staged --worktree -- wirkungsticker/data/app
+          node --input-type=module <<'NODE'
+          import {execFileSync} from 'node:child_process';
+          const files = execFileSync('git', ['diff', '--cached', '--name-only', '-z'],
+            {encoding: 'utf8'}).split('\0').filter(Boolean);
+          const fixed = new Set(['data/news/lagen.json', 'sitemap.xml',
+            'assets/search/search-index.json', 'public/data/woek-search-meta.json',
+            'content/taxonomy/site-map.json']);
+          if (files.some(file => !fixed.has(file)
+              && !file.startsWith('news/')
+              && !(file.startsWith('wirkungsticker/') && !file.startsWith('wirkungsticker/data/app/')))) {
+            throw Error('LAGEN_UNEXPECTED_STAGED_PATH');
+          }
+          if (files.length && !files.includes('data/news/lagen.json')) throw Error('LAGEN_CANONICAL_EDITION_NOT_STAGED');
+          NODE
+          node scripts/news/check-git-size.mjs --automatic
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Stop on concurrent main changes. No rebase, recovery or push retry.
+          git fetch --no-tags --depth=1 origin main
+          test "$(git rev-parse FETCH_HEAD)" = "$LAGEN_SOURCE_BASE" || { echo "LAGEN_MAIN_ADVANCED"; exit 1; }
+          git config user.name "wirkungsticker-bot"
+          git config user.email "wirkungsticker-bot@users.noreply.github.com"
+          git commit -m "[wirkungsticker] Fehlende Tageslagen veröffentlichen"
+          PUBLISH_COMMIT="$(git rev-parse HEAD)"
+          [[ "$PUBLISH_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "LAGEN_COMMIT_INVALID"; exit 1; }
+          node scripts/news/check-git-size.mjs --automatic --base="$LAGEN_SOURCE_BASE" --head="$PUBLISH_COMMIT"
+          git push origin "$PUBLISH_COMMIT:refs/heads/main"
+          echo "commit=$PUBLISH_COMMIT" >> "$GITHUB_OUTPUT"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Publish the exact committed editions without push notifications
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TICKER_COMMIT: ${{ steps.commit.outputs.commit }}
+        run: |
+          set -euo pipefail
+          [[ "$TICKER_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "LAGEN_RELEASE_COMMIT_INVALID"; exit 1; }
+          gh workflow run deploy.yml --ref main -f ticker_only=true -f "ticker_commit=$TICKER_COMMIT" -f skip_ticker_notify=true

@@ -1,0 +1,887 @@
+{
+  "findings": [
+    {
+      "width": 320,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 320,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 428,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/wirkungswissenschaften/wirkungsoekonomie/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/wirkungswissenschaften/faq/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/begriffe/wirkungswissenschaften/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/methodik/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/methodenraum.html",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/bibliothek/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/referenz/aktualisierung/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/quellenarchiv/wok-q-9053/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-003/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-049/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/bibliothek/studienskripte/v4/woek-g-base-076/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "route": "/bibliothek/studienskripte/v4/woek-wb-wm-v4-001/",
+      "status": 200,
+      "overflow": false,
+      "violations": []
+    }
+  ],
+  "errors": []
+}

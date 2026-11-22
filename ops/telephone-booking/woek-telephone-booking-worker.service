@@ -1,0 +1,27 @@
+[Unit]
+Description=WOeK booking confirmation and Discord notification queue
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=woek-booking
+Group=woek-booking
+WorkingDirectory=/opt/woek-booking/current/ops/telephone-booking
+EnvironmentFile=/etc/woek-telephone-booking.env
+EnvironmentFile=-/etc/woek-telephone-booking-icloud.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/woek-booking/venv/bin/python worker.py
+Restart=on-failure
+RestartSec=5
+UMask=0077
+StateDirectory=woek-telephone-booking
+StateDirectoryMode=0700
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+MemoryMax=128M
+CPUQuota=15%
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=End of private Werte-Advent report retention
+[Timer]
+OnCalendar=2027-02-01 00:00:00 Europe/Berlin
+Persistent=true
+Unit=woek-werteadvent-retention.service
+[Install]
+WantedBy=timers.target

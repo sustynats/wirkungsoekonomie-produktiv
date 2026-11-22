@@ -1,0 +1,2540 @@
+import { attachRelatedTickerHistory } from './related-ticker-history.mjs';
+import { readRepositoryJson, writeRepositoryJson } from './newsroom-store.mjs';
+import { readNewsroom, writeNewsroom, repositoryJson } from './newsroom-store.mjs';
+import { assessmentBasis } from './migrate-impact-assessments.mjs';
+import {editorialEvidenceReceipt} from './editorial-evidence.mjs';
+import { newsInputReadiness } from './news-input-readiness.mjs';
+import { importBackgroundImpact } from './bridge/background-import.mjs';
+import { migrateImpactAssessment } from './impact-assessment.mjs';
+import { createBridgeRuntime } from './bridge/runtime.mjs';
+import { fetchDiscoverySource } from './bridge/discovery-cache.mjs';
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { directionInputDiagnostics, normalizeEmptyDirectionPaths } from "./direction-assessment.mjs";
+import {
+  budgetStage,
+  buildAnalysisPrompt,
+  callWoekAi,
+  claimLedgerFor,
+  clusterItems,
+  anchoredSources,
+  existingStoryMatch,
+  estimateUsage,
+  fetchArticleExcerpt,
+  fetchFeed,
+  monthlyUsage,
+  monthlyAiCalls,
+  aiSpendInWindow,
+  budgetPacing,
+  parseFeed,
+  preAnalyzeStory,
+  scheduledSlot,
+  sha256,
+  slugify,
+  storySimilarity,
+  titleTokens,
+  validateAnalysis,
+} from "./lib.mjs";
+import { buildNewsSite } from "./build.mjs";
+import { sanitizeVisuals } from "./visuals.mjs";
+import { loadNewsRegistry, normalizeNewsRegistry, registryErrors } from "./registry.mjs";
+import { sourceAccess } from "./access-policy.mjs";
+import { annotateSourceItem, sourceDue, eventFingerprint, eventCompatibility, evidenceGroups, freshnessFor, sourceHealth, coverageReport, dueFollowups, discoveryCandidates, persistClaimEvidence, nextDeepeningCheckpoint, normalizeEvidenceExcerpts, resolveEvidenceReferences, promptEvidenceSegments } from "./newsroom.mjs";
+import { duplicateGroups, mergeLivingFiles, isMerged, subjectConflict, livingFileMatch, documentKey } from "./living-files.mjs";
+import { consolidateLeizenDuplicates } from "./migrate-leizen-duplicates.mjs";
+import { consolidateKirchnerDuplicates } from "./consolidate-kirchner-duplicates.mjs";
+import { consolidateKamenDuplicates } from "./consolidate-kamen-duplicates.mjs";
+import { consolidateTrumpSanctionsDuplicates, retainedSanctionsPaidInput } from './consolidate-trump-sanctions-duplicates.mjs';
+import { consolidateHofheimDuplicates, retainedHofheimPaidInput } from './consolidate-hofheim-duplicates.mjs';
+import { consolidateObersontheimDuplicates, retainedObersontheimPaidInput } from './consolidate-obersontheim-duplicates.mjs';
+import { consolidateTabaksteuerDuplicates, retainedTabaksteuerPaidInput } from './consolidate-tabaksteuer-duplicates.mjs';
+import { consolidateOleschkyDuplicates, retainedOleschkyPaidInput } from './consolidate-oleschky-duplicates.mjs';
+import { consolidateMannheimSwrDuplicates, retainedMannheimSwrPaidInput } from './consolidate-mannheim-swr-duplicates.mjs';
+import { consolidateMannheimSternDuplicates, retainedMannheimSternPaidInput } from './consolidate-mannheim-stern-duplicates.mjs';
+import { consolidateRegensburgDuplicates, retainedRegensburgPaidInput } from './consolidate-regensburg-duplicates.mjs';
+import { documentedFailedPaidAttempts, recoverDocumentedFailedPaidUsage } from './retained-failed-paid-work.mjs';
+import {interruptedPaidWorkBlocked} from './recover-failed-usage.mjs';
+import {quarantined419, quarantine419Enabled} from './quarantined-419.mjs';
+import { recoverRetainedDiscovery } from './retained-discovery-inputs.mjs';
+import { applyDocumentedSourceIndependenceClarifications } from './clarify-source-independence.mjs';
+import { applyDocumentedKatzDenialClarification } from './clarify-katz-denial.mjs';
+import { applyDocumentedGassiTopicClarification } from './clarify-gassi-topic.mjs';
+import { refreshBudgetFx, newsBudget, modelRates, costFromUsage, failedRequestCost, NEWS_REQUEST_RESERVATION_USD } from "./budget.mjs";
+import { datedSource } from "./source-adapters.mjs";
+import { createTitleImagePipeline, publicTitleImage } from "./title-image/pipeline.mjs";
+import { chooseTitleImageMode } from "./title-image/policy.mjs";
+import { IMAGE_CONFIG, digest as imageDigest } from "./title-image/policy.mjs";
+import { independentHourlyRoom } from "./stundenkontingent.mjs";
+import { sameEventByFacts } from "./ereignisfakten.mjs";
+import { configuredHourlyQuota } from "./stundenkontingent.mjs";
+import { articleSourceOrder, canReuseReview, reviewCheckpoint, sourceReviewFingerprint } from "./evidence-packets.mjs";
+import { unchangedPublishedFollowup, waitForFollowupEvidence } from './followup-reuse.mjs';
+import { UNKNOWN_PROVIDER_OUTCOME, unresolvedProviderRequest, providerOutcomeUncertain, holdProviderRequest, retainKnownProviderRequests } from './provider-outcome.mjs';
+import { numberTokens, evidenceNumberTokens, numericEvidenceReceipt } from "./numeric-evidence.mjs";
+import { MEDIA_ANALYSIS_VERSION, applySelfFrameRewrites, detectMediaImpactTrigger, effectiveMediaImpactTrigger, estimateMediaUsage, mediaTriggerRecord, sanitizeMediaImpact } from "./media-impact.mjs";
+import { reconcileKnownSourceAliases, reconcileSourceIdentity, sourceIntegrityForStory, sourceIntegrityRecord } from "./source-integrity.mjs";
+import { bumpCandidateFunnel, bumpSourceFunnel, createSourceFunnel, finalizeSourceFunnel } from "./source-funnel.mjs";
+import { isolatedSourceThrottleWithRecentCoverage, sourceCoverageDegraded, sourceHealthDegraded } from "./check-run-health.mjs";
+import { operatingCostSummary, usageCostStartedAt } from "./operating-cost.mjs";
+import { regionalCoverage } from "./regional-coverage.mjs";
+import { createPublicationDateRecovery } from "./publication-date.mjs";
+import { EVENT_RELEVANCE_VERSION, EVENT_EDITORIAL_POLICY_VERSION, needsEventPolicyReview, balanceEventQueue, categoryCoverage, updateEventLifecycle } from './event-relevance.mjs';
+import { observedMajorEvents, missedNewsRechecks, coverageAudit } from './coverage-audit.mjs';
+import { runActiveDiscovery, agendaSignal } from './active-discovery.mjs';
+import { processingMode, visualGenerationProvider, assertAutomaticImpactTransport } from './processing-mode.mjs';
+import { releaseDeterministicImpact } from './impact-gate.mjs';
+import { ladeAuftraege, auftraegeVorziehen, auftragsErgebnisse, zusammenfassung, schreibeErgebnisse } from './meldungsauftraege-lauf.mjs';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const RELEVANCE_FILTER_VERSION = EVENT_RELEVANCE_VERSION;
+const RELEVANCE_BACKFILL_DAYS = 2;
+// Direktbetrieb: geänderte Transport-/Prompt-Regeln machen frühere bezahlte
+// Versuche gegenstandslos; Kappung und Backoff zählen ab dieser Version neu.
+export const AI_PROCESSING_VERSION = "2026-09-15-direct-3";
+const OUTPUT_FORMAT_ERRORS = new Set(["AI_MALFORMED_JSON", "AI_SCHEMA_ANALYSES_REQUIRED", "AI_RESPONSE_TOO_LARGE", "AI_PROVIDER_OUTPUT_INVALID"]);
+const PROVIDER_BILLING_ERRORS = new Set(["AI_PROVIDER_CREDIT_BALANCE_EXHAUSTED", "AI_PROVIDER_SPEND_LIMIT_REACHED", "AI_PROVIDER_QUOTA_EXHAUSTED"]);
+const CAPACITY_HOLD_REASONS = new Set(["BRIDGE_PENDING", "AI_BUDGET_OR_BATCH_LIMIT", "AI_HOURLY_CALL_LIMIT", "AI_BUDGET_BLOCKED", "AI_RUN_TIME_LIMIT", "AI_DISABLED"]);
+const TECHNICAL_HOLD_REASONS = new Set(["AI_PROVIDER_UNAVAILABLE", "AI_OUTPUT_INVALID", "AI_INPUT_TOO_LARGE", "PAID_RECOVERY_PENDING"]);
+const RETRYABLE_QUALITY_ERRORS = [
+  /^AI_ANALYSIS_MISSING$/,
+  /^AI_REQUIRED_STRING:/,
+  /^AI_STATUS_INVALID$/,
+  /^AI_STATUS_(?:CONTRADICTS_IN_FORCE|DRAFT_NOT_FINAL|FUTURE_NOT_IN_FORCE)$/,
+  /^AI_ANALYSIS_TYPE_INVALID$/,
+  /^AI_IMPORTANCE_INVALID$/,
+  /^AI_DIMENSION_INVALID:/,
+  /^AI_DIRECTION_/,
+  /^IMPACT_/,
+  /^AI_ARRAY_REQUIRED:/,
+  /^AI_UNCERTAINTY_REQUIRED$/,
+  /^AI_WATCH_NEXT_REQUIRED$/,
+  /^AI_SUMMARY_SENTENCE_COUNT$/,
+  /^AI_SOURCE_SUMMARY_(?:LENGTH|PARAGRAPHS|NOT_NEUTRAL)$/,
+  /^AI_SOURCE_SUMMARY_UNSUPPORTED_NUMBER:/,
+  /^AI_EXCESSIVE_SOURCE_SUMMARY_COPY$/,
+  /^AI_EX_ANTE_CAUSAL_OVERCLAIM$/,
+  /^CLAIM_INDEPENDENCE_NOT_ESTABLISHED$/,
+  /^(?:NEWS_STATUS_REQUIRED|EVENT_CLAIMS_REQUIRED|EVENT_CLAIM_INVALID|FOLLOWUPS_ARRAY_REQUIRED|FOLLOWUP_INVALID|FOLLOWUP_DATE_INVALID)$/,
+  /^(?:CLAIM_EVIDENCE_REQUIRED|CLAIM_EVIDENCE_NOT_IN_SOURCE|CLAIM_NUMBER_NOT_IN_EVIDENCE)$/,
+  /^(?:CLAIM_PRIMARY_SOURCE_MISSING|CONFIRMED_STATUS_OVERCLAIM|FOLLOWUP_DATE_UNSUPPORTED)$/,
+  /^AI_DETAIL_SUMMARY_(?:INVALID|LENGTH)$/,
+  /^AI_UNSUPPORTED_NUMBER:/,
+  /^AI_UNSUPPORTED_FRAMEWORK_NUMBER:/,
+  /^AI_PUBLICATION_GATE_REQUIRED$/,
+  /^AI_PUBLIC_EDITORIAL_RESIDUE$/,
+  /^AI_PUBLICATION_RECOMMENDATION_INVALID$/,
+  /^AI_PUBLICATION_DECISION_UNRECORDED$/,
+  /^AI_PUBLICATION_GATE_(?:NEWS_VALUE|FACTORS|EXCEPTION|EVIDENCE|DUPLICATE)_INVALID$/,
+  /^AI_PUBLICATION_GATE_RATIONALE_REQUIRED$/,
+  /^MEDIA_(?:IMPACT|SPEAKER|FRAMING|FRAME|HISTORY|EVIDENCE|COMPARISON|SELF_FRAME|INTENT|OUTLET|EFFECT|EPISTEMIC|ATTRIBUTION|POLITICAL|DISCOURSE|OBSERVED|PUBLIC|FACT_FIRST)/,
+];
+const EDITORIAL_REJECTION_ERRORS = new Set([
+  "AI_PUBLICATION_NOT_RECOMMENDED",
+  "AI_MATERIALITY_TOO_LOW",
+  "AI_NEWS_VALUE_CONTEXT_ONLY",
+  "AI_MATERIALITY_GATE_FAILED",
+  "AI_EVIDENCE_INSUFFICIENT",
+  "AI_DUPLICATE_WITHOUT_UPDATE",
+]);
+const RETRY_COMPANION_ERRORS = new Set([
+  ...EDITORIAL_REJECTION_ERRORS,
+]);
+const files = {
+  registry: path.join(ROOT, "content/news/source-registry.json"),
+  state: path.join(ROOT, "data/news/state.json"),
+  stories: path.join(ROOT, "data/news/stories.json"),
+  usage: path.join(ROOT, "data/news/usage.json"),
+  report: path.join(ROOT, "reports/wirkungsticker-latest-run.json"),
+  newsroom: path.join(ROOT, "data/news/newsroom.json"),
+};
+
+function readJson(file) {
+  if (file === files.newsroom) return readNewsroom(file);
+  return readRepositoryJson(file, "utf8");
+}
+
+function writeJson(file, value) {
+  if (file === files.newsroom) return writeNewsroom(file, value);
+  if (file === files.stories) return writeRepositoryJson(file, value);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, repositoryJson(value), "utf8");
+}
+
+async function mapLimit(values, limit, mapper) {
+  const results = Array(values.length);
+  let cursor = 0;
+  async function worker() {
+    while (cursor < values.length) {
+      const index = cursor;
+      cursor += 1;
+      try {
+        results[index] = { status: "fulfilled", value: await mapper(values[index], index) };
+      } catch (reason) {
+        results[index] = { status: "rejected", reason };
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, values.length) }, worker));
+  return results;
+}
+
+function sourcePublicRecord(item) {
+  return {
+    source_id: item.source_id,
+    publisher: item.publisher,
+    url: item.url,
+    title: item.title,
+    summary: item.summary,
+    source_type: item.source_type,
+    published_at: item.published_at,
+    published_precision: item.published_precision,
+    publication_date_evidence: item.publication_date_evidence,
+    date_status: item.date_status,
+    retrieved_at: item.retrieved_at,
+    primary_source: item.primary_source,
+    source_priority: item.source_priority,
+    source_topic: item.source_topic,
+    content_hash: item.content_hash,
+    source_item_id: item.source_item_id,
+    publisher_id: item.publisher_id,
+    publisher_kind: item.publisher_kind,
+    source_role: item.source_role,
+    language: item.language,
+    geography: item.geography,
+    research_lane: item.research_lane,
+    requires_corroboration: item.requires_corroboration,
+    source_published_at: item.source_published_at || item.published_at,
+    ingested_at: item.ingested_at,
+    agency_origin: item.agency_origin,
+    agency_origin_confidence: item.agency_origin_confidence,
+    provenance: item.provenance,
+    research_metadata: item.research_metadata,
+    collection_source_id: item.collection_source_id,
+    collection_publisher_id: item.collection_publisher_id,
+    publisher_group_id: item.publisher_group_id,
+    discovery_endpoint: item.discovery_endpoint,
+    discovery_method: item.discovery_method,
+    discovery_index_url: item.discovery_index_url,
+  };
+}
+
+function mergeSources(existing = [], incoming = []) {
+  const byUrl = new Map(existing.map((source) => [source.url, source]));
+  for (const source of incoming) byUrl.set(source.url, { ...byUrl.get(source.url), ...sourcePublicRecord(source) });
+  return [...byUrl.values()].sort((a, b) => Number(b.primary_source) - Number(a.primary_source) || Number(b.source_priority) - Number(a.source_priority));
+}
+
+function storyContentHash(story) {
+  return sha256(story.sources.map((source) => `${source.url}:${source.content_hash}`).sort().join("\n"));
+}
+
+// A ranking rollout must not purchase another analysis of identical published
+// evidence. Preserve explicit followups/deepening and every changed source.
+export function unchangedRankingBackfill(candidate) {
+  const old = candidate.existing_story;
+  return Boolean(old?.published && candidate.reassessment && !candidate.followup_due && !candidate.deepening_due
+    && !candidate.consolidation && !old.pending_update?.consolidation
+    && candidate.content_hash === old.content_hash
+    && JSON.stringify((candidate.sources || []).map(sourceReviewFingerprint).sort())
+      === JSON.stringify((old.sources || []).map(sourceReviewFingerprint).sort()));
+}
+
+
+function createCandidate(cluster, now, reassessment = false, fresh = false) {
+  const existing = cluster.existing_story;
+  const sources = mergeSources(existing?.pending_update?.sources || existing?.review_checkpoint?.sources || existing?.sources, cluster.sources);
+  const candidate = {
+    story_id: cluster.story_id,
+    slug: existing?.slug || `${slugify(cluster.title)}-${cluster.story_id.slice(-6)}`,
+    title: cluster.title,
+    first_seen: existing?.first_seen || cluster.first_seen || now,
+    last_updated: cluster.last_updated || now,
+    sources,
+    existing_story: existing || null,
+    reassessment,
+    fresh,
+    event_first_seen_at: existing?.event_first_seen_at || now,
+    event_detected_at: existing?.event_detected_at || now,
+    event_id: existing?.event_id || eventFingerprint(sources[0] || {}).id,
+    evidence_groups: evidenceGroups(sources),
+  };
+  candidate.claims = claimLedgerFor(sources, candidate.story_id, now);
+  candidate.preanalysis = preAnalyzeStory(candidate, now);
+  candidate.topic = candidate.preanalysis.topics;
+  candidate.content_hash = storyContentHash(candidate);
+  candidate.media_trigger = detectMediaImpactTrigger(candidate);
+  return candidate;
+}
+
+export function repartitionOversizedSourceQueues(stories, now) {
+  const changes = [], requeued = new Map();
+  for (const story of stories) {
+    if (isMerged(story) || story.listed === false) continue;
+    const pending = story.pending_update || story;
+    const sources = pending.sources || [];
+    const reason = pending.reason || pending.pending_reason;
+    const queuedDraft = !story.published && (new Set([
+      'AI_BUDGET_OR_BATCH_LIMIT', 'AI_HOURLY_CALL_LIMIT', 'AI_PROVIDER_UNAVAILABLE',
+      'AI_DISABLED', 'AI_BUDGET_BLOCKED', 'EDITORIAL_RELEVANCE_BELOW_THRESHOLD', 'AI_RUN_TIME_LIMIT', 'SOURCE_INTEGRITY_OPEN',
+    ]).has(reason) || shouldRetryQualityGate(reason, pending.quality_errors || [], 0));
+    // Old unpublished queues must obey the same direct-event rule as new
+    // arrivals, even below the input-size limit. Final editorial rejections and
+    // normal published files are not silently reopened or rewritten.
+    if (!queuedDraft && reason !== 'AI_INPUT_TOO_LARGE' && !(reason === 'SOURCE_INTEGRITY_OPEN' && sources.length > 12)) continue;
+    const originalLead = story.sources?.[0];
+    if (!originalLead || sources.length < 2) continue;
+    const leading = sources.find(source => source.url === originalLead.url);
+    if (!leading) continue; // Never guess the original subject.
+    const rooted = { ...story, sources: [leading, ...sources.filter(source => source !== leading)] };
+    const kept = anchoredSources(rooted), keptSet = new Set(kept);
+    const detached = sources.filter(source => !keptSet.has(source));
+    if (!detached.length) continue; // A genuinely large single event remains on hold.
+    // This changes only queued source ownership, never published text/claims.
+    // All detached metadata is retained and re-enters the normal local gates.
+    const record = { version: 1, at: now, retained_urls: kept.map(source => source.url),
+      detached_sources: detached.map(({article_excerpt, evidence_segments, ...source}) => source) };
+    story.queue_source_repartitions = [...(story.queue_source_repartitions || []), record];
+    delete story.review_checkpoint; // Its cached source set has been repartitioned.
+    for (const source of detached) {
+      const prior = requeued.get(source.url);
+      if (!prior || Date.parse(source.published_at || 0) >= Date.parse(prior.published_at || 0)) requeued.set(source.url, source);
+    }
+    pending.sources = kept;
+    if (story.pending_update) pending.reason = 'AI_BUDGET_OR_BATCH_LIMIT';
+    else {
+      pending.pending_reason = 'AI_BUDGET_OR_BATCH_LIMIT';
+      pending.claims = claimLedgerFor(kept, story.story_id, now);
+    }
+    pending.quality_errors = [];
+    pending.content_hash = storyContentHash({sources:kept});
+    changes.push({story_id:story.story_id, before:sources.length, retained:kept.length, requeued:detached.length});
+  }
+  return {changes, requeued_sources:[...requeued.values()]};
+}
+
+export function refreshUnpublishedDraftTitle(candidate) {
+  // A never-published, single-document draft follows that document's current
+  // observed title, not the headline seen during its first queue arrival.
+  // Do not relabel published stories or infer a title for a multi-source file.
+  if (candidate.existing_story?.published || !candidate.sources?.length) return candidate;
+  const urls = new Set(candidate.sources.map(source => source.url));
+  const source = candidate.sources[0];
+  const previous = candidate.existing_story;
+  if (urls.size !== 1 || !source.title?.trim() || !previous
+      || !(previous.sources || []).some(old => old.url === source.url)) return candidate;
+  if (candidate.title !== source.title) {
+    candidate.previous_draft_title = candidate.title;
+    candidate.title = source.title;
+  }
+  return candidate;
+}
+
+// A reviewed paid answer may be retained while its publication is withheld.
+// Presence is fail-closed: clocks, processing versions and altered candidate
+// fingerprints cannot silently clear an explicit editorial hold.
+export function editorialQualityHeld(story) {
+  return story?.editorial_quality_hold != null;
+}
+
+export function editorialQualityHoldFor(candidate, heldStories = []) {
+  const existing = candidate.existing_story || candidate;
+  if (editorialQualityHeld(existing)) return existing;
+  const keys = new Set((candidate.sources || []).map(source => documentKey(source.url)).filter(Boolean));
+  return heldStories.find(story => editorialQualityHeld(story) && (story.story_id === candidate.story_id
+    || (story.sources || []).some(source => {
+      const key = documentKey(source.url);
+      return key && keys.has(key);
+    }))) || null;
+}
+
+// Keep receipts for older paid inputs too: source evidence can change A -> B -> A.
+// Seed from legacy ai_retry without rewriting or discarding that receipt.
+function paidRetryHistory(record) {
+  const receipts = new Map();
+  for (const attempt of [...(Array.isArray(record?.ai_retry_history) ? record.ai_retry_history : []), record?.ai_retry]) {
+    if (!attempt?.version || !attempt?.fingerprint) continue;
+    const key = JSON.stringify([attempt.version, attempt.fingerprint]);
+    const previous = receipts.get(key);
+    if (!previous || Number(attempt.retry_count || 0) >= Number(previous.retry_count || 0)) receipts.set(key, attempt);
+  }
+  return [...receipts.values()];
+}
+
+export function pendingRecord(candidate, reason, now, qualityErrors = []) {
+  const existing = candidate.existing_story;
+  const verifiedHistory = paidHistoryForCandidate(candidate);
+  const previousAttempt = verifiedHistory.find(attempt => attempt.fingerprint === retryInputFingerprint(candidate)
+    && attempt.version === AI_PROCESSING_VERSION);
+  const previousQualityRetries = Number(existing?.pending_update?.quality_retry_count ?? existing?.quality_retry_count ?? 0);
+  const retryableOutput = reason === "QUALITY_GATE_FAILED" || reason === "AI_OUTPUT_INVALID";
+  const qualityRetryCount = previousQualityRetries + (retryableOutput ? 1 : 0);
+  const consecutiveRetries = Number(previousAttempt?.retry_count || 0) + (retryableOutput ? 1 : 0);
+  const retryDelayMinutes = consecutiveRetries <= 1 ? 15 : consecutiveRetries === 2 ? 30 : consecutiveRetries === 3 ? 60 : Math.min(720, 180 * (2 ** Math.min(2, consecutiveRetries - 4)));
+  const qualityRetryAfter = retryableOutput ? new Date(Date.parse(now) + retryDelayMinutes * 60000).toISOString() : null;
+  const aiRetry = retryableOutput ? {
+    version: AI_PROCESSING_VERSION, fingerprint: retryInputFingerprint(candidate),
+    evidence_fingerprint_version: PAID_INPUT_EVIDENCE_VERSION,
+    evidence_fingerprint: paidInputEvidenceFingerprint(candidate),
+    first_failed_at: previousAttempt?.first_failed_at || previousAttempt?.failed_at || now,
+    failed_at: now, retry_after: qualityRetryAfter, retry_count: consecutiveRetries,
+  } : verifiedHistory.find(attempt => attempt.version === existing?.ai_retry?.version
+    && attempt.fingerprint === existing?.ai_retry?.fingerprint) || existing?.ai_retry;
+  const history = paidRetryHistory({ ai_retry_history: verifiedHistory, ai_retry: aiRetry });
+  if (existing?.published) {
+    return {
+      ...existing,
+      ...(aiRetry ? { ai_retry: aiRetry } : {}),
+      ...(history.length ? { ai_retry_history: history } : {}),
+      pending_update: {
+        detected_at: existing.pending_update?.detected_at || now,
+        content_hash: candidate.content_hash,
+        sources: candidate.sources.map(sourcePublicRecord),
+        reason,
+        quality_errors: qualityErrors,
+        quality_retry_count: qualityRetryCount,
+        quality_retry_after: qualityRetryAfter,
+        reassessment: Boolean(candidate.reassessment),
+        fresh: Boolean(candidate.fresh),
+        consolidation: Boolean(existing.pending_update?.consolidation),
+        // A queued potential reassessment survives every hold; it is cleared
+        // only by the reassessed release itself. Until 16.09. a single deferral
+        // rewrote this record and silently emptied the repair queue.
+        ...(existing.pending_update?.impact_reassessment || candidate.impact_reassessment ? { impact_reassessment: true } : {}),
+        source_integrity: sourceIntegrityRecord(candidate.source_integrity),
+      },
+    };
+  }
+  return {
+    story_id: candidate.story_id,
+    ...(aiRetry ? { ai_retry: aiRetry } : {}),
+    ...(history.length ? { ai_retry_history: history } : {}),
+    slug: candidate.slug,
+    title: candidate.title,
+    ...(existing?.title_image ? { title_image: existing.title_image } : {}),
+    ...(existing?.corrections ? { corrections: existing.corrections } : {}),
+    ...(existing?.queue_source_repartitions ? {queue_source_repartitions:existing.queue_source_repartitions} : {}),
+    ...(existing?.living_file ? { living_file: existing.living_file } : {}),
+    ...(existing?.review_checkpoint ? { review_checkpoint: existing.review_checkpoint } : {}),
+    ...(existing?.publication_decision_review ? { publication_decision_review: existing.publication_decision_review, rejection_history: existing.rejection_history || [] } : {}),
+    first_seen: candidate.first_seen,
+    last_updated: candidate.last_updated,
+    topic: candidate.topic,
+    sources: candidate.sources.map(sourcePublicRecord),
+    claims: candidate.claims,
+    content_hash: candidate.content_hash,
+    published: false,
+    analysis_status: "automatische Veröffentlichung zurückgestellt",
+    quality_errors: qualityErrors,
+    quality_retry_count: qualityRetryCount,
+    quality_retry_after: qualityRetryAfter,
+    reassessment: Boolean(candidate.reassessment),
+    fresh: Boolean(candidate.fresh),
+    pending_reason: reason,
+    versions: existing?.versions || [],
+    updated_at: now,
+    event_first_seen_at: candidate.event_first_seen_at,
+    event_detected_at: candidate.event_detected_at,
+    event_id: candidate.event_id,
+    preanalysis: candidate.preanalysis,
+    freshness: freshnessFor(candidate, now),
+    source_integrity: sourceIntegrityRecord(candidate.source_integrity),
+  };
+}
+
+export function restorePendingBridgeRecords(byId, jobs, now) {
+  for (const job of jobs) {
+    // Manual intake is staged by the approval service. Its private candidate
+    // must never enter the canonical news store through recovery, even before
+    // an output exists. Publication still requires the approved edition.
+    if (!['new_story', 'story_update', 'correction'].includes(job.input.job_type)
+        || job.input.test_only || job.intake_news_parent
+        || byId.has(job.candidate.story_id)
+        || ['quarantined', 'archive_failed', 'acknowledged'].includes(job.status)) continue;
+    byId.set(job.candidate.story_id, pendingRecord(job.candidate, 'BRIDGE_PENDING', now));
+  }
+}
+
+function shouldRetireAfterReassessment(candidate, errors) {
+  return Boolean(candidate.reassessment)
+    && errors.length > 0
+    && errors.some(error => ["AI_MATERIALITY_TOO_LOW", "AI_NEWS_VALUE_CONTEXT_ONLY", "AI_MATERIALITY_GATE_FAILED"].includes(error))
+    && errors.every((error) => EDITORIAL_REJECTION_ERRORS.has(error));
+}
+
+// Direktbetrieb: nicht mehr aktuelle, unveröffentlichte Kandidaten werden ohne
+// Aufruf geschlossen. Neue Evidenz zum selben Ereignis öffnet die Akte erneut.
+export function expiredRecord(record, now) {
+  const { pending_update: _pendingUpdate, pending_reason: _pendingReason, quality_retry_count: _qualityRetryCount, reassessment: _reassessment, ai_retry: _aiRetry, ...preserved } = record;
+  return {
+    ...preserved,
+    listed: false,
+    analysis_status: "nicht mehr aktuell; im LIFO-Betrieb ohne Aufruf geschlossen",
+    relevance_filter_version: RELEVANCE_FILTER_VERSION,
+    rejected_at: now,
+    rejection: { at: now, filter_version: RELEVANCE_FILTER_VERSION, editorial_policy_version: EVENT_EDITORIAL_POLICY_VERSION, reason_code: "LIFO_HORIZON_EXCEEDED", quality_errors: [] },
+  };
+}
+
+function rejectedRecord(record, now, qualityErrors) {
+  const { pending_update: _pendingUpdate, pending_reason: _pendingReason, quality_retry_count: _qualityRetryCount, reassessment: _reassessment, ...preserved } = record;
+  return {
+    ...preserved,
+    listed: false,
+    analysis_status: "nach Relevanzprüfung nicht veröffentlicht",
+    relevance_filter_version: RELEVANCE_FILTER_VERSION,
+    rejected_at: now,
+    rejection: {
+      at: now,
+      filter_version: RELEVANCE_FILTER_VERSION,
+      editorial_policy_version: EVENT_EDITORIAL_POLICY_VERSION,
+      reason_code: "FILTER_NOT_MATERIAL",
+      quality_errors: qualityErrors,
+    },
+  };
+}
+
+export function recoverAmbiguousPublicationDecisions(stories, decisions, now) {
+  const latest = new Map((decisions || []).map(decision => [decision.story_id, decision]));
+  const recovered = [];
+  for (const story of stories || []) {
+    const errors = story.rejection?.quality_errors;
+    const decision = latest.get(story.story_id);
+    // Old NOT_RECOMMENDED conflated explicit false with an absent/non-boolean
+    // field. Review only this ambiguous, never-published class once; preserve
+    // every explicit decision and never infer permission to publish.
+    if (story.published || story.listed !== false || story.publication_decision_review
+      || errors?.length !== 1 || errors[0] !== 'AI_PUBLICATION_NOT_RECOMMENDED'
+      || typeof decision?.publication_recommendation === 'boolean' || decision?.rejection_code) continue;
+    story.rejection_history = [...(story.rejection_history || []), structuredClone(story.rejection)];
+    story.publication_decision_review = { at: now, reason: 'ambiguous_legacy_decision', version: '1.0' };
+    story.listed = true;
+    story.pending_reason = 'QUALITY_GATE_FAILED';
+    story.quality_errors = ['AI_PUBLICATION_DECISION_UNRECORDED'];
+    story.quality_retry_count = 0;
+    story.quality_retry_after = null;
+    story.analysis_status = 'Veröffentlichungsentscheidung wird erneut geprüft';
+    recovered.push(story.story_id);
+  }
+  return recovered;
+}
+
+function retiredRecord(candidate, now, qualityErrors) {
+  const existing = candidate.existing_story;
+  const { pending_update: _pendingUpdate, ...preserved } = existing;
+  return {
+    ...preserved,
+    listed: false,
+    analysis_status: "nach erneuter Relevanzprüfung nicht mehr in der laufenden Auswahl",
+    relevance_filter_version: RELEVANCE_FILTER_VERSION,
+    retired_at: now,
+    retirement: {
+      at: now,
+      filter_version: RELEVANCE_FILTER_VERSION,
+      reason_code: "FILTER_REASSESSMENT_NOT_MATERIAL",
+      quality_errors: qualityErrors,
+      note: "Die historische Veröffentlichung bleibt transparent erhalten, wird aber nicht mehr im aktuellen Ticker oder in dessen Feeds geführt.",
+    },
+  };
+}
+
+export function shouldRetryQualityGate(reason, qualityErrors, retryCount = 0, retryAfter = null, now = null) {
+  if (!["QUALITY_GATE_FAILED", "AI_OUTPUT_INVALID"].includes(reason) || !Array.isArray(qualityErrors) || !qualityErrors.length) return false;
+  if (retryAfter && now && Date.parse(retryAfter) > Date.parse(now)) return false;
+  // Older queue records have a retry count but no retry timestamp. They must
+  // not remain permanently parked after the old three-attempt ceiling. The
+  // next failed attempt writes the existing bounded exponential backoff.
+  // Pure, well-formed editorial rejections still do not retry unchanged data.
+  if (reason === "AI_OUTPUT_INVALID") return qualityErrors.every((error) => OUTPUT_FORMAT_ERRORS.has(error));
+  const hasStructuralError = qualityErrors.some((error) => RETRYABLE_QUALITY_ERRORS.some((pattern) => pattern.test(error)));
+  return hasStructuralError && qualityErrors.every((error) => (
+    RETRYABLE_QUALITY_ERRORS.some((pattern) => pattern.test(error)) || RETRY_COMPANION_ERRORS.has(error)
+  ));
+}
+
+export function sanitizeAnalysisVisuals(analysis, candidate, report = {}) {
+  if (!analysis || typeof analysis !== "object" || Array.isArray(analysis)) return analysis;
+  const { visuals, dropped } = sanitizeVisuals(analysis.visuals, { ...candidate, analysis, source_summary: analysis.source_summary });
+  analysis.visuals = visuals;
+  if (dropped.length) {
+    report.visuals_dropped ||= [];
+    report.visuals_dropped.push({ story_id: candidate.story_id, dropped });
+  }
+  return analysis;
+}
+
+export function normalizeEditorialDecision(analysis) {
+  // The duplicate-status enum occasionally appears in the rejection slot.
+  // This exact synonym can only reject, never authorize publication.
+  if (analysis?.publication_recommendation === false
+      && analysis.rejection?.code === "duplicate_without_new_information") {
+    analysis.rejection.original_code = analysis.rejection.code;
+    analysis.rejection.code = "no_new_information";
+  }
+  return analysis;
+}
+
+export function normalizeAnalysisParagraphs(analysis) {
+  const value = analysis?.source_summary;
+  if (typeof value !== 'string' || /\n\s*\n/.test(value)) return analysis;
+  const words = value.trim().split(/\s+/).length;
+  if (words < (analysis.publication_depth === 'initial' ? 60 : 100) || words > 180) return analysis;
+  const sentences = value.trim().split(/(?<=[.!?])\s+(?=[A-ZÄÖÜ„“"])/u);
+  if (sentences.length < 2) return analysis;
+  const middle = Math.ceil(sentences.length / 2);
+  analysis.source_summary = `${sentences.slice(0,middle).join(' ')}\n\n${sentences.slice(middle).join(' ')}`;
+  return analysis;
+}
+
+// Capture only shape and a strict boolean before normalization. No model text,
+// source text or arbitrary object keys enter this diagnostic snapshot.
+export function mediaInputDiagnostics(value) {
+  return {
+    shape: value === undefined ? 'missing' : value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value,
+    relevant: value && typeof value.relevant === 'boolean' ? value.relevant : null,
+  };
+}
+
+export function analysisValidationDiagnostics(analysis, mediaExplanationBeforeSanitizing, story = {}, mediaInput, directionInput) {
+  if (!analysis) return null;
+  return {
+    direction_input: directionInput || directionInputDiagnostics(analysis, story.sources || []),
+    publication_depth: analysis.publication_depth || null,
+    publication_decision_type: typeof analysis.publication_recommendation,
+    publication_decision_value: ['string','boolean','number'].includes(typeof analysis.publication_recommendation)
+      ? String(analysis.publication_recommendation).slice(0,60) : null,
+    media_public_explanation_words: String(analysis.media_impact?.public_explanation || '').trim().split(/\s+/).filter(Boolean).length,
+    media_public_explanation_paragraphs: String(analysis.media_impact?.public_explanation || '').split(/\n\s*\n/).filter(s=>s.trim()).length,
+    ...(mediaInput === undefined ? {} : {
+      media_input_shape: mediaInput.shape,
+      media_input_relevant: mediaInput.relevant,
+    }),
+    ...(mediaExplanationBeforeSanitizing === undefined ? {} : {
+      media_public_explanation_input_words: String(mediaExplanationBeforeSanitizing || '').trim().split(/\s+/).filter(Boolean).length,
+      media_public_explanation_input_paragraphs: String(mediaExplanationBeforeSanitizing || '').split(/\n\s*\n/).filter(s=>s.trim()).length,
+    }),
+    source_summary_words: String(analysis.source_summary || '').trim().split(/\s+/).filter(Boolean).length,
+    source_summary_paragraphs: String(analysis.source_summary || '').split(/\n\s*\n/).filter(s=>s.trim()).length,
+    missing_claim_numbers: (Array.isArray(analysis.event_claims) ? analysis.event_claims : []).flatMap((claim,index) => {
+      const cited = evidenceNumberTokens(claim?.evidence, story.sources || []);
+      const missing = [...numberTokens(typeof claim?.claim === 'string' ? claim.claim : '')].filter(n=>!cited.has(n));
+      return missing.length ? [{claim_index:index,missing,cited_numbers:[...cited]}] : [];
+    }),
+  };
+}
+
+export function sanitizeAnalysisMediaImpact(analysis, candidate, report = {}, now = new Date().toISOString()) {
+  if (!analysis || typeof analysis !== "object" || Array.isArray(analysis)) return analysis;
+  const localTrigger = candidate.media_trigger || detectMediaImpactTrigger(candidate);
+  const trigger = effectiveMediaImpactTrigger(localTrigger, analysis.media_impact, candidate);
+  if (!localTrigger.relevant && trigger.relevant) {
+    report.media_checks_ai_promoted = Number(report.media_checks_ai_promoted || 0) + 1;
+    report.media_check_promotions ||= [];
+    report.media_check_promotions.push({ story_id: candidate.story_id, reason: "SUBSTANTIVE_ANALYSIS_FINDING" });
+  }
+  const { media_impact: mediaImpact, dropped } = sanitizeMediaImpact(analysis.media_impact, candidate, trigger);
+  analysis.media_impact = mediaImpact;
+  analysis.media_analysis_version = MEDIA_ANALYSIS_VERSION;
+  analysis.media_checked_at = now;
+  analysis.media_trigger_fingerprint = trigger.fingerprint;
+  analysis.media_trigger = mediaTriggerRecord(trigger, candidate);
+  if (dropped.length) {
+    report.media_impact_dropped ||= [];
+    report.media_impact_dropped.push({ story_id: candidate.story_id, dropped });
+  }
+  applySelfFrameRewrites(analysis, candidate, report);
+  return analysis;
+}
+
+// The candidate check runs against the feed title; the published record carries
+// the model's headline and its own neutral source summary, and the semantic
+// comparison uses exactly those fields. A story could therefore pass as a
+// candidate and be open once published, which made the strict audit discard the
+// whole cycle afterwards (run 03:50 UTC on 16.09.). The publishable record is
+// checked again here, and an open finding holds this one story.
+export function publicationIntegrityIssues(record, registry, publishedStories, now) {
+  const result = sourceIntegrityForStory(record, registry, publishedStories, now);
+  return { record: sourceIntegrityRecord(result), issues: result.issues || [],
+    errors: result.status === 'verified' ? [] : [...new Set((result.issues || []).map((issue) => `SOURCE_INTEGRITY_OPEN:${issue.code}`))] };
+}
+
+export function publishedRecord(candidate, analysis, ai, now) {
+  const existing = candidate.existing_story;
+  const versionNumber = Number(existing?.current_version || 0) + 1;
+  const { source_summary: sourceSummary, event_claims: _eventClaims, followups: newFollowups = [], ...woekAnalysis } = analysis;
+  const version = {
+    version: versionNumber,
+    analyzed_at: now,
+    content_hash: candidate.content_hash,
+    source_summary: sourceSummary,
+    analysis: woekAnalysis,
+    editorial_evidence: editorialEvidenceReceipt({...candidate,analysis},now),
+    provider: ai.provider,
+    model: ai.model,
+    mode: ai.mode,
+    method_sources: ai.method_sources,
+    claims: analysis.event_claims ? persistClaimEvidence(analysis, candidate, now) : candidate.claims,
+    source_versions: candidate.sources.map((source) => ({ source_id: source.source_id, url: source.url, content_hash: source.content_hash })),
+    numeric_evidence: numericEvidenceReceipt(candidate, versionNumber, now),
+  };
+  const record = {
+    ...(existing?.queue_source_repartitions ? {queue_source_repartitions:existing.queue_source_repartitions} : {}),
+    ...(existing?.publication_decision_review ? { publication_decision_review: existing.publication_decision_review, rejection_history: existing.rejection_history || [] } : {}),
+    story_id: candidate.story_id,
+    slug: candidate.slug,
+    title: analysis.headline?.trim() || candidate.title,
+    first_seen: candidate.first_seen,
+    last_updated: now,
+    published_at: existing?.published_at || now,
+    updated_at: now,
+    topic: candidate.topic,
+    sources: candidate.sources.map(sourcePublicRecord),
+    claims: analysis.event_claims ? persistClaimEvidence(analysis, candidate, now) : candidate.claims,
+    event_id: candidate.event_id,
+    event_first_seen_at: candidate.event_first_seen_at,
+    event_detected_at: candidate.event_detected_at,
+    verification_started_at: candidate.verification_started_at || now,
+    publish_ready_at: now,
+    news_status: analysis.news_status || "preliminary",
+    deepening_due_at: analysis.publication_depth === "initial" ? nextDeepeningCheckpoint(now) : null,
+    evidence_groups: candidate.evidence_groups,
+    source_integrity: sourceIntegrityRecord(candidate.source_integrity),
+    followups: [
+      ...(existing?.followups || []).map(followup => {
+        if (['resolved', 'cancelled'].includes(followup.status) || !(Date.parse(followup.follow_up_date) <= Date.parse(now))) return followup;
+        const { evidence_wait: _wait, ...preserved } = followup;
+        return { ...preserved, last_checked_at: now, last_check_result: 'assessed_in_published_version',
+          last_checked_version: versionNumber, follow_up_date: new Date(Date.parse(now) + 7 * 86400000).toISOString() };
+      }),
+      ...newFollowups.filter((followup) => !(existing?.followups || []).some((old) => old.claim === followup.claim && old.source_id === followup.source_id)).map(({ expected_by_evidence, ...followup }) => ({
+        ...followup, expected_by_evidence_hash: expected_by_evidence ? sha256(expected_by_evidence) : null, followup_id: `followup-${sha256(`${candidate.story_id}:${followup.claim}`).slice(0, 16)}`,
+        announced_at: candidate.sources.find((source) => source.source_id === followup.source_id)?.published_at || null,
+        follow_up_date: followup.expected_by ? new Date(Math.max(Date.parse(followup.expected_by), Date.parse(now) + 86400000)).toISOString() : new Date(Date.parse(now) + 7 * 86400000).toISOString(),
+        status: "scheduled",
+      })),
+    ],
+    content_hash: candidate.content_hash,
+    published: true,
+    ...(existing?.title_image ? { title_image: existing.title_image } : {}),
+    ...(existing?.corrections ? { corrections: existing.corrections } : {}),
+    ...(existing?.living_file ? { living_file: existing.living_file } : {}),
+    listed: true,
+    analysis_status: "veröffentlicht",
+    relevance_filter_version: RELEVANCE_FILTER_VERSION,
+    current_version: versionNumber,
+    numeric_evidence: version.numeric_evidence,
+    editorial_evidence: version.editorial_evidence,
+    source_summary: sourceSummary,
+    analysis: woekAnalysis,
+    impact_assessment: migrateImpactAssessment(woekAnalysis, { title: analysis.headline?.trim() || candidate.title }),
+    impact_sources: candidate.impact_sources || existing?.impact_sources || [],
+    impact_history: existing?.impact_history || [],
+    versions: [...(existing?.versions || []), version],
+    publication_history: [
+      ...(existing?.publication_history || []),
+      { version: versionNumber, published_at: now, source_count: candidate.sources.length },
+    ],
+    retirement_history: existing?.retirement
+      ? [...(existing?.retirement_history || []), existing.retirement]
+      : (existing?.retirement_history || []),
+  };
+  record.impact_assessment_basis = assessmentBasis(record);
+  return record;
+}
+
+function latestSourceDate(items) {
+  return items.reduce((latest, item) => {
+    const value = Date.parse(item.published_at || 0);
+    return value > latest ? value : latest;
+  }, 0);
+}
+
+function candidateQueuedAt(candidate) {
+  const existing = candidate.existing_story;
+  return existing?.pending_update?.detected_at
+    || (!existing?.published ? existing?.event_detected_at || candidate.event_detected_at : null)
+    || existing?.updated_at;
+}
+
+// Die kurzen Belegkennungen, die der Auftrag je Quelle mitliefert (e0_0, e0_1,
+// e1_0 ...). Dieselbe Bildung wie im Auftrag, damit Verweis und Auflösung
+// zusammenpassen, ohne den Auftragstext erneut zu parsen.
+export function storyEvidenceIds(story) {
+  return (story?.sources || []).flatMap((source, index) => promptEvidenceSegments(source, index).map((segment) => segment.evidence_id));
+}
+
+export function queuePriority(candidate, now) {
+  const existing = candidate.existing_story;
+  const ageSinceEvidence = Math.max(0, Date.parse(now) - latestSourceDate(candidate.sources || []));
+  // Ingestion is not publication: a current, unpublished fact must not lose
+  // its freshness merely because a previous provider attempt failed.
+  const fresh = (candidate.fresh || !existing?.published) && ageSinceEvidence <= 3 * 60 * 60 * 1000;
+  const freshBonus = fresh ? 120 : 0;
+  const publishedUpdateBonus = fresh && existing?.published && candidate.content_hash !== existing.content_hash ? 30 : 0;
+  const firstPublicationBonus = !existing?.published ? 45 : 0;
+  const reassessmentPenalty = candidate.reassessment && !fresh ? -60 : 0;
+  const queuedAt = Date.parse(candidateQueuedAt(candidate) || now);
+  const ageHours = Number.isFinite(queuedAt) ? Math.max(0, (Date.parse(now) - queuedAt) / (60 * 60 * 1000)) : 0;
+  const waitingBonus = Math.min(36, Math.floor(ageHours / 6));
+  const urgentReviewBonus = candidate.preanalysis.material_development_review?.time_sensitive ? 72 : 0;
+  const concreteNewsBonus = candidate.preanalysis.news_value_signals?.length ? 24 : 0;
+  // Beauftragte Potenzial-Neubewertungen laufen hinter frischen Meldungen, aber vor Altbestand.
+  const impactRepairBonus = candidate.impact_reassessment ? 40 : 0;
+  return candidate.preanalysis.internal_relevance_score + freshBonus + publishedUpdateBonus + firstPublicationBonus + reassessmentPenalty + waitingBonus + urgentReviewBonus + concreteNewsBonus + impactRepairBonus;
+}
+
+function retryInputFingerprint(candidate) {
+  return sha256(JSON.stringify({ title: candidate.title,
+    published_version: candidate.existing_story?.current_version || 0,
+    sources: (candidate.sources || []).map(sourceReviewFingerprint).sort() }));
+}
+
+const PAID_INPUT_EVIDENCE_VERSION = 'paid-input-evidence-1';
+
+// A publisher may refresh only its feed clock. That is observable metadata,
+// not permission to regenerate the same paid answer. Keep the stricter dated
+// review fingerprint unchanged; this separate receipt only prevents spending.
+function paidInputEvidenceFingerprint(candidate) {
+  return sha256(JSON.stringify({ version: PAID_INPUT_EVIDENCE_VERSION, title: candidate.title,
+    published_version: candidate.existing_story?.current_version || 0,
+    sources: (candidate.sources || []).map(source => sourceReviewFingerprint({ ...source,
+      published_at: null, source_published_at: null })).sort() }));
+}
+
+function paidHistoryForCandidate(candidate) {
+  const fingerprint = retryInputFingerprint(candidate);
+  const evidenceFingerprint = paidInputEvidenceFingerprint(candidate);
+  return paidRetryHistory({ai_retry_history: [...documentedFailedPaidAttempts(candidate.story_id), ...paidRetryHistory(candidate.existing_story)]}).map(attempt => {
+    // Bind a legacy receipt only when its original, date-sensitive hash is
+    // reproduced exactly. Never guess an old paid input from today's sources.
+    if (attempt.version !== AI_PROCESSING_VERSION || attempt.fingerprint !== fingerprint
+      || attempt.evidence_fingerprint_version !== undefined || attempt.evidence_fingerprint !== undefined) return attempt;
+    return { ...attempt, evidence_fingerprint_version: PAID_INPUT_EVIDENCE_VERSION,
+      evidence_fingerprint: evidenceFingerprint };
+  });
+}
+
+// A temporary news-only run must not repurchase an existing or queued edition.
+// Absence of local history is not proof that other runtimes never paid; the
+// independent cross-runtime ledger and old-queue gates are still required.
+export function newsOnlyPriorWorkHold(candidate, env = process.env) {
+  return quarantined419(candidate, env) || env.WOEK_NEWS_ONLY === 'true' && Boolean(candidate.existing_story?.published
+    || candidate.reassessment || candidate.impact_reassessment || paidHistoryForCandidate(candidate).length);
+}
+
+export function paidAttemptReceiptStatus(candidate, limit = Number(process.env.WOEK_NEWS_MAX_PAID_ATTEMPTS_PER_INPUT || 1)) {
+  const attempts = paidHistoryForCandidate(candidate).filter(previous => previous.version === AI_PROCESSING_VERSION
+    && Number(previous.retry_count || 0) >= Math.max(1, limit));
+  if (!attempts.length) return 'no_prior_paid_attempt';
+  const fingerprint = retryInputFingerprint(candidate), evidenceFingerprint = paidInputEvidenceFingerprint(candidate);
+  if (attempts.some(previous => previous.fingerprint === fingerprint)) return 'same_paid_input';
+  const bound = previous => previous.evidence_fingerprint_version === PAID_INPUT_EVIDENCE_VERSION
+    && /^[a-f0-9]{64}$/.test(previous.evidence_fingerprint || '');
+  if (attempts.some(previous => bound(previous) && previous.evidence_fingerprint === evidenceFingerprint)) return 'same_paid_input';
+  // Old hashes alone cannot distinguish changed evidence from a changed clock.
+  // Unknown historical write/cost effects stay held until their input is proved.
+  if (attempts.some(previous => !bound(previous))) return 'unverified_legacy_paid_input';
+  return 'new_source_evidence';
+}
+
+// Horizont in Stunden; 0 oder leer schaltet den Horizont ab (nur für Tests und
+// ausdrückliche Betriebsentscheidungen). Standard im Direktbetrieb: 24 Stunden.
+export function lifoHorizonMilliseconds(env = process.env) {
+  const configured = env.WOEK_NEWS_MAX_SOURCE_AGE_HOURS;
+  const hours = configured === undefined || configured === '' ? 24 : Number(configured);
+  return Number.isFinite(hours) && hours > 0 ? hours * 3600000 : 0;
+}
+
+// Ein bezahlter Versuch je Eingabestand. Auch eine leere, abgebrochene oder
+// formal unbrauchbare Antwort bleibt ein bezahlter Versuch und wird archiviert.
+// Ein neuer Zeitabschnitt erlaubt keine Ersatzgenerierung derselben Eingabe.
+export function paidAttemptsExhausted(candidate, limit = Number(process.env.WOEK_NEWS_MAX_PAID_ATTEMPTS_PER_INPUT || 1)) {
+  return ['same_paid_input', 'unverified_legacy_paid_input'].includes(paidAttemptReceiptStatus(candidate, limit));
+}
+
+export function retryCoolingDown(candidate, now) {
+  const previous = candidate.existing_story?.ai_retry;
+  return previous?.version === AI_PROCESSING_VERSION
+    && previous.fingerprint === retryInputFingerprint(candidate)
+    && Date.parse(previous.retry_after) > Date.parse(now);
+}
+
+// Eine veröffentlichte Meldung ohne nutzbares Titelbild stand bisher in keiner
+// Schlange: die Nachrüstung lief nur über retry_after, und wer nie ein Bild
+// hatte, hat auch keinen Vermerk (16.09.: vier von 306 veröffentlichten
+// Meldungen ohne OG- und Quadratbild, für die Nachrüstung unsichtbar). Fehlt
+// das Bild, kommt die Meldung zuerst; Obergrenze je Lauf und Zeitbudget bleiben.
+export const missingTitleImage = (story) => !(story?.title_image?.og?.url && story?.title_image?.square?.url);
+// Ein vorhandenes Motiv auf einer Meldung, die die Bildregel inzwischen als
+// heikel einstuft. Die Warteschlange nahm bisher nur Meldungen OHNE Bild auf -
+// eine verschaerfte Regel haette ein schon veroeffentlichtes Motiv deshalb nie
+// mehr ersetzt (18.09.2026: Tatort-Motiv zu den Frankfurter Detonationen).
+// Nur SENSITIVE_SUBJECT zaehlt: ein Motiv, das bloss keinen sicheren Anlass
+// mehr findet, ist kein Sicherheitsproblem und bleibt.
+export function sensitiveMotif(story) {
+  return story?.title_image?.mode === 'editorial' && chooseTitleImageMode(story).reason === 'SENSITIVE_SUBJECT';
+}
+
+export function pendingTitleImageQueue(stories, { now, changed = new Set(), limit = 4 } = {}) {
+  const at = Date.parse(now);
+  const due = (story) => story.title_image?.retry_after && Date.parse(story.title_image.retry_after) <= at;
+  const rang = (story) => sensitiveMotif(story) ? 2 : missingTitleImage(story) ? 1 : 0;
+  return stories
+    .filter((story) => story?.published && story.listed !== false && !changed.has(story.story_id) && (missingTitleImage(story) || due(story) || sensitiveMotif(story)))
+    // Ein irrefuehrendes Motiv geht vor einem fehlenden Bild.
+    .sort((a, b) => rang(b) - rang(a)
+      || Date.parse(a.title_image?.retry_after || 0) - Date.parse(b.title_image?.retry_after || 0))
+    .slice(0, Math.max(0, limit));
+}
+
+export function titleImageIdsForRun(stories, { now, changed, existing, mode, env = process.env, queue = pendingTitleImageQueue }) {
+  const newsOnly = env.WOEK_NEWS_ONLY === 'true';
+  const quarantined = new Set(stories.filter(story => quarantined419(story, env)).map(story => story.story_id));
+  const pending = mode === 'api' && !newsOnly
+    ? queue(stories, { now, changed, limit: IMAGE_CONFIG.max_generations_per_run })
+    : [];
+  return [...new Set([...changed, ...pending.map(story => story.story_id)])]
+    .filter(id => !quarantined.has(id) && (!newsOnly || !existing.has(id)));
+}
+
+// Natalie am 16.09.2026: „machen wir erstmal 4 der relevantesten Meldungen pro
+// Stunde." Die Stundengrenze zaehlte bisher Aufrufe, und eine Nachlieferung ist
+// ein Aufruf: vier Aufrufe waren damit je nach Nachbesserung nur zwei Meldungen.
+// Die Grenze zaehlt jetzt Meldungen; das Geld begrenzt die Taktung.
+export function aiStoriesInWindow(usage, now, windowMinutes = 60) {
+  const at = Date.parse(now);
+  if (!Number.isFinite(at)) throw new Error("INVALID_AI_USAGE_TIME");
+  const cutoff = at - Math.max(1, Number(windowMinutes || 60)) * 60000;
+  return (usage.runs || [])
+    .filter((run) => {
+      const startedAt = Date.parse(usageCostStartedAt(run) || 0);
+      return Number.isFinite(startedAt) && startedAt > cutoff && startedAt <= at;
+    })
+    .reduce((sum, run) => sum + Math.max(0, Number(run.counts?.ai_stories ?? run.ai?.requests ?? 0) || 0), 0);
+}
+
+export function aiRequestsInWindow(usage, now, windowMinutes = 60) {
+  const nowMs = new Date(now).getTime();
+  if (!Number.isFinite(nowMs)) throw new Error("INVALID_AI_USAGE_TIME");
+  const cutoff = nowMs - Math.max(1, Number(windowMinutes || 60)) * 60 * 1000;
+  return (usage.runs || [])
+    .filter((run) => {
+      const startedAt = Date.parse(usageCostStartedAt(run) || 0);
+      return Number.isFinite(startedAt) && startedAt > cutoff && startedAt <= nowMs;
+    })
+    .reduce((sum, run) => {
+      const requests = Number(run.ai?.requests ?? run.counts?.ai_stories ?? 0);
+      return sum + (Number.isFinite(requests) ? Math.max(0, requests) : 0);
+    }, 0);
+}
+
+export function catchUpQueueStage(stage, ready, usage, now, budget, spend) {
+  const control = { enabled: false, base_limit: stage.max_stories_per_run ?? null,
+    effective_limit: stage.max_stories_per_run ?? null, reason: "not_constrained_stage" };
+  const result = () => ({ stage: control.enabled ? { ...stage, max_stories_per_run: 6 } : stage, control });
+  // A measured, temporary soft-throttle adjustment, never a larger budget or
+  // permission to publish lower-quality material. Cheap checks are NOT cheap
+  // first publications; the publication-cost report retains that denominator.
+  if (stage.stage !== 2 || !Number.isFinite(budget) || !Number.isFinite(spend)) return result();
+  const nowMs = Date.parse(now);
+  control.reason = "no_aged_backlog";
+  const uniqueReady = [...new Map(ready.map(candidate => [candidate.story_id, candidate])).values()];
+  const aged = uniqueReady.filter(candidate => candidate.existing_story
+    && nowMs - Date.parse(candidateQueuedAt(candidate)) >= 90 * 60000);
+  if (!Number.isFinite(nowMs) || uniqueReady.length < 12 || aged.length < 2) return result();
+  control.headroom_to_stop_usd = Number((budget * 0.95 - spend).toFixed(6));
+  control.reason = "insufficient_budget_reserve";
+  if (control.headroom_to_stop_usd < 2 * NEWS_REQUEST_RESERVATION_USD) return result();
+  const recent = (usage.runs || []).filter(run => String(run.run_id).startsWith("news-run-")
+    && Date.parse(run.completed_at) <= nowMs && Date.parse(run.started_at) > nowMs - 2 * 3600000
+    && Date.parse(run.started_at) <= nowMs && Number(run.ai?.requests) > 0)
+    .sort((a, b) => Date.parse(b.started_at) - Date.parse(a.started_at));
+  const uniqueRuns = new Map();
+  control.reason = "incomplete_cost_sample";
+  for (const run of recent) {
+    const previous = uniqueRuns.get(run.run_id);
+    if (previous && JSON.stringify(previous.ai) !== JSON.stringify(run.ai)) return result();
+    uniqueRuns.set(run.run_id, run);
+  }
+  const sample = [...uniqueRuns.values()].slice(0, 6);
+  if (!sample.length || sample.some(run => run.ai.token_source !== "provider_reported_usage"
+    || !Number.isInteger(run.ai.requests) || run.ai.requests <= 0
+    || !Number.isFinite(run.ai.estimated_cost_usd) || run.ai.estimated_cost_usd < 0)) return result();
+  control.sample_calls = sample.reduce((sum, run) => sum + run.ai.requests, 0);
+  if (control.sample_calls < 12) return result();
+  const meanCost = sample.reduce((sum, run) => sum + run.ai.estimated_cost_usd, 0) / control.sample_calls;
+  control.mean_check_cost_usd = Number(meanCost.toFixed(6));
+  control.reason = "checks_too_expensive";
+  if (meanCost > 0.012) return result();
+  control.enabled = true;
+  control.effective_limit = 6;
+  control.reason = "aged_backlog_with_measured_low_check_cost";
+  return result();
+}
+
+export function partitionAiQueue(eligible, stage, maxStories, now = new Date().toISOString(), coverage = null) {
+  let allowed = stage.stage >= 3 ? [] : eligible
+    .filter((candidate) => candidate.reassessment || candidate.impact_reassessment || candidate.preanalysis.internal_relevance_score >= stage.threshold);
+  // Only candidates that survived every readiness and stage gate may count
+  // towards simulated coverage. A held topic has not received a paid slot.
+  if (coverage !== null) allowed = balanceEventQueue(allowed, coverage);
+  const limit = Math.max(0, Math.min(maxStories, stage.max_stories_per_run ?? Infinity));
+  let selected = allowed.slice(0, limit);
+  // With the normal 12-slot run, reserve a quarter for older retryable work.
+  // Fresh material keeps the majority, but a continuous news stream can no
+  // longer starve the durable queue indefinitely.
+  if (limit >= 4 && allowed.length > limit) {
+    const top = allowed.filter(candidate => candidate.preanalysis.event_score?.priority === 'TOP').slice(0, limit);
+    const topIds = new Set(top.map(candidate => candidate.story_id));
+    const queued = allowed.filter((candidate) => candidate.existing_story
+      && !topIds.has(candidate.story_id)
+      && (!candidate.fresh || Date.parse(now) - Date.parse(candidateQueuedAt(candidate)) >= 90 * 60000))
+      .sort((left, right) => {
+        const leftReason = left.existing_story?.pending_update?.reason || left.existing_story?.pending_reason;
+        const rightReason = right.existing_story?.pending_update?.reason || right.existing_story?.pending_reason;
+        const leftTechnical = TECHNICAL_HOLD_REASONS.has(leftReason) || leftReason === "QUALITY_GATE_FAILED";
+        const rightTechnical = TECHNICAL_HOLD_REASONS.has(rightReason) || rightReason === "QUALITY_GATE_FAILED";
+        return Number(rightTechnical) - Number(leftTechnical)
+          || Date.parse(candidateQueuedAt(left) || 0) - Date.parse(candidateQueuedAt(right) || 0);
+      });
+    const reserve = Math.min(queued.length, Math.max(0, limit-top.length), Math.max(1, Math.ceil(limit / 4)));
+    const reserved = queued.slice(0, reserve);
+    const reservedIds = new Set(reserved.map((candidate) => candidate.story_id));
+    selected = [...top, ...allowed.filter((candidate) => !reservedIds.has(candidate.story_id) && !topIds.has(candidate.story_id)).slice(0, limit - reserve - top.length), ...reserved];
+  }
+  // Reparaturen bleiben in der Queue, duerfen aber einen kleinen Zwei-Slot-Lauf
+  // nicht zur Haelfte belegen. Ab vier Plaetzen bleibt ein Reparaturplatz;
+  // kleine Laeufe folgen der zuvor thematisch ausbalancierten Rangfolge.
+  const repair = allowed.find((candidate) => candidate.impact_reassessment);
+  if (repair && limit >= 4 && !selected.some((candidate) => candidate.impact_reassessment)) {
+    const keep = selected.filter((candidate) => candidate.story_id !== repair.story_id);
+    selected = [...keep.slice(0, limit - 1), repair];
+  }
+  // Kein pauschaler Sicherheitsplatz: Natalies spaetere Vorgabe verlangt eine
+  // thematisch offene Auswahl. Ein relevantes Sicherheitsereignis bleibt
+  // waehlbar, verdrängt aber nicht allein wegen seines Themenetiketts anderes.
+  const selectedIds = new Set(selected.map((candidate) => candidate.story_id));
+  return { selected, deferred: eligible.filter((candidate) => !selectedIds.has(candidate.story_id)) };
+}
+
+export function aiDeferralReason(candidate, stage, remainingCalls) {
+  if (stage.stage >= 3) return "AI_BUDGET_BLOCKED";
+  if (!candidate.reassessment && !candidate.impact_reassessment && candidate.preanalysis.internal_relevance_score < stage.threshold) return "EDITORIAL_RELEVANCE_BELOW_THRESHOLD";
+  return remainingCalls === 0 ? "AI_HOURLY_CALL_LIMIT" : "AI_BUDGET_OR_BATCH_LIMIT";
+}
+
+export function retainUsageHistory(runs, now) {
+  const month = String(now).slice(0, 7);
+  const current = run => String(run.started_at).startsWith(month) || String(usageCostStartedAt(run)).startsWith(month);
+  // Frequent headless runs must not erase this month's spend after 400 runs.
+  return [
+    ...runs.filter((run) => !current(run)).slice(-400),
+    ...runs.filter(current),
+  ];
+}
+
+export function aiProviderCoverageDegraded(report = {}) {
+  const failures = Math.max(0, Number(report.ai_provider_failures || 0));
+  const successes = Math.max(0, Number(report.ai_provider_successes || 0));
+  if (!failures) return false;
+  const providerErrors = Array.isArray(report.ai_provider_errors) ? report.ai_provider_errors : [];
+  const onlyCapacityThrottles = providerErrors.length >= failures
+    && providerErrors.slice(-failures).every((entry) => /AI_PROVIDER_ERROR:429/.test(String(entry?.error || "")));
+  // The shared Oracle route deliberately returns 429 when its rolling
+  // capacity is exhausted. This is an expected queue condition, not a
+  // provider outage, even when it happens on the first request of a run.
+  if (onlyCapacityThrottles) return false;
+  if (!successes) return true;
+  // A single late timeout after successful responses is observable but does
+  // not make the whole provider unavailable. Escalate repeated failures.
+  return failures >= 3 || (failures >= 2 && failures / (failures + successes) >= 0.2);
+}
+
+export function queueSnapshot(stories = [], now = new Date().toISOString(), before = 0, { budgetBlocked = false } = {}) {
+  const rows = stories.filter((story) => !isMerged(story) && ((!story.published && story.listed !== false) || story.pending_update || unresolvedProviderRequest(story) != null));
+  const snapshot = { before: Number(before || 0), after: rows.length, retryable: 0, capacity: 0, technical: 0, editorial: 0, oldest_minutes: 0, oldest_technical_minutes: 0, by_reason: {} };
+  for (const story of rows) {
+    const pending = story.pending_update || story;
+    const unknownRequest = unresolvedProviderRequest(story);
+    const reason = unknownRequest != null ? UNKNOWN_PROVIDER_OUTCOME : pending.reason || story.pending_reason || "UNCLASSIFIED";
+    const errors = pending.quality_errors || story.quality_errors || [];
+    const retryCount = pending.quality_retry_count ?? story.quality_retry_count ?? 0;
+    const retryAfter = pending.quality_retry_after || story.quality_retry_after || null;
+    // Legacy first_seen is sometimes the source's publication date, not our
+    // receipt time. Never turn an older article into an invented queue delay.
+    const queuedAt = Date.parse(pending.detected_at || (!story.published ? story.event_detected_at : null) || story.updated_at || now);
+    const ageMinutes = Number.isFinite(queuedAt) ? Math.max(0, (Date.parse(now) - queuedAt) / 60000) : 0;
+    snapshot.oldest_minutes = Math.max(snapshot.oldest_minutes, ageMinutes);
+    snapshot.by_reason[reason] = Number(snapshot.by_reason[reason] || 0) + 1;
+    const structuralRetry = shouldRetryQualityGate(reason, errors, retryCount, retryAfter, retryAfter || now);
+    if (unknownRequest != null) {
+      snapshot.technical += 1; // Requires reconciliation, NOT an automatic retry.
+      const failedAt = Date.parse(unknownRequest.reported_run_started_at || unknownRequest.at || '');
+      snapshot.oldest_technical_minutes = Math.max(snapshot.oldest_technical_minutes,
+        Number.isFinite(failedAt) ? Math.max(0, (Date.parse(now) - failedAt) / 60000) : ageMinutes);
+    } else if (CAPACITY_HOLD_REASONS.has(reason)) {
+      snapshot.capacity += 1;
+      snapshot.retryable += 1;
+    } else if (TECHNICAL_HOLD_REASONS.has(reason) || structuralRetry) {
+      snapshot.technical += 1;
+      snapshot.retryable += 1;
+      const failedAt = Date.parse(story.ai_retry?.first_failed_at || story.ai_retry?.failed_at || '');
+      const technicalAge = Number.isFinite(failedAt) ? Math.max(0, (Date.parse(now) - failedAt) / 60000) : ageMinutes;
+      snapshot.oldest_technical_minutes = Math.max(snapshot.oldest_technical_minutes, technicalAge);
+    } else {
+      snapshot.editorial += 1;
+    }
+  }
+  snapshot.budget_blocked = Boolean(budgetBlocked && snapshot.retryable);
+  snapshot.status = snapshot.budget_blocked
+    ? "budget_blocked"
+    : snapshot.technical && snapshot.oldest_technical_minutes >= 90
+    ? "technical_delay"
+    : snapshot.retryable
+      ? "draining"
+      : snapshot.technical
+        ? "technical_holds"
+      : snapshot.editorial
+        ? "editorial_holds"
+        : "clear";
+  return snapshot;
+}
+
+function sanitizeError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  // These exact internal codes are not credentials. Redacting their length
+  // would turn a retryable schema error into an unknown provider outage.
+  // Preserve only exact transport-normalized billing codes as well: masking
+  // them would disable the existing stop-after-first-refusal branch below.
+  // Provider messages, arbitrary suffixes and credentials remain redacted.
+  if (OUTPUT_FORMAT_ERRORS.has(message) || PROVIDER_BILLING_ERRORS.has(message) || message === 'NEWS_INPUT_NEEDS_PREPARATION') return message;
+  return message.replace(/[A-Za-z0-9_-]{24,}/g, "[redacted]").slice(0, 240);
+}
+
+function governanceHoldFor(error, now) {
+  const message = error instanceof Error ? error.message : String(error);
+  if (!/^(?:ROBOTS_DISALLOWED|ROBOTS_UNAVAILABLE_|ROBOTS_REDIRECT_LIMIT|ROBOTS_CROSS_ORIGIN_REDIRECT|RSL_AI_INPUT_DISALLOWED|RSL_STATUS_OPEN|RSL_UNAVAILABLE_|RSL_REDIRECT_LIMIT|RSL_CROSS_ORIGIN_REDIRECT|SOURCE_ACCESS_NOT_CLEARED)/i.test(message)) return null;
+  return {
+    reason: message.split(":")[0],
+    set_at: now,
+    // Retry only the policy probe after one day. A successful fetch clears the
+    // hold; a still-restrictive policy renews it without touching article data.
+    until: new Date(Date.parse(now) + 24 * 60 * 60 * 1000).toISOString(),
+  };
+}
+
+export function isRetryableFeedError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  return /fetch failed|network|socket|timed?\s*out|abort|ECONNRESET|EAI_AGAIN|FEED_REQUEST_TIMEOUT|FEED_HTTP_(?:408|425|429|5\d\d)/i.test(message);
+}
+
+export async function fetchFeedWithRetry(source, policy, fetchImpl = fetchFeed, options = {}) {
+  const attempts = Math.max(1, Math.min(4, Number(options.attempts || policy.fetch_attempts || 3)));
+  const delay = options.delayImpl || ((milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)));
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return { fetched: await fetchImpl(source, policy), attempts: attempt };
+    } catch (error) {
+      lastError = error;
+      if (attempt === attempts || !isRetryableFeedError(error)) throw error;
+      await delay(400 * (2 ** (attempt - 1)));
+    }
+  }
+  throw lastError;
+}
+
+// News-only isolation avoids reintroducing a historical discovery bundle.
+// Spending/attempt receipt recovery remains mandatory in the paid preflight.
+export function recoverDiscoveryForRun(args, { env = process.env, recover = recoverRetainedDiscovery } = {}) {
+  return env.WOEK_NEWS_ONLY === 'true' ? null : recover(args);
+}
+
+// The serial workflow builds after approved editions and Lage are imported.
+// Standalone callers still build by default; no validation is skipped.
+export function buildNewsAfterRun(options = {}, build = buildNewsSite) {
+  if (options.deferSiteBuild !== true) build();
+}
+
+export async function runWirkungsticker(options = {}) {
+  const mode = processingMode();
+  visualGenerationProvider(); // Reject contradictory configuration before any work.
+  let bridge = options.bridgeProvider;
+  const bridgePhase = process.env.WOEK_NEWS_BRIDGE_PHASE || 'combined';
+  if (mode === 'dropbox_chatgpt_bridge' && !options.dryRun) {
+    bridge ||= createBridgeRuntime();
+    await bridge.store.acquire(options.now || new Date().toISOString(), bridgePhase);
+  }
+  const changedStoryIds = new Set();
+  const nowDate = options.now ? new Date(options.now) : process.env.WOEK_NEWS_NOW ? new Date(process.env.WOEK_NEWS_NOW) : new Date();
+  if (!Number.isFinite(nowDate.getTime())) throw new Error("INVALID_RUN_TIME");
+  const now = nowDate.toISOString();
+  const runSchedule = scheduledSlot(nowDate);
+  const isAutomatedRun = process.env.GITHUB_EVENT_NAME === "schedule"
+    || (process.env.GITHUB_EVENT_NAME === "push" && process.env.GITHUB_REF === "refs/heads/codex/wirkungsticker-clock");
+  const registry = options.registry ? normalizeNewsRegistry(options.registry) : loadNewsRegistry(ROOT);
+  const invalidRegistry = registryErrors(registry);
+  if (invalidRegistry.length) throw new Error(invalidRegistry.join(","));
+  const state = structuredClone(options.state || readJson(files.state));
+  state.cost_monitoring_started_at ||= now;
+  const storyStore = structuredClone(options.storyStore || readJson(files.stories));
+  const quarantinedOriginals = new Map((storyStore.stories || []).filter(story => quarantined419(story))
+    .map(story => [story.story_id, structuredClone(story)]));
+  const editorialQualityOriginals = new Map((storyStore.stories || []).filter(editorialQualityHeld)
+    .map(story => [story.story_id, structuredClone(story)]));
+  const editorialQualityStories = [...editorialQualityOriginals.values()];
+  const existingStoryIds = new Set((storyStore.stories || []).map(story => story.story_id));
+  const usage = structuredClone(options.usage || readJson(files.usage));
+  const retainedDiscovery = options.storyStore || options.state ? null
+    : recoverDiscoveryForRun({store: storyStore, state, registry, now});
+  const documentedPaidRecovery = options.usage ? null : recoverDocumentedFailedPaidUsage(usage, now);
+  const paidRecoveryGuard = usage.failed_run_recovery?.interrupted_guard || null;
+  const paidRecoveryHold = mode === 'api' && interruptedPaidWorkBlocked(paidRecoveryGuard, {
+    requireCurrentRun: !options.usage, runId:process.env.GITHUB_RUN_ID, runAttempt:process.env.GITHUB_RUN_ATTEMPT,
+    repository:process.env.GITHUB_REPOSITORY, allowQuarantined419:quarantine419Enabled()});
+  const newsroom = options.newsroom || (fs.existsSync(files.newsroom) ? readJson(files.newsroom) : { schema_version: "1.0", source_items: {}, events: {}, event_sources: [], discovery_candidates: [] });
+  const enabledSources = registry.sources.filter((source) => source.enabled && sourceAccess(source).allowed);
+  const enabledSourceIds = new Set(enabledSources.map(source => source.source_id));
+  const allowedObservationItems = () => Object.values(newsroom.source_items).filter(item => enabledSourceIds.has(item.source_id));
+  const eventAuditEnabled = registry.policy?.event_relevance?.enabled === true;
+  const dueSources = mode === 'dropbox_chatgpt_bridge' && bridgePhase === 'import' ? [] : enabledSources.filter((source) => sourceDue(source, state.source_status[source.source_id], now));
+  const previousSourceStatus = structuredClone(state.source_status);
+  const pendingStoryCountBefore = (state.pending_story_ids || []).length;
+  const pendingStoryIdsBefore = new Set(state.pending_story_ids || []);
+  const sourceFunnel = createSourceFunnel(enabledSources, dueSources);
+  const report = {
+    schema_version: "1.2",
+    processing_version: AI_PROCESSING_VERSION,
+    processing_mode: mode,
+    bridge_phase: mode === 'dropbox_chatgpt_bridge' ? bridgePhase : null,
+    trigger_type: process.env.GITHUB_EVENT_NAME === 'workflow_dispatch' ? 'manual' : 'scheduled',
+    triggered_at: now,
+    triggered_by: process.env.GITHUB_ACTOR || 'internal',
+    run_id: process.env.GITHUB_RUN_ID || null,
+    usage_recovery: usage.failed_run_recovery ? { status: usage.failed_run_recovery.status,
+      checked_at: usage.failed_run_recovery.checked_at,
+      unresolved_run_ids: usage.failed_run_recovery.unresolved_run_ids || [] } : null,
+    documented_failed_paid_usage: documentedPaidRecovery,
+    paid_recovery_guard: paidRecoveryGuard,
+    paid_recovery_hold: paidRecoveryHold,
+    retained_unpaid_discovery: retainedDiscovery,
+    status: "running",
+    started_at: now,
+    berlin_slot: runSchedule.slot || (isAutomatedRun ? `Automatischer Lauf ${String(runSchedule.hourNumber).padStart(2, "0")}:00` : "manueller Lauf"),
+    feed_entries_fetched: 0,
+    feed_entries_new: 0,
+    feed_entries_updated: 0,
+    feed_entries_backfilled: 0,
+    feed_entries_deduplicated: 0,
+    feed_entries_future_dated: 0,
+    story_clusters: 0,
+    locally_rejected: 0,
+    eligible_stories: 0,
+    ai_stories: 0,
+    ai_calls: 0,
+    reviews_reused: 0,
+    input_holds: [],
+    prompt_chars_sent: 0,
+    ai_batches_planned: 0,
+    ai_batches_completed: 0,
+    published_stories: 0,
+    updated_stories: 0,
+    retired_stories: 0,
+    reactivated_stories: 0,
+    provider: null,
+    model: null,
+    input_tokens: 0,
+    output_tokens: 0,
+    estimated_cost_usd: 0,
+    source_successes: 0,
+    source_failures: 0,
+    source_retry_attempts: 0,
+    source_errors: [],
+    ai_provider_successes: 0,
+    ai_provider_failures: 0,
+    ai_provider_errors: [],
+    ai_output_invalid: 0,
+    ai_output_failure_cost_usd: 0,
+    budget_blocked: false,
+    quality_holds: [],
+    article_excerpts_fetched: 0,
+    article_excerpt_failures: 0,
+    visuals_dropped: [],
+    media_impact_dropped: [],
+    media_checks_triggered: 0,
+    media_checks_skipped: 0,
+    media_checks_ai_promoted: 0,
+    media_check_promotions: [],
+    media_check_tokens: 0,
+    media_check_cost_usd: 0,
+    self_frame_rewrites: 0,
+    source_integrity_holds: [],
+    budget_stage: 0,
+    completed_at: null,
+    sources_scheduled: dueSources.length,
+    sources_not_due: enabledSources.length - dueSources.length,
+    sources_not_modified: 0,
+    pending_story_count_before: pendingStoryCountBefore,
+    source_funnel: [],
+    queue: null,
+    operational_status: "running",
+    editorial_status: "running",
+  };
+  const discoveryStarted = performance.now();
+  const importCheckpoint = (stage, counts = {}) => {
+    if (mode !== 'api' || options.dryRun || process.env.GITHUB_ACTIONS !== 'true') return;
+    console.error(JSON.stringify({news_import_progress:{stage, run_id:report.run_id, at:new Date().toISOString(),
+      elapsed_ms:Math.round(performance.now()-discoveryStarted), ...counts}}));
+  };
+  const discoveryCheckpoint = async (stage, counts = {}) => {
+    importCheckpoint(stage, counts);
+    const progress = { stage, run_id: report.run_id, at: new Date().toISOString(), elapsed_ms: Math.round(performance.now() - discoveryStarted), ...counts };
+    if (!bridge || options.dryRun || bridgePhase === 'import') return;
+    await bridge.store.observe('discovery-progress', progress);
+    console.error(JSON.stringify({ discovery_progress: progress }));
+  };
+  await discoveryCheckpoint('source_handoff');
+
+  // These jobs already have a complete, immutable published-source package.
+  // Hand them off under the discovery lock before slow external feed I/O.
+  if (bridge && !options.dryRun && bridgePhase !== 'import') {
+    const impactEditorials = fs.existsSync(path.join(ROOT, 'data/news/editorial-analyses.json')) ? readRepositoryJson(path.join(ROOT, 'data/news/editorial-analyses.json'), 'utf8').analyses : [];
+    report.bridge_impact_enqueued = await (await import('./bridge/impact.mjs')).discoverImpactJobs(bridge, [...storyStore.stories, ...impactEditorials], now);
+  }
+
+  report.ambiguous_decisions_requeued = [];
+  if (!state.publication_decision_review_v1_at) {
+    report.ambiguous_decisions_requeued = recoverAmbiguousPublicationDecisions(storyStore.stories, newsroom.decisions, now);
+    state.publication_decision_review_v1_at = now;
+  }
+
+  const fetchResults = await mapLimit(dueSources, Number(process.env.WOEK_NEWS_FETCH_CONCURRENCY || 3), async (source) => fetchDiscoverySource({
+    store: bridge && !options.dryRun && bridgePhase !== 'import' ? bridge.store : null,
+    source, now, fetchSource: async cached => {
+    importCheckpoint('source_request_started', {source_id:source.source_id});
+    const fetchResult = await fetchFeedWithRetry(
+      { ...datedSource(source, now), etag: cached?.fetched.etag || state.source_status[source.source_id]?.etag, last_modified: cached?.fetched.last_modified || state.source_status[source.source_id]?.last_modified, max_items: source.max_items || registry.policy.max_items_per_source },
+      registry.policy,
+      options.fetchFeedImpl || fetchFeed,
+      { delayImpl: options.fetchRetryDelayImpl },
+    );
+    importCheckpoint('source_request_completed', {source_id:source.source_id,attempts:fetchResult.attempts});
+    const { fetched } = fetchResult;
+    const items = fetched.not_modified ? [] : parseFeed(fetched.body, { ...source, max_items: source.max_items || registry.policy.max_items_per_source })
+      .map((item) => annotateSourceItem(item, source, now))
+      .map((item) => reconcileSourceIdentity(item, source, registry));
+    if (!source.allow_empty && !fetched.not_modified && !items.length && Number(state.source_status[source.source_id]?.items || 0) > 0) throw new Error("SOURCE_PARSER_DRIFT_OR_EMPTY_FEED");
+    return { source, fetched, items, fetchAttempts: fetchResult.attempts };
+  } }));
+  await discoveryCheckpoint('feeds_loaded', { source_packages: fetchResults.filter(r => r.status === 'fulfilled').length });
+
+  let allItems = [];
+  for (let index = 0; index < fetchResults.length; index += 1) {
+    const result = fetchResults[index];
+    const source = dueSources[index];
+    const previousStatus = state.source_status[source.source_id] || {};
+    if (result.status === "rejected") {
+      const error = sanitizeError(result.reason);
+      const governanceHold = governanceHoldFor(result.reason, now);
+      bumpSourceFunnel(sourceFunnel, source.source_id, "fetch_failures");
+      if (/PARSER|XML|JSON|FEED_FORMAT|EMPTY_FEED/i.test(error)) bumpSourceFunnel(sourceFunnel, source.source_id, "parse_failures");
+      report.source_failures += 1;
+      report.source_errors.push({ source_id: source.source_id, error });
+      state.source_status[source.source_id] = { ...previousStatus, last_attempt: now, attempts: Number(previousStatus.attempts || 0) + 1, failures: Number(previousStatus.failures || 0) + 1, consecutive_failures: Number(previousStatus.consecutive_failures || 0) + 1, last_error_at: now, last_error: error, last_success: previousStatus.last_success || null, governance_hold_reason: governanceHold?.reason || previousStatus.governance_hold_reason || null, governance_hold_until: governanceHold?.until || previousStatus.governance_hold_until || null };
+      continue;
+    }
+    bumpSourceFunnel(sourceFunnel, source.source_id, "fetch_successes");
+    bumpSourceFunnel(sourceFunnel, source.source_id, "feed_items", result.value.items.length);
+    report.source_successes += 1;
+    if (result.value.cache_hit) report.source_package_cache_hits = Number(report.source_package_cache_hits || 0) + 1;
+    if (result.value.fetched.not_modified) { report.sources_not_modified += 1; bumpSourceFunnel(sourceFunnel, source.source_id, 'not_modified'); }
+    report.source_retry_attempts += Math.max(0, Number(result.value.fetchAttempts || 1) - 1);
+    report.feed_entries_fetched += result.value.items.length;
+    allItems.push(...result.value.items);
+    state.source_status[source.source_id] = {
+      ...previousStatus,
+      last_attempt: result.value.checked_at || now,
+      attempts: Number(previousStatus.attempts || 0) + (result.value.cache_hit ? 0 : 1),
+      consecutive_failures: 0,
+      last_success: result.value.checked_at || now,
+      last_error: null,
+      governance_hold_reason: null,
+      governance_hold_until: null,
+      feed_url: result.value.fetched.final_url,
+      items: result.value.fetched.not_modified ? previousStatus.items ?? result.value.items.length : result.value.items.length,
+      latest_item: result.value.items.map((item) => item.published_at).filter(Boolean).sort().at(-1) || previousStatus.latest_item || null,
+      etag: result.value.fetched.etag,
+      last_modified: result.value.fetched.last_modified,
+    };
+  }
+  if (dueSources.length && report.source_successes === 0) report.all_sources_failed = true;
+
+  if (eventAuditEnabled && !(mode === 'dropbox_chatgpt_bridge' && bridgePhase === 'import')) {
+    const discovery = await runActiveDiscovery({ registry, state, stories: storyStore.stories, now,
+      fetchIndex: options.fetchDiscoveryIndexImpl, fetchMetadata: options.fetchDiscoveryMetadataImpl });
+    allItems.push(...discovery.items);
+    const { items: _items, ...diagnostics } = discovery;
+    report.active_discovery = diagnostics;
+    // The same input item from RSS and an index is one document, not a second
+    // independent source or paid candidate.
+    allItems = [...new Map(allItems.map(item => [item.url, item])).values()];
+  }
+
+  const publicationDates = createPublicationDateRecovery({ registry, state, now, fetchArticleImpl: options.fetchPublicationDateImpl });
+  report.source_date_recovery = publicationDates.stats;
+  // Prime the metadata cache for waiting work first, without rewriting any
+  // published source or version. All phases share the same three-read limit.
+  const waitingSources = storyStore.stories.filter(story => !isMerged(story)
+    && ((!story.published && story.listed !== false) || story.pending_update))
+    .flatMap(story => story.pending_update?.sources || story.sources || []);
+  await publicationDates.recover(waitingSources);
+  allItems = await publicationDates.recover(allItems);
+
+  const lookbackMs = Number(registry.policy.bootstrap_lookback_hours || 36) * 60 * 60 * 1000;
+  const backfillCutoff = nowDate.getTime() - RELEVANCE_BACKFILL_DAYS * 24 * 60 * 60 * 1000;
+  const needsRelevanceBackfill = state.relevance_filter_version !== RELEVANCE_FILTER_VERSION;
+  const publishedSourceUrls = new Set(storyStore.stories.filter(s => s.published).flatMap(s => (s.sources || []).map(source => source.url)));
+  const futureToleranceMs = 10 * 60 * 1000;
+  const changedItems = [];
+  const freshItemIds = new Set();
+  for (const item of allItems) {
+    const sourceCursor = previousSourceStatus[item.source_id]?.last_success;
+    // Day-only metadata cannot be compared with a minute-level feed cursor.
+    // Use the bounded discovery window, including the unknown part of that day.
+    const cutoff = item.published_precision === 'day' ? nowDate.getTime() - lookbackMs - 86400000
+      : sourceCursor ? Date.parse(sourceCursor) - 5 * 60 * 1000 : nowDate.getTime() - lookbackMs;
+    const previous = state.seen_items[item.item_id];
+    const published = Date.parse(item.published_at || 0);
+    if (published > nowDate.getTime() + futureToleranceMs) {
+      report.feed_entries_future_dated += 1;
+      bumpSourceFunnel(sourceFunnel, item.source_id, "future_dated_items");
+      continue;
+    }
+    const backfillCandidate = needsRelevanceBackfill && !publishedSourceUrls.has(item.url) && (!published || published >= backfillCutoff);
+    if (!previous && published && published < cutoff && !backfillCandidate) continue;
+    if (!previous || backfillCandidate) {
+      changedItems.push(item);
+      if (previous) report.feed_entries_backfilled += 1;
+      else {
+        report.feed_entries_new += 1;
+        bumpSourceFunnel(sourceFunnel, item.source_id, "new_items");
+        freshItemIds.add(item.item_id);
+      }
+    } else if (previous.content_hash !== item.content_hash) {
+      changedItems.push(item);
+      report.feed_entries_updated += 1;
+      bumpSourceFunnel(sourceFunnel, item.source_id, "updated_items");
+      freshItemIds.add(item.item_id);
+    } else {
+      report.feed_entries_deduplicated += 1;
+      bumpSourceFunnel(sourceFunnel, item.source_id, "unchanged_items");
+    }
+    state.seen_items[item.item_id] = {
+      source_id: item.source_id,
+      url: item.url,
+      content_hash: item.content_hash,
+      published_at: item.published_at,
+      last_seen: now,
+    };
+    const fingerprint = eventFingerprint(item);
+    const previousItem = newsroom.source_items[item.source_item_id];
+    const eventId = previousItem?.event_id || fingerprint.id;
+    newsroom.source_items[item.source_item_id] = { ...sourcePublicRecord(item), event_id: eventId, first_seen_at: previousItem?.first_seen_at || now, last_seen_at: now };
+    newsroom.events[eventId] = { ...fingerprint, ...newsroom.events[eventId], id: eventId, event_detected_at: newsroom.events[eventId]?.event_detected_at || now };
+  }
+  if (eventAuditEnabled) {
+    const observed = observedMajorEvents(allowedObservationItems(), now, { limit: registry.policy.event_relevance.observer_max_items });
+    const rechecks = missedNewsRechecks({ observed, stories: storyStore.stories, state, now, maxEvents: registry.policy.event_relevance.rechecks_per_run });
+    const present = new Set(changedItems.map(item => item.url));
+    changedItems.push(...rechecks.items.filter(item => !present.has(item.url)).map(item => ({ ...item, item_id: item.source_item_id || sha256(item.url) })));
+    report.missed_news_rechecks = rechecks.events;
+    const agenda = allItems.map(agendaSignal).filter(Boolean).map(item => ({ ...item, checked_at: now }));
+    state.agenda_watch = [...new Map([...(state.agenda_watch || []), ...agenda].filter(item => Date.parse(item.checked_at) >= nowDate.getTime()-72*3600000).map(item => [item.id,item])).values()].slice(-100);
+    report.agenda_watch = state.agenda_watch;
+  }
+  const pruneBefore = nowDate.getTime() - 120 * 24 * 60 * 60 * 1000;
+  for (const [id, record] of Object.entries(state.seen_items)) if (Date.parse(record.last_seen || 0) < pruneBefore) delete state.seen_items[id];
+
+  report.provider_outcome_holds = retainKnownProviderRequests(storyStore.stories || []);
+  const routableStories = (storyStore.stories || []).filter(story => unresolvedProviderRequest(story) == null && !quarantined419(story) && !editorialQualityHeld(story));
+  const repartition = repartitionOversizedSourceQueues(routableStories, now);
+  report.source_queue_repartitions = repartition.changes;
+  const freshUrls = new Set(changedItems.map(item => item.url));
+  changedItems.push(...repartition.requeued_sources.filter(item => !freshUrls.has(item.url)));
+  // A reviewed provenance wording correction rides the ordinary locked,
+  // atomic update. It changes no sources, paid answer or assessment.
+  report.source_provenance_clarifications = applyDocumentedSourceIndependenceClarifications(storyStore.stories || [], now);
+  report.updated_stories += report.source_provenance_clarifications.filter(change => change.status === 'applied').length;
+  report.katz_denial_clarification = applyDocumentedKatzDenialClarification(storyStore.stories || [], now);
+  report.updated_stories += report.katz_denial_clarification.filter(change => change.status === 'applied').length;
+  report.topic_metadata_clarification = applyDocumentedGassiTopicClarification(storyStore.stories || [], now);
+  report.updated_stories += report.topic_metadata_clarification.filter(change => change.status === 'applied').length;
+  const topicCardIds = new Set(report.topic_metadata_clarification.filter(change => change.cards_only).map(change => change.story_id));
+  for (const change of report.topic_metadata_clarification) if (change.status === 'applied') changedStoryIds.add(change.story_id);
+  // The two independently verified Leizen duplicates need an exact-source
+  // consolidation. Generic place matching rightly cannot infer town/state
+  // equivalence from their headlines; this mapping is evidence-bound and
+  // idempotent, and changes no paid analysis or historical article text.
+  const leizenMerges = consolidateLeizenDuplicates(routableStories, now);
+  report.living_file_merges = leizenMerges;
+  report.retired_stories += leizenMerges.length;
+  // Exact, documented source-edition pair; no new analysis or paid retry.
+  const kirchnerConsolidation = consolidateKirchnerDuplicates(routableStories, now);
+  report.kirchner_duplicate_consolidation = kirchnerConsolidation;
+  report.living_file_merges.push(...kirchnerConsolidation.changes);
+  report.retired_stories += kirchnerConsolidation.changes.length;
+  // Another reviewed exact pair; preserve both paid editions.
+  const kamenConsolidation = consolidateKamenDuplicates(routableStories, now);
+  report.kamen_duplicate_consolidation = kamenConsolidation;
+  report.living_file_merges.push(...kamenConsolidation.changes);
+  report.retired_stories += kamenConsolidation.changes.length;
+  // A verified DLF URL change split one event into two paid publications.
+  // Keep both full texts; the archived document also remains a routing alias.
+  const sanctionsConsolidation = consolidateTrumpSanctionsDuplicates(routableStories, now);
+  report.trump_sanctions_duplicate_consolidation = sanctionsConsolidation;
+  report.living_file_merges.push(...sanctionsConsolidation.changes);
+  report.retired_stories += sanctionsConsolidation.changes.length;
+  const hofheimConsolidation = consolidateHofheimDuplicates(routableStories, now);
+  report.hofheim_duplicate_consolidation = hofheimConsolidation;
+  report.living_file_merges.push(...hofheimConsolidation.changes);
+  report.retired_stories += hofheimConsolidation.changes.length;
+  const obersontheimConsolidation = consolidateObersontheimDuplicates(routableStories, now);
+  report.obersontheim_duplicate_consolidation = obersontheimConsolidation;
+  report.living_file_merges.push(...obersontheimConsolidation.changes);
+  report.retired_stories += obersontheimConsolidation.changes.length;
+  const tabaksteuerConsolidation = consolidateTabaksteuerDuplicates(routableStories, now);
+  report.tabaksteuer_duplicate_consolidation = tabaksteuerConsolidation;
+  report.living_file_merges.push(...tabaksteuerConsolidation.changes);
+  report.retired_stories += tabaksteuerConsolidation.changes.length;
+  const oleschkyConsolidation = consolidateOleschkyDuplicates(routableStories, now);
+  report.oleschky_duplicate_consolidation = oleschkyConsolidation;
+  report.living_file_merges.push(...oleschkyConsolidation.changes);
+  report.retired_stories += oleschkyConsolidation.changes.length;
+  const mannheimSwrConsolidation = consolidateMannheimSwrDuplicates(routableStories, now);
+  report.mannheim_swr_duplicate_consolidation = mannheimSwrConsolidation;
+  report.living_file_merges.push(...mannheimSwrConsolidation.changes);
+  report.retired_stories += mannheimSwrConsolidation.changes.length;
+  const mannheimSternConsolidation = consolidateMannheimSternDuplicates(routableStories, now);
+  report.mannheim_stern_duplicate_consolidation = mannheimSternConsolidation;
+  report.living_file_merges.push(...mannheimSternConsolidation.changes);
+  report.retired_stories += mannheimSternConsolidation.changes.length;
+  const regensburgConsolidation = consolidateRegensburgDuplicates(routableStories, now);
+  report.regensburg_duplicate_consolidation = regensburgConsolidation;
+  report.living_file_merges.push(...regensburgConsolidation.changes);
+  report.retired_stories += regensburgConsolidation.changes.length;
+  const automaticMerges = mergeLivingFiles(storyStore.stories || [], duplicateGroups(routableStories), now);
+  report.living_file_merges.push(...automaticMerges);
+  report.retired_stories += automaticMerges.filter((change) => storyStore.stories.find((story) => story.story_id === change.story_id)?.published).length;
+  const matchableStories = (storyStore.stories || [])
+    .filter((story) => story.retirement?.reason_code !== "MERGED_INTO_LIVING_FILE");
+  const scheduledFollowups = dueFollowups(matchableStories, now);
+  const dueFollowupIds = new Set(scheduledFollowups.map((followup) => followup.story_id));
+  const dueDeepeningIds = new Set(matchableStories.filter((story) => story.published && story.listed !== false && story.deepening_due_at && Date.parse(story.deepening_due_at) <= nowDate.getTime()).map((story) => story.story_id));
+  const freshCandidates = clusterItems(changedItems, storyStore.stories || [], now)
+    .map((cluster) => createCandidate(
+      cluster,
+      now,
+      Boolean(cluster.existing_story?.pending_update?.reassessment),
+      cluster.sources.some((source) => freshItemIds.has(source.item_id)),
+    ));
+  await discoveryCheckpoint('events_clustered', { changed_items: changedItems.length, clusters: freshCandidates.length });
+  const freshIds = new Set(freshCandidates.map((candidate) => candidate.story_id));
+  const retryableReasons = new Set(["BRIDGE_PENDING", "IMPACT_REASSESSMENT_REQUESTED", "AI_BUDGET_OR_BATCH_LIMIT", "AI_HOURLY_CALL_LIMIT", "AI_PROVIDER_UNAVAILABLE", "AI_DISABLED", "AI_BUDGET_BLOCKED", "EDITORIAL_RELEVANCE_BELOW_THRESHOLD", "AI_RUN_TIME_LIMIT", "AI_INPUT_TOO_LARGE", "SOURCE_INTEGRITY_OPEN", "PAID_RECOVERY_PENDING"]);
+  const retryCandidates = (storyStore.stories || [])
+    .filter((story) => !isMerged(story))
+    .filter((story) => (!story.published || story.pending_update || dueFollowupIds.has(story.story_id) || dueDeepeningIds.has(story.story_id)) && !freshIds.has(story.story_id))
+    .filter((story) => {
+      const reason = story.pending_update?.reason || story.pending_reason;
+      const qualityErrors = story.pending_update?.quality_errors || story.quality_errors || [];
+      const retryCount = story.pending_update?.quality_retry_count ?? story.quality_retry_count ?? 0;
+      const retryAfter = story.pending_update?.quality_retry_after || story.quality_retry_after || null;
+      const changedRules = story.ai_retry?.version !== AI_PROCESSING_VERSION
+        && shouldRetryQualityGate(reason, qualityErrors, retryCount);
+      return (eventAuditEnabled && needsEventPolicyReview(story, now)) || changedRules || dueFollowupIds.has(story.story_id) || dueDeepeningIds.has(story.story_id) || retryableReasons.has(reason) || shouldRetryQualityGate(reason, qualityErrors, retryCount, retryAfter, now);
+    })
+    .filter((story) => (story.pending_update?.sources || story.review_checkpoint?.sources || story.sources || []).some((source) => Date.parse(source.published_at || 0) <= nowDate.getTime() + futureToleranceMs))
+    .map((story) => {
+      const sources = (story.pending_update?.sources || story.review_checkpoint?.sources || story.sources).filter((source) => Date.parse(source.published_at || 0) <= nowDate.getTime() + futureToleranceMs);
+      const candidate = {
+        story_id: story.story_id,
+        slug: story.slug,
+        title: story.title,
+        first_seen: story.first_seen,
+        last_updated: story.pending_update?.detected_at || story.last_updated || now,
+        sources,
+        existing_story: story,
+        reassessment: Boolean(story.pending_update?.reassessment || story.reassessment),
+        impact_reassessment: Boolean(story.pending_update?.impact_reassessment),
+        fresh: Boolean(story.pending_update?.fresh || story.fresh),
+        event_id: story.event_id || eventFingerprint(sources[0] || {}).id,
+        event_first_seen_at: story.event_first_seen_at || story.first_seen,
+        event_detected_at: story.event_detected_at || story.first_seen,
+        followup_due: dueFollowupIds.has(story.story_id),
+        deepening_due: dueDeepeningIds.has(story.story_id),
+        evidence_groups: evidenceGroups(sources),
+      };
+      candidate.claims = claimLedgerFor(sources, candidate.story_id, now);
+      candidate.preanalysis = preAnalyzeStory(candidate, now);
+      candidate.topic = candidate.preanalysis.topics;
+      candidate.content_hash = story.pending_update?.content_hash || storyContentHash(candidate);
+      return candidate;
+    });
+  for (const candidate of freshCandidates) bumpCandidateFunnel(sourceFunnel, candidate, "story_candidates");
+  for (const candidate of retryCandidates) bumpCandidateFunnel(sourceFunnel, candidate, "queue_retries");
+  const passesEditorialQualityHold = candidate => {
+    const editorialHold = editorialQualityHoldFor(candidate, editorialQualityStories);
+    if (!editorialHold) return true;
+    (report.editorial_quality_holds ||= []).push({ story_id: candidate.story_id, held_story_id: editorialHold.story_id });
+    (newsroom.decisions ||= []).push({ at: now, story_id: candidate.story_id, decision: 'editorial_quality_hold' });
+    return false;
+  };
+  let clusters = attachRelatedTickerHistory([...freshCandidates, ...retryCandidates], storyStore.stories, titleTokens).filter(candidate => {
+    if (!passesEditorialQualityHold(candidate)) return false;
+    if (quarantined419(candidate)) return false;
+    const held = unresolvedProviderRequest(candidate.existing_story || candidate);
+    if (held == null) return true;
+    report.provider_outcome_holds.push({ story_id: candidate.story_id, run_id: held.run_id || null, reason: UNKNOWN_PROVIDER_OUTCOME });
+    newsroom.decisions.push({ at: now, story_id: candidate.story_id, decision: 'unknown_provider_outcome_hold' });
+    return false; // Before LIFO, local rejection, repartition, paid slots or reuse.
+  });
+  for (const candidate of clusters) {
+    candidate.followup_due = dueFollowupIds.has(candidate.story_id);
+    candidate.deepening_due = dueDeepeningIds.has(candidate.story_id);
+    const matchingSources = anchoredSources(candidate);
+    const matchingEntry = {story:candidate,last_updated:candidate.last_updated,
+      anchored_story:{...candidate,sources:matchingSources},
+      match_anchors:[matchingSources[0], {...matchingSources[0],title:candidate.title}].filter(Boolean)};
+    const alternativeItems = allItems.filter((item) => existingStoryMatch(item, matchingEntry, now) >= 0.64);
+    const mergedSources = mergeSources(candidate.sources, alternativeItems);
+    candidate.sources = reconcileKnownSourceAliases(mergedSources.map(source =>
+      reconcileSourceIdentity(source, registry.sources.find(entry => entry.source_id === source.source_id), registry)));
+    candidate.sources = await publicationDates.recover(candidate.sources);
+    refreshUnpublishedDraftTitle(candidate);
+    candidate.preanalysis = preAnalyzeStory(candidate, now);
+    candidate.topic = candidate.preanalysis.topics;
+    report.source_aliases_reconciled = Number(report.source_aliases_reconciled || 0) + mergedSources.length - candidate.sources.length;
+    candidate.claims = claimLedgerFor(candidate.sources, candidate.story_id, now);
+    candidate.evidence_groups = evidenceGroups(candidate.sources);
+    candidate.content_hash = storyContentHash(candidate);
+    // A newly arrived source must reopen the original questions in this same
+    // request, not only after the new version has already been published.
+    const candidateFollowups = dueFollowups([{ ...candidate.existing_story, sources: candidate.sources }], now);
+    candidate.followup_due = candidateFollowups.length > 0;
+    if (candidate.followup_due) dueFollowupIds.add(candidate.story_id);
+    candidate.currentness = { ...freshnessFor(candidate, now), checked_at: now, compared_current_feed_items: allItems.length, matching_current_feed_items: alternativeItems.length, followups_due: candidateFollowups };
+    candidate.attention_impact_gap = candidate.preanalysis.internal_relevance_score >= 48 && candidate.evidence_groups.possible_independent_origins <= 2
+      ? { status: "possible_gap_in_observed_sources", observed_origins: candidate.evidence_groups.possible_independent_origins, note: "Geringe beobachtete Quellenbreite, keine Aussage über die gesamte Medienaufmerksamkeit." } : null;
+    candidate.source_integrity = sourceIntegrityForStory(candidate, registry, matchableStories, now);
+    const event = newsroom.events[candidate.event_id] || { ...eventFingerprint(candidate.sources[0]), id: candidate.event_id, event_detected_at: candidate.event_detected_at };
+    newsroom.events[candidate.event_id] = updateEventLifecycle({ ...event, story_id: candidate.story_id, canonical_title: candidate.title,
+      first_seen_at: candidate.event_first_seen_at, last_seen_at: now,
+      relevance: candidate.preanalysis, event_score: candidate.preanalysis.event_score, attention_impact_gap: candidate.attention_impact_gap }, candidate.existing_story, candidate.preanalysis.event_score, now);
+    for (const source of candidate.sources) if (source.source_item_id && newsroom.source_items[source.source_item_id]) newsroom.source_items[source.source_item_id].event_id = candidate.event_id;
+  }
+  // Source reconciliation can attach an original source to a new story ID.
+  // Hold it before LIFO, local decisions, provider selection or publication.
+  clusters = clusters.filter(candidate => !quarantined419(candidate) && passesEditorialQualityHold(candidate));
+  report.story_clusters = freshCandidates.length;
+  report.pending_stories_retried = retryCandidates.length;
+  const month = now.slice(0, 7);
+  state.budget_fx = options.budgetFx || await refreshBudgetFx(state.budget_fx, now, options.fetchFxImpl || fetch);
+  const budgetPolicy = newsBudget(state.budget_fx, now, process.env.WOEK_NEWS_MONTHLY_AI_BUDGET_EUR);
+  const budget = Math.min(budgetPolicy.technical_limit_usd, Number(process.env.WOEK_NEWS_MONTHLY_AI_BUDGET_USD || Infinity));
+  report.budget_policy = budgetPolicy;
+  const spendBefore = monthlyUsage(usage, month);
+  const stage = budgetStage(spendBefore, budget);
+  report.budget_stage = stage.stage;
+  report.budget_throttle = { policy_version: "2.0", relevance_threshold: stage.threshold, max_stories_per_run: stage.max_stories_per_run ?? null, mode: stage.stage >= 3 ? "budget_stop" : stage.stage ? "bounded_throughput" : "normal" };
+  report.monthly_spend_before_usd = Number(spendBefore.toFixed(6));
+  report.monthly_budget_usd = budget;
+  // Direktbetrieb (LIFO): unveröffentlichte Kandidaten, deren jüngste Quelle
+  // älter als der Horizont ist, werden ohne Aufruf geschlossen. Veröffentlichte
+  // Akten, Folgetermine, Vertiefungen und beauftragte Neubewertungen bleiben.
+  const lifoHorizonMs = lifoHorizonMilliseconds();
+  const lifoExpired = clusters.filter((candidate) => lifoHorizonMs > 0 && !candidate.existing_story?.published && !candidate.impact_reassessment
+    && !candidate.followup_due && !candidate.deepening_due
+    && nowDate.getTime() - (latestSourceDate(candidate.sources) || Date.parse(candidate.first_seen || candidate.last_updated || now)) > lifoHorizonMs);
+  const lifoExpiredIds = new Set(lifoExpired.map((candidate) => candidate.story_id));
+  // Natalie am 17.09.2026: „Irgendwie kommen keine neuen Nachrichten." Es kamen
+  // welche - aber vier der sechs neuesten waren dieselbe Nachricht, zwei davon
+  // mit identischem Titel derselben Quelle. existingStoryMatch verglich eine
+  // neue Meldung nur mit anderen Meldungen desselben Laufs, nie mit dem
+  // veroeffentlichten Bestand. Vier bezahlte Aufrufe aus einem Kontingent von
+  // drei je Stunde gingen so in eine einzige Nachricht, und die Liste sah
+  // stillstehend aus.
+  //
+  // Die Schwelle ist absichtlich hoch: der identische Fall traf 1,00, die
+  // umformulierten Meldungen anderer Haeuser 0,00. Bei 0,95 fallen genau die
+  // sicheren Dubletten weg und nichts sonst - eine falsche Zusammenfuehrung
+  // waere schlimmer als eine Dublette.
+  const publishedMatchable = (storyStore.stories || []).filter((story) => story.published && story.listed !== false);
+  const duplicateOfPublished = clusters.filter((candidate) => {
+    if (lifoExpiredIds.has(candidate.story_id)) return false;
+    if (candidate.existing_story?.published || candidate.impact_reassessment || candidate.reassessment) return false;
+    if (candidate.followup_due || candidate.deepening_due) return false;
+    const item = { title: candidate.title, summary: candidate.sources?.[0]?.summary || '',
+      url: candidate.sources?.[0]?.url, published_at: new Date(latestSourceDate(candidate.sources) || Date.parse(candidate.first_seen || now)).toISOString() };
+    // Zwei Wege, dieselbe Nachricht zu erkennen: der Wortvergleich faengt die
+    // identische Dublette, der Faktenvergleich die umformulierte aus einem
+    // anderen Haus. Am Bestand gemessen erkennt der Faktenvergleich genau die
+    // vier Sanktions-Meldungen und fuehrt keine zwei verschiedenen Meldungen
+    // zusammen - rollende Lagen sind darin ausdruecklich ausgenommen.
+    return publishedMatchable.some((story) => story.story_id !== candidate.story_id
+      && (existingStoryMatch(item, { story, last_updated: story.last_updated || story.published_at }, now) >= 0.95
+        || sameEventByFacts(item, { title: story.title, summary: story.analysis?.source_summary || '', published_at: story.published_at })));
+  });
+  const duplicateIds = new Set(duplicateOfPublished.map((candidate) => candidate.story_id));
+  report.duplicates_of_published = duplicateOfPublished.length;
+  for (const candidate of duplicateOfPublished) {
+    newsroom.decisions ||= [];
+    newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id, decision: 'duplicate_of_published_story' });
+  }
+  const currentClusters = clusters.filter((candidate) => !lifoExpiredIds.has(candidate.story_id) && !duplicateIds.has(candidate.story_id));
+  report.lifo_expired = lifoExpired.length;
+  report.lifo_horizon_hours = lifoHorizonMs / 3600000;
+  const initiallyEligible = currentClusters
+    .filter((candidate) => candidate.reassessment || candidate.impact_reassessment || candidate.preanalysis.internal_relevance_score >= 30 || candidate.preanalysis.discovery_review?.review === true)
+    .sort((a, b) => queuePriority(b, now) - queuePriority(a, now) || latestSourceDate(b.sources) - latestSourceDate(a.sources));
+  const prioritizedEligible = eventAuditEnabled
+    ? initiallyEligible.map(candidate => ({ ...candidate, selection_base_priority: queuePriority(candidate, now) }))
+    : initiallyEligible;
+  // Preserve the existing non-API order; only paid API selection moves its
+  // coverage balancing after readiness holds and the stage threshold.
+  const eligible = eventAuditEnabled && mode !== 'api'
+    ? balanceEventQueue(prioritizedEligible, categoryCoverage(storyStore.stories, now))
+    : prioritizedEligible;
+  const eligibleIds = new Set(eligible.map(candidate => candidate.story_id));
+  report.locally_rejected = currentClusters.length - eligible.length;
+  report.eligible_stories = eligible.length;
+  for (const candidate of eligible) bumpCandidateFunnel(sourceFunnel, candidate, "eligible_stories");
+  for (const candidate of currentClusters.filter((candidate) => !eligibleIds.has(candidate.story_id))) bumpCandidateFunnel(sourceFunnel, candidate, "local_rejections");
+  newsroom.decisions ||= [];
+  for (const candidate of currentClusters.filter((candidate) => !eligibleIds.has(candidate.story_id))) newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id, decision: "local_relevance_below_threshold", preanalysis: candidate.preanalysis });
+  const byId = new Map((storyStore.stories || []).map((story) => [story.story_id, story]));
+  for (const candidate of lifoExpired) {
+    const base = candidate.existing_story || pendingRecord(candidate, "LIFO_HORIZON_EXCEEDED", now);
+    byId.set(candidate.story_id, expiredRecord(base, now));
+    bumpCandidateFunnel(sourceFunnel, candidate, "local_rejections");
+    newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id, decision: "lifo_horizon_expired", horizon_hours: lifoHorizonMs / 3600000 });
+  }
+  // A local relevance rejection is a completed decision, not an AI-capacity
+  // backlog. Preserve published text and history; changed source arrivals can
+  // still reopen the same story through normal discovery.
+  for (const candidate of currentClusters.filter(candidate => !eligibleIds.has(candidate.story_id))) {
+    const existing = candidate.existing_story;
+    if (!existing) continue;
+    if (existing.published) {
+      const { pending_update: _pendingUpdate, ...preserved } = existing;
+      byId.set(candidate.story_id, { ...preserved, review_checkpoint: { ...reviewCheckpoint(candidate, now, "no_material_update"), reviewed_by: "local_relevance_filter" } });
+    } else {
+      byId.set(candidate.story_id, rejectedRecord(existing, now, ["LOCAL_RELEVANCE_BELOW_THRESHOLD"]));
+    }
+    report.local_queue_completed = Number(report.local_queue_completed || 0) + 1;
+  }
+  // Check size before assigning paid slots. A blocked file must never starve the
+  // next eligible story or be mislabeled as an outage of the AI provider.
+  const ready = eligible.filter(candidate => {
+    if (newsOnlyPriorWorkHold(candidate)) {
+      (report.news_only_prior_work_held ||= []).push({ story_id: candidate.story_id, reason: 'NEWS_ONLY_PRIOR_WORK_HOLD' });
+      return false; // Preserve the existing record and any pending work.
+    }
+    if (retainedOleschkyPaidInput(candidate, storyStore.stories)) {
+      const reason = 'ALREADY_PUBLISHED_SOURCE_EDITION';
+      (report.retained_published_source_inputs ||= []).push({ story_id: candidate.story_id,
+        archived_story_id: 'wt-fff6aabad12c6e77', reason });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id,
+        decision: 'retained_published_source_input', reason });
+      return false;
+    }
+    if (retainedRegensburgPaidInput(candidate, storyStore.stories, now)) {
+      const reason = 'RETAINED_PAID_SOURCE_INPUTS_NOT_NEW_REVIEW';
+      (report.retained_paid_source_inputs ||= []).push({ story_id: candidate.story_id,
+        archived_story_id: 'wt-5dd3a4504b51a73e', reason,
+        archived_story_ids: [...candidate.existing_story.living_file.merged_story_ids],
+        pending_review_retained: Boolean(candidate.existing_story.pending_update) });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id,
+        decision: 'retained_paid_source_inputs', reason });
+      return false;
+    }
+    if (retainedTabaksteuerPaidInput(candidate, storyStore.stories, now)) {
+      const reason = 'RETAINED_PAID_SOURCE_INPUTS_NOT_NEW_REVIEW';
+      (report.retained_paid_source_inputs ||= []).push({ story_id: candidate.story_id,
+        archived_story_id: 'wt-120df3585dc5796e', reason,
+        archived_story_ids: [...candidate.existing_story.living_file.merged_story_ids],
+        pending_review_retained: Boolean(candidate.existing_story?.pending_update) });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id,
+        decision: 'retained_paid_source_inputs', reason });
+      return false;
+    }
+    const retainedArchived = retainedSanctionsPaidInput(candidate, storyStore.stories) ? 'wt-e6f5bced9f7c773a'
+      : retainedHofheimPaidInput(candidate, storyStore.stories) ? 'wt-e083b8d828fa80c8'
+      : retainedMannheimSwrPaidInput(candidate, storyStore.stories) ? 'wt-aab7a43e50d1d749'
+      : retainedMannheimSternPaidInput(candidate, storyStore.stories) ? 'wt-2c796868270ba89b'
+      : retainedObersontheimPaidInput(candidate, storyStore.stories) ? 'wt-9909c1676a2f8602' : null;
+    if (retainedArchived) {
+      (report.retained_published_source_inputs ||= []).push({ story_id: candidate.story_id,
+        archived_story_id: retainedArchived, reason: 'ALREADY_PUBLISHED_SOURCE_EDITION' });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id,
+        decision: 'retained_published_source_input', reason: 'ALREADY_PUBLISHED_SOURCE_EDITION' });
+      return false; // Keep any pending review; never reset or regenerate it.
+    }
+    if (eventAuditEnabled && unchangedRankingBackfill(candidate)) {
+      const { pending_update: _pendingUpdate, ...preserved } = candidate.existing_story;
+      byId.set(candidate.story_id, { ...preserved, review_checkpoint: { ...reviewCheckpoint(candidate, now, 'no_material_update'), reviewed_by: 'unchanged_published_evidence' } });
+      report.local_queue_completed = Number(report.local_queue_completed || 0) + 1;
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id, decision: 'unchanged_published_evidence', reason: 'ranking_change_is_not_new_evidence' });
+      return false;
+    }
+    // Direktbetrieb: ein bezahlter Versuch je unverändertem Eingabestand. Erst
+    // belegte neue Evidenz, nicht ein anderer Quellenzeitstempel, darf zahlen.
+    const receiptStatus = paidAttemptReceiptStatus(candidate);
+    if (['same_paid_input', 'unverified_legacy_paid_input'].includes(receiptStatus)) {
+      bumpCandidateFunnel(sourceFunnel, candidate, "editorial_rejections");
+      byId.set(candidate.story_id, pendingRecord(candidate, "AI_ATTEMPT_LIMIT_REACHED", now, candidate.existing_story?.pending_update?.quality_errors || candidate.existing_story?.quality_errors || []));
+      if (receiptStatus === 'unverified_legacy_paid_input') report.paid_inputs_held_unverified = Number(report.paid_inputs_held_unverified || 0) + 1;
+      report.quality_holds.push({ story_id: candidate.story_id, reason: "AI_ATTEMPT_LIMIT_REACHED", receipt_status: receiptStatus });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id, decision: "paid_attempt_limit_hold", receipt_status: receiptStatus });
+      return false;
+    }
+    // One durable retry clock for fresh feed arrivals, deepening and followups.
+    // New evidence or changed processing rules may retry immediately.
+    if (retryCoolingDown(candidate, now) && !(eventAuditEnabled && needsEventPolicyReview(candidate.existing_story || {}, now))) {
+      report.ai_retries_cooling_down = Number(report.ai_retries_cooling_down || 0) + 1;
+      return false;
+    }
+    if (candidate.source_integrity?.status !== "verified") {
+      bumpCandidateFunnel(sourceFunnel, candidate, "source_integrity_holds");
+      byId.set(candidate.story_id, pendingRecord(candidate, "SOURCE_INTEGRITY_OPEN", now, candidate.source_integrity?.issues?.map((issue) => issue.code) || ["SOURCE_INTEGRITY_OPEN"]));
+      report.source_integrity_holds.push({ story_id: candidate.story_id, issues: candidate.source_integrity?.issues || [] });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id, decision: "source_integrity_hold", issues: candidate.source_integrity?.issues || [] });
+      return false;
+    }
+    if (unchangedPublishedFollowup(candidate)) {
+      byId.set(candidate.story_id, waitForFollowupEvidence(candidate, now));
+      report.reviews_reused += 1;
+      (report.followups_waiting_for_new_evidence ||= []).push({ story_id: candidate.story_id,
+        last_paid_version: candidate.existing_story.current_version, reason: 'NO_NEW_SOURCE_EVIDENCE' });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, decision: 'followup_waiting_for_new_source_evidence' });
+      return false;
+    }
+    if (canReuseReview(candidate, now)) {
+      report.reviews_reused += 1;
+      if (candidate.existing_story.review_checkpoint.outcome === "input_too_large") report.input_holds.push({ story_id: candidate.story_id, reason: "AI_INPUT_TOO_LARGE", reused: true });
+      else {
+        const { pending_update: _pendingUpdate, ...preserved } = candidate.existing_story;
+        byId.set(candidate.story_id, preserved);
+      }
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, decision: "unchanged_review_reused", checked_at: candidate.existing_story.review_checkpoint.checked_at });
+      return false;
+    }
+    try { buildAnalysisPrompt([candidate], { transport: mode === 'dropbox_chatgpt_bridge' ? mode : 'api' }); return true; }
+    catch (error) {
+      if (error.message !== "AI_INPUT_TOO_LARGE") throw error;
+      byId.set(candidate.story_id, { ...pendingRecord(candidate, "AI_INPUT_TOO_LARGE", now, [error.message]), review_checkpoint: reviewCheckpoint(candidate, now, "input_too_large") });
+      report.input_holds.push({ story_id: candidate.story_id, reason: error.message, input_chars: error.inputChars, input_budget: error.inputBudget });
+      newsroom.decisions.push({ at: now, story_id: candidate.story_id, decision: "input_size_hold", reason: error.message });
+      return false;
+    }
+  });
+  const configuredMaxAiStories = Math.max(0, Number(process.env.WOEK_NEWS_MAX_AI_STORIES_PER_RUN || 2));
+  // Die Stundengrenze gilt fuer Meldungen. Der alte Name bleibt als Rueckfall,
+  // damit eine gesetzte Variable weiter wirkt.
+  const configuredStoriesPerHour = configuredHourlyQuota(process.env, now);
+  // Die Freigabe gilt für den Kalendermonat, also verteilt sich ihr Rest auf die
+  // restlichen Stunden. Damit reicht sie bis zum Monatsende, ohne dass jemand
+  // eine Zahl nachstellt (Natalie am 16.09.: „Bis Monatsende sollten wir mit
+  // EUR 100 hinkommen"). Abschaltbar, dann gilt wieder die feste Obergrenze.
+  const pacing = process.env.WOEK_NEWS_BUDGET_PACING === 'false'
+    ? { calls_per_hour: configuredStoriesPerHour, usd_per_hour: null, spent_last_hour: null, remaining_usd: null, paused: false, enabled: false }
+    : { ...budgetPacing({ budget, spent: spendBefore, spentLastHour: aiSpendInWindow(usage, now), now, configured: configuredStoriesPerHour }), enabled: true };
+  const aiStoriesInLastHour = aiStoriesInWindow(usage, now);
+  const aiCallsInLastHour = aiRequestsInWindow(usage, now);
+  // Getrennte Kontingente seit Natalies Entscheidung vom 25.09.: Entwürfe
+  // verdrängen keine Nachrichten; eine volle Nachrichtenstunde sperrt keine
+  // Nachbesprechung. Es entfallen zugleich zwei Remote-Abfragen je Lauf.
+  const hourlyRoom = independentHourlyRoom({ configured: configuredStoriesPerHour, used: aiStoriesInLastHour });
+  const maxAiCallsPerHour = pacing.paused ? 0 : hourlyRoom;
+  const remainingAiCallsThisHour = maxAiCallsPerHour;
+  const maxAiStories = paidRecoveryHold ? 0 : Math.min(configuredMaxAiStories, maxAiCallsPerHour);
+  report.ai_hourly_limit = maxAiCallsPerHour;
+  report.ai_hourly_limit_configured = configuredStoriesPerHour;
+  report.ai_stories_in_last_hour = aiStoriesInLastHour;
+  report.hourly_quota_scope = 'news_only';
+  report.editorial_slot_reserve = 0;
+  report.shared_hourly_room = hourlyRoom;
+  report.ai_budget_pacing = { ...pacing, calls_this_month: monthlyAiCalls(usage, month) };
+  report.ai_calls_in_last_hour = aiCallsInLastHour;
+  report.ai_calls_available_this_run = paidRecoveryHold ? 0 : remainingAiCallsThisHour;
+  const catchUp = catchUpQueueStage(stage, ready, usage, now, budget, spendBefore);
+  report.catchup_control = catchUp.control;
+  if (catchUp.control.enabled) report.budget_throttle = { ...report.budget_throttle,
+    policy_version: "2.1", max_stories_per_run: 6, mode: "bounded_backlog_catchup" };
+  let { selected, deferred } = mode === 'api' ? partitionAiQueue(ready, catchUp.stage, maxAiStories, now,
+    eventAuditEnabled ? categoryCoverage(storyStore.stories, now) : null) : { selected: [], deferred: [] };
+  // Natalies Meldungsauftraege gehen vor (meldungsauftraege-lauf.mjs). Sie
+  // landen nie im oeffentlichen Bestand, sondern in ihrer Freigabeliste.
+  const meldungsauftraege = mode === 'api' ? ladeAuftraege(options.orderFile ?? process.env.WOEK_NEWS_ORDER_FILE) : [];
+  ({ selected, deferred } = auftraegeVorziehen(selected, deferred, meldungsauftraege));
+  if (paidRecoveryHold) {
+    deferred = [...selected, ...deferred];
+    selected = [];
+  }
+  const vorAuftraegen = new Map(meldungsauftraege.filter((auftrag) => byId.has(auftrag.story_id)).map((auftrag) => [auftrag.story_id, byId.get(auftrag.story_id)]));
+  const entscheidungenVorAuftraegen = newsroom.decisions?.length ?? 0;
+  const bridgeImages = new Map();
+  if (mode !== 'api') {
+    for (const candidate of ready) byId.set(candidate.story_id, pendingRecord(candidate, mode === 'disabled' ? 'AI_DISABLED' : 'BRIDGE_PENDING', now));
+    options.captureBridgeCandidates?.(structuredClone(ready));
+    if (bridge && !options.dryRun) {
+      if (bridgePhase !== 'import') {
+        if (report.all_sources_failed) throw new Error('BRIDGE_DISCOVERY_SOURCE_FAILURE');
+        report.bridge_enqueued = await bridge.enqueue([], [...byId.values()], now);
+        for (const candidate of await bridge.selectCandidates(ready, now)) {
+          const permitted = new Set(articleSourceOrder(candidate).filter(s => {
+            const registered = enabledSources.find(r => r.source_id === s.source_id);
+            return registered && sourceAccess(registered, 'article').allowed;
+          }).slice(0, 3).map(s => s.url));
+          const sources = [];
+          for (const source of candidate.sources) {
+            if (!permitted.has(source.url)) { sources.push(source); continue; }
+            try {
+              const result = await (options.fetchArticleImpl || fetchArticleExcerpt)(source, enabledSources.find(r => r.source_id === source.source_id), registry.policy);
+              sources.push({ ...source, article_excerpt: result.excerpt, retrieved_at: now }); report.article_excerpts_fetched++;
+            } catch { sources.push(source); report.article_excerpt_failures++; }
+          }
+          const preparedCandidate = { ...candidate, sources };
+          const preparation = newsInputReadiness(buildAnalysisPrompt([preparedCandidate], {transport:'dropbox_chatgpt_bridge'}));
+          if (preparation.status !== 'READY_FOR_DRAFT') {
+            (report.news_preparation_holds ||= []).push({story_id:candidate.story_id,...preparation});
+            byId.set(candidate.story_id, pendingRecord(preparedCandidate, 'NEWS_INPUT_NEEDS_PREPARATION', now, preparation.issues.map(issue=>issue.code)));
+            newsroom.decisions.push({at:now,story_id:candidate.story_id,decision:'needs_source_preparation',issues:preparation.issues});
+            continue;
+          }
+          // The prepared packet becomes available immediately. A later slow
+          // source or interrupted worker must not hold back an earlier job.
+          const queued = await bridge.enqueue([preparedCandidate], [...byId.values()], now);
+          report.bridge_enqueued.push(...queued);
+          await discoveryCheckpoint('job_enqueued', { jobs: report.bridge_enqueued.length, story_id: candidate.story_id });
+        }
+        if (bridge.editorialEnabled && fs.existsSync(path.join(ROOT, 'data/news/editorial-analyses.json'))) report.bridge_editorial_enqueued = await (await import('./bridge/editorial.mjs')).discoverEditorialJobs(bridge, ROOT, now);
+      }
+      if (bridgePhase !== 'discovery') {
+        // Only regular discovery candidates get a pending canonical record;
+        // manually submitted news stays in the separate private approval store.
+        restorePendingBridgeRecords(byId, await bridge.store.all(), now);
+        const results = await bridge.reconcile(registry, [...byId.values()], now);
+        report.bridge_results = results.map(r => ({ job_id: r.job_id, decision: r.decision, staged: r.staged, visual_status: r.visual?.status || null }));
+        for (const result of results) {
+          if (result.staged) continue;
+          if (!result.record) {
+            const held = byId.get(result.story_id);
+            if (held && (held.pending_update?.content_hash || held.content_hash) === result.input_content_hash) {
+              held.bridge_decision = { job_id: result.job_id, decision: result.decision, at: now, content_hash: result.input_content_hash };
+              if (held.pending_update) held.pending_update.reason = `BRIDGE_${result.decision.toUpperCase()}`;
+              else held.pending_reason = `BRIDGE_${result.decision.toUpperCase()}`;
+            }
+            continue;
+          }
+          const previous = byId.get(result.record.story_id);
+          if (previous?.bridge_import?.output_hash === result.output_hash) continue;
+          byId.set(result.record.story_id, result.record); changedStoryIds.add(result.record.story_id);
+          report[previous?.published ? 'updated_stories' : 'published_stories']++;
+          if (['validated', 'brief_validated', 'fallback'].includes(result.visual?.status)) bridgeImages.set(result.record.story_id, result.visual);
+          if (result.mergeFrom && result.mergeFrom !== result.record.story_id) {
+            const changes = mergeLivingFiles([...byId.values()], [{ canonical_id: result.record.story_id, duplicate_ids: [result.mergeFrom], reason: 'BRIDGE_REVIEWED_SAME_EVENT' }], now);
+            if (!changes.length) throw new Error('BRIDGE_MERGE_GATE_FAILED');
+            report.retired_stories += changes.length;
+          }
+        }
+      }
+      report.bridge_monitor = await bridge.monitor(now);
+      if (bridgePhase === 'discovery') {
+        report.completed_at = new Date().toISOString();
+        await discoveryCheckpoint('completed', { jobs: report.bridge_enqueued?.length || 0 });
+        await bridge.store.observe('discovery-report', { started_at: now, completed_at: report.completed_at,
+          trigger_type: report.trigger_type, triggered_by: report.triggered_by, run_id: report.run_id,
+          source_successes: report.source_successes, source_failures: report.source_failures, jobs: report.bridge_enqueued });
+        // No canonical story/state files, media releases, build or publication.
+        return report;
+      }
+    }
+  }
+  for (const candidate of selected) bumpCandidateFunnel(sourceFunnel, candidate, "ai_selected");
+  for (const candidate of selected) newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id,
+    decision: 'selected_for_verification', score: candidate.preanalysis.event_score, reason: 'event_priority_with_soft_coverage_balance_within_existing_budget' });
+  const aiBatchSize = Math.max(1, Math.min(maxAiStories || 1, Number(process.env.WOEK_NEWS_AI_BATCH_SIZE || 2)));
+  report.ai_stories = selected.length;
+  report.ai_batch_size = aiBatchSize;
+  report.ai_batches_planned = Math.ceil(selected.length / aiBatchSize);
+
+  for (const candidate of deferred) {
+    const deferredReason = paidRecoveryHold ? 'PAID_RECOVERY_PENDING' : aiDeferralReason(candidate, stage, remainingAiCallsThisHour);
+    if (deferredReason === "AI_BUDGET_BLOCKED") report.budget_deferred = Number(report.budget_deferred || 0) + 1;
+    if (deferredReason !== "EDITORIAL_RELEVANCE_BELOW_THRESHOLD") bumpCandidateFunnel(sourceFunnel, candidate, "capacity_deferred");
+    byId.set(candidate.story_id, pendingRecord(candidate, deferredReason, now));
+    report.quality_holds.push({ story_id: candidate.story_id, reason: deferredReason });
+  }
+
+  const aiEnabled = mode === 'api' && (!options.dryRun || typeof options.callAiImpl === 'function')
+    && String(process.env.WOEK_NEWS_AI_ENABLED ?? "true").toLowerCase() !== "false";
+  importCheckpoint('verification_selected', {selected:selected.length, ai_enabled:aiEnabled});
+  if (selected.length && aiEnabled) {
+    assertAutomaticImpactTransport(typeof options.callAiImpl === 'function');
+    // Direktbetrieb: bis zu vier Aufrufe je Lauf mit je bis zu sechs Minuten.
+    const aiDeadline = Date.now() + Number(process.env.WOEK_NEWS_AI_PHASE_MINUTES || 20) * 60000;
+    const sourceRegistryById = new Map(enabledSources.map((source) => [source.source_id, source]));
+    for (let offset = 0; offset < selected.length; offset += aiBatchSize) {
+      const batch = selected.slice(offset, offset + aiBatchSize);
+      if (Date.now() >= aiDeadline) {
+        for (const candidate of selected.slice(offset)) {
+          byId.set(candidate.story_id, pendingRecord(candidate, "AI_RUN_TIME_LIMIT", now));
+          report.quality_holds.push({ story_id: candidate.story_id, reason: "AI_RUN_TIME_LIMIT" });
+        }
+        break;
+      }
+      const requestBudget = catchUp.control.enabled ? budget * 0.95 : budget;
+      if (spendBefore + report.estimated_cost_usd + NEWS_REQUEST_RESERVATION_USD > requestBudget) {
+        for (const candidate of selected.slice(offset)) {
+          byId.set(candidate.story_id, pendingRecord(candidate, "AI_BUDGET_BLOCKED", now));
+          report.quality_holds.push({ story_id: candidate.story_id, reason: "AI_BUDGET_BLOCKED" });
+        }
+        break;
+      }
+      let aiCostRecorded = false;
+      let aiRequestStarted = false;
+      try {
+        if (offset > 0) await (options.aiBatchDelayImpl || ((milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds))))(
+          Number(process.env.WOEK_NEWS_AI_BATCH_DELAY_MS || 2500),
+        );
+        const analysisBatch = await Promise.all(batch.map(async (candidate) => {
+          candidate.verification_started_at = options.now ? now : new Date().toISOString();
+          const articleUrls = new Set(articleSourceOrder(candidate).filter(source => {
+            const registrySource = sourceRegistryById.get(source.source_id);
+            return registrySource && sourceAccess(registrySource, "article").allowed;
+          }).slice(0, 3).map(source => source.url));
+          const sources = await Promise.all(candidate.sources.map(async (source) => {
+            const registrySource = sourceRegistryById.get(source.source_id);
+            if (!articleUrls.has(source.url)) return source;
+            try {
+              const result = await (options.fetchArticleImpl || fetchArticleExcerpt)(source, registrySource, registry.policy);
+              report.article_excerpts_fetched += 1;
+              return { ...source, article_excerpt: result.excerpt };
+            } catch (_error) {
+              report.article_excerpt_failures += 1;
+              return source;
+            }
+          }));
+          const currentness = { ...candidate.currentness, ...freshnessFor(candidate, now) };
+          const enriched = { ...candidate, sources, currentness };
+          enriched.media_trigger = detectMediaImpactTrigger(enriched);
+          return enriched;
+        }));
+        aiRequestStarted = true;
+        const aiResult = await (options.callAiImpl || callWoekAi)(analysisBatch, {
+          // Eine abgeschlossene bezahlte Antwort bleibt unverändert archiviert.
+          // Befunde gehen ins lokale Gate, nicht in eine zweite bezahlte
+          // Generierung. Budget, Kontingent und Modell bleiben unverändert.
+          repair: false,
+          // Der historische Diagnosehook kennt neben dem Bewertungsobjekt die
+          // Lesertextregeln; repair:false sperrt seine bezahlte Nachlieferung.
+          // Die Belege der Antwort sind Verweise (evidence_id) auf die
+          // Textstellen, die der Auftrag mitgeliefert hat. Aufgelöst werden sie
+          // erst nach dem Aufruf - die Prüffunktion der Nachlieferung lief also
+          // gegen unaufgelöste Verweise und meldete für JEDE Meldung mit
+          // Aussagen CLAIM_EVIDENCE_NOT_IN_SOURCE. Ergebnis: eine bezahlte
+          // Nachlieferung je Meldung, ohne echten Befund (16.09., Quote 100 %).
+          // Jetzt wird zuerst aufgelöst; die spätere Auflösung bleibt folgenlos,
+          // weil ein vollständiger Beleg unangetastet bleibt.
+          findIssues: (analysis, story) => {
+            resolveEvidenceReferences(analysis, story, storyEvidenceIds(story), {});
+            return validateAnalysis(analysis, story, { requireDirectionAssessment: true, requireImpactAssessment: true });
+          },
+          apiUrl: process.env.WOEK_NEWS_API_URL,
+          authToken: process.env.WOEK_NEWS_ANALYSIS_TOKEN,
+          timeoutMs: Number(process.env.WOEK_NEWS_AI_TIMEOUT_MS || 120000),
+          attempts: Number(process.env.WOEK_NEWS_AI_ATTEMPTS_PER_STORY || 1),
+        });
+        report.ai_provider_successes += 1;
+        report.provider ||= aiResult.provider;
+        report.model ||= aiResult.model;
+        // Natalies Regel vom 16.09.2026: genau ein Aufruf je Meldung bis zur
+        // Veroeffentlichung. Messbar ist das nur, wenn die drei Gruende fuer
+        // einen zusaetzlichen Aufruf getrennt gebucht werden: Anfrageversuch
+        // (Netz, unvollstaendige Antwort), Nachbesserung (Vertragsverstoss des
+        // Modells) und gescheiterter Aufruf. Bisher stand nur die Summe in der
+        // Nutzungsakte - 263 Aufrufe auf 171 Meldungen, ohne erkennbare Ursache.
+        report.ai_request_attempts = Number(report.ai_request_attempts || 0) + Number(aiResult.request_attempts || 1);
+        report.ai_calls += Number(aiResult.request_attempts || 1) + Number(aiResult.repair_calls || 0);
+        // Ob der Anbieter das Antwortschema angenommen hat, ist der Unterschied
+        // zwischen „kann nichts fehlen" und „hoffentlich fehlt nichts". Ohne
+        // diese Zahl im Bericht wäre das nicht prüfbar.
+        report.ai_schema_calls = Number(report.ai_schema_calls || 0) + Number(Boolean(aiResult.analysis_schema));
+        report.ai_repair_calls = Number(report.ai_repair_calls || 0) + Number(aiResult.repair_calls || 0);
+        // Eine abgelehnte Schema-Anfrage faellt auf das schemafreie Format
+        // zurueck. Das Modell darf dort Pflichtfelder weglassen, also kostet der
+        // Rueckfall vorhersehbar eine Nachbesserung. Der Grund gehoert in den
+        // Bericht, sonst bleibt es bei "irgendwie teurer".
+        for (const rejection of aiResult.schema_rejections || []) {
+          report.ai_schema_rejections ||= {};
+          const key = `${rejection.code}: ${rejection.message}`.slice(0, 200);
+          report.ai_schema_rejections[key] = Number(report.ai_schema_rejections[key] || 0) + 1;
+        }
+        for (const finding of aiResult.repair_findings || []) {
+          report.ai_repair_findings ||= {};
+          report.ai_repair_findings[finding] = Number(report.ai_repair_findings[finding] || 0) + 1;
+        }
+        report.prompt_chars_sent += Number(aiResult.prompt_chars || 0);
+        report.optional_visuals_deferred = Number(report.optional_visuals_deferred || 0) + Number(Boolean(aiResult.optional_visuals_deferred));
+        report.ai_batches_completed += 1;
+        const estimated = costFromUsage(aiResult, estimateUsage(aiResult.prompt_chars, aiResult.answer_chars, aiResult.model, modelRates(aiResult.model)));
+        report.input_tokens += estimated.input_tokens;
+        report.output_tokens += estimated.output_tokens;
+        report.estimated_cost_usd = Number((report.estimated_cost_usd + estimated.estimated_cost_usd).toFixed(6));
+        report.token_source = estimated.token_source;
+        aiCostRecorded = true;
+        for (const candidate of batch) {
+          bumpCandidateFunnel(sourceFunnel, candidate, "items_full_analyzed");
+          const sourceCount = Math.max(1, new Set((candidate.sources || []).map((source) => source.source_id).filter(Boolean)).size);
+          const share = 1 / Math.max(1, batch.length) / sourceCount;
+          bumpCandidateFunnel(sourceFunnel, candidate, "ai_input_tokens", estimated.input_tokens * share);
+          bumpCandidateFunnel(sourceFunnel, candidate, "ai_output_tokens", estimated.output_tokens * share);
+          bumpCandidateFunnel(sourceFunnel, candidate, "estimated_ai_cost", estimated.estimated_cost_usd * share);
+        }
+        const analyses = new Map(aiResult.analyses.map((analysis) => [analysis.story_id, analysis]));
+        for (const candidate of batch) {
+          const analysis = analyses.get(candidate.story_id);
+          const mediaInputBeforeSanitizing = mediaInputDiagnostics(analysis?.media_impact);
+          const mediaExplanationBeforeSanitizing = analysis?.media_impact?.public_explanation || analysis?.media_impact?.editorial_assessment || '';
+          if (analysis) normalizeEditorialDecision(analysis);
+          if (analysis) normalizeAnalysisParagraphs(analysis);
+          const analysisCandidate = analysisBatch.find((item) => item.story_id === candidate.story_id) || candidate;
+          if (analysis) sanitizeAnalysisVisuals(analysis, analysisCandidate, report);
+          if (analysis) {
+            sanitizeAnalysisMediaImpact(analysis, analysisCandidate, report, now);
+            if (analysis.media_trigger?.relevant) report.media_checks_triggered += 1;
+            else report.media_checks_skipped += 1;
+            const mediaUsage = estimateMediaUsage(analysis.media_impact, modelRates(aiResult.model));
+            report.media_check_tokens += mediaUsage.input_tokens + mediaUsage.output_tokens;
+            report.media_check_cost_usd = Number((report.media_check_cost_usd + mediaUsage.estimated_cost_usd).toFixed(6));
+          } else if (analysisCandidate.media_trigger?.relevant) report.media_checks_triggered += 1;
+          else report.media_checks_skipped += 1;
+          const directionInputBeforeNormalization = directionInputDiagnostics(analysis, analysisCandidate.sources || []);
+          const directionTransport = { empty_paths_normalized: normalizeEmptyDirectionPaths(analysis) };
+          if (analysis) resolveEvidenceReferences(analysis, analysisCandidate, aiResult.supplied_evidence_ids?.[candidate.story_id] || [], directionTransport);
+          if (directionTransport.empty_paths_normalized.length || directionTransport.supplied_evidence_refs || directionTransport.unknown_refs) {
+            report.direction_transport ||= [];
+            report.direction_transport.push({ story_id: candidate.story_id, ...directionTransport });
+          }
+          if (analysis) normalizeEvidenceExcerpts(analysis, analysisCandidate);
+          const errors = analysis ? validateAnalysis(analysis, analysisCandidate, { requireDirectionAssessment: true, requireImpactAssessment: true }) : ["AI_ANALYSIS_MISSING"];
+          // Check the durable representation before accepting a publication.
+          // A single transition defect must not invalidate the whole run later.
+          let nextPublished;
+          if (!errors.length) {
+            nextPublished = publishedRecord(analysisCandidate, analysis, aiResult, options.now ? now : new Date().toISOString());
+            errors.push(...validateAnalysis({ source_summary: nextPublished.source_summary, ...nextPublished.analysis }, nextPublished, { validateSourceSummaryNumbers: false, persisted: true }));
+            // Direktbetrieb: das deterministische Gate ersetzt die Zweitprüfung.
+            // Ohne vollständiges, modelliertes Profil wird nichts veröffentlicht.
+            if (!errors.length) {
+              const release = releaseDeterministicImpact(nextPublished, { now: options.now ? now : new Date().toISOString(), existing: candidate.existing_story });
+              if (!release.released) errors.push(...release.issues);
+            }
+            if (!errors.length) {
+              const integrity = publicationIntegrityIssues(nextPublished, registry, matchableStories, options.now ? now : new Date().toISOString());
+              nextPublished.source_integrity = integrity.record;
+              if (integrity.errors.length) {
+                errors.push(...integrity.errors);
+                report.source_integrity_holds.push({ story_id: candidate.story_id, stage: 'publication', issues: integrity.issues });
+              }
+            }
+          }
+          newsroom.decisions.push({ at: now, story_id: candidate.story_id, event_id: candidate.event_id, decision: errors.length ? "held_or_rejected" : "publish", publication_recommendation: typeof analysis?.publication_recommendation === "boolean" ? analysis.publication_recommendation : null, rejection_code: analysis?.rejection?.code || null, errors, diagnostics: errors.length ? analysisValidationDiagnostics(analysis, mediaExplanationBeforeSanitizing, candidate, mediaInputBeforeSanitizing, directionInputBeforeNormalization) : null, rationale: analysis?.rejection?.reason || analysis?.publication_gate?.rationale || null });
+          if (errors.length) {
+            const noUpdate = errors.includes("AI_DUPLICATE_WITHOUT_UPDATE")
+              && errors.every(error => ["AI_PUBLICATION_NOT_RECOMMENDED", "AI_DUPLICATE_WITHOUT_UPDATE"].includes(error));
+            if (candidate.existing_story?.published && (!candidate.reassessment || noUpdate) && errors.every((error) => EDITORIAL_REJECTION_ERRORS.has(error))) {
+              bumpCandidateFunnel(sourceFunnel, candidate, "editorial_rejections");
+              const { pending_update: _pendingUpdate, ...preserved } = candidate.existing_story;
+              // Cache only a well-formed editorial no-update decision, never a
+              // technical failure or an insufficient-evidence retry.
+              if (["no_new_information", "not_material", "superseded"].includes(analysis?.rejection?.code)) preserved.review_checkpoint = reviewCheckpoint(candidate, now, "no_material_update");
+              if (candidate.deepening_due) {
+                preserved.deepening_checks = Number(preserved.deepening_checks || 0) + 1;
+                // No repeated paid rewording of unchanged evidence. Three scheduled
+                // attempts, then new source arrivals can reactivate the same case.
+                preserved.deepening_due_at = preserved.deepening_checks < 3 ? nextDeepeningCheckpoint(now) : null;
+              }
+              byId.set(candidate.story_id, { ...preserved, followups: (preserved.followups || []).map((followup) => dueFollowupIds.has(candidate.story_id) ? { ...followup, last_checked_at: now, last_check_result: "no_verified_material_update", follow_up_date: new Date(Date.parse(now) + 7 * 86400000).toISOString() } : followup) });
+              report.quality_holds.push({ story_id: candidate.story_id, reason: "NO_VERIFIED_MATERIAL_UPDATE", errors });
+              continue;
+            }
+            if (shouldRetireAfterReassessment(candidate, errors)) {
+              bumpCandidateFunnel(sourceFunnel, candidate, "editorial_rejections");
+              byId.set(candidate.story_id, retiredRecord(candidate, now, errors));
+              report.retired_stories += 1;
+              report.quality_holds.push({ story_id: candidate.story_id, reason: "FILTER_REASSESSMENT_NOT_MATERIAL", errors });
+              continue;
+            }
+            byId.set(candidate.story_id, pendingRecord(candidate, "QUALITY_GATE_FAILED", now, errors));
+            if (shouldRetryQualityGate("QUALITY_GATE_FAILED", errors, Number(candidate.existing_story?.pending_update?.quality_retry_count ?? candidate.existing_story?.quality_retry_count ?? 0))) bumpCandidateFunnel(sourceFunnel, candidate, "technical_retries");
+            else bumpCandidateFunnel(sourceFunnel, candidate, "editorial_rejections");
+            report.quality_holds.push({ story_id: candidate.story_id, reason: "QUALITY_GATE_FAILED", errors });
+            continue;
+          }
+          const wasPublished = Boolean(candidate.existing_story?.published);
+          const wasListed = candidate.existing_story?.listed !== false;
+          byId.set(candidate.story_id, nextPublished);
+          changedStoryIds.add(candidate.story_id);
+          report.published_stories += wasPublished ? 0 : 1;
+          report.updated_stories += wasPublished ? 1 : 0;
+          bumpCandidateFunnel(sourceFunnel, candidate, wasPublished ? "updated_stories" : "published_stories");
+          report.reactivated_stories += wasPublished && !wasListed ? 1 : 0;
+        }
+      } catch (error) {
+        if (!aiCostRecorded) {
+          const cost = failedRequestCost(aiRequestStarted ? error : { requestAttempts: 0 });
+          report.ai_failed_calls = Number(report.ai_failed_calls || 0) + (aiRequestStarted ? Number(error?.requestAttempts ?? 1) : 0);
+          report.ai_calls += aiRequestStarted ? Number(error?.requestAttempts ?? 1) : 0;
+          report.prompt_chars_sent += Number(error?.promptChars || 0);
+          report.input_tokens += cost.input_tokens;
+          report.output_tokens += cost.output_tokens;
+          report.estimated_cost_usd = Number((report.estimated_cost_usd + cost.estimated_cost_usd).toFixed(6));
+          if (cost.token_source !== 'provider_not_called') report.token_source = cost.token_source === 'provider_reported_usage' ? 'includes_reported_output_failure_usage' : 'includes_conservative_failed_request_reservations';
+          if (error.billingEvidence) report.model ||= error.billingEvidence.model;
+          if (OUTPUT_FORMAT_ERRORS.has(sanitizeError(error))) report.ai_output_failure_cost_usd = Number((report.ai_output_failure_cost_usd + cost.estimated_cost_usd).toFixed(6));
+          for (const candidate of batch) {
+            const sourceCount = Math.max(1, new Set((candidate.sources || []).map(source => source.source_id).filter(Boolean)).size);
+            const share = 1 / Math.max(1, batch.length) / sourceCount;
+            bumpCandidateFunnel(sourceFunnel, candidate, 'ai_input_tokens', cost.input_tokens * share);
+            bumpCandidateFunnel(sourceFunnel, candidate, 'ai_output_tokens', cost.output_tokens * share);
+            bumpCandidateFunnel(sourceFunnel, candidate, 'estimated_ai_cost', cost.estimated_cost_usd * share);
+          }
+        }
+        const reason = sanitizeError(error);
+        if (reason === 'NEWS_INPUT_NEEDS_PREPARATION' && error?.requestAttempts === 0 && error?.providerNotCalled === true) {
+          const preparations = error.newsPreparation?.stories || [];
+          const unbound = !preparations.length || preparations.some(preparation => !preparation.story_id);
+          for (const candidate of batch) {
+            const preparation = preparations.find(item => item.story_id === candidate.story_id);
+            if (unbound || !preparation || preparation.status !== 'READY_FOR_DRAFT') {
+              const issues = preparation?.issues?.length ? preparation.issues : [{ code: 'NEWS_INPUT_PACKET_INVALID' }];
+              (report.news_preparation_holds ||= []).push({ ...preparation, story_id: candidate.story_id, issues });
+              byId.set(candidate.story_id, pendingRecord(candidate, reason, now, issues.map(issue => issue.code)));
+              newsroom.decisions.push({ at: now, story_id: candidate.story_id, decision: 'needs_source_preparation', issues });
+            } else {
+              // One incomplete event refuses the whole provider request. A
+              // complete neighbour remains normally retryable, not rejected.
+              byId.set(candidate.story_id, pendingRecord(candidate, 'AI_BUDGET_OR_BATCH_LIMIT', now));
+              report.quality_holds.push({ story_id: candidate.story_id, reason: 'AI_BUDGET_OR_BATCH_LIMIT' });
+              bumpCandidateFunnel(sourceFunnel, candidate, 'capacity_deferred');
+            }
+          }
+          continue;
+        }
+        if (reason === "AI_INPUT_TOO_LARGE" && error?.requestAttempts === 0) {
+          for (const candidate of batch) {
+            bumpCandidateFunnel(sourceFunnel, candidate, "technical_retries");
+            byId.set(candidate.story_id, { ...pendingRecord(candidate, "AI_INPUT_TOO_LARGE", now, [reason]), review_checkpoint: reviewCheckpoint(candidate, now, "input_too_large") });
+            report.input_holds.push({ story_id: candidate.story_id, reason, input_chars: error.inputChars, input_budget: error.inputBudget });
+          }
+          continue;
+        }
+        if (OUTPUT_FORMAT_ERRORS.has(reason)) {
+          report.ai_output_invalid += batch.length;
+          // An unusable response may still represent a paid provider operation.
+          // Keep its input bound until the original outcome is reconciled.
+          const paidOutcome = aiRequestStarted && error?.requestAttempts !== 0 && error?.providerNotCalled !== true;
+          for (const candidate of batch) {
+            const pending = pendingRecord(candidate, paidOutcome ? UNKNOWN_PROVIDER_OUTCOME : "AI_OUTPUT_INVALID", now, [reason]);
+            byId.set(candidate.story_id, paidOutcome ? holdProviderRequest(pending, {
+              status: 'unknown', at: now, run_id: report.run_id, error_code: reason,
+              request_attempts: Number(error.requestAttempts ?? 1), raw_response: 'not_confirmed',
+              recorded_pending_hash: candidate.content_hash || null,
+            }) : pending);
+            if (paidOutcome) report.provider_outcome_holds.push({ story_id: candidate.story_id, run_id: report.run_id, reason: UNKNOWN_PROVIDER_OUTCOME });
+            else bumpCandidateFunnel(sourceFunnel, candidate, "technical_retries");
+            report.quality_holds.push({ story_id: candidate.story_id, reason: paidOutcome ? UNKNOWN_PROVIDER_OUTCOME : "AI_OUTPUT_INVALID", errors: [reason] });
+          }
+          continue;
+        }
+        const budgetBlocked = reason === 'AI_BUDGET_EXHAUSTED';
+        const providerBillingBlocked = PROVIDER_BILLING_ERRORS.has(reason);
+        const providerRateLimited = /AI_PROVIDER_ERROR:429/.test(reason);
+        const uncertainRequest = providerOutcomeUncertain(error, { started: aiRequestStarted, costRecorded: aiCostRecorded });
+        const rateLimited = budgetBlocked || providerRateLimited;
+        const deferred = uncertainRequest ? batch : rateLimited || providerBillingBlocked ? selected.slice(offset) : batch;
+        if (providerBillingBlocked) report.ai_provider_billing_blocked = true;
+        if (budgetBlocked) {
+          report.budget_blocked = true;
+          report.budget_block_scope = ['news', 'shared'].includes(error.budgetScope) ? error.budgetScope : 'unknown';
+        }
+        else {
+          report.ai_provider_failures += 1;
+          report.ai_provider_errors.push({ batch_offset: offset, error: reason });
+          report.failed_batch_offset = offset;
+        }
+        for (const candidate of deferred) {
+          const holdReason = uncertainRequest ? UNKNOWN_PROVIDER_OUTCOME : budgetBlocked ? 'AI_BUDGET_BLOCKED' : providerRateLimited ? 'AI_HOURLY_CALL_LIMIT' : 'AI_PROVIDER_UNAVAILABLE';
+          bumpCandidateFunnel(sourceFunnel, candidate, rateLimited ? "capacity_deferred" : "technical_retries");
+          const pending = pendingRecord(candidate, holdReason, now, [reason]);
+          byId.set(candidate.story_id, uncertainRequest ? holdProviderRequest(pending, {
+            status: 'unknown', at: now, run_id: report.run_id, error_code: reason,
+            request_attempts: Number(error.requestAttempts ?? 1), raw_response: 'not_confirmed',
+            recorded_pending_hash: candidate.content_hash || null,
+          }) : pending);
+          if (uncertainRequest) report.provider_outcome_holds.push({ story_id: candidate.story_id, run_id: report.run_id, reason: holdReason });
+          report.quality_holds.push({ story_id: candidate.story_id, reason: holdReason });
+        }
+        if (uncertainRequest && (rateLimited || providerBillingBlocked)) {
+          // Only this batch was sent. A later refusal cannot invent unknown
+          // provider writes for the untouched neighbours.
+          for (const candidate of selected.slice(offset + batch.length)) {
+            const reason = budgetBlocked ? 'AI_BUDGET_BLOCKED' : providerRateLimited ? 'AI_HOURLY_CALL_LIMIT' : 'AI_PROVIDER_UNAVAILABLE';
+            byId.set(candidate.story_id, pendingRecord(candidate, reason, now));
+            report.quality_holds.push({ story_id: candidate.story_id, reason });
+          }
+        }
+        // Ein ausgeschöpftes Client-Limit sperrt alle weiteren Aufrufe dieses
+        // Laufs. Bei 5xx/Timeout ist dagegen nur die betroffene Story vertagt;
+        // die übrigen vier reservierten Slots dürfen unabhängig weiterarbeiten.
+        if (rateLimited || providerBillingBlocked) break;
+      }
+    }
+  } else {
+    for (const candidate of selected) {
+      byId.set(candidate.story_id, pendingRecord(candidate, aiEnabled ? "AI_BUDGET_BLOCKED" : "AI_DISABLED", now));
+      report.quality_holds.push({ story_id: candidate.story_id, reason: aiEnabled ? "AI_BUDGET_BLOCKED" : "AI_DISABLED" });
+    }
+  }
+  if (meldungsauftraege.length) {
+    const ergebnisse = auftragsErgebnisse(meldungsauftraege, { byId, vorher: vorAuftraegen, changedStoryIds, report });
+    // Die oeffentliche Redaktionsakte kennt Natalies Auftraege nicht.
+    const auftragsIds = new Set(meldungsauftraege.map((auftrag) => auftrag.story_id));
+    if (Array.isArray(newsroom.decisions)) newsroom.decisions = newsroom.decisions.filter((entscheidung, index) => index < entscheidungenVorAuftraegen || !auftragsIds.has(entscheidung.story_id));
+    schreibeErgebnisse(options.orderResultFile ?? process.env.WOEK_NEWS_ORDER_RESULT_FILE, ergebnisse, now);
+    report.meldungsauftraege = zusammenfassung(ergebnisse);
+  }
+
+  // Keep existing quarantined originals byte-for-byte in their prior state;
+  // never introduce a newly discovered alias into publication or image work.
+  for (const [id, story] of byId) if (quarantined419(story)) {
+    if (quarantinedOriginals.has(id)) byId.set(id, quarantinedOriginals.get(id));
+    else byId.delete(id);
+    changedStoryIds.delete(id);
+  }
+  for (const [id, story] of quarantinedOriginals) {
+    byId.set(id, story);
+    changedStoryIds.delete(id);
+  }
+
+  // An editorial hold preserves the retained answer, versions, evidence and
+  // receipt. Automatic queue maintenance cannot turn it into a fresh input.
+  for (const [id, story] of editorialQualityOriginals) {
+    byId.set(id, story);
+    changedStoryIds.delete(id);
+  }
+
+  // Enhancement failures cannot enter the AI-error catch above or suppress a
+  // validated article. Drain a bounded image queue without redoing news AI.
+  report.title_images = [];
+  report.title_images_changed = 0;
+  if (!options.dryRun && !paidRecoveryHold) {
+    const prepareImage = options.prepareTitleImage || createTitleImagePipeline();
+    const imageIds = titleImageIdsForRun([...byId.values()], { now, changed: changedStoryIds, existing: existingStoryIds, mode });
+    const imageDeadline = Date.now() + 4 * 60000;
+    for (const storyId of imageIds) {
+      const story = byId.get(storyId);
+      if (Date.now() >= imageDeadline) {
+        story.title_image = { ...story.title_image, retry_after: new Date(Date.now() + 15 * 60000).toISOString() };
+        report.title_images.push({ story_id: storyId, status: "deferred", reason: "IMAGE_RUN_TIME_LIMIT" });
+        continue;
+      }
+      try {
+        console.error(JSON.stringify({title_image_progress:{story_id:storyId,stage:'started'}}));
+        const visual = bridgeImages.get(storyId);
+        const bytes = visual?.file ? fs.readFileSync(visual.file) : visual?.status === 'validated' ? await bridge.transport.readBinary((await import('./bridge/contract.mjs')).bridgePath('20_OUTPUT_READY', `${story.bridge_import.job_id}.title.png`)) : null;
+        if (bytes && imageDigest(bytes) !== visual.sha256) throw new Error('BRIDGE_VISUAL_HASH_CHANGED');
+        const result = await prepareImage(visual?.brief ? { ...story, visual_brief: visual.brief } : story, { ...(visual?.status === 'fallback' || topicCardIds.has(storyId) ? { cardsOnly: true } : {}), ...(bytes ? { bridgeAsset: { bytes, ...visual, provider: 'chatgpt_bridge', model: 'chatgpt-images', prompt_version: 'woek-chatgpt-bridge-1', generated_at: visual.visual.generated_at } } : {}) });
+        if (result.title_image) {
+          if (JSON.stringify(publicTitleImage(story.title_image)) !== JSON.stringify(publicTitleImage(result.title_image))) report.title_images_changed += 1;
+          story.title_image = result.title_image;
+        }
+        report.title_images.push(result.report);
+        console.error(JSON.stringify({title_image_progress:{story_id:storyId,stage:'completed',status:result.report?.status}}));
+      } catch {
+        report.title_images.push({ story_id: storyId, status: "fallback", fallback_reason: "TITLE_IMAGE_UNAVAILABLE" });
+      }
+    }
+  }
+  report.completed_at = new Date().toISOString();
+  const currentItems = allItems.filter((item) => Date.parse(item.published_at || 0) <= nowDate.getTime() + futureToleranceMs);
+  report.latest_source_timestamp = latestSourceDate(currentItems) ? new Date(latestSourceDate(currentItems)).toISOString() : null;
+  report.ai_provider_degraded = aiProviderCoverageDegraded(report);
+  if (report.ai_provider_degraded) report.ai_error = report.ai_provider_errors.at(-1)?.error || "AI_PROVIDER_DEGRADED";
+  report.ai_calls_remaining_this_hour = Math.max(0, maxAiCallsPerHour - aiCallsInLastHour - report.ai_calls);
+  report.public_changed = [
+    report.published_stories,
+    report.updated_stories,
+    report.retired_stories,
+    report.reactivated_stories,
+    report.title_images_changed,
+  ].some((count) => Number(count || 0) > 0);
+  state.last_attempted_run = now;
+  state.relevance_filter_version = RELEVANCE_FILTER_VERSION;
+  for (const [storyId, story] of byId) {
+    if (story.published || story.listed === false) continue;
+    const reason = story.pending_update?.reason || story.pending_reason;
+    const qualityErrors = story.pending_update?.quality_errors || story.quality_errors || [];
+    const retryCount = story.pending_update?.quality_retry_count ?? story.quality_retry_count ?? 0;
+    if (reason === "QUALITY_GATE_FAILED"
+      && !shouldRetryQualityGate(reason, qualityErrors, retryCount)
+      && qualityErrors.some((error) => EDITORIAL_REJECTION_ERRORS.has(error))) {
+      byId.set(storyId, rejectedRecord(story, now, qualityErrors));
+    }
+  }
+  state.pending_story_ids = [...byId.values()].filter((story) => !isMerged(story) && ((!story.published && story.listed !== false) || story.pending_update)).map((story) => story.story_id);
+  report.pending_story_count = state.pending_story_ids.length;
+  const remainingPendingIds = new Set(state.pending_story_ids);
+  report.queue_completed = [...pendingStoryIdsBefore].filter(id => !remainingPendingIds.has(id)).length;
+  report.queue = queueSnapshot([...byId.values()], now, pendingStoryCountBefore, { budgetBlocked: report.budget_blocked || report.budget_stage >= 3 });
+  report.queue_status = report.queue.status;
+  report.source_funnel = finalizeSourceFunnel(sourceFunnel);
+  report.source_health = registry.sources.map((source) => sourceHealth(source, state, now));
+  report.source_coverage_status = isolatedSourceThrottleWithRecentCoverage(report)
+    ? "isolated_throttle_with_recent_coverage" : sourceCoverageDegraded(report) ? "degraded" : "ok";
+  // An import does not fetch sources. Preserve source diagnostics without
+  // reporting a completed import as a failed discovery run.
+  // Schwelle wie bei der Deckung: erst mehrere gestoerte Quellen sind ein
+  // Laufausfall, eine einzelne bleibt ein sichtbares Quellenproblem.
+  const healthDegraded = !(mode === 'dropbox_chatgpt_bridge' && bridgePhase === 'import')
+    && sourceHealthDegraded(report);
+  report.operational_status = paidRecoveryHold || report.ai_provider_degraded || sourceCoverageDegraded(report) || healthDegraded ? "degraded" : "ok";
+  report.editorial_status = editorialQualityOriginals.size || report.queue.editorial || report.source_integrity_holds.length ? "holds" : "clear";
+  report.status = report.operational_status;
+  if (report.status === "ok") state.last_successful_run = now;
+  report.coverage = coverageReport(enabledSources, [...byId.values()]);
+  if (eventAuditEnabled) {
+    report.event_coverage = coverageAudit({ items: allowedObservationItems(), stories: [...byId.values()], decisions: newsroom.decisions,
+      selectedIds: new Set(selected.map(candidate => candidate.story_id)), now, sourceFunnel: report.source_funnel,
+      previousFunnel: Object.entries(previousSourceStatus).map(([source_id, value]) => ({ source_id, feed_items: value.items || 0 })) });
+    for (const row of [...report.event_coverage.top_events, ...report.event_coverage.potential_missed_news]) {
+      const event = newsroom.events[row.event_id];
+      if (event) newsroom.events[row.event_id] = updateEventLifecycle({ ...event, audit: row }, byId.get(row.cluster_id), row, now);
+    }
+    // Coverage is a separate editorial signal. Do not relabel a healthy API as
+    // failed, stop publication, or automatically waive evidence requirements.
+    report.coverage_alerts = report.event_coverage.alerts;
+  }
+  report.regional_coverage = regionalCoverage(registry, state, now);
+  report.freshness = [...byId.values()].filter((story) => story.listed !== false).map((story) => ({ story_id: story.story_id, published: Boolean(story.published), ...freshnessFor(story, now) }));
+  report.freshness_warnings = report.freshness.filter((story) => story.freshness_warning);
+  report.followups_due = dueFollowups([...byId.values()].filter((story) => !isMerged(story)), now);
+  newsroom.updated_at = now;
+  newsroom.decisions = newsroom.decisions.filter((decision) => Date.parse(decision.at) >= pruneBefore).slice(-20000);
+  newsroom.event_sources = Object.values(newsroom.source_items).map((item) => ({ event_id: item.event_id, source_item_id: item.source_item_id, source_id: item.source_id, role: item.source_role }));
+  newsroom.discovery_candidates = [...new Map([...newsroom.discovery_candidates, ...discoveryCandidates(allItems, enabledSources, now)].map((candidate) => [candidate.id, candidate])).values()];
+  storyStore.updated_at = now;
+  storyStore.stories = [...byId.values()].sort((a, b) => Date.parse(b.last_updated || 0) - Date.parse(a.last_updated || 0));
+  const latestPublishedChange = storyStore.stories
+    .filter((story) => story.published)
+    .reduce((latest, story) => Math.max(latest, Date.parse(story.updated_at || story.last_updated || story.published_at || 0) || 0), 0);
+  if (report.public_changed) storyStore.public_updated_at = now;
+  else if (!storyStore.public_updated_at) storyStore.public_updated_at = latestPublishedChange ? new Date(latestPublishedChange).toISOString() : now;
+  usage.runs.push({
+    processing_version: AI_PROCESSING_VERSION,
+    run_id: `news-run-${sha256(now).slice(0, 12)}`,
+    started_at: now,
+    completed_at: report.completed_at,
+    berlin_slot: report.berlin_slot,
+    counts: {
+      feed_entries_fetched: report.feed_entries_fetched,
+      feed_entries_new: report.feed_entries_new,
+      feed_entries_updated: report.feed_entries_updated,
+      feed_entries_backfilled: report.feed_entries_backfilled,
+      feed_entries_deduplicated: report.feed_entries_deduplicated,
+      story_clusters: report.story_clusters,
+      locally_rejected: report.locally_rejected,
+      eligible_stories: report.eligible_stories,
+      ai_stories: report.ai_stories,
+      ai_requests: report.ai_calls,
+      ai_request_attempts: Number(report.ai_request_attempts || 0),
+      ai_repair_calls: Number(report.ai_repair_calls || 0),
+      ai_failed_calls: Number(report.ai_failed_calls || 0),
+      reviews_reused: report.reviews_reused,
+      ai_retries_cooling_down: report.ai_retries_cooling_down || 0,
+      input_holds: report.input_holds.length,
+      prompt_chars_sent: report.prompt_chars_sent,
+      media_checks_triggered: report.media_checks_triggered,
+      media_checks_skipped: report.media_checks_skipped,
+      media_checks_ai_promoted: report.media_checks_ai_promoted,
+      media_check_tokens: report.media_check_tokens,
+      self_frame_rewrites: report.self_frame_rewrites,
+      source_integrity_holds: report.source_integrity_holds.length,
+      published_stories: report.published_stories,
+      updated_stories: report.updated_stories,
+      queue_completed: report.queue_completed,
+    },
+    // Ohne die Ursachen-Codes ist die Nachbesserungsquote eine Zahl ohne
+    // Ursache. Sie standen bisher nur im Bericht des letzten Laufs und waren
+    // beim naechsten ueberschrieben - ueber Tage also nicht auswertbar.
+    ...(report.ai_repair_findings && Object.keys(report.ai_repair_findings).length
+      ? { repair_findings: { ...report.ai_repair_findings } } : {}),
+    ...(report.ai_schema_rejections && Object.keys(report.ai_schema_rejections).length
+      ? { schema_rejections: { ...report.ai_schema_rejections } } : {}),
+    ai: report.ai_calls ? {
+      requests: report.ai_calls,
+      provider: report.provider,
+      model: report.model,
+      input_tokens: report.input_tokens,
+      output_tokens: report.output_tokens,
+      estimated_cost_usd: report.estimated_cost_usd,
+      output_failure_cost_usd: report.ai_output_failure_cost_usd,
+      token_source: report.token_source || "unavailable",
+      media_check_tokens: report.media_check_tokens,
+      media_check_cost_usd: report.media_check_cost_usd,
+    } : null,
+    source_failures: report.source_failures,
+    budget_block_scope: report.budget_block_scope || null,
+    quality_holds: report.quality_holds.length,
+    queue: report.queue,
+    source_funnel: report.source_funnel,
+  });
+  usage.runs = retainUsageHistory(usage.runs, now);
+  report.cost_monitoring = operatingCostSummary(usage, state.cost_monitoring_started_at, state.budget_fx, report.completed_at);
+
+  if (!options.dryRun) {
+    importCheckpoint('persisting', {ai_calls:report.ai_calls,published:report.published_stories,updated:report.updated_stories});
+    writeJson(files.state, state);
+    writeJson(files.stories, storyStore);
+    writeJson(files.usage, usage);
+    writeJson(files.report, report);
+    writeJson(files.newsroom, newsroom);
+    importCheckpoint('persisted', {ai_calls:report.ai_calls,published:report.published_stories,updated:report.updated_stories});
+    if (bridge?.editorialEnabled && bridgePhase !== 'discovery' && fs.existsSync(path.join(ROOT, 'data/news/editorial-analyses.json'))) {
+      report.bridge_editorial_results = await (await import('./bridge/editorial.mjs')).importEditorialJobs(bridge, ROOT, now);
+      if (report.bridge_editorial_results.some(r => r.changed)) report.public_changed = true;
+      writeJson(files.report, report);
+    }
+    if (bridge && bridgePhase !== 'discovery') {
+      await importBackgroundImpact(() => import('./bridge/impact.mjs').then(module => module.importImpactJobs(bridge, ROOT, now)), report, now);
+      writeJson(files.report, report);
+    }
+    if(bridge && bridgePhase !== 'discovery'){
+      try{const editorial=await (await import('./bridge/personal-publication.mjs')).importApprovedEditorials(bridge.store,ROOT);if(editorial.changed)report.public_changed=true;}catch{report.personal_editorial_pending=true;}
+      writeJson(files.report,report);
+    }
+    buildNewsAfterRun(options);
+  }
+  options.captureState?.({ state, storyStore, usage, newsroom });
+  return report;
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  // Finish evaluating this shared module before the worker imports optional
+  // publication adapters. Those adapters reuse its record builders; a top-level
+  // await here otherwise deadlocks their module graph after successful import.
+  runWirkungsticker({ dryRun: process.argv.includes("--dry-run") }).then(
+    report => console.log(JSON.stringify(report, null, 2)),
+    error => { console.error(error); process.exitCode = 1; },
+  );
+}

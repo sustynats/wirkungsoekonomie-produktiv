@@ -1,0 +1,21 @@
+[Unit]
+Description=Remove expired telephone booking data without delivery
+
+[Service]
+Type=oneshot
+User=woek-booking
+Group=woek-booking
+WorkingDirectory=/opt/woek-booking/current/ops/telephone-booking
+ExecStart=/opt/woek-booking/venv/bin/python /opt/woek-booking/current/ops/telephone-booking/retention_cleanup.py
+Environment=PYTHONDONTWRITEBYTECODE=1
+UnsetEnvironment=BOOKING_SECRET BOOKING_ENABLED BOOKING_ICLOUD_ENABLED ICLOUD_USERNAME ICLOUD_APP_PASSWORD ICLOUD_CALENDAR_URL DISCORD_BOT_TOKEN DISCORD_CLIENT_ID DISCORD_CLIENT_SECRET
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateNetwork=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/woek-telephone-booking
+MemoryMax=64M
+CPUQuota=10%
+TimeoutStartSec=20s

@@ -1,0 +1,314 @@
+{
+  "version": "2026-09-14.1",
+  "shows": [
+    {
+      "id": "neudenken",
+      "show_name": "NEU DENKEN",
+      "aliases": [
+        "NEU DENKEN – Maja Göpel"
+      ],
+      "stable_accent": "#a14f36",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "lanz_precht",
+      "show_name": "Lanz + Precht",
+      "aliases": [
+        "Lanz & Precht",
+        "Lanz und Precht",
+        "Lanz+Precht",
+        "Lanz & Precht – Der Podcast"
+      ],
+      "stable_accent": "#856024",
+      "rights_status": "PERMISSION_GRANTED",
+      "asset_type": "show_logo",
+      "rights_checked_at": "2026-09-14",
+      "permission_reference": "zdf-show-logos-2026-09-14",
+      "asset_delivery_status": "DELIVERED",
+      "allow_website": true,
+      "allow_archive": true,
+      "allow_sharecard": true,
+      "allow_social": true,
+      "allow_crop": false,
+      "allow_overlay": false,
+      "rights_notes": "ZDF-Kommunikation hat am 14.09.2026 der Nutzung der angefragten offiziellen Sendungslogos für Nachgehört/Nachgesehen im beschriebenen Umfang zugestimmt: Artikelseiten und Teaser einschließlich Web-App, dauerhaftes redaktionelles Artikelarchiv, OG-/Sharecards und Social-Media-Verweise ausschließlich auf die konkrete Nachbesprechung, wiederholte Nutzung für weitere Folgen. Logos nur proportional skalieren; nicht beschneiden, verfremden oder überdrucken. Natalie Weber und der Titel der Nachbesprechung bleiben Hauptabsender; Originalfolge verlinken und keine Kooperation suggerieren. Die Freigabe gilt nicht für Personen-, Sendungs-, Folgen- oder Drittfotos. Aktuelle Originaldateien/Downloadlinks und die jeweilige Credit-Zeile sind noch anzufordern; bis zur geprüften Asset-Zuordnung bleibt die eigene textliche Show-Kennung. Keine zusätzliche Befristung in der Antwort genannt. Vollständiger Schriftwechsel privat archiviert. Originaldateien am 15.09.2026 über die ZDF-Presseportal-Bildanfrage 118949 geliefert (EPS/JPG/PNG mit Copyright-Hinweis „Honorarfrei – nur für diese Sendung inkl. SocialMedia bei Nennung ZDF und Brand New Media“). Webasset proportional auf 800 px skaliert, unbeschnitten. Originale und Schriftwechsel privat archiviert. Hinweis: Der Copyright-Vermerk der Podcastlogo-Dateien nennt Social Media nicht ausdrücklich; die Social-Nutzung stützt sich auf die schriftliche Freigabe vom 14.09.2026. 16.09.2026: Von 80000-291-20 auf 80000-291-17 gewechselt. Beide sind unverändert geliefert; -20 ist die Wortmarke ohne Rand, deren Schriftzug die Dateikanten berührt (kein Beschnitt unsererseits, so geliefert), -17 ist das vollständige Podcastlogo als Keyvisual mit umlaufendem Rand und entspricht der Darstellung auf zdf.de. Proportional von 1920x1080 auf 800x450 skaliert, unbeschnitten, Copyright-Vermerk der Datei erhalten.",
+      "asset": "/assets/img/shows/lanz-precht-official.jpg",
+      "asset_sha256": "c435b90ccc94d2ace6888cf5cedbb84f1a0c2f07ff610649e12b659376f0d07a",
+      "credit": "Logo: ZDF/Brand New Media",
+      "source_url": "https://www.zdf.de/talk/lanz-precht-102",
+      "asset_delivered_at": "2026-09-15",
+      "asset_archive_reference": "ZDF-Presseportal Bildanfrage 118949, 80000-291-17/20/22 (verwendet: 80000-291-17, Podcastlogo als Keyvisual 1920x1080, proportional auf 800 px)"
+    },
+    {
+      "id": "lage_der_nation",
+      "show_name": "Lage der Nation",
+      "aliases": [],
+      "stable_accent": "#336b56",
+      "rights_status": "PERMISSION_GRANTED",
+      "asset_type": "show_logo",
+      "rights_checked_at": "2026-09-21",
+      "permission_reference": "lage-der-nation-logo-freigabe-2026-09-21",
+      "asset_delivery_status": "DELIVERED",
+      "allow_website": true,
+      "allow_archive": true,
+      "allow_sharecard": false,
+      "allow_social": false,
+      "allow_crop": false,
+      "allow_overlay": false,
+      "rights_notes": "Lage der Nation Media GmbH & Co. KG hat am 21.09.2026 die Verwendung des mitgelieferten offiziellen Logos auf der Website erlaubt. Verbindlicher Credit: Lage der Nation. Keine Befristung oder weiteren Gestaltungsauflagen genannt. Das Logo wird proportional und unveraendert verwendet. Social-/Sharecard-Nutzung wurde in der Antwort nicht ausdruecklich bestaetigt und bleibt deaktiviert. Vollstaendiger Schriftwechsel privat archiviert.",
+      "asset": "/assets/img/shows/lage-der-nation-official.png",
+      "asset_sha256": "cbda149c876acc21f83e678bda9905aa110449b3cdb02547cff6adad8c347c96",
+      "credit": "Lage der Nation",
+      "source_url": "https://lagedernation.org",
+      "asset_delivered_at": "2026-09-21",
+      "asset_archive_reference": "E-Mail-Freigabe und geliefertes LageLogo_934_588.png vom 21.09.2026"
+    },
+    {
+      "id": "systemfragen",
+      "show_name": "Deutschlandfunk Systemfragen",
+      "aliases": [
+        "Systemfragen"
+      ],
+      "stable_accent": "#0089bb",
+      "rights_status": "PERMISSION_GRANTED",
+      "asset": "/assets/img/shows/systemfragen-official.jpg",
+      "asset_type": "podcast_logo",
+      "credit": "Logo: Deutschlandradio",
+      "source_url": "https://www.deutschlandfunk.de/systemfragen-100.html",
+      "rights_checked_at": "2026-09-11",
+      "allow_website": true,
+      "allow_archive": true,
+      "allow_crop": false,
+      "allow_overlay": false,
+      "allow_sharecard": false,
+      "allow_social": false,
+      "asset_sha256": "d36d7434e8f80165de9b734364c20ae5aa689e5363f0e900ccf783c5a8efcdac",
+      "rights_notes": "Deutschlandradio Presse stellte das Logo am 11.09.2026 in Antwort auf die redaktionelle Nutzungsanfrage honorarfrei bereit. Nur das gelieferte Logo, proportional skaliert; kein Drittmaterial. Einzelne Social-/Sharecard-Rechte sind in der Antwort nicht gesondert bestätigt und bleiben deaktiviert. Schriftwechsel privat archiviert."
+    },
+    {
+      "id": "klimaklartext",
+      "show_name": "KlimaKlartext",
+      "aliases": [],
+      "stable_accent": "#26715d",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "klimakompass",
+      "show_name": "Der Klimakompass",
+      "aliases": [],
+      "stable_accent": "#67863a",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "ard_klima_update",
+      "show_name": "ARD Klima Update",
+      "aliases": [],
+      "stable_accent": "#236d68",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "missverstehen_sie_mich_richtig",
+      "show_name": "MISSVERSTEHEN SIE MICH RICHTIG",
+      "aliases": [],
+      "stable_accent": "#834367",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "terra_x_lesch",
+      "show_name": "Terra X Lesch & Co",
+      "aliases": [
+        "Terra X Lesch & Co.",
+        "Terra X: Lesch & Co",
+        "Leschs Kosmos"
+      ],
+      "stable_accent": "#966b22",
+      "rights_status": "PERMISSION_GRANTED",
+      "asset_type": "show_logo",
+      "rights_checked_at": "2026-09-14",
+      "permission_reference": "zdf-show-logos-2026-09-14",
+      "asset_delivery_status": "DELIVERED",
+      "allow_website": true,
+      "allow_archive": true,
+      "allow_sharecard": true,
+      "allow_social": true,
+      "allow_crop": false,
+      "allow_overlay": false,
+      "rights_notes": "ZDF-Kommunikation hat am 14.09.2026 der Nutzung der angefragten offiziellen Sendungslogos für Nachgehört/Nachgesehen im beschriebenen Umfang zugestimmt: Artikelseiten und Teaser einschließlich Web-App, dauerhaftes redaktionelles Artikelarchiv, OG-/Sharecards und Social-Media-Verweise ausschließlich auf die konkrete Nachbesprechung, wiederholte Nutzung für weitere Folgen. Logos nur proportional skalieren; nicht beschneiden, verfremden oder überdrucken. Natalie Weber und der Titel der Nachbesprechung bleiben Hauptabsender; Originalfolge verlinken und keine Kooperation suggerieren. Die Freigabe gilt nicht für Personen-, Sendungs-, Folgen- oder Drittfotos. Aktuelle Originaldateien/Downloadlinks und die jeweilige Credit-Zeile sind noch anzufordern; bis zur geprüften Asset-Zuordnung bleibt die eigene textliche Show-Kennung. Keine zusätzliche Befristung in der Antwort genannt. Vollständiger Schriftwechsel privat archiviert. Originaldateien am 15.09.2026 über die ZDF-Presseportal-Bildanfrage 118949 geliefert (EPS/JPG/PNG mit Copyright-Hinweis „Honorarfrei – nur für diese Sendung inkl. SocialMedia bei Nennung ZDF und Corporate Design“). Webasset proportional auf 800 px skaliert, unbeschnitten. Originale und Schriftwechsel privat archiviert.",
+      "asset": "/assets/img/shows/terra-x-lesch-official.jpg",
+      "asset_sha256": "98173844edb35f9722cbf400fdb655c1a6f81b1f3548ab5daf539b670dd515fc",
+      "credit": "Logo: ZDF/Corporate Design",
+      "source_url": "https://www.zdf.de/dokumentation/terra-x/lesch-und-co",
+      "asset_delivered_at": "2026-09-15",
+      "asset_archive_reference": "ZDF-Presseportal Bildanfrage 118949, 50828-915-3 (Logo rgb; 50828-915-6 ist ein Kanalbild, nicht verwendet)"
+    },
+    {
+      "id": "maithink_x",
+      "show_name": "MAITHINK X",
+      "aliases": [
+        "MAITHINK X – Die Show"
+      ],
+      "stable_accent": "#67558f",
+      "rights_status": "PERMISSION_GRANTED",
+      "asset_type": "show_logo",
+      "rights_checked_at": "2026-09-14",
+      "permission_reference": "zdf-show-logos-2026-09-14",
+      "asset_delivery_status": "DELIVERED",
+      "allow_website": true,
+      "allow_archive": true,
+      "allow_sharecard": true,
+      "allow_social": true,
+      "allow_crop": false,
+      "allow_overlay": false,
+      "rights_notes": "ZDF-Kommunikation hat am 14.09.2026 der Nutzung der angefragten offiziellen Sendungslogos für Nachgehört/Nachgesehen im beschriebenen Umfang zugestimmt: Artikelseiten und Teaser einschließlich Web-App, dauerhaftes redaktionelles Artikelarchiv, OG-/Sharecards und Social-Media-Verweise ausschließlich auf die konkrete Nachbesprechung, wiederholte Nutzung für weitere Folgen. Logos nur proportional skalieren; nicht beschneiden, verfremden oder überdrucken. Natalie Weber und der Titel der Nachbesprechung bleiben Hauptabsender; Originalfolge verlinken und keine Kooperation suggerieren. Die Freigabe gilt nicht für Personen-, Sendungs-, Folgen- oder Drittfotos. Aktuelle Originaldateien/Downloadlinks und die jeweilige Credit-Zeile sind noch anzufordern; bis zur geprüften Asset-Zuordnung bleibt die eigene textliche Show-Kennung. Keine zusätzliche Befristung in der Antwort genannt. Vollständiger Schriftwechsel privat archiviert. Originaldateien am 15.09.2026 über die ZDF-Presseportal-Bildanfrage 118949 geliefert (EPS/JPG/PNG mit Copyright-Hinweis „Honorarfrei – nur für diese Sendung inkl. SocialMedia bei Nennung ZDF und bildundtonfabrik“). Webasset proportional auf 800 px skaliert, unbeschnitten. Originale und Schriftwechsel privat archiviert.",
+      "asset": "/assets/img/shows/maithink-x-official.png",
+      "asset_sha256": "52caa228ff8452e9aa0acfbcc75f1ae133d9a0fbc29ce34803ef5efc7d66a8cd",
+      "credit": "Logo: ZDF/bildundtonfabrik",
+      "source_url": "https://www.zdf.de/shows/mai-think-x-die-show-102",
+      "asset_delivered_at": "2026-09-15",
+      "asset_archive_reference": "ZDF-Presseportal Bildanfrage 118949, 80000-36-6/9/12 (verwendet: 80000-36-12, Sendungslogo)"
+    },
+    {
+      "id": "der_ki_podcast",
+      "show_name": "Der KI-Podcast",
+      "aliases": [],
+      "stable_accent": "#3c658c",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "jung_naiv",
+      "show_name": "Jung & Naiv",
+      "aliases": [],
+      "stable_accent": "#875834",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "wohlstand_fuer_alle",
+      "show_name": "Wohlstand für Alle",
+      "aliases": [],
+      "stable_accent": "#457253",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "das_klima",
+      "show_name": "Das Klima",
+      "aliases": [],
+      "stable_accent": "#4b783a",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "wochendaemmerung",
+      "show_name": "Wochendämmerung",
+      "aliases": [],
+      "stable_accent": "#9b574c",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "markus_lanz",
+      "show_name": "Markus Lanz",
+      "aliases": [
+        "Lanz",
+        "ZDF Markus Lanz"
+      ],
+      "stable_accent": "#305b81",
+      "rights_status": "PERMISSION_GRANTED",
+      "asset_type": "show_logo",
+      "rights_checked_at": "2026-09-14",
+      "permission_reference": "zdf-show-logos-2026-09-14",
+      "asset_delivery_status": "DELIVERED",
+      "allow_website": true,
+      "allow_archive": true,
+      "allow_sharecard": true,
+      "allow_social": true,
+      "allow_crop": false,
+      "allow_overlay": false,
+      "rights_notes": "ZDF-Kommunikation hat am 14.09.2026 der Nutzung der angefragten offiziellen Sendungslogos für Nachgehört/Nachgesehen im beschriebenen Umfang zugestimmt: Artikelseiten und Teaser einschließlich Web-App, dauerhaftes redaktionelles Artikelarchiv, OG-/Sharecards und Social-Media-Verweise ausschließlich auf die konkrete Nachbesprechung, wiederholte Nutzung für weitere Folgen. Logos nur proportional skalieren; nicht beschneiden, verfremden oder überdrucken. Natalie Weber und der Titel der Nachbesprechung bleiben Hauptabsender; Originalfolge verlinken und keine Kooperation suggerieren. Die Freigabe gilt nicht für Personen-, Sendungs-, Folgen- oder Drittfotos. Aktuelle Originaldateien/Downloadlinks und die jeweilige Credit-Zeile sind noch anzufordern; bis zur geprüften Asset-Zuordnung bleibt die eigene textliche Show-Kennung. Keine zusätzliche Befristung in der Antwort genannt. Vollständiger Schriftwechsel privat archiviert. Originaldateien am 15.09.2026 über die ZDF-Presseportal-Bildanfrage 118949 geliefert (EPS/JPG/PNG mit Copyright-Hinweis „Honorarfrei – nur für diese Sendung inkl. SocialMedia bei Nennung ZDF und Brand New Media“). Webasset proportional auf 800 px skaliert, unbeschnitten. Originale und Schriftwechsel privat archiviert.",
+      "asset": "/assets/img/shows/markus-lanz-official.jpg",
+      "asset_sha256": "f78bc3a981c50a93a2e8894d1394e27a67fe1fb0adfaff172482f505583b10dc",
+      "credit": "Logo: ZDF/Brand New Media",
+      "source_url": "https://www.zdf.de/talk/markus-lanz-114",
+      "asset_delivered_at": "2026-09-15",
+      "asset_archive_reference": "ZDF-Presseportal Bildanfrage 118949, 50828-506-13/17/21/28 (verwendet: 50828-506-28, Logo rgb)"
+    },
+    {
+      "id": "maybrit_illner",
+      "show_name": "maybrit illner",
+      "aliases": [
+        "illner"
+      ],
+      "stable_accent": "#87423e",
+      "rights_status": "PERMISSION_GRANTED",
+      "asset_type": "show_logo",
+      "rights_checked_at": "2026-09-14",
+      "permission_reference": "zdf-show-logos-2026-09-14",
+      "asset_delivery_status": "DELIVERED",
+      "allow_website": true,
+      "allow_archive": true,
+      "allow_sharecard": true,
+      "allow_social": true,
+      "allow_crop": false,
+      "allow_overlay": false,
+      "rights_notes": "ZDF-Kommunikation hat am 14.09.2026 der Nutzung der angefragten offiziellen Sendungslogos für Nachgehört/Nachgesehen im beschriebenen Umfang zugestimmt: Artikelseiten und Teaser einschließlich Web-App, dauerhaftes redaktionelles Artikelarchiv, OG-/Sharecards und Social-Media-Verweise ausschließlich auf die konkrete Nachbesprechung, wiederholte Nutzung für weitere Folgen. Logos nur proportional skalieren; nicht beschneiden, verfremden oder überdrucken. Natalie Weber und der Titel der Nachbesprechung bleiben Hauptabsender; Originalfolge verlinken und keine Kooperation suggerieren. Die Freigabe gilt nicht für Personen-, Sendungs-, Folgen- oder Drittfotos. Aktuelle Originaldateien/Downloadlinks und die jeweilige Credit-Zeile sind noch anzufordern; bis zur geprüften Asset-Zuordnung bleibt die eigene textliche Show-Kennung. Keine zusätzliche Befristung in der Antwort genannt. Vollständiger Schriftwechsel privat archiviert. Originaldateien am 15.09.2026 über die ZDF-Presseportal-Bildanfrage 118949 geliefert (EPS/JPG/PNG mit Copyright-Hinweis „Honorarfrei – nur für diese Sendung inkl. SocialMedia bei Nennung ZDF und Brand New Media“). Webasset proportional auf 800 px skaliert, unbeschnitten. Originale und Schriftwechsel privat archiviert.",
+      "asset": "/assets/img/shows/maybrit-illner-official.jpg",
+      "asset_sha256": "6fba81db3b2e9084516d54f10b3833a1ee9ded26bef1e2b832b043867cbc1dc9",
+      "credit": "Logo: ZDF/Brand New Media",
+      "source_url": "https://www.zdf.de/talk/maybrit-illner-128",
+      "asset_delivered_at": "2026-09-15",
+      "asset_archive_reference": "ZDF-Presseportal Bildanfrage 118949, 80000-131-5/11/24 (verwendet: 80000-131-24, Sendungslogo)"
+    },
+    {
+      "id": "maischberger",
+      "show_name": "maischberger",
+      "aliases": [],
+      "stable_accent": "#566d80",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "caren_miosga",
+      "show_name": "Caren Miosga",
+      "aliases": [],
+      "stable_accent": "#674d87",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "hart_aber_fair",
+      "show_name": "Hart aber fair",
+      "aliases": [
+        "Hart aber Fair",
+        "hart aber fair"
+      ],
+      "canonical_url": "https://www1.wdr.de/daserste/hartaberfair/index.html",
+      "stable_accent": "#76513e",
+      "rights_status": "UNKNOWN",
+      "rights_notes": "Keine Freigabe für Sendungslogo, Pressefoto oder Thumbnail dokumentiert. Eigene textliche Show-Kennung verwenden.",
+      "watch": {
+        "tier": "CORE",
+        "format": "watched",
+        "selection": "editorial_relevance_required",
+        "manual_only": true,
+        "requested_at": "2026-09-13",
+        "text_access_priority": [
+          "OFFICIAL_TRANSCRIPT",
+          "OFFICIAL_SUBTITLES",
+          "OFFICIAL_CAPTIONS",
+          "OFFICIAL_SHOW_NOTES",
+          "PUBLIC_TRANSCRIPT_OTHER",
+          "NO_TEXT_ACCESS"
+        ]
+      }
+    },
+    {
+      "id": "phoenix_runde",
+      "show_name": "phoenix runde",
+      "aliases": [],
+      "stable_accent": "#476342",
+      "rights_status": "UNKNOWN"
+    },
+    {
+      "id": "presseclub",
+      "show_name": "Presseclub",
+      "aliases": [],
+      "stable_accent": "#806b42",
+      "rights_status": "UNKNOWN"
+    }
+  ]
+}

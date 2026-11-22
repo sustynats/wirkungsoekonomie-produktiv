@@ -1,0 +1,637 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { documentKey, fileSubject, namedSubjects, subjectConflict, livingFileMatch, duplicateGroups, mergeLivingFiles, relatedStories, diplomaticVisit } from "../../scripts/news/living-files.mjs";
+import { anchoredSources, clusterItems, existingStoryMatch } from "../../scripts/news/lib.mjs";
+import { renderRelatedStories, renderConsolidations } from "../../scripts/news/build.mjs";
+import { runWirkungsticker, publishedRecord, repartitionOversizedSourceQueues } from "../../scripts/news/run.mjs";
+import { consolidateLeizenDuplicates } from "../../scripts/news/migrate-leizen-duplicates.mjs";
+
+const now = "2026-09-04T06:00:00Z";
+const source = (title, url = "https://example.org/a", more = {}) => ({ title, url, source_id: "test", publisher_id: "test", publisher: "Test", primary_source: true, published_at: now, ...more });
+const story = (id, title, more = {}) => ({ story_id: id, slug: id, title, source_summary: "", published: true, listed: true, published_at: now, last_updated: now, first_seen: now, sources: [source(title, `https://example.org/${id}`)], claims: [], analysis: { summary: title }, versions: [{ version: 1, analyzed_at: now }], current_version: 1, ...more });
+const dormagen = story("dormagen", "Mutmaßlich Sabotage-Versuch an Umspannwerk in Dormagen");
+
+test('a leading publisher article survives an inflected generated place in its headline', () => {
+  const original = source('Explosion in Mehrfamilienhaus in Regensburg', 'https://example.org/regensburg', {
+    summary: 'Fünf Menschen wurden bei einer Explosion in Regensburg verletzt.',
+  });
+  const previous = story('regensburg', 'Explosion in Regensburger Mehrfamilienhaus', {
+    sources: [original], source_summary: original.summary,
+  });
+  const incoming = { ...original, summary: 'Zwei Menschen wurden in Regensburg noch vermisst.', published_at: '2026-09-04T10:48:45Z' };
+  const before = structuredClone(previous);
+  assert.equal(subjectConflict(incoming, previous), true, 'the generated adjective is not the source document identity');
+  const [cluster] = clusterItems([incoming], [previous], incoming.published_at);
+  assert.equal(cluster.story_id, previous.story_id);
+  assert.equal(cluster.existing_story, previous);
+  assert.deepEqual(previous, before, 'matching must not rewrite the paid article');
+});
+
+test('the leading-document shortcut rejects changed places, publishers, reused events and distant dates', () => {
+  const original = source('Explosion in Mehrfamilienhaus in Regensburg', 'https://example.org/regensburg', {
+    summary: 'Eine Explosion in Regensburg beschädigte ein Wohnhaus.',
+  });
+  const previous = story('regensburg', 'Explosion in Regensburger Mehrfamilienhaus', { sources: [original], source_summary: original.summary });
+  for (const incoming of [
+    { ...original, title: 'Explosion in Mehrfamilienhaus in München', summary: 'Eine Explosion in München beschädigte ein Wohnhaus.' },
+    { ...original, summary: 'Eine Explosion in München beschädigte ein Wohnhaus.' },
+    { ...original, source_id: 'other-publisher' },
+    { ...original, title: 'Zweite Explosion in Mehrfamilienhaus in Regensburg' },
+    { ...original, title: 'Rückblick: Explosion in Mehrfamilienhaus in Regensburg' },
+    { ...original, published_at: '2026-09-04T12:00:00.001Z' },
+    { ...original, published_at: null },
+  ]) {
+    assert.equal(clusterItems([incoming], [previous], now)[0].existing_story, null, incoming.title);
+  }
+});
+
+test('a contextual article cannot use the leading-document shortcut', () => {
+  const original = source('Explosion in Mehrfamilienhaus in Regensburg', 'https://example.org/regensburg');
+  const previous = story('other', 'Wahl in München', {
+    sources: [source('Wahl in München', 'https://example.org/munich'), original], source_summary: 'Die Wahl findet in München statt.',
+  });
+  assert.equal(clusterItems([original], [previous], now)[0].existing_story, null);
+});
+
+test('a retained update of the leading article keeps its publisher, headline and time guards', () => {
+  const original = source('Explosion in Mehrfamilienhaus in Regensburg', 'https://example.org/regensburg', {
+    summary: 'Eine Explosion in Regensburg beschädigte ein Wohnhaus.',
+  });
+  const updated = {...original,published_at:'2026-09-04T10:48:45Z',summary:'Zwei Menschen wurden in Regensburg noch vermisst.'};
+  const canonical = story('regensburg', 'Explosion in Regensburger Mehrfamilienhaus', {
+    sources:[original],source_summary:original.summary,living_file:{merged_story_ids:['later']},
+  });
+  const later=story('later','Synthetic later edition',{sources:[updated],listed:false,
+    retirement:{reason_code:'MERGED_INTO_LIVING_FILE',canonical_story_ids:['regensburg']}});
+  const incoming={...updated,published_at:'2026-09-04T14:00:00Z'};
+  assert.equal(clusterItems([incoming],[canonical,later],incoming.published_at)[0].story_id,'regensburg');
+  for(const changed of [
+    {...incoming,title:'Explosion in Mehrfamilienhaus in München',summary:'Eine Explosion in München beschädigte ein Wohnhaus.'},
+    {...incoming,source_id:'other-publisher'},
+    {...incoming,title:'Zweite Explosion in Mehrfamilienhaus in Regensburg'},
+    {...incoming,published_at:'2026-09-04T17:00:00Z'},
+  ]) assert.equal(clusterItems([changed],[canonical,later],changed.published_at)[0].existing_story,null);
+});
+
+test('an administrative district suffix is not a different incident place', () => {
+  const title = 'Schüsse mit Schreckschusspistole lösen SEK-Einsatz aus';
+  const url = 'https://www.stern.de/gesellschaft/regional/baden-wuerttemberg/kreis-schwaebisch-hall--schuesse-mit-schreckschusspistole-loesen-sek-einsatz-aus-38421916.html';
+  const original = source(title, url, { summary: 'Der Einsatz war in Obersontheim-Oberfischach.' });
+  const previous = story('original', title, { sources: [original], source_summary: 'Die Polizei rückte in Obersontheim-Oberfischach im Kreis Schwäbisch Hall an.' });
+  const updated = { ...original, published_at: '2026-09-04T12:00:00Z' };
+  const before = structuredClone(previous);
+  assert.deepEqual(fileSubject(previous).places, ['obersontheim-oberfischach']);
+  assert.equal(subjectConflict(updated, previous), false);
+  assert.equal(livingFileMatch(updated, previous).score, 1);
+  const [cluster] = clusterItems([updated], [previous], updated.published_at);
+  assert.equal(cluster.story_id, previous.story_id);
+  assert.equal(cluster.existing_story, previous);
+  assert.deepEqual(previous, before);
+  const elsewhere = { ...updated, summary: 'Der Einsatz war in Gaildorf.' };
+  assert.equal(subjectConflict(elsewhere, previous), true);
+  assert.equal(livingFileMatch(elsewhere, previous).score, 0);
+});
+
+test('real locative town-name suffixes remain distinct', () => {
+  assert.deepEqual(fileSubject({ title: 'Einsatz in Frankfurt am Main' }).places, ['frankfurt am main']);
+  assert.deepEqual(fileSubject({ title: 'Einsatz in Freiburg im Breisgau' }).places, ['freiburg im breisgau']);
+  assert.equal(subjectConflict({ title: 'Einsatz in Frankfurt am Main' }, { title: 'Einsatz in Frankfurt an der Oder' }), true);
+});
+
+test('school subjects in a checked summary are not conflicting geographical places', () => {
+  for (const subject of ['Mathematik', 'Lesen', 'Naturwissenschaften']) {
+    const title = 'Schule: Deutschland in neuer Vergleichsstudie mit schwächeren Ergebnissen';
+    const original = source(title, 'https://example.org/vergleich', { summary: `Die Ergebnisse in ${subject} sind gesunken.` });
+    const id = clusterItems([original], [], now)[0].story_id;
+    const previous = story(id, title, { sources: [original], source_summary: original.summary });
+    const updated = { ...original, summary: 'Die Ergebnisse in Deutschland sind gesunken; ein neuer Bericht liegt vor.' };
+    const before = structuredClone(previous);
+    assert.deepEqual(fileSubject(previous).places, []);
+    assert.equal(subjectConflict(updated, previous), false);
+    const [cluster] = clusterItems([updated], [previous], now);
+    assert.equal(cluster.story_id, id);
+    assert.equal(cluster.existing_story, previous);
+    assert.deepEqual(previous, before);
+  }
+});
+
+test('unmatched events with identical headline signatures cannot reuse a stored story ID', () => {
+  const title = 'Behörde beschließt Ausbau eines Stromnetzes';
+  const first = source(title, 'https://example.org/nord', { summary: 'Das Projekt in Nordstadt erhält eine Genehmigung.' });
+  const second = source(title, 'https://example.org/sued', { summary: 'Das Projekt in Südstadt erhält eine Genehmigung.' });
+  const [initial] = clusterItems([first], [], now);
+  const previous = story(initial.story_id, title, { sources: [first], source_summary: first.summary });
+  const before = structuredClone(previous);
+  const [next] = clusterItems([second], [previous], now);
+  assert.equal(subjectConflict(second, previous), true);
+  assert.equal(next.existing_story, null);
+  assert.notEqual(next.story_id, previous.story_id);
+  assert.equal(clusterItems([second], [previous], now)[0].story_id, next.story_id);
+  const simultaneous = clusterItems([first, second], [], now);
+  assert.equal(simultaneous.length, 2);
+  assert.equal(new Set(simultaneous.map(s => s.story_id)).size, 2);
+  assert.deepEqual(previous, before);
+});
+
+test('consolidation history links only actual public pages, retaining archived publications', () => {
+  const main = story('current', 'Aktuelle Nachricht', { living_file: { consolidations: [
+    { slug: 'archived', title: 'Früher veröffentlicht', at: now },
+    { slug: 'never-published', title: 'Nur entdeckter Kandidat', at: now },
+  ] } });
+  const before = JSON.stringify(main);
+  const html = renderConsolidations(main, new Set(['current', 'archived']));
+  assert.match(html, /href="\.\.\/archived\/"/);
+  assert.doesNotMatch(html, /never-published|Nur entdeckter Kandidat/);
+  assert.equal(renderConsolidations(main, new Set(['current'])), '');
+  assert.equal(JSON.stringify(main), before);
+});
+
+test('an attached election background report cannot bridge polls into rallies', () => {
+  const poll = story('poll', 'Vor der Landtagswahl: Sachsen-Anhalt und die Tücken der Umfragen');
+  const rally = source('Landtagswahl: Tausende zu Kundgebungen vor Wahl in Sachsen-Anhalt erwartet', 'https://example.org/rally');
+  poll.sources.push(rally); // Previously polluted persisted cluster.
+  assert.deepEqual(anchoredSources(poll), [poll.sources[0]]);
+  assert.equal(existingStoryMatch(rally, {story:poll,last_updated:now}, now), 0);
+  assert.notEqual(clusterItems([rally], [poll], now)[0].story_id, poll.story_id);
+  for (const input of [[poll.sources[0],rally], [rally,poll.sources[0]]]) assert.equal(clusterItems(input, [], now).length, 2);
+});
+
+test('a reused article URL cannot turn polling into an election result', () => {
+  const poll = story('poll', 'Wahl in Sachsen-Anhalt: So stehen die Parteien in den Umfragen');
+  const result = source('Wahl Sachsen-Anhalt: Hochrechnungen und Ergebnisse', poll.sources[0].url);
+  assert.equal(subjectConflict(result,poll), true);
+  assert.equal(livingFileMatch(result,poll).score, 0);
+  assert.notEqual(clusterItems([result],[poll],now)[0].story_id, poll.story_id);
+});
+
+test('an explicitly merged regional report routes by its archived source document', () => {
+  const town = source('DHL-Zentrum in Leizen evakuiert', 'https://example.org/leizen', {
+    summary: 'Im DHL-Zentrum in Leizen wird wegen eines Gefahrstoffverdachts evakuiert.',
+  });
+  const region = source('DHL-Zentrum in Mecklenburg-Vorpommern evakuiert', 'https://example.org/region', {
+    summary: 'Im DHL-Zentrum in Leizen wird wegen eines Gefahrstoffverdachts evakuiert.',
+  });
+  const canonical = story('leizen', town.title, {
+    sources: [town], living_file: { merged_story_ids: ['regional'] },
+  });
+  const archived = story('regional', region.title, {
+    sources: [region], listed: false,
+    retirement: { reason_code: 'MERGED_INTO_LIVING_FILE', canonical_story_ids: ['leizen'] },
+  });
+  const [routed] = clusterItems([region], [canonical, archived], now);
+  assert.equal(routed.story_id, 'leizen');
+  assert.equal(routed.existing_story, canonical);
+  const differentPlace = { ...region, title: 'DHL-Zentrum in Berlin evakuiert', summary: 'Im DHL-Zentrum in Berlin wird evakuiert.' };
+  assert.notEqual(clusterItems([differentPlace], [canonical, archived], now)[0].story_id, 'leizen');
+});
+
+test('source-verified Leizen consolidation preserves all published analyses and original dates', () => {
+  const canonical = story('wt-1d3fd4e1a02fe3e4', 'DHL-Zentrum in Leizen evakuiert', {
+    sources: [source('Einsatz in Leizen', 'https://example.org/leizen'),
+      source('NDR: Leizen', 'https://www.ndr.de/leizen.html'),
+      source('stern: Leizen', 'https://www.stern.de/panorama/leizen-38293914.html')],
+  });
+  const dlf = story('wt-7699cc5cf04f6af2', 'Gefahrstoffverdacht in Leizen', {
+    sources: [source('NDR: Leizen', 'https://www.ndr.de/leizen.html')],
+  });
+  const stern = story('wt-9bfe2b84b6ed7d1e', 'DHL-Zentrum in Mecklenburg-Vorpommern evakuiert', {
+    sources: [source('stern: Leizen', 'https://www.stern.de/weltgeschehen/dhl-38293914.html')],
+  });
+  const stories = [canonical, dlf, stern];
+  const before = stories.map(({ sources, analysis, versions, published_at }) =>
+    structuredClone({ sources, analysis, versions, published_at }));
+  assert.equal(consolidateLeizenDuplicates(stories, now).length, 2);
+  for (const [index, record] of stories.entries()) {
+    assert.deepEqual({ sources: record.sources, analysis: record.analysis,
+      versions: record.versions, published_at: record.published_at }, before[index]);
+  }
+  assert.deepEqual(canonical.living_file.merged_story_ids, [dlf.story_id, stern.story_id]);
+  for (const duplicate of [dlf, stern]) {
+    assert.equal(duplicate.listed, false);
+    assert.deepEqual(duplicate.retirement.canonical_story_ids, [canonical.story_id]);
+  }
+  assert.deepEqual(consolidateLeizenDuplicates(stories, now), []);
+  assert.equal(clusterItems([stern.sources[0]], stories, now)[0].story_id, canonical.story_id);
+});
+
+test('overgrown queue repair preserves publications, requeues every detached source and is idempotent', () => {
+  for (const published of [true,false]) {
+    const original = story('poll', 'Vor der Landtagswahl: Sachsen-Anhalt und die Tücken der Umfragen', {published});
+    const other = source('Landtagswahl: Tausende zu Kundgebungen vor Wahl in Sachsen-Anhalt erwartet', 'https://example.org/rally');
+    original.review_checkpoint = {sources:[...original.sources,other]};
+    if (published) original.pending_update = {reason:'AI_INPUT_TOO_LARGE',sources:[...original.sources,other],quality_errors:['AI_INPUT_TOO_LARGE']};
+    else { original.sources.push(other); original.pending_reason='AI_INPUT_TOO_LARGE'; }
+    const before = structuredClone(original);
+    const result = repartitionOversizedSourceQueues([original],now);
+    assert.equal(result.changes.length,1);
+    assert.deepEqual(result.requeued_sources,[other]);
+    assert.deepEqual(original.queue_source_repartitions[0].detached_sources,[other]);
+    assert.equal(original.review_checkpoint,undefined);
+    for (const key of ['title','analysis','versions','published_at','current_version']) assert.deepEqual(original[key],before[key]);
+    if (published) { assert.deepEqual(original.sources,before.sources); assert.deepEqual(original.claims,before.claims); }
+    assert.deepEqual(repartitionOversizedSourceQueues([original],now),{changes:[],requeued_sources:[]});
+    const rerouted = clusterItems(result.requeued_sources,[original],now);
+    assert.notEqual(rerouted[0].story_id,original.story_id);
+  }
+});
+
+test('a genuinely large single event is not split merely to fit the provider request', () => {
+  const s=story('incident','Sabotage an Umspannwerk in Dormagen: Ermittlungen laufen',{published:false,pending_reason:'AI_INPUT_TOO_LARGE'});
+  s.sources.push(...Array.from({length:40},(_,i)=>source(s.title,`https://example.org/incident-${i}`)));
+  const before=structuredClone(s);
+  assert.deepEqual(repartitionOversizedSourceQueues([s],now),{changes:[],requeued_sources:[]});
+  assert.deepEqual(s,before);
+});
+
+test('small legacy draft queues are repaired before another paid attempt without reopening editorial rejections', () => {
+  const title = 'Wahl Sachsen-Anhalt: Was passiert, wenn ich nicht wählen gehe?';
+  const other = source('Was zur Wahl in Sachsen-Anhalt wichtig ist', 'https://example.org/faq');
+  for (const reason of ['AI_BUDGET_OR_BATCH_LIMIT','QUALITY_GATE_FAILED']) {
+    const s = story('legacy',title,{published:false,pending_reason:reason,quality_errors:['AI_PUBLICATION_RECOMMENDATION_INVALID']});
+    s.sources.push(other);
+    const result = repartitionOversizedSourceQueues([s],now);
+    assert.deepEqual(result.requeued_sources,[other]);
+    assert.equal(s.sources.length,1);
+    assert.equal(clusterItems([other],[s],now)[0].existing_story,null);
+    assert.deepEqual(repartitionOversizedSourceQueues([s],now),{changes:[],requeued_sources:[]});
+  }
+  for (const published of [true,false]) {
+    const s = story('untouched',title,{published,pending_reason:'QUALITY_GATE_FAILED',quality_errors:['AI_PUBLICATION_NOT_RECOMMENDED']});
+    s.sources.push(other);
+    const before=structuredClone(s);
+    assert.deepEqual(repartitionOversizedSourceQueues([s],now),{changes:[],requeued_sources:[]});
+    assert.deepEqual(s,before);
+  }
+});
+
+const visit = (id, title, summary, more = {}) => story(id, title, {
+  source_summary: summary, topic: ["Geopolitik"],
+  sources: [source(title, `https://example.org/${id}`, { summary })], ...more,
+});
+
+test("same delegation and destination route spelling/headline variants before AI", () => {
+  const entries = [
+    visit("a", "Witkoff und Kushner erstmals in Kiew erwartet", "Die US-Gesandten Witkoff und Kushner kommen nach Gesprächen in Moskau nach Kiew."),
+    visit("b", "Ukraine-News: US-Vermittler Witkoff und Kushner in Kiew empfangen", "Die US-Sondergesandten Steve Witkoff und Jared Kushner sind in Kiew eingetroffen."),
+    visit("c", "Krieg in der Ukraine: US-Unterhändler in Kyjiw", "Die US-Unterhändler Jared Kushner und Steve Witkoff sind erstmals in Kyjiw eingetroffen."),
+  ];
+  for (const input of [entries, [...entries].reverse()]) {
+    const groups = duplicateGroups(input);
+    assert.equal(groups.length, 1);
+    assert.equal(groups[0].duplicate_ids.length, 2);
+    assert.equal(clusterItems(input.map(s => s.sources[0]), [], now).length, 1);
+  }
+  assert.equal(clusterItems([entries[1].sources[0]], [entries[0]], now)[0].story_id, "a");
+  assert.equal(diplomaticVisit(entries[2]).destination, "kyjiw");
+});
+
+test("visit identity is generic, while one shared actor or a new city is insufficient", () => {
+  const base = visit("base", "Unterhändler Anna Sommer und Tom Winter in Nordstadt erwartet", "Die Unterhändler Anna Sommer und Tom Winter besuchen Nordstadt.");
+  const same = visit("same", "Gesandte Sommer und Winter in Nordstadt angekommen", "Die Gesandten Sommer und Winter führen Gespräche.");
+  assert.equal(duplicateGroups([base, same]).length, 1);
+  for (const [title, summary] of [
+    ["Gesandte Sommer und Winter in Südstadt", "Die Gesandten Sommer und Winter sind in Südstadt."],
+    ["Gesandte Sommer und Herbst in Nordstadt", "Die Gesandten Sommer und Herbst treffen ein."],
+    ["Gesandte Sommer in Nordstadt erwartet", "Die Gesandte Anna Sommer reist in die Stadt."],
+    ["Angriff in Nordstadt während Besuch der Gesandten", "Die Gesandten Sommer und Winter führen dort Gespräche."],
+    ["Neuer Besuch: Gesandte Sommer und Winter in Nordstadt", "Die Gesandten Sommer und Winter kommen zurück."],
+  ]) {
+    const separate = visit("separate", title, summary);
+    assert.equal(duplicateGroups([base, separate]).length, 0, title);
+    assert.notEqual(clusterItems([separate.sources[0]], [base], now)[0].story_id, "base", title);
+  }
+});
+
+test("visit windows use original event dates and cannot grow through pairwise chains", () => {
+  const make = (id, date) => visit(id, "Gesandte Sommer und Winter in Nordstadt erwartet", "Die Gesandten Sommer und Winter führen Gespräche.", { first_seen: date, published_at: date, last_updated: date });
+  assert.equal(duplicateGroups([make("a", "2026-09-01"), make("b", "2026-09-10")]).length, 0);
+  assert.equal(duplicateGroups([make("a", "invalid"), make("b", "invalid")]).length, 0);
+  const entries = [make("middle", "2026-09-05"), make("early", "2026-09-01"), make("late", "2026-09-09")];
+  entries[0].living_file = { consolidations: [{ at: now }] };
+  assert.equal(duplicateGroups(entries)[0].duplicate_ids.length, 1);
+  mergeLivingFiles(entries, [{ canonical_id: "middle", duplicate_ids: ["early", "late"], reason: "stale-plan" }], now);
+  assert.equal(entries.filter(s => s.listed === false).length, 1);
+});
+
+test("visit consolidation retains all checked texts and queues new source combinations", () => {
+  const a = visit("a", "US-Vermittler Sommer und Winter in Nordstadt empfangen", "Die US-Vermittler Sommer und Winter sind eingetroffen.");
+  const b = visit("b", "Gesandte Sommer und Winter erstmals in Nordstadt erwartet", "Die Gesandten Sommer und Winter reisen nach Nordstadt.");
+  b.pending_update = { sources: [source("Neue Stellungnahme", "https://example.org/update")] };
+  const entries = [a, b], before = structuredClone(entries);
+  const groups = duplicateGroups(entries);
+  assert.equal(mergeLivingFiles(entries, groups, now).length, 1);
+  assert.deepEqual(duplicateGroups(entries), []);
+  for (let i = 0; i < entries.length; i++) for (const field of ["title", "source_summary", "analysis", "claims", "sources", "versions", "published_at", "last_updated", "current_version"])
+    assert.deepEqual(entries[i][field], before[i][field]);
+  assert.equal(a.pending_update.sources.length, 3);
+  assert.equal(clusterItems([b.sources[0]], entries, now)[0].story_id, "a");
+});
+
+test("article identity follows changed publisher slugs, not arbitrary IDs or query resources", () => {
+  assert.equal(documentKey("https://www.stern.de/alt-38205422.html?utm_source=x#top"), documentKey("https://www.stern.de/neu-38205422.html"));
+  assert.notEqual(documentKey("https://example.org/a?id=1"), documentKey("https://example.org/a?id=2"));
+  assert.equal(documentKey("javascript:alert(1)"), "");
+});
+
+test('MDR headline revisions keep one incident, while other documents and places stay separate', () => {
+  const base = 'https://www.mdr.de/nachrichten/sachsen-anhalt/halle/saalekreis/';
+  const early = base + 'evakuierung-entschaerfung-100,braunsbedra-fliegerbombe-100.html';
+  const later = base + 'evakuierung-entschaerfung-108,braunsbedra-fliegerbombe-100.html';
+  assert.equal(documentKey(early), documentKey(later));
+  assert.notEqual(documentKey(early), documentKey(base + 'evakuierung-entschaerfung-100,andere-fliegerbombe-100.html'));
+  assert.notEqual(documentKey(early), documentKey(early.replace('mdr.de', 'example.org')));
+  const original = story('mdr-old', 'Zwei Blindgänger in Braunsbedra entdeckt', { sources: [source('Zwei Blindgänger in Braunsbedra entdeckt', early)] });
+  const update = story('mdr-new', 'Laut MDR: In Braunsbedra drei Weltkriegsbomben entschärft', { source_summary: 'Bei Bauarbeiten im Saalekreis wurden Bomben gefunden.', sources: [source('Drei Weltkriegsbomben in Braunsbedra entschärft', later)] });
+  assert.deepEqual(fileSubject(update).places, ['braunsbedra'], 'a capitalized locative must not fall back to construction work as an apparent place');
+  const before = structuredClone([original, update]);
+  assert.equal(clusterItems([update.sources[0]], [original], now)[0].story_id, original.story_id);
+  const groups = duplicateGroups([original, update]);
+  assert.equal(groups.length, 1);
+  assert.equal(mergeLivingFiles([original, update], groups, now).length, 1);
+  for (const [i, record] of [original, update].entries()) {
+    for (const field of ['title', 'analysis', 'sources', 'versions', 'published_at']) assert.deepEqual(record[field], before[i][field]);
+  }
+  const otherPlace = story('elsewhere', 'Bomben in Halle entschärft', { sources: [source('Bomben in Halle entschärft', later)] });
+  assert.equal(duplicateGroups([before[0], otherPlace]).length, 0, 'same URL alone cannot override an explicit different place');
+});
+test("object, place and time distinguish follow-up from a different incident or response", () => {
+  assert.equal(livingFileMatch(source("Polizei geht von Sabotage an Umspannwerk in Dormagen aus"), dormagen).score, 0.98);
+  assert.equal(livingFileMatch(source("Polizei geht von Sabotage an Umspannwerk in Oldenburg aus"), dormagen).score, 0);
+  assert.equal(livingFileMatch(source("Polizei geht von Sabotage an Umspannwerk in Dormagen aus", undefined, { published_at: "2026-10-01" }), dormagen).score, 0);
+  assert.equal(subjectConflict(source("Hessen erhöht Schutz für Umspannwerke"), dormagen), true);
+  assert.equal(fileSubject({ title: "Sabotage an Umspannwerk Jänschwalde", summary: "Das Schreiben wurde in Nordrhein-Westfalen abgeschickt." }).key, "grid_incident:janschwalde");
+  assert.equal(fileSubject(source("Sabotage an Umspannwerk in Dormagen und weiterer Einsatz in Oldenburg")).key, null);
+  assert.equal(livingFileMatch(source("Weiterer Angriff an Umspannwerk in Dormagen"), dormagen).score, 0);
+});
+test("known existing document is routed before high-priority unanchored batch entries", () => {
+  const existing = story("old", "Erste Nachricht zum Stromnetz", { sources: [source("Erste Nachricht zum Stromnetz", "https://example.org/known")] });
+  const items = [source("Polizei untersucht Sabotage an Umspannwerk in Dormagen", "https://example.org/new", { source_priority: 100 }), source("Polizei untersucht Sabotage an Umspannwerk in Dormagen", "https://example.org/known", { source_priority: 1 })];
+  for (const input of [items, [...items].reverse()]) {
+    const clusters = clusterItems(input, [existing], now);
+    assert.equal(clusters.length, 1);
+    assert.equal(clusters[0].story_id, "old");
+    assert.equal(clusters[0].sources.length, 2);
+  }
+});
+test("high title similarity and broad policy words cannot override different places", () => {
+  const incoming = source("Mutmaßlich Sabotage-Versuch an Umspannwerk in Oldenburg");
+  assert.notEqual(clusterItems([incoming], [dormagen], now)[0].story_id, "dormagen");
+  const german = story("de", "Kommission genehmigt deutschen Kapazitätsmechanismus");
+  assert.notEqual(clusterItems([source("Kommission genehmigt französischen Kapazitätsmechanismus")], [german], now)[0].story_id, "de");
+});
+test("different German election jurisdictions never become one event", () => {
+  const saxonyAnhalt = source("Vor der Wahl: Stimmung in Sachsen-Anhalt", "https://example.org/sachsen-anhalt");
+  const berlin = source("BerlinTrend kurz vor der Wahl: Stimmung vor der Berlin-Wahl", "https://example.org/berlin");
+  assert.deepEqual(fileSubject(saxonyAnhalt).elections, ["sachsen-anhalt"]);
+  assert.deepEqual(fileSubject(berlin).elections, ["berlin"]);
+  assert.equal(subjectConflict(saxonyAnhalt, berlin), true);
+  assert.equal(clusterItems([saxonyAnhalt, berlin], [], now).length, 2);
+});
+
+test("named company and conflict differences guard ingestion as well as stale merge plans", () => {
+  for (const [a, b] of [
+    ["Nordstern GmbH beantragt Insolvenzverfahren", "Südstern GmbH beantragt Insolvenzverfahren"],
+    ["Nordstern Energie GmbH beantragt Insolvenzverfahren", "Südstern Energie GmbH beantragt Insolvenzverfahren"],
+    ["Nordland-Krieg: US-Unterhändler beraten über Verhandlungen", "Südland-Krieg: US-Unterhändler beraten über Verhandlungen"],
+  ]) {
+    const canonical = story("canonical", a), other = story("other", b);
+    const entries = [canonical, other], before = structuredClone(entries);
+    assert.equal(subjectConflict(canonical, other), true);
+    assert.deepEqual(duplicateGroups(entries), []);
+    assert.equal(clusterItems([source(b)], [canonical], now).length, 1);
+    assert.notEqual(clusterItems([source(b)], [canonical], now)[0].story_id, canonical.story_id);
+    assert.deepEqual(mergeLivingFiles(entries, [{ canonical_id: "canonical", duplicate_ids: ["other"], reason: "stale_plan" }], now), []);
+    assert.deepEqual(entries, before);
+  }
+});
+
+test("company identities retain the full compound name, not a common industry suffix", () => {
+  assert.deepEqual(namedSubjects({ title: "Die Nordstern Energie GmbH beantragt Insolvenzverfahren" }).companies, ["nordstern energie:gmbh"]);
+  assert.deepEqual(namedSubjects({ title: "Gericht bestellt Verwalter für Nordstern Energie GmbH" }).companies, ["nordstern energie:gmbh"]);
+  assert.deepEqual(fileSubject({ title: "Auswahl von Projekten in Sachsen" }).elections, []);
+  assert.deepEqual(fileSubject({ title: "Landtagswahl in Sachsen" }).elections, ["sachsen"]);
+});
+test("consolidation is idempotent, preserves histories, queues review and routes aliases", () => {
+  const canonical = structuredClone(dormagen);
+  const duplicate = story("duplicate", "Polizei: Verdächtiger Gegenstand an Umspannwerk in Dormagen", { pending_update: { sources: [source("Sabotage in Dormagen", "https://example.org/pending")], reason: "AI_PROVIDER_UNAVAILABLE" }, followups: [{ followup_id: "f1", status: "scheduled" }] });
+  const beforeCanonical = structuredClone(canonical), beforeDuplicate = structuredClone(duplicate);
+  const stories = [canonical, duplicate];
+  const groups = [{ canonical_id: canonical.story_id, duplicate_ids: [duplicate.story_id], reason: "test" }];
+  assert.equal(mergeLivingFiles(stories, groups, now).length, 1);
+  assert.equal(mergeLivingFiles(stories, groups, now).length, 0);
+  for (const key of ["analysis", "claims", "versions", "current_version", "sources", "last_updated", "published_at"]) assert.deepEqual(canonical[key], beforeCanonical[key]);
+  for (const key of ["analysis", "claims", "versions", "sources", "pending_update", "last_updated"]) assert.deepEqual(duplicate[key], beforeDuplicate[key]);
+  assert.equal(duplicate.listed, false);
+  assert.equal(canonical.pending_update.sources.length, 3);
+  assert.equal(canonical.followups[0].origin_story_id, "duplicate");
+  const clusters = clusterItems([source("Neuer Ermittlungsstand", duplicate.sources[0].url)], stories, now);
+  assert.equal(clusters[0].story_id, canonical.story_id);
+  assert.equal(clusters[0].existing_story, canonical);
+});
+test("automatic merging excludes other places, response policies and multi-event roundups", () => {
+  const duplicate = story("dup", "Polizei geht von Sabotage an Umspannwerk in Dormagen aus");
+  const separate = [story("elsewhere", "Sabotage an Umspannwerk in Oldenburg"), story("response", "Hessen erhöht Schutz für Umspannwerke"), story("roundup", "Sabotage an Umspannwerk in Dormagen und in Oldenburg")];
+  const groups = duplicateGroups([dormagen, duplicate, ...separate]);
+  assert.equal(groups.length, 1);
+  assert.deepEqual([groups[0].canonical_id, ...groups[0].duplicate_ids].sort(), ["dormagen", "dup"].sort());
+});
+
+test("reports about the same public-network cyber incident become one living file", () => {
+  const rbb = story("rbb", "Hackergruppe veröffentlicht Daten nach Angriff auf Berliner Landesnetz", {
+    last_updated: "2026-09-04T18:08:49Z",
+    sources: [source("Hackergruppe veröffentlicht Daten nach Angriff auf Berliner Landesnetz", "https://www.rbb24.de/politik/beitrag/2026/09/berlin-hacker-angriff-landesnetz-daten-veroeffentlicht.html")],
+  });
+  const dlf = story("dlf", "Cyberkriminalität - Hacker veröffentlichen nach Angriff Daten aus Berliner IT-Netz im Darknet - offenbar auch sicherheitsrelevante Informationen", {
+    last_updated: "2026-09-04T17:35:19Z",
+    sources: [source("Cyberkriminalität: Hacker veröffentlichen nach Angriff Daten aus Berliner IT-Netz", "https://www.deutschlandfunk.de/berlin-it-netz-cyberangriff-100.html")],
+  });
+  const official = source("Aktuelle Lage nach dem IKT-Vorfall im Landesnetz Berlin und der Veröffentlichung der gestohlenen Daten", "https://www.berlin.de/rbmskzl/aktuelles/pressemitteilungen/2026/pressemitteilung.1710705.php");
+  assert.equal(fileSubject(rbb).key, "cyber_incident:berlin");
+  assert.equal(fileSubject(dlf).key, "cyber_incident:berlin");
+  assert.equal(fileSubject(official).key, "cyber_incident:berlin");
+  assert.deepEqual(duplicateGroups([rbb, dlf]), [{ canonical_id: "rbb", duplicate_ids: ["dlf"], reason: "specific_object_or_leading_document" }]);
+  assert.equal(clusterItems([official], [rbb], now)[0].story_id, "rbb");
+  assert.equal(livingFileMatch(source("Cyberangriff auf Hamburger Landesnetz"), rbb).score, 0);
+  assert.equal(fileSubject(source("Cyberangriff auf Berliner Krankenhausnetz")).key, null);
+  assert.equal(fileSubject(source("Hacker melden Daten aus Landesnetz nach Ultimatum")).key, null);
+});
+
+test("synonymous headlines for the same dated event become one file before another live card is built", () => {
+  const dw = story("dw", "Putin: Drei Tage Angriffspause während Ukraine-Verhandlungen", {
+    first_seen: "2026-09-05T13:01:00Z", last_updated: "2026-09-05T14:17:03Z",
+    sources: [source("Putin: Drei Tage Angriffspause während Ukraine-Verhandlungen", "https://www.dw.com/de/a-1", { published_at: "2026-09-05T13:01:00Z", summary: "Die Ankündigung gilt für drei Tage nur für Kyjiw." })],
+  });
+  const mdr = story("mdr", "Ukraine-News: Putin verkündet dreitägigen Angriffsstopp auf Kiew", {
+    first_seen: "2026-09-05T13:53:00Z", last_updated: "2026-09-05T14:16:34Z",
+    sources: [source("Ukraine-News: Putin verkündet dreitägigen Angriffsstopp auf Kiew", "https://www.mdr.de/nachrichten/a.html", { published_at: "2026-09-05T13:53:00Z", summary: "Putin kündigte an, drei Tage lang Kiew nicht anzugreifen." })],
+  });
+  assert.deepEqual(duplicateGroups([dw, mdr]), [{ canonical_id: "dw", duplicate_ids: ["mdr"], reason: "specific_object_or_leading_document" }]);
+  assert.equal(clusterItems([dw.sources[0], mdr.sources[0]], [], "2026-09-05T14:00:00Z").length, 1);
+});
+
+test("subsequent consolidation resolves older aliases directly and preserves the old target history", () => {
+  const a = structuredClone(dormagen), b = story("b", dormagen.title), c = story("c", dormagen.title);
+  const stories = [a, b, c];
+  mergeLivingFiles(stories, [{ canonical_id: "b", duplicate_ids: ["c"], reason: "first" }], now);
+  mergeLivingFiles(stories, [{ canonical_id: "dormagen", duplicate_ids: ["b"], reason: "second" }], now);
+  assert.deepEqual(a.living_file.merged_story_ids.sort(), ["b", "c"]);
+  assert.deepEqual(c.retirement.canonical_story_ids, ["dormagen"]);
+  assert.deepEqual(c.retirement_history[0].canonical_story_ids, ["b"]);
+  assert.equal(clusterItems([source("Aktualisierung", c.sources[0].url)], stories, now)[0].story_id, "dormagen");
+});
+
+test("Jänschwalde, NRW and a shared investigation stay distinct but cross-linked", () => {
+  const janschwalde = story("janschwalde", "Sabotage an Umspannwerk Jänschwalde: Bekennerschreiben aufgetaucht", {
+    source_summary: "Nach dem Anschlag auf das Umspannwerk bei Jänschwalde ist ein Bekennerschreiben eingegangen. Seine Echtheit ist offen.",
+  });
+  const roundup = story("ard", "ARD-Informationen: Polizeibehörden halten Bekennerschreiben für authentisch", {
+    source_summary: "Die Polizei hält die Bekennerschreiben zu den Sabotageakten auf die Stromversorgung für authentisch. Ein mutmaßlicher Alleintäter bekennt sich zu den Anschlägen in Jänschwalde und in Bergheim bei Köln.",
+  });
+  const corpus = [janschwalde, dormagen, roundup];
+  const before = structuredClone(corpus);
+  assert.equal(fileSubject(roundup).multipleEvents, true);
+  assert.equal(fileSubject(roundup).key, null);
+  assert.deepEqual(duplicateGroups(corpus), []);
+  const incoming = source(roundup.title, roundup.sources[0].url, { summary: roundup.source_summary });
+  const clustered = clusterItems([incoming], [janschwalde, dormagen], now);
+  assert.notEqual(clustered[0].story_id, janschwalde.story_id);
+  assert.notEqual(clustered[0].story_id, dormagen.story_id);
+  assert.deepEqual(relatedStories(roundup, corpus).map((item) => item.story.story_id).sort(), ["dormagen", "janschwalde"]);
+  assert.deepEqual(corpus, before, "a thematic link cannot copy facts, alter dates or merge stories");
+  assert.equal(relatedStories(roundup, [roundup, story("supply", "Stromversorgung: Netzentgelte sinken")]).length, 0);
+});
+
+test("a known article URL cannot override newly widened multi-attack scope", () => {
+  const incoming = source("Sabotage am Stromnetz: Ermittler prüfen mehrere Anschläge", dormagen.sources[0].url, {
+    summary: "Nach dem Angriff in Dormagen untersucht die Polizei weitere Angriffe auf die Stromversorgung.",
+  });
+  assert.equal(livingFileMatch(incoming, dormagen).score, 0);
+  assert.equal(subjectConflict(incoming, dormagen), true);
+  assert.notEqual(clusterItems([incoming], [dormagen], now)[0].story_id, dormagen.story_id);
+});
+test("related links are capped, relevant, unique and never filled by shared category alone", () => {
+  const relevant = Array.from({ length: 7 }, (_, i) => story(`related-${i}`, `Sicherheitsmaßnahmen für Umspannwerke ${i}`));
+  const irrelevant = story("offshore", "Neue Ausschreibung für Windenergie auf See", { topic: ["Energie"] });
+  const archived = story("archived", "Sabotage an Umspannwerk in Essen", { listed: false });
+  const results = relatedStories(dormagen, [dormagen, ...relevant, irrelevant, archived]);
+  assert.equal(results.length, 5);
+  assert.ok(results.every(({ story }) => story.story_id.startsWith("related-")));
+  assert.equal(relatedStories(dormagen, [dormagen, irrelevant]).length, 0);
+  assert.equal(renderRelatedStories(dormagen, [dormagen, irrelevant]), "");
+  assert.match(renderRelatedStories(dormagen, [dormagen, ...relevant]), /data-search-exclude/);
+});
+
+test("the same politician and court do not make separate legal questions a concrete topic", () => {
+  const ballot = story("ballot", "Kongresswahlen: Trump zieht im Streit um Briefwahl erneut vor Supreme Court", { source_summary: "Donald Trump wendet sich im Streit um die Briefwahl an den Supreme Court." });
+  const citizenship = story("citizenship", "Federal judge blocks Trump's new bid to abolish birthright citizenship citing Supreme Court precedent", { source_summary: "Donald Trump scheitert mit einem Vorstoß gegen das Geburtsortsprinzip." });
+  assert.deepEqual(relatedStories(ballot, [ballot, citizenship]), []);
+});
+
+test("temporary closures do not link Iguazú waterfalls to unrelated airports", () => {
+  const iguazu = story("iguazu", "Laut stern: Besuchersteg an den Iguazú-Wasserfällen vorübergehend gesperrt", {
+    source_summary: "Der stern berichtet über eine vorübergehende Sperrung des Besucherstegs an den Iguazú-Wasserfällen. Als Grund werden Sicherheitsbedenken genannt. Die Wasserfälle liegen an der Grenze zwischen Argentinien und Brasilien. Nach dem Bericht führte der Fluss nach ergiebigen Regenfällen stark aufgewühltes Wasser. Der stern stellt diesen Zusammenhang mit dem Klima-Phänomen El Niño her.",
+  });
+  const counterpart = story("iguazu-flood", "Laut stern: Zugang zu den Iguazú-Wasserfällen wegen Hochwassers gesperrt", {
+    source_summary: "Der stern berichtet, dass die Iguazú-Wasserfälle an der Grenze zwischen Brasilien und Argentinien wegen Hochwassers für Touristen gesperrt wurden. Die Sperrung betrifft den Zugang zum Nationalpark Iguazú. Nach dem Bericht warnten Behörden außerdem vor steigenden Pegeln der Flüsse Paraná und Uruguay. Als Auslöser werden Regenfälle im Zusammenhang mit dem Klima-Phänomen El Niño genannt.",
+  });
+  const nuremberg = story("nuremberg", "Flughafen Nürnberg vorübergehend gesperrt - laut Polizei keine Gefahr", {
+    source_summary: "Der Deutschlandfunk berichtet über eine vorübergehende Sperrung des Flughafens Nürnberg wegen einer sogenannten Luftnotlage. Nach Angaben der Polizei bestand keine Gefahr; die Ermittlungen zur Ursache des Alarms laufen weiter. Laut dem Bericht sahen drei Piloten unabhängig voneinander ein Objekt, bei dem es sich möglicherweise um eine Drohne handelte.",
+  });
+  const stuttgart = story("stuttgart", "Laut SWR: Flughafen Stuttgart nach Bombenbehauptung vorübergehend gesperrt", {
+    source_summary: "Der SWR berichtet über einen Polizeieinsatz am Flughafen Stuttgart nach der Äußerung eines Mannes an einem Gate, er habe eine Bombe dabei. Der Flugbetrieb wurde laut dem Bericht kurzzeitig eingestellt; die Bundespolizei begründet die weiträumige Sperrung damit, dass der Mann zuvor die Sicherheitskontrolle passiert habe und sich im Gate-Bereich bewegt habe.",
+  });
+  // In a real-sized corpus generic closure words fall below the frequency cap.
+  const corpus = [iguazu, counterpart, nuremberg, stuttgart,
+    ...Array.from({ length: 20 }, (_, i) => story(`other-${i}`, `Unabhängiges Ereignis ${i}`))];
+  const before = structuredClone(corpus);
+  assert.deepEqual(relatedStories(iguazu, corpus).map(({ story }) => story.story_id), ["iguazu-flood"]);
+  assert.deepEqual(corpus, before, "display links cannot mutate articles or histories");
+});
+
+test("inflected closure wording alone is not a concrete common object", () => {
+  const bridge = story("bridge", "Vorübergehende Sperrung: gesperrte Brücke in Hamburg", { source_summary: "Vorübergehende Sperrungen aus Sicherheitsgründen." });
+  const museum = story("museum", "Vorübergehende Sperrung: gesperrte Ausstellung in Dresden", { source_summary: "Vorübergehende Sperrungen aus Sicherheitsgründen." });
+  assert.deepEqual(relatedStories(bridge, [bridge, museum]), []);
+});
+
+test("attributed headlines need a shared subject beyond their publisher introduction", () => {
+  for (const [prefix, publisher] of [
+    ["Nach Angaben des Deutschlandfunks:", "Deutschlandfunk"],
+    ["Nach Informationen des Hamburger Abendblatts:", "Hamburger Abendblatt"],
+    ["Laut Berliner Morgenpost:", "Berliner Morgenpost"],
+  ]) {
+    const sweden = story("sweden", `${prefix} Regierungsbildung in Schweden erneut gescheitert`, {
+      source_summary: `${publisher} berichtet über die Regierungsbildung in Schweden und die fehlende Mehrheit.`,
+    });
+    const majority = story("majority", "Regierungsbildung in Schweden: Parteien suchen eine Mehrheit", {
+      source_summary: "Die Parteien in Schweden beraten über eine Mehrheit für die Regierungsbildung.",
+    });
+    const unrelated = story("insolvency", `${prefix} Getty Images beantragt Insolvenz`, {
+      source_summary: `${publisher} berichtet über den Insolvenzantrag des Bildanbieters Getty Images.`,
+    });
+    const corpus = [sweden, majority, unrelated,
+      ...Array.from({ length: 20 }, (_, i) => story(`other-${i}`, `Unabhängiges Ereignis ${i}`))];
+    const before = structuredClone(corpus);
+    assert.deepEqual(relatedStories(sweden, corpus).map(({ story }) => story.story_id), ["majority"], prefix);
+    assert.doesNotMatch(renderRelatedStories(sweden, corpus), /Getty Images/);
+    assert.deepEqual(corpus, before, "display matching must preserve attributed titles, sources and histories");
+  }
+});
+
+test("a broadcaster remains a concrete subject when it is the news actor", () => {
+  const app = story("app", "Deutschlandfunk modernisiert Nachrichten-App", {
+    source_summary: "Deutschlandfunk modernisiert die Nachrichten-App für seine Hörerschaft.",
+  });
+  const release = story("release", "Deutschlandfunk modernisiert Nachrichten-App für Smartphones", {
+    source_summary: "Die Nachrichten-App des Deutschlandfunks erhält neue Funktionen.",
+  });
+  assert.deepEqual(relatedStories(app, [app, release]).map(({ story }) => story.story_id), ["release"]);
+});
+
+test("headless runs consolidate before AI and never retry a retired duplicate", async () => {
+  const registrySource = { source_id: "test", publisher_id: "test", name: "Test", url: "https://example.org/", feed_url: "https://example.org/rss", enabled: true, source_type: "official_rss", primary_source: true, access: { status: "public", article: "metadata_only", cost_usd: 0 }, frequency_class: "high_frequency" };
+  const canonical = structuredClone(dormagen);
+  const duplicate = story("old", "Polizei geht von Sabotage an Umspannwerk in Dormagen aus", { last_updated: "2026-09-04T05:00:00Z", pending_update: { reason: "AI_PROVIDER_UNAVAILABLE", sources: [source("Sabotage an Umspannwerk in Dormagen", "https://example.org/new-source")] } });
+  let captured, calls = [];
+  const options = { dryRun: true, now, registry: { schema_version: "1.0", sources: [registrySource], policy: {} }, state: { source_status: {}, seen_items: {}, pending_story_ids: [], relevance_filter_version: "4.0" }, storyStore: { stories: [canonical, duplicate] }, usage: { runs: [] }, newsroom: { source_items: {}, events: {}, event_sources: [], discovery_candidates: [] }, budgetFx: { rate_date: "2026-09-04", rate_usd_per_eur: 1.16 }, fetchFeedImpl: async () => ({ not_modified: true, final_url: registrySource.feed_url }), callAiImpl: async (candidates) => { calls.push(...candidates.map((item) => item.story_id)); throw Object.assign(new Error("TEST_PROVIDER_UNAVAILABLE"), { requestAttempts: 0 }); }, captureState: (value) => { captured = value; } };
+  const first = await runWirkungsticker(options);
+  assert.deepEqual(calls, [canonical.story_id]);
+  assert.equal(first.living_file_merges.length, 1);
+  assert.equal(first.updated_stories, 0);
+  assert.equal(first.published_stories, 0);
+  assert.equal(first.public_changed, true);
+  assert.deepEqual(captured.state.pending_story_ids, [canonical.story_id]);
+  assert.equal(captured.storyStore.stories.find((item) => item.story_id === canonical.story_id).pending_update.consolidation, true);
+  calls = [];
+  const second = await runWirkungsticker({ ...options, ...captured });
+  assert.deepEqual(calls, [canonical.story_id]);
+  assert.equal(second.living_file_merges.length, 0);
+  assert.equal(second.public_changed, false);
+});
+
+test("a verified update retains canonical URL/history and uses one new publication version", () => {
+  const old = { ...structuredClone(dormagen), living_file: { merged_story_ids: ["old-alias"], consolidations: [{ story_id: "old-alias" }] }, publication_history: [{ version: 1, published_at: now }] };
+  const at = "2026-09-04T07:00:00Z";
+  const candidate = { ...old, existing_story: old, claims: [], topic: ["Energie"] };
+  const next = publishedRecord(candidate, { summary: "Neue geprüfte Entwicklung", source_summary: "Neu", followups: [] }, { provider: "test", model: "test" }, at);
+  assert.equal(next.slug, old.slug);
+  assert.equal(next.published_at, old.published_at);
+  assert.equal(next.last_updated, at);
+  assert.equal(next.current_version, 2);
+  assert.equal(next.versions.length, 2);
+  assert.deepEqual(next.versions[0], old.versions[0]);
+  assert.deepEqual(next.living_file, old.living_file);
+  assert.equal(next.publication_history.length, 2);
+});
+
+test("a publisher name in the stored summary is not event geography: the same Italian airport article stays one file", () => {
+  const source = { source_id: "dlf-nachrichten", publisher: "Deutschlandfunk", url: "https://www.deutschlandfunk.de/flughafen-catania-bleibt-bis-zum-abend-wegen-aschewolke-des-vulkans-aetna-geschlossen-102.html",
+    title: "Sizilien - Flughafen Catania bleibt bis zum Abend wegen Aschewolke des Vulkans Ätna geschlossen", summary: "Auf der italienischen Mittelmeerinsel Sizilien bleibt der Flughafen Catania wegen einer Aschewolke des Ätna geschlossen.", published_at: "2026-09-15T21:31:50.000Z" };
+  const story = { story_id: "wt-catania", title: "Flughafen Catania bleibt wegen neuer Ätna-Aschewolke bis 22 Uhr geschlossen", published: true, first_seen: source.published_at, last_updated: source.published_at, sources: [source],
+    source_summary: "Der Deutschlandfunk berichtet, dass der Flughafen Catania wegen einer Aschewolke des Ätna bis 22 Uhr geschlossen bleibt." };
+  assert.deepEqual(fileSubject(story).countries, [], "Deutschlandfunk is a publisher, not Germany");
+  assert.deepEqual(fileSubject({ ...story, source_summary: "Die Bundesregierung reagiert auf den Deutschlandfunk-Bericht." }).countries, ["DE"], "real German subjects still count");
+  const update = { ...source, url: source.url.replace("-102.html", "-104.html"), published_at: "2026-09-15T22:46:01.000Z" };
+  assert.equal(subjectConflict(update, story), false);
+  assert.ok(existingStoryMatch(update, { story, title: story.title, last_updated: story.last_updated, anchored_story: { ...story, sources: anchoredSources(story) } }, "2026-09-15T22:52:00.000Z") >= 0.64);
+});

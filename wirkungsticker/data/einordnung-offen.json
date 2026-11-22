@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-11-22T02:24:06.675Z",
+  "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
+  "beitraege": [
+    {
+      "slug": "wenn-jeder-zum-narzissten-wird-hilft-keine-diagnose-mehr-71a749",
+      "titel": "Wenn jeder zum Narzissten wird, hilft keine Diagnose mehr",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-02T04:42:37.821Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-jeder-zum-narzissten-wird-hilft-keine-diagnose-mehr-71a749/"
+    },
+    {
+      "slug": "presseclub-wenn-angst-zur-regierungsfrage-gemacht-wird-750927",
+      "titel": "Presseclub: Wenn Angst zur Regierungsfrage gemacht wird",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-01T20:52:58.178Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/presseclub-wenn-angst-zur-regierungsfrage-gemacht-wird-750927/"
+    },
+    {
+      "slug": "wenn-verunsicherung-politisch-wird-3285d7",
+      "titel": "Wenn Verunsicherung politisch wird",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-31T06:15:34.924Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-verunsicherung-politisch-wird-3285d7/"
+    },
+    {
+      "slug": "zwischen-zorn-und-zuversicht-was-dieser-polit-talk-sichtbar-macht-182f9b",
+      "titel": "Zwischen Zorn und Zuversicht: Was dieser Polit-Talk sichtbar macht",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-31T06:15:23.109Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-zorn-und-zuversicht-was-dieser-polit-talk-sichtbar-macht-182f9b/"
+    },
+    {
+      "slug": "wenn-berechtigter-protest-in-gewalt-kippt-2ba64a",
+      "titel": "Wenn berechtigter Protest in Gewalt kippt",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-30T12:48:36.835Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-berechtigter-protest-in-gewalt-kippt-2ba64a/"
+    },
+    {
+      "slug": "nachgesehen-wenn-rote-linien-verhandelbar-werden-a32e79",
+      "titel": "Nachgesehen: Wenn rote Linien verhandelbar werden",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-30T08:48:59.152Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-wenn-rote-linien-verhandelbar-werden-a32e79/"
+    },
+    {
+      "slug": "markus-lanz-zwischen-jugendprotest-staatsvertrauen-und-politischer-uberforderung-8ba113",
+      "titel": "Markus Lanz: Zwischen Jugendprotest, Staatsvertrauen und politischer Überforderung",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-28T14:12:54.843Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/markus-lanz-zwischen-jugendprotest-staatsvertrauen-und-politischer-uberforderung-8ba113/"
+    },
+    {
+      "slug": "der-finanzcoach-in-der-jackentasche-mehr-zugang-weniger-eigenes-urteil-6f02f5",
+      "titel": "Der Finanzcoach in der Jackentasche: Mehr Zugang, weniger eigenes Urteil?",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-28T10:28:33.253Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/der-finanzcoach-in-der-jackentasche-mehr-zugang-weniger-eigenes-urteil-6f02f5/"
+    },
+    {
+      "slug": "die-rechnung-der-einschuchterung-bfbb2c",
+      "titel": "Die Rechnung der Einschüchterung",
+      "art": "opinion_analysis",
+      "veroeffentlicht": "2026-10-28T08:22:44.866Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/die-rechnung-der-einschuchterung-bfbb2c/"
+    },
+    {
+      "slug": "wiederaufbau-ist-noch-kein-wohlstandsgewinn-63ce3f",
+      "titel": "Wiederaufbau ist noch kein Wohlstandsgewinn",
+      "art": "opinion_analysis",
+      "veroeffentlicht": "2026-10-28T08:22:19.964Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wiederaufbau-ist-noch-kein-wohlstandsgewinn-63ce3f/"
+    },
+    {
+      "slug": "pflege-zu-hause-wenn-entlastung-am-system-hangen-bleibt-7b293e",
+      "titel": "Pflege zu Hause: Wenn Entlastung am System hängen bleibt",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-27T07:30:37.131Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/pflege-zu-hause-wenn-entlastung-am-system-hangen-bleibt-7b293e/"
+    },
+    {
+      "slug": "solidaritat-ist-keine-stimmung-sondern-eine-frage-der-institutionen-62f396",
+      "titel": "Solidarität ist keine Stimmung, sondern eine Frage der Institutionen",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-27T07:29:29.105Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/solidaritat-ist-keine-stimmung-sondern-eine-frage-der-institutionen-62f396/"
+    },
+    {
+      "slug": "frankreich-als-warnbild-nicht-als-vorhersage-a5aeb5",
+      "titel": "Frankreich als Warnbild, nicht als Vorhersage",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-26T00:03:36.304Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/frankreich-als-warnbild-nicht-als-vorhersage-a5aeb5/"
+    },
+    {
+      "slug": "was-bringt-psychotherapie-zwischen-wirksamer-hilfe-und-ungerechter-versorgung-f19560",
+      "titel": "Was bringt Psychotherapie? Zwischen wirksamer Hilfe und ungerechter Versorgung",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-26T00:03:24.345Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-bringt-psychotherapie-zwischen-wirksamer-hilfe-und-ungerechter-versorgung-f19560/"
+    },
+    {
+      "slug": "markus-lanz-deutschlands-zukunft-zwischen-industrieumbau-china-und-dem-versprechen-auf-innovati-2a407c",
+      "titel": "Markus Lanz: Deutschlands Zukunft zwischen Industrieumbau, China und dem Versprechen auf Innovation",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-23T22:56:57.390Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/markus-lanz-deutschlands-zukunft-zwischen-industrieumbau-china-und-dem-versprechen-auf-innovati-2a407c/"
+    },
+    {
+      "slug": "zwischen-wahlkampf-und-weltordnung-was-maybrit-illner-sichtbar-macht-27816e",
+      "titel": "Zwischen Wahlkampf und Weltordnung: Was „maybrit illner“ sichtbar macht",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-23T22:56:44.730Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-wahlkampf-und-weltordnung-was-maybrit-illner-sichtbar-macht-27816e/"
+    },
+    {
+      "slug": "nachgehort-zwischen-au-enkanzler-und-stromsteuer-wo-machtwechsel-wirkung-vermutet-und-belege-fe-27b9f7",
+      "titel": "Nachgehört: Zwischen Außenkanzler und Stromsteuer – wo „Machtwechsel“ Wirkung vermutet und Belege fehlen",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-23T22:56:26.287Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-zwischen-au-enkanzler-und-stromsteuer-wo-machtwechsel-wirkung-vermutet-und-belege-fe-27b9f7/"
+    },
+    {
+      "slug": "krebsforschung-hoffnung-entsteht-nicht-nur-im-labor-5743e2",
+      "titel": "Krebsforschung: Hoffnung entsteht nicht nur im Labor",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-23T09:05:44.905Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/krebsforschung-hoffnung-entsteht-nicht-nur-im-labor-5743e2/"
+    },
+    {
+      "slug": "wenn-ki-agenten-handeln-die-lanz-runde-zwischen-aufbruch-und-kontrollverlust-62f51a",
+      "titel": "Wenn KI-Agenten handeln: Die Lanz-Runde zwischen Aufbruch und Kontrollverlust",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-22T12:32:57.506Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-ki-agenten-handeln-die-lanz-runde-zwischen-aufbruch-und-kontrollverlust-62f51a/"
+    },
+    {
+      "slug": "nachgehort-kann-merz-vergesellschaftung-in-berlin-wirklich-stoppen-0243f6",
+      "titel": "Nachgehört: Kann Merz Vergesellschaftung in Berlin wirklich stoppen?",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-22T12:32:43.659Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-kann-merz-vergesellschaftung-in-berlin-wirklich-stoppen-0243f6/"
+    },
+    {
+      "slug": "wenn-ki-die-universitat-personlicher-machen-soll-muss-sie-mehr-konnen-als-antworten-liefern-9ae351",
+      "titel": "Wenn KI die Universität persönlicher machen soll, muss sie mehr können als Antworten liefern",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-21T07:44:03.474Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-ki-die-universitat-personlicher-machen-soll-muss-sie-mehr-konnen-als-antworten-liefern-9ae351/"
+    },
+    {
+      "slug": "deutschland-braucht-investitionen-aber-keine-erfolgsbilanz-auf-vorschuss-c792da",
+      "titel": "Deutschland braucht Investitionen. Aber keine Erfolgsbilanz auf Vorschuss.",
+      "art": "opinion_analysis",
+      "veroeffentlicht": "2026-10-20T10:28:00.688Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/deutschland-braucht-investitionen-aber-keine-erfolgsbilanz-auf-vorschuss-c792da/"
+    },
+    {
+      "slug": "reformen-scheitern-nicht-nur-an-streit-sondern-an-fehlender-ubersetzung-in-entscheidungen-e4a782",
+      "titel": "Reformen scheitern nicht nur an Streit – sondern an fehlender Übersetzung in Entscheidungen",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-20T04:28:11.047Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/reformen-scheitern-nicht-nur-an-streit-sondern-an-fehlender-ubersetzung-in-entscheidungen-e4a782/"
+    },
+    {
+      "slug": "nachgehort-was-europa-von-chinas-industriepolitik-lernen-kann-und-was-nicht-83e20a",
+      "titel": "Nachgehört: Was Europa von Chinas Industriepolitik lernen kann – und was nicht",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-20T04:27:57.773Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-was-europa-von-chinas-industriepolitik-lernen-kann-und-was-nicht-83e20a/"
+    },
+    {
+      "slug": "beamtenstatus-zwischen-schutz-privileg-und-staatsfahigkeit-86b026",
+      "titel": "Beamtenstatus zwischen Schutz, Privileg und Staatsfähigkeit",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-20T04:27:41.712Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/beamtenstatus-zwischen-schutz-privileg-und-staatsfahigkeit-86b026/"
+    },
+    {
+      "slug": "nachgesehen-wenn-die-wechseljahre-mehr-sind-als-hitzewallungen-b7d69b",
+      "titel": "Nachgesehen: Wenn die Wechseljahre mehr sind als Hitzewallungen",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-19T08:48:51.311Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-wenn-die-wechseljahre-mehr-sind-als-hitzewallungen-b7d69b/"
+    },
+    {
+      "slug": "wechseljahre-zwischen-aufklarung-und-der-versuchung-zur-einfachen-antwort-ba5998",
+      "titel": "Wechseljahre: Zwischen Aufklärung und der Versuchung zur einfachen Antwort",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-18T19:43:08.417Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wechseljahre-zwischen-aufklarung-und-der-versuchung-zur-einfachen-antwort-ba5998/"
+    },
+    {
+      "slug": "die-jugend-ist-nicht-still-sie-wird-politisch-aufgeteilt-75e724",
+      "titel": "Die Jugend ist nicht still – sie wird politisch aufgeteilt",
+      "art": "watched",
+      "veroeffentlicht": "2026-10-18T16:08:46.792Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/die-jugend-ist-nicht-still-sie-wird-politisch-aufgeteilt-75e724/"
+    },
+    {
+      "slug": "wenn-ein-berliner-sondierungspapier-zum-machtinstrument-wird-3a110f",
+      "titel": "Wenn ein Berliner Sondierungspapier zum Machtinstrument wird",
+      "art": "listened",
+      "veroeffentlicht": "2026-10-17T06:19:48.210Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-ein-berliner-sondierungspapier-zum-machtinstrument-wird-3a110f/"
+    },
+    {
+      "slug": "ein-mensch-am-boden-ist-keine-buhne-446bc0",
+      "titel": "Ein Mensch am Boden ist keine Bühne",
+      "art": "opinion_analysis",
+      "veroeffentlicht": "2026-10-16T15:52:07.295Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ein-mensch-am-boden-ist-keine-buhne-446bc0/"
+    }
+  ]
+}

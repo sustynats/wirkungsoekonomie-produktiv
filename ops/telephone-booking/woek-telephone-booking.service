@@ -1,0 +1,27 @@
+[Unit]
+Description=WOeK private telephone booking API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=woek-booking
+Group=woek-booking
+WorkingDirectory=/opt/woek-booking/current/ops/telephone-booking
+EnvironmentFile=/etc/woek-telephone-booking.env
+EnvironmentFile=-/etc/woek-telephone-booking-icloud.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/woek-booking/venv/bin/gunicorn --bind 127.0.0.1:8765 --workers 1 --threads 4 --timeout 120 --access-logfile /dev/null wsgi:app
+Restart=on-failure
+RestartSec=5
+UMask=0077
+StateDirectory=woek-telephone-booking
+StateDirectoryMode=0700
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+MemoryMax=256M
+CPUQuota=25%
+
+[Install]
+WantedBy=multi-user.target

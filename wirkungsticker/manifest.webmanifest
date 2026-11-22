@@ -1,0 +1,49 @@
+{
+  "name": "Wirkungsticker",
+  "short_name": "Wirkungsticker",
+  "description": "Quellengebundene Wirkungsnachrichten für Mensch, Planet und Demokratie.",
+  "id": "/wirkungsticker/",
+  "start_url": "/wirkungsticker/?source=pwa",
+  "scope": "/wirkungsticker/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "background_color": "#f7f1e8",
+  "theme_color": "#10243b",
+  "orientation": "any",
+  "lang": "de-DE",
+  "dir": "ltr",
+  "categories": ["news", "education"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/assets/img/brand/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/img/brand/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/img/brand/signet.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Aktuelle Wirkungsnachrichten",
+      "short_name": "Aktuell",
+      "url": "/wirkungsticker/"
+    },
+    {
+      "name": "Hohe systemische Relevanz",
+      "short_name": "Hohe Relevanz",
+      "url": "/wirkungsticker/?thema=high"
+    }
+  ]
+}

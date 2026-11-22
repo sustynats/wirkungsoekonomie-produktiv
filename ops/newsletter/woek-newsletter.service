@@ -1,0 +1,24 @@
+[Unit]
+Description=Wirkungsbrief confirmation and unsubscribe API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=woek-newsletter
+Group=woek-newsletter
+WorkingDirectory=/opt/woek-newsletter/current
+EnvironmentFile=/etc/woek-newsletter.env
+ExecStart=/usr/bin/node --max-old-space-size=96 dist/main.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+MemoryMax=160M
+CPUQuota=25%
+TasksMax=32
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

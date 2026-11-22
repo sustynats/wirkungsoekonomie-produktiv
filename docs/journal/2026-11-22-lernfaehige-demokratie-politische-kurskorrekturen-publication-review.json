@@ -1,0 +1,63 @@
+{
+  "article": "https://wirkungsoekonomie.de/blog/lernfaehige-demokratie-politische-kurskorrekturen.html",
+  "date": "2026-11-22",
+  "author": "Natalie Weber",
+  "repository": "sustynats/wirkungsoekonomie-produktiv",
+  "pdfRepository": "sustynats/wirkungsoekonomie-medien",
+  "sourceManuscriptSha256": "a978ce69fc4c0ceba3265777fcddd13c6ce6fad8cb707966c37010885d57e897",
+  "imageSha256": "08d09e10609eb47cbf57b6b10c4d46b1f55018d1e2b489d67e08168c06476c57",
+  "trackedChanges": 0,
+  "commentsPresent": false,
+  "sourceCount": 21,
+  "tocComponents": 1,
+  "calloutsPreserved": 3,
+  "sourceNumberMapping": {
+    "2": 1,
+    "4": 2,
+    "6": 3,
+    "7": 4,
+    "8": 5,
+    "9": 6,
+    "10": 7,
+    "11": 8,
+    "12": 9,
+    "13": 10,
+    "14": 11,
+    "15": 12,
+    "16": 13,
+    "17": 14,
+    "21": 15,
+    "22": 16,
+    "23": 17,
+    "24": 18,
+    "25": 19,
+    "26": 20
+  },
+  "editorialPrecisions": [
+    {
+      "before": "In der Wirkungsökonomie ergänzen wir diesen Rahmen ausdrücklich um SDG+, etwa für demokratische Resilienz, Rechtsstaatlichkeit, Medienqualität und gesellschaftliche Diskursfähigkeit.",
+      "after": "In der Wirkungsökonomie konkretisieren und ergänzen wir diesen Rahmen ausdrücklich mit SDG+, etwa für demokratische Resilienz, Rechtsstaatlichkeit, Medienqualität und gesellschaftliche Diskursfähigkeit. Demokratie und Rechtsstaatlichkeit sind in der Agenda 2030 und in SDG 16 bereits verankert."
+    },
+    {
+      "before": "Auswahl. Die vollständige theoretische und methodische Einordnung mit Forschungsfragen, Fallbeispielen und zusätzlichen Quellen findet sich im begleitenden wissenschaftlichen Dossier.",
+      "after": "Auswahl der im Beitrag verwendeten Quellen und weiterführender Grundlagen."
+    }
+  ],
+  "additiveExplanation": "Die Nichtkompensation hält harte Schutzgrenzen von einer Verrechnung frei. Die Reverse Merit Order ist eine Bewertungs- und Priorisierungslogik, die kritische Defizite sichtbar hält und eine Gesamtbewertung begrenzen kann. Ziel bleibt positive Netto-Wirkung unter diesen Schutzgrenzen.",
+  "sourceChecks": [
+    "GGO §§ 43-44, Fassung 15.05.2024: amtlicher Text geprüft.",
+    "NKR-Jahresbericht 2026, BT-Drs. 21/8850, Druckseiten 46-47: Viertel ohne Empfehlungen und zwei Drittel ohne Rechtsänderung bestätigt.",
+    "EU Better Regulation: Handbuch 20.11.2026 und Toolbox 01.12.2025 auf amtlicher Seite bestätigt.",
+    "Campbell 1969: Originalartikel über Universität zugänglich; DOI-Verlagseite technisch nicht abrufbar.",
+    "Weaver 1986: Verlagsseite mit Abstract per curl zugänglich und geprüft; DOI über Browser-Lesetool nicht abrufbar. Kein Volltextzugang behauptet."
+  ],
+  "publicationNotes": [
+    "Deckblatt, Fassungsdaten und interner Entwurfshinweis nicht in den Artikeltext übernommen. Alle drei inhaltlichen Zitatkästen erhalten.",
+    "Quellen fortlaufend 1-21 nummeriert. Mehrfach- und Bereichsverweise auf einzelne anklickbare Quellen aufgelöst.",
+    "Unverlinkten Verweis auf ein begleitendes Dossier durch eine Quellen-Auswahlnotiz ersetzt, da kein konkreter öffentlicher Dossierpfad vorliegt.",
+    "Titelbild enthält schematische Kurven; Bildunterschrift grenzt diese von Messdaten ab.",
+    "Veröffentlichungsauftrag betrifft einen Essay, keine neue verbindliche Methode oder empirische Validierung.",
+    "Campbell zusätzlich mit erreichbarer Universitätskopie des Originalartikels verlinkt; OECD-Toolkit auf kanonische Verlagsseite statt DOI-Weiterleitung verlinkt.",
+    "PDF-Autorin und Erstellerin in den Metadaten auf Natalie Weber gesetzt; Text und sämtliche Linkannotationen unverändert geprüft."
+  ]
+}

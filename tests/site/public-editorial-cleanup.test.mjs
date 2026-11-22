@@ -1,0 +1,191 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {stripEditorialHtmlNotes as clean, stripAiTrackingParameters, findPublicEditorialResidue} from '../../scripts/lib/public-editorial-cleanup.mjs';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import vm from 'node:vm';
+
+// Exercise the real artifact reference collection and pruning together using
+// only public-output fixtures; repository source files remain outside the map.
+function projectPrunedArtifact(files) {
+ const source=fs.readFileSync(new URL('../../scripts/quality/build-public-artifact.mjs',import.meta.url),'utf8');
+ const decodeStart=source.indexOf('function decodeReference(');
+ const decodeEnd=source.indexOf('function addPublicDocumentDownloadReferences(',decodeStart);
+ const refStart=source.indexOf('function collectArtifactReferences()');
+ const refEnd=source.indexOf('function copyReferencedPublicFiles()',refStart);
+ const pruneStart=source.indexOf('function prunePublicArtifact()');
+ // End at the function body, never at subsequent build initialization.
+ const pruneEnd=source.indexOf('\n}',pruneStart)+2;
+ assert.ok(decodeStart>0&&decodeEnd>decodeStart&&refStart>0&&refEnd>refStart&&pruneStart>0&&pruneEnd>pruneStart);
+ const output=new Map(Object.entries(files));
+ vm.runInNewContext(source.slice(decodeStart,decodeEnd)+source.slice(refStart,refEnd)+source.slice(pruneStart,pruneEnd)+'\nprunePublicArtifact();',{
+  path,artifactDir:'/artifact',walkFiles:()=>[...output.keys()],toPosixRelative:file=>file.slice('/artifact/'.length),
+  fs:{readFileSync:file=>output.get(file)},addPublicDocumentDownloadReferences:()=>{},
+  removeFile:file=>output.delete(file),publicReleaseAssets:new Map(),console:{log(){}},
+ });
+ return Object.fromEntries(output);
+}
+
+test('rejected visual drafts stay out of the public artifact while approved visuals remain',()=>{
+ const files={'/artifact/index.html':'<img src="/assets/visuals/woek/current.png">',
+  '/artifact/assets/visuals/rejected/draft.png':'draft',
+  '/artifact/assets/visuals/rejected/draft.webp':'draft',
+  '/artifact/assets/visuals/woek/current.png':'approved',
+  '/artifact/assets/visuals/rejected-sibling/kept.svg':'other'};
+ const projected=projectPrunedArtifact(files);
+ assert.equal(projected['/artifact/assets/visuals/rejected/draft.png'],undefined);
+ assert.equal(projected['/artifact/assets/visuals/rejected/draft.webp'],undefined);
+ assert.equal(projected['/artifact/assets/visuals/woek/current.png'],'approved');
+ assert.equal(projected['/artifact/assets/visuals/rejected-sibling/kept.svg'],'other');
+ assert.equal(files['/artifact/assets/visuals/rejected/draft.png'],'draft','original input is untouched');
+});
+
+test('a public reference to a rejected visual fails rather than producing a broken page',()=>{
+ const files={'/artifact/index.html':'<img src="/assets/visuals/rejected/draft.png">',
+  '/artifact/assets/visuals/rejected/draft.png':'draft'};
+ assert.throws(()=>projectPrunedArtifact(files),/REJECTED_VISUAL_PUBLIC_REFERENCE/);
+});
+
+// Exercise the actual artifact projection without running its full filesystem
+// build. Canonical news, paid answers and approved manuscripts are not inputs
+// to this in-memory, public-output-only fixture.
+function projectArtifactFiles(files) {
+ const source = fs.readFileSync(new URL('../../scripts/quality/build-public-artifact.mjs', import.meta.url), 'utf8');
+ const start = source.indexOf('function sanitizePublicDataString(');
+ const end = source.indexOf('function validateNoCorruptedHtmlAttributes(', start);
+ assert.ok(start > 0 && end > start);
+ const projected = new Map(Object.entries(files));
+ vm.runInNewContext(source.slice(start, end) + '\nnormalizePublicArtifactLinksAndText();', {
+  path, artifactDir: '/artifact', walkFiles: () => [...projected.keys()],
+  fs: {readFileSync: file => projected.get(file), writeFileSync: (file, text) => projected.set(file, text)},
+  toPosixRelative: file => file.slice('/artifact/'.length),
+  rewritePublicReleaseAssetReferences: text => text,
+  stripEditorialHtmlNotes: clean, stripAiTrackingParameters, console: {log() {}},
+ });
+ return Object.fromEntries(projected);
+}
+
+test('artifact preserves real MDR and docs source links and URL strings, not just reader labels', () => {
+ const urls = [
+  'https://www.mdr.de/nachrichten/deutschland/wirtschaft/upm-leuna-wald-holz-rodung,upm-104.html',
+  'https://docs.python.org/3/library/html.html',
+  'https://example.org/research.rtfm/report.html',
+ ];
+ for (const url of urls) {
+  const html = `<main><a class="text-link" href="${url}" target="_blank" rel="noopener noreferrer">Originalquelle ansehen</a></main>`;
+  const json = JSON.stringify({source: url, title: 'Unveränderter Quellenbezug'});
+  const js = `const sourceUrl = "${url}";`;
+  const files = {'/artifact/index.html': html, '/artifact/data.json': json, '/artifact/app.js': js};
+  const output = projectArtifactFiles(files);
+  assert.equal(output['/artifact/index.html'], html, url);
+  assert.deepEqual(JSON.parse(output['/artifact/data.json']), JSON.parse(json), url);
+  assert.equal(output['/artifact/app.js'], js, url);
+  assert.deepEqual(projectArtifactFiles(output), output, 'idempotent');
+ }
+});
+
+test('artifact still blocks actual Markdown, Word and RTF links, including queries and fragments', () => {
+ for (const file of ['private.md', 'private.doc', 'private.docx', 'PRIVATE.RTF']) {
+  for (const href of [`/docs/${file}`, `../content/${file}?download=1#text`, `https://example.org/private/${file}#text`]) {
+   const html = `<a class="text-link" href="${href}"><strong>Arbeitsunterlage</strong></a><p>Öffentlicher Befund bleibt unverändert.</p>`;
+   const out = projectArtifactFiles({'/artifact/index.html': html})['/artifact/index.html'];
+   assert.equal(out, '<span class="text-link"><strong>Arbeitsunterlage</strong></span><p>Öffentlicher Befund bleibt unverändert.</p>');
+  }
+ }
+ const out = projectArtifactFiles({'/artifact/data.json': JSON.stringify({source: 'https://example.org/private/source.docx', title: 'Öffentlich', internalNote: 'privat'})});
+ assert.deepEqual(JSON.parse(out['/artifact/data.json']), {source: '', title: 'Öffentlich'});
+});
+
+test('tracking cleanup preserves question marks followed by HTML entities in all text contexts', () => {
+ const html = '<p>&quot;Was hat sie getrieben?&quot; für zu klein. Warum?&#34; Wieso?&#x22; Wirklich?&rdquo; Frage?&amp;</p><script>const quote="Frage?&quot;";</script>';
+ assert.equal(stripAiTrackingParameters(html), html);
+ assert.equal(stripAiTrackingParameters(html + '<a href="https://example.org/?utm_source=chatgpt.com&topic=demokratie">Quelle</a>'), html + '<a href="https://example.org/?topic=demokratie">Quelle</a>');
+});
+
+test('tracking cleanup removes only AI parameters and repairs their own separators', () => {
+ for (const [query, expected] of [
+  ['?utm_source=chatgpt.com', ''],
+  ['?utm_source=chatgpt.com#quelle', '#quelle'],
+  ['?utm_source=chatgpt.com&x=1', '?x=1'],
+  ['?utm_source=chatgpt.com&amp;x=1', '?x=1'],
+  ['?x=1&amp;utm_source=chatgpt.com&amp;y=2', '?x=1&amp;y=2'],
+  ['?x=1&utm_medium=openai', '?x=1'],
+  ['?utm_source=chatgpt.com&utm_medium=openai&utm_campaign=claude&x=1', '?x=1'],
+  ['?utm_source=chatgpt.com&amp;utm_medium=openai', ''],
+  ['?utm_source=chatgpt.com&quot;', '&quot;'],
+  ['?utm_source=chatgpt.com&#34;', '&#34;'],
+  ['?utm_source=chatgpt.com&#x22;', '&#x22;'],
+  ['?utm_source=chatgpt.com&rdquo;', '&rdquo;'],
+  ['?utm_source=newsletter&x=1', '?utm_source=newsletter&x=1'],
+  ['?utm_source=chatgpt.com.example&x=1', '?utm_source=chatgpt.com.example&x=1'],
+ ]) {
+  const input = `<a href="https://example.org/${query}">Quelle</a>`;
+  const output = `<a href="https://example.org/${expected}">Quelle</a>`;
+  assert.equal(stripAiTrackingParameters(input), output, query);
+  assert.equal(stripAiTrackingParameters(output), output, 'idempotent: ' + query);
+ }
+});
+
+test('editorial CLI preserves the real journal paragraph while cleaning the same file', () => {
+ const article = fs.readFileSync(new URL('../../blog/sachsen-anhalt-wahlergebnis-signal-fuer-europa.html', import.meta.url), 'utf8');
+ const paragraph = article.match(/<p>Genau deshalb halte ich die Frage[\s\S]*?<\/p>/)?.[0];
+ assert.ok(paragraph?.includes('getrieben?&quot;'));
+ assert.equal(stripAiTrackingParameters(paragraph), paragraph);
+ const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'woek-entity-regression-'));
+ try {
+  const fixture = path.join(temporary, 'index.html');
+  fs.writeFileSync(fixture, paragraph + '<a href="https://example.org/?utm_source=chatgpt.com&amp;x=1">Quelle</a>');
+  const result = spawnSync(process.execPath, [fileURLToPath(new URL('../../scripts/quality/sanitize-public-editorial-residue.mjs', import.meta.url))], {cwd: temporary, encoding: 'utf8'});
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(fs.readFileSync(fixture, 'utf8'), paragraph + '<a href="https://example.org/?x=1">Quelle</a>');
+ } finally {
+  fs.rmSync(temporary, {recursive: true, force: true});
+ }
+});
+test('production notes never consume preceding sections or inline content',()=>{
+ const before='<section id="evidence"><h2>Nachweis</h2><p>Wichtiger fachlicher Inhalt.</p><p>Mehr <strong>Evidenz</strong>.</p>';
+ const after='<h3 id="formula">Formel</h3><p>Bleibt erhalten.</p></section>';
+ assert.equal(clean(before+'<p>Codex-Fassung: intern</p>'+after),before+after);
+ assert.equal(clean('<p>Erklärung</p><aside>Source-Hash: abc</aside><p>Beispiel</p>'),'<p>Erklärung</p><p>Beispiel</p>');
+});
+test('subject-matter names and raw script literals are preserved',()=>{
+ const html='<p>Claude ist ein KI-System. Der Codex Alimentarius ist ein Regelwerk.</p><script>const s="<p>Codex-Fassung</p>";</script>';
+ assert.equal(clean(html),html);
+});
+
+test('software production callout is removed without consuming the score table or its funding conditions',()=>{
+ const before='<section><h2>Bewerten</h2><table><tr><td>50 %</td><td>-2</td></tr></table>';
+ const after='<p>Schutzverletzungen sperren die Entlastung.</p></section>';
+ const note='<div class="callout">Reales Produktprofil, Arbeitskalibrierung und gesetzlicher Tarif sind drei verschiedene Dinge. Eine Software darf feste Regeln anwenden. Sie darf offene Regeln nicht selbst erfinden.</div>';
+ assert.equal(clean(before+note+after),before+after);
+ assert.deepEqual(findPublicEditorialResidue(before+after),[]);
+ assert.equal(findPublicEditorialResidue(before+note+after).length,1);
+});
+
+test('reader cleanup retains historical identity, unknown evidence, privacy consent and actual technical topics',()=>{
+ const html='<p>Arbeitsfassung v0.1 vom 6. Juni 2026. Die Ursache ist nicht belegt.</p><p>Das Backend der Ladeinfrastruktur braucht Datenschutz.</p><p>Für redaktionelle Ausgaben werden Öffnungen pseudonymisiert ausgewertet.</p><p>Cognitive Bias Codex</p><p>Policy Deployment for Successful TQM</p>';
+ assert.equal(clean(html),html);
+ assert.deepEqual(findPublicEditorialResidue(html),[]);
+});
+
+test('editorial wording changes preserve original anchors, adjacent evidence and the table structure',()=>{
+ const html='<h2 id="28-redaktionshinweis-fuer-die-naechste-fassung">28. Redaktionshinweis für die nächste Fassung</h2><p>Für die nächste Fassung sollte das Dossier redaktionell neu sortiert werden: Quellen und Bezugslinien gehören an das Ende; ausgewählte Kapitel sollten stärker belegt werden.</p><p id="causal">Bedingte Wirkpfade bleiben ohne Nachweis offen.</p><table><tr><td>Begriffe</td><td>Glossarseiten und Toolseiten auf führende Definitionen bringen; IOOI/IOI-Suchkonflikt vermeiden; NWI-Platzhalter ersetzen.</td></tr></table>';
+ const output=clean(html);
+ assert.ok(output.includes('id="28-redaktionshinweis-fuer-die-naechste-fassung"'));
+ assert.ok(output.includes('<p id="causal">Bedingte Wirkpfade bleiben ohne Nachweis offen.</p>'));
+ assert.equal((output.match(/<td>/g)||[]).length,2);
+ assert.deepEqual(findPublicEditorialResidue(output),[]);
+ assert.equal(clean(output),output);
+});
+
+test('mixed inline lesson metadata retains prerequisites while replacing production and source placeholders',()=>{
+ const input='<p><strong>Voraussetzung:</strong> MV1 <strong>Status:</strong> fachlicher Master in Ausarbeitung · vor Veröffentlichung redaktionell prüfen <strong>Quellen:</strong> WÖMS 2.0</p><ul><li><strong>Medienquelle:</strong> [Platzhalter]</li></ul>';
+ const output=clean(input);
+ assert.ok(output.includes('<strong>Voraussetzung:</strong> MV1'));
+ assert.ok(output.includes('<strong>Quellen:</strong> WÖMS 2.0'));
+ assert.ok(output.includes('Entwurf'));
+ assert.deepEqual(findPublicEditorialResidue(output),[]);
+});

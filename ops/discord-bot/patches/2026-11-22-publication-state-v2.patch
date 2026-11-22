@@ -1,0 +1,287 @@
+--- a/src/config.ts
++++ b/src/config.ts
+@@ -120,6 +120,8 @@
+ }
+ 
+ const defaultWebsiteFeedRoutes: Array<Omit<WebsiteFeedRoute, "channelId">> = [
++  { key: "analyse", title: "Meinung & Analyse", url: "https://wirkungsoekonomie.de/wirkungsticker/analyse/feed.xml" },
++  { key: "neuigkeiten", title: "Website-Updates", url: "https://wirkungsoekonomie.de/feeds/neuigkeiten.xml" },
+   {
+     key: "journal",
+     title: "Journal",
+@@ -371,6 +373,8 @@
+     defaultWebsiteFeedRoutes.map((route) => route.url)
+   );
+   const channelIdsByKey = new Map<string, string | undefined>([
++    ["analyse", readOptionalEnv("WEBSITE_FEED_ANALYSE_CHANNEL_ID")],
++    ["neuigkeiten", readOptionalEnv("WEBSITE_FEED_NEUIGKEITEN_CHANNEL_ID")],
+     ["startseite", readOptionalEnv("WEBSITE_FEED_STARTSEITE_CHANNEL_ID")],
+     ["journal", readOptionalEnv("WEBSITE_FEED_JOURNAL_CHANNEL_ID")],
+     ["podcast", readOptionalEnv("WEBSITE_FEED_PODCAST_CHANNEL_ID")],
+--- a/src/services/websiteFeedPublisher.ts
++++ b/src/services/websiteFeedPublisher.ts
+@@ -1,3 +1,4 @@
++import { createHash } from "node:crypto";
+ import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+ import { dirname } from "node:path";
+ import {
+@@ -31,6 +32,10 @@
+ interface WebsiteFeedState {
+   seenIds: string[];
+   lastCheckedAt?: string;
++  version?: 2;
++  legacySeenIds?: string[];
++  baselineAt?: string;
++  pending?: Record<string, { channelId: string; url: string; reservedAt: string }>;
+ }
+ 
+ interface WebsiteFeedRuntimeState {
+@@ -137,21 +142,39 @@
+     const state = readFeedState(config.stateFile);
+     const seen = new Set(state.seenIds);
+     const isFirstRun = state.seenIds.length === 0 && !state.lastCheckedAt;
+-    const feedItems = await loadRoutedFeedItems(configuredRoutes);
++    const feedItems = await loadRoutedFeedItems(configuredRoutes, state.version !== 2);
+     const sortedItems = feedItems
+-      .filter((item, index, all) => all.findIndex((other) => other.id === item.id) === index)
++      .filter((item, index, all) => all.findIndex((other) => publicationKey(other) === publicationKey(item)) === index)
+       .sort((a, b) => dateValue(a.publishedAt) - dateValue(b.publishedAt));
++
++    if (state.version !== 2) {
++      if (!sortedItems.length) throw new Error("Cannot migrate publication state from empty feeds.");
++      state.legacySeenIds = [...state.seenIds];
++      state.version = 2;
++      state.pending = {};
++      seen.clear();
++      if (!config.postExistingOnFirstRun) {
++        for (const item of sortedItems) seen.add(publicationKey(item));
++        state.baselineAt = new Date().toISOString();
++        savePublicationState(config.stateFile, state, seen);
++        console.log(`Website feed publisher migrated ${seen.size} channel-bound baseline entries without replay.`);
++        return;
++      }
++    }
+ 
+     if (isFirstRun && !config.postExistingOnFirstRun) {
+       for (const item of sortedItems) {
+-        seen.add(item.id);
+-      }
+-      writeFeedState(config.stateFile, { seenIds: [...seen].slice(-500), lastCheckedAt: new Date().toISOString() });
++        seen.add(publicationKey(item));
++      }
++      savePublicationState(config.stateFile, state, seen);
+       console.log(`Website feed publisher seeded ${sortedItems.length} existing feed items.`);
+       return;
+     }
+ 
+-    const freshItems = sortedItems.filter((item) => !seen.has(item.id)).slice(0, config.maxItemsPerPoll);
++    const pendingCount = Object.keys(state.pending || {}).length;
++    if (pendingCount) console.warn(`Website feed publisher retains ${pendingCount} unconfirmed deliveries; no automatic replay.`);
++
++    const freshItems = sortedItems.filter((item) => !seen.has(publicationKey(item))).slice(0, config.maxItemsPerPoll);
+     const channels = new Map<string, SendableTextChannel>();
+     for (const item of freshItems) {
+       const channel = await getSendableChannel(client, channels, item.channelId);
+@@ -159,11 +182,18 @@
+         continue;
+       }
+ 
+-      await postFeedItem(channel, item);
+-      seen.add(item.id);
+-    }
+-
+-    writeFeedState(config.stateFile, { seenIds: [...seen].slice(-500), lastCheckedAt: new Date().toISOString() });
++      try {
++        await deliverPublication(config.stateFile, state, seen, item, () => postFeedItem(channel, item));
++      } catch (error) {
++        if (definiteRejection(error)) {
++          console.warn(`Website feed delivery rejected for route ${item.routeKey}; other routes continue.`);
++          continue;
++        }
++        throw error;
++      }
++    }
++
++    savePublicationState(config.stateFile, state, seen);
+   } finally {
+     runtimeState.running = false;
+   }
+@@ -187,6 +217,7 @@
+   }
+ 
+   const state = readFeedState(config.stateFile);
++  if (state.version !== 2) throw new Error("Initialise channel-bound publication state before backfill.");
+   const seen = new Set(options.ignoreState ? [] : state.seenIds);
+   const channels = new Map<string, SendableTextChannel>();
+   const recentUrlsByChannel = options.dedupeRecentMessages
+@@ -194,7 +225,7 @@
+     : new Map<string, Set<string>>();
+   const feedItems = await loadRoutedFeedItems(configuredRoutes);
+   const sortedItems = feedItems
+-    .filter((item, index, all) => all.findIndex((other) => other.id === item.id) === index)
++    .filter((item, index, all) => all.findIndex((other) => publicationKey(other) === publicationKey(item)) === index)
+     .sort((a, b) => {
+       const diff = dateValue(a.publishedAt) - dateValue(b.publishedAt);
+       return options.oldestFirst === false ? -diff : diff;
+@@ -207,12 +238,12 @@
+     if (options.requireImage && !item.imageUrl) {
+       return false;
+     }
+-    if (seen.has(item.id)) {
++    if (seen.has(publicationKey(item))) {
+       return false;
+     }
+     const recentUrls = recentUrlsByChannel.get(item.channelId);
+     if (recentUrls?.has(normalizeFeedId(item.url))) {
+-      seen.add(item.id);
++      seen.add(publicationKey(item));
+       return false;
+     }
+     return true;
+@@ -226,21 +257,20 @@
+     if (!channel) {
+       continue;
+     }
+-    await postFeedItem(channel, item);
+-    seen.add(item.id);
++    await deliverPublication(config.stateFile, state, seen, item, () => postFeedItem(channel, item));
+     posted += 1;
+   }
+ 
+-  writeFeedState(config.stateFile, { seenIds: [...seen].slice(-1000), lastCheckedAt: new Date().toISOString() });
++  savePublicationState(config.stateFile, state, seen);
+   return { posted, skipped: pending.length - selected.length, seenTotal: seen.size };
+ }
+ 
+ export async function loadRoutedFeedItems(
+-  routes: Array<WebsiteFeedRoute & { channelId: string }>
++  routes: Array<WebsiteFeedRoute & { channelId: string }>, strict = false
+ ): Promise<RoutedWebsiteFeedItem[]> {
+   const items: RoutedWebsiteFeedItem[] = [];
+   for (const route of routes) {
+-    const routeItems = await loadFeedItems([route.url]);
++    const routeItems = await loadFeedItems([route.url], strict);
+     items.push(
+       ...routeItems.map((item) => ({
+         ...item,
+@@ -253,18 +283,21 @@
+   return items;
+ }
+ 
+-export async function loadFeedItems(urls: string[]): Promise<WebsiteFeedItem[]> {
++export async function loadFeedItems(urls: string[], strict = false): Promise<WebsiteFeedItem[]> {
+   const items: WebsiteFeedItem[] = [];
+   for (const url of urls) {
+     try {
+       const response = await fetch(url, { headers: { Accept: "application/rss+xml, application/xml, text/xml" } });
+       if (!response.ok) {
++        if (strict) throw new Error("Feed unavailable during publication state migration.");
+         console.warn(`Website feed ${url} returned HTTP ${response.status}.`);
+         continue;
+       }
+       const xml = await response.text();
++      if (strict && !/<rss\b/i.test(xml)) throw new Error("Feed format cannot be verified during migration.");
+       items.push(...parseRssItems(xml, url));
+     } catch (error) {
++      if (strict) throw new Error("Website feeds cannot be verified; publication state migration stopped.");
+       console.warn(`Website feed ${url} could not be loaded.`, error);
+     }
+   }
+@@ -323,7 +356,8 @@
+     new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Auf der Website lesen").setURL(item.url)
+   );
+ 
+-  await channel.send({ embeds: [embed], components: [row] });
++  await channel.send({ embeds: [embed], components: [row], allowedMentions: { parse: [] },
++    nonce: createHash("sha256").update(publicationKey(item)).digest("hex").slice(0, 24), enforceNonce: true });
+ }
+ 
+ async function getSendableChannel(
+@@ -336,7 +370,16 @@
+     return cached;
+   }
+ 
+-  const channel = await client.channels.fetch(channelId);
++  let channel;
++  try {
++    channel = await client.channels.fetch(channelId);
++  } catch (error) {
++    if (definiteRejection(error)) {
++      console.warn(`Website feed channel ${channelId} is unavailable; other routes continue.`);
++      return undefined;
++    }
++    throw error;
++  }
+   if (!channel || !channel.isTextBased() || !("send" in channel)) {
+     console.warn(`Website feed channel ${channelId} is not sendable or cannot be loaded.`);
+     return undefined;
+@@ -401,22 +444,60 @@
+   return urls;
+ }
+ 
++export function publicationKey(item: { channelId: string; url: string }): string {
++  return `${item.channelId}|${normalizeFeedId(item.url)}`;
++}
++
++function savePublicationState(file: string, state: WebsiteFeedState, seen: Set<string>): void {
++  state.seenIds = [...seen];
++  state.lastCheckedAt = new Date().toISOString();
++  writeFeedState(file, state);
++}
++
++function definiteRejection(error: unknown): boolean {
++  const status = (error as { status?: number })?.status;
++  return typeof status === "number" && status >= 400 && status < 500 && status !== 408;
++}
++
++async function deliverPublication(file: string, state: WebsiteFeedState, seen: Set<string>, item: RoutedWebsiteFeedItem, send: () => Promise<void>): Promise<void> {
++  const key = publicationKey(item);
++  state.pending ||= {};
++  state.pending[key] = { channelId: item.channelId, url: item.url, reservedAt: new Date().toISOString() };
++  seen.add(key);
++  // Persist the reservation before Discord can accept the message.
++  savePublicationState(file, state, seen);
++  try {
++    await send();
++  } catch (error) {
++    if (definiteRejection(error)) {
++      delete state.pending[key];
++      seen.delete(key);
++      savePublicationState(file, state, seen);
++    }
++    throw error;
++  }
++  delete state.pending[key];
++  savePublicationState(file, state, seen);
++}
++
+ function readFeedState(file: string): WebsiteFeedState {
++  let parsed: Partial<WebsiteFeedState>;
+   try {
+-    const parsed = JSON.parse(readFileSync(file, "utf8")) as Partial<WebsiteFeedState>;
+-    return {
+-      seenIds: Array.isArray(parsed.seenIds) ? parsed.seenIds.filter((value): value is string => typeof value === "string") : [],
+-      lastCheckedAt: typeof parsed.lastCheckedAt === "string" ? parsed.lastCheckedAt : undefined
+-    };
+-  } catch {
+-    return { seenIds: [] };
+-  }
++    parsed = JSON.parse(readFileSync(file, "utf8")) as Partial<WebsiteFeedState>;
++  } catch (error) {
++    if ((error as NodeJS.ErrnoException).code === "ENOENT") return { seenIds: [] };
++    throw new Error("Website publication state cannot be verified; sending stopped.");
++  }
++  if (!Array.isArray(parsed.seenIds) || parsed.seenIds.some(value => typeof value !== "string")) {
++    throw new Error("Website publication state is invalid; sending stopped.");
++  }
++  return parsed as WebsiteFeedState;
+ }
+ 
+ function writeFeedState(file: string, state: WebsiteFeedState): void {
+   mkdirSync(dirname(file), { recursive: true });
+   const tmp = `${file}.tmp`;
+-  writeFileSync(tmp, `${JSON.stringify(state, null, 2)}\n`);
++  writeFileSync(tmp, `${JSON.stringify(state, null, 2)}\n`, { mode: 0o600 });
+   renameSync(tmp, file);
+ }
+ 

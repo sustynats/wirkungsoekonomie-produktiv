@@ -1,0 +1,93 @@
+name: Publish unlisted Werte-Advent
+on:
+  workflow_dispatch:
+    inputs:
+      expected_commit:
+        description: Exact reviewed source commit
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+  deployments: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'sustynats/wirkungsoekonomie-produktiv' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify exact source
+        env:
+          EXPECTED: ${{ inputs.expected_commit }}
+        run: |
+          test "$EXPECTED" = "$(git rev-parse HEAD)"
+          test ${#EXPECTED} -eq 40
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check hosting cost policy and campaign source
+        run: |
+          npm run check:hosting-cost
+          npm run build:werteadvent
+          git diff --exit-code -- werteadvent werte-advent-2026-creators-k7m4p9x2
+          npm run check:werteadvent
+          node --check assets/js/werteadvent.mjs
+          node --check assets/js/werteadvent-participation.mjs
+          python3 -m unittest discover -s ops/werteadvent -v
+      - name: Back up the verified active live artifact
+        run: python3 scripts/werteadvent/deployment.py baseline
+      - name: Add campaign and prove unchanged production content
+        run: python3 scripts/werteadvent/deployment.py integrate
+      - uses: browser-actions/setup-chrome@48ad923757ca74d66703209fe939badbdf80f2f4
+        id: chrome
+        with:
+          chrome-version: '152.0.7977.82'
+      - name: Install temporary browser tooling
+        run: npm install --prefix "$RUNNER_TEMP/wa-tools" --no-package-lock playwright@1.58.2
+      - name: Test complete prepared artifact in browser
+        env:
+          WA_PLAYWRIGHT: ${{ runner.temp }}/wa-tools/node_modules/playwright/index.mjs
+          WA_CHROME: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          mkdir -p output/playwright
+          python3 -m http.server 8799 --bind 127.0.0.1 --directory "$RUNNER_TEMP/werteadvent-deployment/public" &
+          WA_SERVER=$!
+          trap 'kill "$WA_SERVER"' EXIT
+          node scripts/werteadvent/run-browser.mjs
+      - name: Privacy and size gates
+        run: |
+          ln -s "$RUNNER_TEMP/werteadvent-deployment/public" _site
+          npm run check:privacy
+          npm run check:size
+          rm _site
+      - name: Save release and rollback proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: werteadvent-release-proof
+          path: |
+            ${{ runner.temp }}/werteadvent-deployment/baseline.json
+            ${{ runner.temp }}/werteadvent-deployment/unchanged-content.json
+            output/playwright/
+          retention-days: 30
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ runner.temp }}/werteadvent-deployment/public
+      - name: Verify active baseline did not change
+        run: python3 scripts/werteadvent/deployment.py recheck
+      - name: Publish checked artifact
+        id: deployment
+        uses: actions/deploy-pages@v5

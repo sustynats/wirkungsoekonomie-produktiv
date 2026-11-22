@@ -1,0 +1,188 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { renderJournalArchiveCard } from '../../scripts/blog/render-journal-archive.mjs';
+
+const origin = 'https://wirkungsoekonomie.de';
+const workerSource = fs.readFileSync(new URL('../../sw.js', import.meta.url), 'utf8');
+const journalSource = fs.readFileSync(new URL('../../assets/js/blog-journal.js', import.meta.url), 'utf8');
+const posts = JSON.parse(fs.readFileSync(new URL('../../assets/data/blog-index.json', import.meta.url)));
+const latest = posts[0];
+const previous = posts.find(post => post.date < latest.date);
+
+test('current journal discovery qualifies the historical WÖk acronym without rewriting the article', () => {
+  const entry = posts.find(post => post.url === '/blog/geg-wirkungscheck-ioi-t-sroi.html');
+  // The index excerpt also feeds the protected dated PDF; qualify only cards.
+  assert.match(entry.excerpt, /IOI, NWI und T-SROI/);
+  assert.match(fs.readFileSync(new URL('../../blog.html', import.meta.url), 'utf8'), /damalige WÖk-Kurzbezeichnung NWI/);
+  assert.ok(entry.tags.includes('WÖk-Netto-Wirkungsindex'));
+  assert.ok(!entry.tags.includes('NWI'));
+  const article = fs.readFileSync(new URL('../../blog/geg-wirkungscheck-ioi-t-sroi.html', import.meta.url), 'utf8');
+  assert.match(article, /WOEK:NWI-DISAMBIGUATION:START/);
+  assert.match(renderJournalArchiveCard(entry), /damalige WÖk-Kurzbezeichnung NWI/);
+});
+
+function worker({ offline = false, saved = true, quota = false, cachedValue = [previous], liveValue = [latest] } = {}) {
+  const handlers = new Map(), requests = [], writes = [];
+  const cache = {
+    match: async () => saved ? Response.json(cachedValue) : undefined,
+    put: async (_request, response) => { if (quota) throw Error('quota'); writes.push(await response.json()); },
+  };
+  vm.runInNewContext(workerSource, {
+    URL, Response,
+    self: { location: { origin }, addEventListener: (type, handler) => handlers.set(type, handler) },
+    caches: { open: async () => cache },
+    fetch: async (request, options) => {
+      requests.push({ request, options });
+      if (offline) throw Error('offline');
+      return Response.json(liveValue);
+    },
+  });
+  return { requests, writes, async load(pathname, options) {
+    let response;
+    handlers.get('fetch')({ request: new Request(origin + pathname, options), respondWith: promise => { response = promise; } });
+    return response;
+  } };
+}
+
+const oldSearchManifest = { schemaVersion: 1, version: '1111111111111111', json: 'search-index-1111111111111111.json' };
+const currentSearchManifest = { schemaVersion: 2, version: '2222222222222222', core: { json: 'search-core-2222222222222222.json' } };
+for (const pathname of ['/assets/search/browser-index-manifest.json', '/assets/search/browser-index-manifest.json?v=older']) {
+  test(`online ${pathname} delivers schema 2 on the first request even when schema 1 is saved`, async () => {
+    const h = worker({ cachedValue: oldSearchManifest, liveValue: currentSearchManifest });
+    assert.deepEqual(await (await h.load(pathname, { cache: 'no-cache' })).json(), currentSearchManifest);
+    assert.equal(h.requests[0].options.cache, 'no-cache');
+    assert.deepEqual(h.writes[0], currentSearchManifest);
+  });
+}
+
+test('offline search keeps its last current JSON manifest; missing data does not become an HTML page', async () => {
+  for (const saved of [true, false]) {
+    const h = worker({ offline: true, saved, cachedValue: currentSearchManifest });
+    const response = await h.load('/assets/search/browser-index-manifest.json');
+    assert.equal(response.status, saved ? 200 : 504);
+    if (saved) assert.deepEqual(await response.json(), currentSearchManifest);
+    else assert.equal(await response.text(), '');
+  }
+});
+
+test('a full cache cannot downgrade a fresh search manifest', async () => {
+  const h = worker({ quota: true, cachedValue: oldSearchManifest, liveValue: currentSearchManifest });
+  assert.deepEqual(await (await h.load('/assets/search/browser-index-manifest.json')).json(), currentSearchManifest);
+});
+
+for (const pathname of ['/assets/data/blog-index.json', '/assets/data/blog-index.json?v=old-script', '/assets/data/document-library.json', '/assets/data/podcast-index.json', '/public/data/site-updates.json']) {
+  test(`online ${pathname} uses current data on the first visit, despite a saved older edition`, async () => {
+    const h = worker();
+    assert.equal((await (await h.load(pathname)).json())[0].url, latest.url);
+    assert.equal(h.requests[0].options.cache, 'no-cache');
+    assert.equal(h.writes[0][0].url, latest.url);
+  });
+}
+
+test('offline index stays available as JSON; without a saved copy it fails without an HTML replacement', async () => {
+  for (const saved of [true, false]) {
+    const h = worker({ offline: true, saved });
+    const response = await h.load('/assets/data/blog-index.json');
+    assert.equal(response.status, saved ? 200 : 504);
+    if (saved) assert.equal((await response.json())[0].url, previous.url);
+    else assert.equal(await response.text(), '');
+  }
+});
+
+test('cache quota errors cannot downgrade a successful live index', async () => {
+  const h = worker({ quota: true });
+  assert.equal((await (await h.load('/assets/data/blog-index.json')).json())[0].url, latest.url);
+});
+
+test('private API requests remain outside the root worker cache', async () => {
+  const h = worker();
+  assert.equal(await h.load('/api/private'), undefined);
+  assert.equal(h.requests.length, 0);
+});
+
+async function render(index, { fail = false, publishedAt = latest.publishedAt || latest.date } = {}) {
+  const home = { innerHTML: 'CURRENT STATIC FEATURE', dataset: { journalPublishedAt: publishedAt }, querySelector: () => ({}) };
+  const archive = { innerHTML: 'STATIC ARCHIVE', insertAdjacentHTML: () => {} };
+  const requests = [];
+  vm.runInNewContext(journalSource, {
+    URL, Intl, Date, Set,
+    window: { location: { pathname: '/blog.html' } },
+    document: {
+      currentScript: { src: origin + '/assets/js/blog-journal.js?v=test' },
+      querySelector: selector => ({ '[data-journal-home]': home, '[data-journal-list]': archive }[selector] || null),
+      dispatchEvent: () => {},
+    },
+    CustomEvent: class {},
+    fetch: async (_url, options) => { requests.push(options); if (fail) throw Error('offline'); return { ok: true, json: async () => index }; },
+  });
+  await new Promise(resolve => setImmediate(resolve));
+  return { home, archive, requests };
+}
+
+test('an old worker/index cannot replace the newer static feature or archive', async () => {
+  for (const index of [[previous], []]) {
+    const h = await render(index);
+    assert.equal(h.home.innerHTML, 'CURRENT STATIC FEATURE');
+    assert.equal(h.archive.innerHTML, 'STATIC ARCHIVE');
+  }
+});
+
+test('failed JSON fetch preserves the server-rendered current article', async () => {
+  const h = await render([], { fail: true });
+  assert.equal(h.home.innerHTML, 'CURRENT STATIC FEATURE');
+});
+
+test('fresh data updates both feature and archive in publication order, including same-day posts', async () => {
+  const earlier = { ...latest, title: 'Earlier same-day post', publishedAt: latest.date + 'T00:00:00+02:00', url: '/blog/earlier.html' };
+  const sameDayLatest = { ...latest, publishedAt: latest.date + 'T18:00:00+02:00' };
+  const h = await render([previous, earlier, sameDayLatest], { publishedAt: sameDayLatest.publishedAt });
+  assert.ok(h.home.innerHTML.indexOf(latest.url) < h.home.innerHTML.indexOf(earlier.url));
+  assert.ok(h.archive.innerHTML.indexOf(latest.url) < h.archive.innerHTML.indexOf(earlier.url));
+  assert.equal(h.home.dataset.journalPublishedAt, sameDayLatest.publishedAt);
+  assert.equal(h.requests[0].cache, 'no-cache');
+});
+
+test('an older static overview is upgraded when the current index arrives', async () => {
+  const h = await render([latest, previous], { publishedAt: previous.publishedAt || previous.date });
+  assert.ok(h.home.innerHTML.includes(latest.url));
+  assert.ok(h.archive.innerHTML.includes(latest.url));
+});
+
+test('the deploy artifact changes the journal script URL when its runtime changes', () => {
+  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'journal-cache-version-'));
+  try {
+    const site = path.join(fixture, '_site');
+    fs.mkdirSync(path.join(site, 'assets/js'), { recursive: true });
+    fs.mkdirSync(path.join(site, 'assets/css'), { recursive: true });
+    fs.writeFileSync(path.join(site, 'assets/css/style.css'), 'body{}');
+    fs.writeFileSync(path.join(site, 'assets/js/blog-journal.js'), journalSource);
+    const html = '<script src="assets/js/blog-journal.js?v=old-script"></script>';
+    fs.writeFileSync(path.join(site, 'blog.html'), html);
+    const script = new URL('../../scripts/site/cachebust-css.mjs', import.meta.url);
+    execFileSync(process.execPath, [fileURLToPath(script)], { cwd: fixture });
+    const first = fs.readFileSync(path.join(site, 'blog.html'), 'utf8');
+    assert.match(first, /blog-journal\.js\?v=[a-f0-9]{12}/);
+    fs.appendFileSync(path.join(site, 'assets/js/blog-journal.js'), '\n// next runtime revision');
+    execFileSync(process.execPath, [fileURLToPath(script)], { cwd: fixture });
+    assert.notEqual(fs.readFileSync(path.join(site, 'blog.html'), 'utf8'), first);
+  } finally {
+    fs.rmSync(fixture, { recursive: true, force: true });
+  }
+});
+
+
+test('the static fallback and browser archive use identical markup, filters and publication order', async () => {
+  const h = await render(posts);
+  const expected = [...posts].sort((a,b) => new Date(b.publishedAt || b.date) - new Date(a.publishedAt || a.date)).map(renderJournalArchiveCard).join('');
+  assert.equal(h.archive.innerHTML, expected);
+  const html = fs.readFileSync(new URL('../../blog.html', import.meta.url), 'utf8');
+  const archive = html.match(/data-journal-list>([\s\S]*?)<div class="card blog-archive-note"/)?.[1] || '';
+  const urls = [...archive.matchAll(/<a class="text-link" href="([^"]+)"/g)].map(match => new URL(match[1], origin).pathname);
+  assert.deepEqual(urls, posts.map(post => post.url));
+});

@@ -1,0 +1,170 @@
+[
+  {
+    "day": 1,
+    "value": "Menschenwürde",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/01_menschenwurde.png",
+    "without_label": "Ohne_Beschriftung/01_menschenwurde.png"
+  },
+  {
+    "day": 2,
+    "value": "Respekt",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/02_respekt.png",
+    "without_label": "Ohne_Beschriftung/02_respekt.png"
+  },
+  {
+    "day": 3,
+    "value": "Solidarität",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/03_solidaritat.png",
+    "without_label": "Ohne_Beschriftung/03_solidaritat.png"
+  },
+  {
+    "day": 4,
+    "value": "Gerechtigkeit",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/04_gerechtigkeit.png",
+    "without_label": "Ohne_Beschriftung/04_gerechtigkeit.png"
+  },
+  {
+    "day": 5,
+    "value": "Freiheit",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/05_freiheit.png",
+    "without_label": "Ohne_Beschriftung/05_freiheit.png"
+  },
+  {
+    "day": 6,
+    "value": "Sicherheit",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/06_sicherheit.png",
+    "without_label": "Ohne_Beschriftung/06_sicherheit.png"
+  },
+  {
+    "day": 7,
+    "value": "Vertrauen",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/07_vertrauen.png",
+    "without_label": "Ohne_Beschriftung/07_vertrauen.png"
+  },
+  {
+    "day": 8,
+    "value": "Gesundheit",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/08_gesundheit.png",
+    "without_label": "Ohne_Beschriftung/08_gesundheit.png"
+  },
+  {
+    "day": 9,
+    "value": "Bildung",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/09_bildung.png",
+    "without_label": "Ohne_Beschriftung/09_bildung.png"
+  },
+  {
+    "day": 10,
+    "value": "Gleichberechtigung",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/10_gleichberechtigung.png",
+    "without_label": "Ohne_Beschriftung/10_gleichberechtigung.png"
+  },
+  {
+    "day": 11,
+    "value": "Vielfalt",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/11_vielfalt.png",
+    "without_label": "Ohne_Beschriftung/11_vielfalt.png"
+  },
+  {
+    "day": 12,
+    "value": "Nachhaltigkeit",
+    "category": "Mensch",
+    "with_label": "Mit_Beschriftung/12_nachhaltigkeit.png",
+    "without_label": "Ohne_Beschriftung/12_nachhaltigkeit.png"
+  },
+  {
+    "day": 13,
+    "value": "Klimaschutz",
+    "category": "Planet",
+    "with_label": "Mit_Beschriftung/13_klimaschutz.png",
+    "without_label": "Ohne_Beschriftung/13_klimaschutz.png"
+  },
+  {
+    "day": 14,
+    "value": "Ressourcenschutz",
+    "category": "Planet",
+    "with_label": "Mit_Beschriftung/14_ressourcenschutz.png",
+    "without_label": "Ohne_Beschriftung/14_ressourcenschutz.png"
+  },
+  {
+    "day": 15,
+    "value": "Natur- und Tierschutz",
+    "category": "Planet",
+    "with_label": "Mit_Beschriftung/15_natur-und-tierschutz.png",
+    "without_label": "Ohne_Beschriftung/15_natur-und-tierschutz.png"
+  },
+  {
+    "day": 16,
+    "value": "Kreislaufwirtschaft",
+    "category": "Planet",
+    "with_label": "Mit_Beschriftung/16_kreislaufwirtschaft.png",
+    "without_label": "Ohne_Beschriftung/16_kreislaufwirtschaft.png"
+  },
+  {
+    "day": 17,
+    "value": "Saubere Energie",
+    "category": "Planet",
+    "with_label": "Mit_Beschriftung/17_saubere-energie.png",
+    "without_label": "Ohne_Beschriftung/17_saubere-energie.png"
+  },
+  {
+    "day": 18,
+    "value": "Ernährungssicherheit",
+    "category": "Planet",
+    "with_label": "Mit_Beschriftung/18_ernahrungssicherheit.png",
+    "without_label": "Ohne_Beschriftung/18_ernahrungssicherheit.png"
+  },
+  {
+    "day": 19,
+    "value": "Demokratie",
+    "category": "Demokratie",
+    "with_label": "Mit_Beschriftung/19_demokratie.png",
+    "without_label": "Ohne_Beschriftung/19_demokratie.png"
+  },
+  {
+    "day": 20,
+    "value": "Rechtsstaatlichkeit",
+    "category": "Demokratie",
+    "with_label": "Mit_Beschriftung/20_rechtsstaatlichkeit.png",
+    "without_label": "Ohne_Beschriftung/20_rechtsstaatlichkeit.png"
+  },
+  {
+    "day": 21,
+    "value": "Meinungsfreiheit und Dialog",
+    "category": "Demokratie",
+    "with_label": "Mit_Beschriftung/21_meinungsfreiheit-und-dialog.png",
+    "without_label": "Ohne_Beschriftung/21_meinungsfreiheit-und-dialog.png"
+  },
+  {
+    "day": 22,
+    "value": "Teilhabe und Mitgestaltung",
+    "category": "Demokratie",
+    "with_label": "Mit_Beschriftung/22_teilhabe-und-mitgestaltung.png",
+    "without_label": "Ohne_Beschriftung/22_teilhabe-und-mitgestaltung.png"
+  },
+  {
+    "day": 23,
+    "value": "Globale Verantwortung",
+    "category": "Demokratie",
+    "with_label": "Mit_Beschriftung/23_globale-verantwortung.png",
+    "without_label": "Ohne_Beschriftung/23_globale-verantwortung.png"
+  },
+  {
+    "day": 24,
+    "value": "Zukunftsfähigkeit",
+    "category": "Demokratie",
+    "with_label": "Mit_Beschriftung/24_zukunftsfahigkeit.png",
+    "without_label": "Ohne_Beschriftung/24_zukunftsfahigkeit.png"
+  }
+]

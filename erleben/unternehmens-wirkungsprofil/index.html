@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unternehmens-Wirkungsprofil Beta | Kennzahlen und Quellen finden</title>
+    <meta name="description" content="Suche in 100 Unternehmensprofilen. Prüfe berichtete Kennzahlen, Registerangaben, Datenqualität und offene Fragen zu Mensch, Planet und Demokratie.">
+    <link rel="canonical" href="https://wirkungsoekonomie.de/erleben/unternehmens-wirkungsprofil/">
+    <meta name="search_title" content="Unternehmens-Wirkungsprofil Beta">
+    <meta name="search_description" content="Suche Unternehmen und prüfe Kennzahlen, Quellen, Berichtsjahre und Datenlücken im UWP-100.">
+    <meta name="search_type" content="Beta-Tool">
+    <meta name="search_section" content="Erleben">
+    <meta name="search_tags" content="Unternehmens-Wirkungsprofil, UWP-100 Beta, ESG, CSRD, GRI, Datenqualität, Reverse Merit Order, Emissionen, Arbeitsunfälle, Lobbyregister">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:site_name" content="Wirkungsökonomie">
+    <meta property="og:title" content="Unternehmens-Wirkungsprofil Beta">
+    <meta property="og:description" content="Finde öffentlich belegte Unternehmensdaten mit Berichtsjahr, Quelle und Hinweisen zu Datenlücken.">
+    <meta property="og:url" content="https://wirkungsoekonomie.de/erleben/unternehmens-wirkungsprofil/">
+    <meta property="og:image" content="https://wirkungsoekonomie.de/assets/img/generated/hero-systemgrafik-wirkungsoekonomie.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Unternehmens-Wirkungsprofil Beta">
+    <meta name="twitter:description" content="Finde öffentlich belegte Unternehmensdaten mit Berichtsjahr, Quelle und Hinweisen zu Datenlücken.">
+    <meta name="twitter:image" content="https://wirkungsoekonomie.de/assets/img/generated/hero-systemgrafik-wirkungsoekonomie.png">
+    <link rel="icon" href="../../assets/img/brand/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../../assets/css/style.css?v=20260612-mobile-table-fix">
+    <style>
+      [data-uwp-tool] [hidden] { display: none !important; }
+      .uwp-layout {
+        width: min(var(--container), calc(100% - 2 * var(--space-gutter)));
+        margin: 0 auto;
+        padding: clamp(1.5rem, 3.5vw, 3.25rem) 0 var(--space-7);
+      }
+      .uwp-layout :is(h1, h2, h3, h4, p) { margin: 0; }
+      .uwp-layout :is(a, button, input, select, summary):focus-visible {
+        outline: 2px solid var(--green-dark);
+        outline-offset: 3px;
+      }
+      .uwp-layout :is(#unternehmen-suchen, #profil, #datenquellen, #profil-lesen, #rechenweg) {
+        scroll-margin-top: 6rem;
+      }
+      .uwp-intro { margin-bottom: 1.35rem; }
+      .uwp-intro h1 {
+        margin-block: .3rem .55rem;
+        font-size: clamp(1.85rem, 4.3vw, 3.5rem);
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+      }
+      .uwp-intro-text { max-width: 66ch; font-size: clamp(1rem, 1.6vw, 1.2rem); }
+      .uwp-intro-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: .25rem 1rem;
+        margin-top: .75rem;
+        font-size: .9rem;
+      }
+      .uwp-intro-meta p { font-weight: 650; color: var(--green-dark); }
+      .uwp-intro-meta a, .uwp-details a, .uwp-evidence-actions a { text-underline-offset: .16em; }
+
+      .uwp-lookup, .uwp-profile-shell {
+        border: 1px solid var(--line);
+        background: var(--paper);
+        border-radius: .9rem;
+        padding: clamp(.9rem, 2.3vw, 1.65rem);
+      }
+      .uwp-lookup h2, .uwp-guide h2 { font-size: 1.35rem; }
+      .uwp-search-shell {
+        border: 0;
+        padding: 0;
+        margin: .65rem 0 0;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr);
+        gap: .65rem 1rem;
+      }
+      .uwp-field { min-width: 0; }
+      .uwp-field label {
+        display: block;
+        margin-bottom: .2rem;
+        font-size: .875rem;
+        font-weight: 650;
+      }
+      .uwp-field :is(input, select) {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 46px;
+        border: 1px solid #9c998f;
+        border-radius: .45rem;
+        padding: .55rem .65rem;
+        background: var(--white);
+        color: var(--navy);
+        font: inherit;
+      }
+      .uwp-examples {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: .35rem .65rem;
+        margin-top: .8rem;
+        font-size: .9rem;
+      }
+      .uwp-examples a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: .2rem .65rem;
+        border: 1px solid var(--line);
+        border-radius: 2rem;
+        color: var(--green-dark);
+        background: var(--white);
+        font-weight: 650;
+        text-decoration: none;
+      }
+      .uwp-examples a:hover, .uwp-result-button:hover { border-color: var(--green); }
+      .uwp-search-results { margin-top: .75rem; }
+      .uwp-results, .uwp-dimensions, .uwp-evidence-list {
+        list-style: none;
+        padding: 0;
+        margin: .45rem 0 0;
+      }
+      .uwp-results, .uwp-dimensions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: .4rem .6rem;
+      }
+      .uwp-result-button {
+        display: block;
+        height: 100%;
+        padding: .5rem .65rem;
+        border: 1px solid var(--line);
+        border-radius: .45rem;
+        background: var(--white);
+        color: var(--navy);
+        text-decoration: none;
+        overflow-wrap: anywhere;
+      }
+      .uwp-result-button small { display: block; font-size: .8rem; color: var(--muted); }
+      .uwp-result-button[aria-current] { border-color: var(--green); }
+      .uwp-text-button {
+        min-height: 40px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--green-dark);
+        font: inherit;
+        font-weight: 650;
+        text-decoration: underline;
+        text-underline-offset: .16em;
+        cursor: pointer;
+      }
+      .uwp-muted { color: var(--muted); font-size: .875rem; }
+
+      .uwp-profile-shell { margin-top: 1rem; }
+      .uwp-profile-heading, .uwp-evidence-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: .25rem 1rem;
+      }
+      .uwp-profile-heading h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); }
+      .uwp-dimensions { margin-block: .85rem .6rem; }
+      .uwp-dimensions li {
+        padding: .55rem .65rem;
+        border: 1px solid var(--line);
+        border-radius: .45rem;
+        overflow-wrap: anywhere;
+      }
+      .uwp-dimensions strong { display: block; color: var(--navy); }
+      .uwp-dimensions span { color: var(--muted); font-size: .85rem; }
+      .uwp-profile-shell .uwp-details { margin-top: .8rem; }
+      .uwp-evidence-heading { margin-top: 1.15rem; }
+      .uwp-evidence-heading h3 { font-size: 1.2rem; }
+      .uwp-profile-filters {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .6rem;
+        margin: .6rem 0 .45rem;
+      }
+      .uwp-evidence-list { border-top: 1px solid var(--line); }
+      .uwp-evidence { padding-block: .75rem; border-bottom: 1px solid var(--line); }
+      .uwp-evidence-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: baseline;
+        gap: .2rem 1rem;
+        overflow-wrap: anywhere;
+      }
+      .uwp-evidence-main h4 { font-size: 1.03rem; }
+      .uwp-value { color: var(--navy); font-weight: 750; font-size: 1.1rem; }
+      .uwp-evidence-actions { margin-top: .3rem; font-size: .875rem; }
+      .uwp-evidence-actions > a { display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
+      .uwp-evidence-actions details { margin-top: .15rem; }
+      .uwp-evidence-actions summary { cursor: pointer; color: var(--muted); width: fit-content; }
+      .uwp-evidence-actions details p { margin-top: .2rem; max-width: 72ch; }
+      .uwp-evidence-actions details a { overflow-wrap: anywhere; }
+
+      .uwp-guide { margin-top: clamp(1.5rem, 3.2vw, 2.5rem); }
+      .uwp-guide h2 { margin-bottom: .55rem; }
+      .uwp-details { border-top: 1px solid #d8d4c9; }
+      .uwp-guide .uwp-details:last-child { border-bottom: 1px solid #d8d4c9; }
+      .uwp-personal-tools { margin-top: 1.3rem; }
+      .uwp-details > summary {
+        padding: .65rem .15rem;
+        color: var(--green-dark);
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .uwp-details-body {
+        max-width: 74ch;
+        padding: .1rem .2rem .7rem;
+      }
+      .uwp-details-body p + p { margin-top: .55rem; }
+      .uwp-quality { display: grid; grid-template-columns: auto 1fr; gap: .25rem .7rem; }
+      .uwp-quality dt { font-weight: 700; }
+      .uwp-quality dd { margin: 0; }
+      .uwp-comparisons { display: grid; gap: .6rem; padding-inline-start: 1.2rem; }
+      .uwp-comparisons span { display: block; }
+
+      @media (max-width: 700px) {
+        .uwp-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .uwp-search-shell { grid-template-columns: minmax(0, 1fr); }
+        .uwp-dimensions { grid-template-columns: minmax(0, 1fr); }
+        .uwp-dimensions li { display: grid; grid-template-columns: 6rem 1fr; gap: .5rem; align-items: baseline; }
+      }
+      @media (max-width: 450px) {
+        .uwp-evidence-main { grid-template-columns: minmax(0, 1fr); }
+        .uwp-profile-filters { grid-template-columns: minmax(0, 1fr); }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" data-search-exclude>
+      <a class="brand" href="../../index.html" aria-label="Wirkungsökonomie Startseite">
+        <span class="brand-mark"><img src="../../assets/img/brand/signet.svg" alt="Wirkungsökonomie Logo"></span>
+        <span class="brand-name">Wirkungsökonomie</span>
+      </a>
+      <nav class="site-utility-nav" aria-label="Schnellzugriffe" data-search-exclude>
+        <a class="site-utility-link site-utility-link--suche" href="../../suche.html" data-nav-match="suche.html" data-utility-label="Suche">Suche</a>
+        <a class="site-utility-link site-utility-link--frag-die-wok" href="../../woek-ki/" data-nav-match="woek-ki/|app/" data-utility-label="Frag die WÖk">Frag die WÖk</a>
+        <a class="site-utility-link site-utility-link--mein-wirkungsraum" href="../../mein-wirkungsraum/" data-nav-match="mein-wirkungsraum/" data-utility-label="Mein Wirkungsraum" data-utility-primary="true">Mein Wirkungsraum</a>
+      </nav>
+      <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-icon" aria-hidden="true">☰</span>
+        <span class="sr-only">Menü</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation" data-search-exclude>
+        <a href="../../verstehen/" data-nav-match="verstehen/|verstehen.html|wirkungsoekonomie.html|wirkungsoekonomie/|modell.html|ordnung/|so-wirkt-wirkungsoekonomie/|sdg-plus/|referenzrahmen/|sdg-sdgplus/|wissen/">Verstehen</a>
+        <a href="../../fuer/" data-nav-match="fuer/|fuer-wen/|fuer/unternehmen.html|fuer/unternehmen/impact-controlling/|fuer/buergerinnen.html|fuer/investoren.html|fuer/investoren/impact-controlling/|fuer/kommunen.html">Für wen?</a>
+        <a href="../../wirkungsfelder/" data-nav-match="wirkungsfelder/|anwendungen.html">Wirkungsfelder</a>
+        <a href="../../werkzeuge/" data-nav-match="werkzeuge/|tools/|methodik/|workflow.html|scanner.html|anwendungen/scanner.html|scorecard-dashboard.html|erleben/|erleben.html|ausprobieren/|wirkungssteuerung/|fuer/wirkungssteuer.html|werkstatt/">Praxis &amp; Tools</a>
+        <a href="../../oeffentlicher-wirkungsraum/" data-nav-match="oeffentlicher-wirkungsraum/|wirkungsradar/|news/|woek-ki/|app/">Debatte &amp; Radar</a>
+        <a href="../../lernen/" data-nav-match="lernen/|akademie.html|akademie/">Lernen</a>
+        <a href="../../institut/" data-nav-match="institut/">Institut</a>
+        <a href="../../bibliothek/" data-nav-match="bibliothek/|downloads.html|downloads/|dokumente/|referenz/|buch.html|buch/|evidenz/|quellen/|quellenarchiv/|fachbibliothek/|blog.html|blog/|podcast/|begriffe/|glossar.html|portale/|website-1-0-release/">Bibliothek</a>
+        <a href="../../mitmachen.html" data-nav-match="mitmachen.html|mitmachen/">Mitmachen</a>
+        <div class="site-nav-utility" aria-label="Schnellzugriffe">
+        <a class="site-utility-link site-utility-link--suche" href="../../suche.html" data-nav-match="suche.html" data-utility-label="Suche">Suche</a>
+        <a class="site-utility-link site-utility-link--frag-die-wok" href="../../woek-ki/" data-nav-match="woek-ki/|app/" data-utility-label="Frag die WÖk">Frag die WÖk</a>
+        <a class="site-utility-link site-utility-link--mein-wirkungsraum" href="../../mein-wirkungsraum/" data-nav-match="mein-wirkungsraum/" data-utility-label="Mein Wirkungsraum" data-utility-primary="true">Mein Wirkungsraum</a>
+        </div>
+      </nav>
+    </header>
+
+    <main data-pagefind-body data-uwp-tool data-universe-url="../../data/uwp/company-universe.uwp100.json" data-snapshot-url="../../data/uwp/snapshots/uwp-100.public.latest.json">
+      <div class="uwp-layout">
+        <header class="uwp-intro">
+          <p class="hero-kicker">UWP-100 · Beta</p>
+          <h1>Unternehmens-Wirkungsprofil</h1>
+          <p class="uwp-intro-text">Finde öffentliche Angaben zu Emissionen, Arbeitsunfällen und Lobby-Ausgaben. Jeder Wert hat ein Berichtsjahr und eine verlinkte Quelle. Das Profil zeigt auch, wo Daten fehlen.</p>
+          <div class="uwp-intro-meta">
+            <p data-uwp-count role="status">Datenabdeckung wird geladen …</p>
+            <a href="#rechenweg">Warum die Gesamtbewertung offen ist</a>
+          </div>
+        </header>
+
+        <section class="uwp-lookup" id="unternehmen-suchen" aria-labelledby="uwp-search-title">
+          <h2 id="uwp-search-title">Unternehmen suchen</h2>
+          <form data-uwp-form>
+            <fieldset class="uwp-search-shell" disabled>
+              <legend class="sr-only">Such- und Filterfelder</legend>
+              <div class="uwp-field">
+                <label for="uwp-company-search">Name, Börsenkürzel oder Branche</label>
+                <input id="uwp-company-search" type="search" placeholder="z. B. DEUTZ oder BASF" autocomplete="off" data-uwp-search aria-controls="uwp-search-results">
+              </div>
+              <div class="uwp-field">
+                <label for="uwp-coverage">Datenabdeckung</label>
+                <select id="uwp-coverage" data-uwp-coverage>
+                  <option value="">Alle Unternehmen</option>
+                  <option value="with">Mit Quellenwerten</option>
+                  <option value="without">Datenlage offen</option>
+                </select>
+              </div>
+            </fieldset>
+          </form>
+          <p class="uwp-muted" data-uwp-error hidden role="status"></p>
+          <div data-uwp-results-panel hidden>
+            <nav class="uwp-examples" aria-label="Beispielprofile">
+              <span>Beispielprofile</span>
+              <a href="?unternehmen=uwp100-deutz#profil" data-company-id="uwp100-deutz">DEUTZ</a>
+              <a href="?unternehmen=uwp100-befesa#profil" data-company-id="uwp100-befesa">Befesa</a>
+            </nav>
+            <div class="uwp-search-results" id="uwp-search-results">
+              <p class="uwp-muted" role="status" data-uwp-result-count></p>
+              <ul class="uwp-results" data-uwp-results></ul>
+              <button class="uwp-text-button" type="button" data-uwp-more hidden>Weitere Unternehmen anzeigen</button>
+            </div>
+          </div>
+          <noscript>Die Unternehmenssuche benötigt JavaScript. Die <a href="../../data/uwp/snapshots/uwp-100.public.latest.json">Quellenwerte sind als JSON</a> verfügbar.</noscript>
+        </section>
+
+        <div id="profil" data-uwp-profile hidden></div>
+
+        <section class="uwp-guide" aria-labelledby="uwp-guide-title" data-generic-tool-explanation-ready="true">
+          <h2 id="uwp-guide-title">Daten und Methodik</h2>
+
+          <details class="uwp-details" id="datenquellen">
+            <summary>Datenquellen und Aktualisierung</summary>
+            <div class="uwp-details-body">
+              <p>Das UWP-100 umfasst 100 ausgewählte Unternehmen aus dem deutschen Börsenumfeld. Die Profile zeigen je nach Datenlage Angaben zu Mensch, Planet und Demokratie.</p>
+              <ul>
+                <li><strong>Unternehmensberichte</strong> liefern zum Beispiel Angaben zu Treibhausgasen und Arbeitsunfällen.</li>
+                <li><strong>Das Umweltregister PRTR</strong> liefert Emissions- und Abfallmengen für einzelne deutsche Standorte.</li>
+                <li><strong>Das Lobbyregister des Bundestags</strong> enthält gemeldete Ausgabenspannen für Interessenvertretung beim Bund.</li>
+                <li><strong>Wikirate</strong> ergänzt historische Angaben aus Sekundärquellen.</li>
+              </ul>
+              <p>Die beiden Register werden am dritten Tag jedes Monats abgefragt. Neue Berichtsjahre werden mit der Veröffentlichung durch die jeweilige Quelle verfügbar.</p>
+              <p class="uwp-muted" data-uwp-status></p>
+              <p><a href="../../data/uwp/snapshots/uwp-100.public.latest.json">Datensatz als JSON öffnen</a></p>
+            </div>
+          </details>
+
+          <details class="uwp-details" id="profil-lesen">
+            <summary>Was die Datenqualität bedeutet</summary>
+            <div class="uwp-details-body">
+              <p>Öffne bei einer Kennzahl die Details, um ihre Abgrenzung und den Quellenstand zu sehen. Jahresvergleiche erscheinen für Kennzahlen mit vergleichbaren Angaben aus demselben Bericht.</p>
+              <dl class="uwp-quality">
+                <dt>A</dt><dd>Geprüfte Daten mit dokumentierter Methode und hoher Vergleichbarkeit.</dd>
+                <dt>B</dt><dd>Angaben aus Unternehmensberichten oder Registern mit nachvollziehbarer Quelle.</dd>
+                <dt>C</dt><dd>Sekundärdaten mit methodischem Vorbehalt.</dd>
+                <dt>D</dt><dd>Schätzwerte oder Teilinformationen.</dd>
+                <dt>E</dt><dd>Datenlücke. Das betreffende Feld bleibt offen.</dd>
+              </dl>
+            </div>
+          </details>
+
+          <details class="uwp-details" id="rechenweg">
+            <summary>Wie eine Gesamtbewertung entstehen würde</summary>
+            <div class="uwp-details-body">
+              <p>Eine Kennzahl beschreibt einen Ausschnitt, etwa Emissionen an einem Standort. Für eine Wirkungsbewertung braucht es zusätzlich die relevanten Betroffenen, einen begründeten Vergleich und Belege für die tatsächliche Zustandsveränderung.</p>
+              <ol>
+                <li>Bestimme anhand von Branche, Geschäftsmodell und Lieferkette, welche Felder für Mensch, Planet und Demokratie kritisch sind.</li>
+                <li>Prüfe Datenqualität, Bezugsgrößen und Schutzgrenzen. Geeignete Vergleichswerte ermöglichen im Modell eine Einordnung von -3 bis +3.</li>
+                <li>Wende Nichtkompensation und Reverse Merit Order an. Eine schwere Verletzung einer Schutzgrenze blockiert den Ausgleich durch gute Werte. Das schwächste ausreichend belegte kritische Feld begrenzt den Gesamtwert.</li>
+              </ol>
+              <p><strong>Fiktives Beispiel.</strong> Die Norddraht AG hätte im Modell einen Klimawert von +1. Für Menschenrechte in der Lieferkette gäbe es Hinweise auf -2 bei Datenqualität D. Weil gerade für dieses kritische Feld ein belastbarer Beleg fehlt, bleibt die Gesamtbewertung offen.</p>
+            </div>
+          </details>
+        </section>
+
+        <details class="uwp-details uwp-personal-tools" data-wirkungsraum-page-tools="true" data-search-exclude>
+          <summary>Seite merken und Notizen</summary>
+          <div class="wirkungsraum-save-row" data-wirkungsraum-actions-row></div>
+        </details>
+      </div>
+    </main>
+    <footer class="footer" data-search-exclude>
+  <div class="footer-grid">
+    <div>
+      <p class="hero-kicker">Wirkungsökonomie</p>
+      <h2>Die neue Ordnung des Wohlstands</h2>
+      <p>Die Wirkungsökonomie ist ein eigenständiges Gesellschafts- und Wirtschaftsmodell, das Wirkung auf Mensch, Planet und Demokratie sichtbar macht, bewertet und in Entscheidungen zurückführt.</p>
+      <p><a class="text-link" href="../../mitmachen.html">Kontakt und Mitmachen</a></p>
+    </div>
+    <section class="footer-newsletter" data-woek-newsletter data-api-origin="https://parlament.wirkungsoekonomie.de" aria-labelledby="footer-newsletter-title">
+      <div class="footer-newsletter-copy">
+        <p class="hero-kicker">Auf Wunsch informiert bleiben</p>
+        <h2 id="footer-newsletter-title">Der Wirkungsbrief</h2>
+        <p>Neue Analysen, erklärte Begriffe und Hinweise zu Werkzeugen, Veröffentlichungen und Kursen. Nur, wenn es etwas Relevantes mitzuteilen gibt.</p>
+      </div>
+      <form class="footer-newsletter-form" data-woek-newsletter-form novalidate>
+        <label for="woek-newsletter-email">E-Mail-Adresse</label>
+        <div class="footer-newsletter-fields">
+          <input id="woek-newsletter-email" name="email" type="email" inputmode="email" autocomplete="email" required>
+          <button class="btn btn-primary" type="submit">Bestätigungs-E-Mail anfordern</button>
+        </div>
+        <label class="footer-newsletter-consent"><input name="consent" type="checkbox" required> <span>Ich möchte den Wirkungsbrief per E-Mail erhalten. <a href="../../datenschutz.html">Datenschutz</a>.</span></label>
+        <label class="footer-newsletter-honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <p class="footer-newsletter-note">Die Anmeldung wird erst nach der Bestätigung per E-Mail aktiv. Für redaktionelle Ausgaben werten wir Öffnungen und relevante Klicks pseudonymisiert und nur aggregiert aus.</p>
+        <p class="footer-newsletter-message" data-woek-newsletter-message role="status" aria-live="polite"></p>
+      </form>
+      <div class="footer-newsletter-welcome" data-woek-newsletter-welcome hidden aria-live="polite">
+        <strong>Willkommen zurück.</strong>
+        <p>Ihr Wirkungsbrief ist aktiv.</p>
+      </div>
+    </section>
+    <a class="btn btn-primary" href="../../kompass.html">WÖk-Kompass öffnen</a>
+    <nav class="footer-nav" aria-label="Footer Navigation" data-search-exclude>
+      <div class="footer-nav-group">
+      <h3>Verstehen</h3>
+      <div class="footer-nav-links">
+          <a href="../../verstehen/" data-nav-match="verstehen/">Einstieg</a>
+          <a href="../../modell.html" data-nav-match="modell.html">Das Modell</a>
+          <a href="../../so-wirkt-wirkungsoekonomie/" data-nav-match="so-wirkt-wirkungsoekonomie/">So wirkt WÖk</a>
+          <a href="../../wirkungswissenschaften/" data-nav-match="wirkungswissenschaften/">Wirkungswissenschaften</a>
+          <a href="../../einwaende/" data-nav-match="einwaende/">Einwände</a>
+          <a href="../../begriffe/" data-nav-match="begriffe/">Glossar</a>
+      </div>
+    </div>
+    <div class="footer-nav-group">
+      <h3>Für wen?</h3>
+      <div class="footer-nav-links">
+          <a href="../../fuer/" data-nav-match="fuer/">Übersicht</a>
+          <a href="../../fuer/buergerinnen.html" data-nav-match="fuer/buergerinnen.html">Bürger:innen</a>
+          <a href="../../fuer/unternehmen.html" data-nav-match="fuer/unternehmen.html">Unternehmen</a>
+          <a href="../../fuer/investoren.html" data-nav-match="fuer/investoren.html">Investor:innen</a>
+          <a href="../../fuer/kommunen.html" data-nav-match="fuer/kommunen.html">Kommunen</a>
+          <a href="../../fuer/politik.html" data-nav-match="fuer/politik.html">Politik</a>
+      </div>
+    </div>
+    <div class="footer-nav-group">
+      <h3>Wirkungsfelder</h3>
+      <div class="footer-nav-links">
+          <a href="../../wirkungsfelder/" data-nav-match="wirkungsfelder/">Alle Wirkungsfelder</a>
+          <a href="../../wirkungsfelder/bildung/" data-nav-match="wirkungsfelder/bildung/">Bildung</a>
+          <a href="../../wirkungsfelder/gesundheit-pflege/" data-nav-match="wirkungsfelder/gesundheit-pflege/">Gesundheit &amp; Pflege</a>
+          <a href="../../wirkungsfelder/klima-energie-ressourcen/" data-nav-match="wirkungsfelder/klima-energie-ressourcen/">Klima, Energie &amp; Ressourcen</a>
+          <a href="../../wirkungsfelder/finanzsystem-kapital/" data-nav-match="wirkungsfelder/finanzsystem-kapital/">Finanzsystem &amp; Kapital</a>
+          <a href="../../wirkungsfelder/staat-recht-demokratie/" data-nav-match="wirkungsfelder/staat-recht-demokratie/">Staat, Recht &amp; Demokratie</a>
+      </div>
+    </div>
+    <div class="footer-nav-group">
+      <h3>Praxis &amp; Tools</h3>
+      <div class="footer-nav-links">
+          <a href="../../werkzeuge/" data-nav-match="werkzeuge/">Alle Werkzeuge</a>
+          <a href="../../werkzeuge/wirkungswahl-kompass/" data-nav-match="werkzeuge/wirkungswahl-kompass/">Wirkungswahl-Kompass</a>
+          <a href="../../erleben/" data-nav-match="erleben/">Interaktive Demos</a>
+          <a href="../../wirkungssteuerung/wirkungssteuer/" data-nav-match="wirkungssteuerung/wirkungssteuer/">Wirkungssteuer</a>
+          <a href="../../wirkungssteuerung/wirkungshaushalt/" data-nav-match="wirkungssteuerung/wirkungshaushalt/">Wirkungshaushalt</a>
+          <a href="../../werkzeuge/scorecards/" data-nav-match="werkzeuge/scorecards/">Scorecards</a>
+          <a href="../../werkzeuge/t-sroi/" data-nav-match="werkzeuge/t-sroi/">T-SROI</a>
+      </div>
+    </div>
+    <div class="footer-nav-group">
+      <h3>Debatte &amp; Radar</h3>
+      <div class="footer-nav-links">
+          <a href="../../oeffentlicher-wirkungsraum/" data-nav-match="oeffentlicher-wirkungsraum/">Übersicht</a>
+          <a href="../../wirkungsradar/" data-nav-match="wirkungsradar/">Wirkungsradar</a>
+          <a href="../../wirkungsradar/debattenkarten/" data-nav-match="wirkungsradar/debattenkarten/">Debattenkarten</a>
+          <a href="../../news/" data-nav-match="news/">Neues aus der WÖk</a>
+          <a href="../../wirkungsticker/" data-nav-match="wirkungsticker/">Wirkungsticker</a>
+          <a href="../../woek-ki/" data-nav-match="woek-ki/">Frag die WÖk</a>
+          <a href="../../app/" data-nav-match="app/">WÖk-App</a>
+      </div>
+    </div>
+    <div class="footer-nav-group">
+      <h3>Lernen</h3>
+      <div class="footer-nav-links">
+          <a href="../../lernen/" data-nav-match="lernen/">Lernportal</a>
+          <a href="../../akademie/" data-nav-match="akademie/">Akademie</a>
+          <a href="../../institut/" data-nav-match="institut/">Wirkungsinstitut</a>
+          <a href="../../mein-wirkungsraum/" data-nav-match="mein-wirkungsraum/">Mein Wirkungsraum</a>
+          <a href="../../institut/projekte/" data-nav-match="institut/projekte/">Institutsprojekte</a>
+      </div>
+    </div>
+    <div class="footer-nav-group">
+      <h3>Bibliothek</h3>
+      <div class="footer-nav-links">
+          <a href="../../bibliothek/" data-nav-match="bibliothek/">Bibliothek</a>
+          <a href="../../journal/" data-nav-match="journal/">Journal</a>
+          <a href="../../podcast/" data-nav-match="podcast/">Podcast</a>
+          <a href="../../quellenarchiv/" data-nav-match="quellenarchiv/">Quellenarchiv</a>
+          <a href="../../referenz/" data-nav-match="referenz/">Online-Buch</a>
+          <a href="../../wissen/working-papers/" data-nav-match="wissen/working-papers/">Working Papers</a>
+      </div>
+    </div>
+    <div class="footer-nav-group">
+      <h3>Mitmachen</h3>
+      <div class="footer-nav-links">
+          <a href="../../umfragen/" data-nav-match="umfragen/">Umfragen</a>
+          <a href="../../mitmachen.html" data-nav-match="mitmachen.html">Mitmachen</a>
+          <a href="../../suche.html" data-nav-match="suche.html">Suche</a>
+          <a href="../../ueber.html" data-nav-match="ueber.html">Über die WÖk</a>
+          <a href="../../w/natalie-weber/presse/" data-nav-match="w/natalie-weber/presse/">Presse</a>
+          <a href="../../w/natalie-weber/faq/" data-nav-match="w/natalie-weber/faq/">FAQ</a>
+          <a href="../../impressum.html" data-nav-match="impressum.html">Impressum</a>
+          <a href="../../datenschutz.html" data-nav-match="datenschutz.html">Datenschutz</a>
+      </div>
+    </div>
+    </nav>
+    <nav class="footer-legal-nav" aria-label="Rechtliches" data-search-exclude>
+<a href="../../en/" data-nav-match="en/">English</a>
+<a href="../../journal/" data-nav-match="journal/|blog.html|blog/">Journal</a>
+<a href="../../ueber.html" data-nav-match="ueber.html|ueber/|ueber-die-woek/|ueber-die-w-oek/">Über die Wirkungsökonomie</a>
+<a href="../../impressum.html" data-nav-match="impressum.html|impressum/">Impressum</a>
+<a href="../../datenschutz.html" data-nav-match="datenschutz.html|datenschutz/">Datenschutz</a>
+    </nav>
+    <p>© 2026 Natalie Weber - Wirkungsökonomie</p>
+  </div>
+</footer>
+<script defer src="../../assets/js/newsletter.js?v=20260815-landing"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script type="module" src="../../assets/js/uwp/uwp-profile.js?v=20261112-layout"></script>
+  </body>
+</html>

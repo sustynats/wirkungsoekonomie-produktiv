@@ -1,0 +1,237 @@
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { isDeepStrictEqual } from "node:util";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { decodeNewsroom, newsroomParts, writeRepositoryJson } from './newsroom-store.mjs';
+import { readReleasedPart } from './release-part.mjs';
+import { RELEASE_STORE_FORMAT } from './release-part.mjs';
+import { persistEnabledReleaseData } from './release-data.mjs';
+import {checkStagedGitSize, checkOutgoingGitSize} from './check-git-size.mjs';
+const exec = promisify(execFile);
+
+const GENERATED_PATHS = ["news", "wirkungsticker", "sitemap.xml", "assets/search/search-index.json", "public/data/woek-search-meta.json", "content/taxonomy/site-map.json", "umfragen", "admin/umfragen", "reports/wirkungsticker-source-integrity.json", "reports/wirkungsticker-source-portfolio.json", "data/wirkungsticker/source-audit-2026-09-05.json"];
+const STORY_STORE = "data/news/stories.json";
+const STORY_PARTS = `${STORY_STORE}.parts`;
+const storyStoragePath = file => file === STORY_STORE || /^data\/news\/stories\.json\.parts\/[a-f0-9]{64}\.json$/.test(file);
+
+// Merge whole story records, never prose, evidence, versions or source arrays.
+// Two different changes to the same record remain a real conflict, even when
+// one timestamp is newer. A newer editor must not silently lose their work.
+export function mergeDisjointStoryStores(base, upstream, worker) {
+  const index = store => {
+    if (!store || !Array.isArray(store.stories) || typeof store.schema_version !== "string" || !Number.isFinite(Date.parse(store.updated_at))) throw new Error("STORY_STORE_INVALID");
+    const rows = new Map();
+    for (const story of store.stories) {
+      if (!story || typeof story.story_id !== "string" || !story.story_id || rows.has(story.story_id)) throw new Error("STORY_IDENTITIES_INVALID");
+      rows.set(story.story_id, story);
+    }
+    return rows;
+  };
+  const b = index(base), u = index(upstream), w = index(worker);
+  if (base.schema_version !== upstream.schema_version || base.schema_version !== worker.schema_version) throw new Error("STORY_SCHEMA_CONFLICT");
+  const mergeValue = (old, left, right) => {
+    if (isDeepStrictEqual(left, right)) return left;
+    if (isDeepStrictEqual(left, old)) return right;
+    if (isDeepStrictEqual(right, old)) return left;
+    throw new Error("STORY_RECORD_OVERLAP");
+  };
+  const merged = {};
+  for (const key of new Set([...Object.keys(base), ...Object.keys(upstream), ...Object.keys(worker)])) {
+    if (key === "stories" || key === "updated_at") continue;
+    const value = mergeValue(base[key], upstream[key], worker[key]);
+    if (value !== undefined) merged[key] = value;
+  }
+  merged.updated_at = [upstream.updated_at, worker.updated_at].sort((a, b) => Date.parse(b) - Date.parse(a))[0];
+  merged.stories = [];
+  for (const id of new Set([...u.keys(), ...w.keys(), ...b.keys()])) {
+    const record = mergeValue(b.get(id), u.get(id), w.get(id));
+    if (record !== undefined) merged.stories.push(record);
+  }
+  return merged;
+}
+export function regeneratablePublicationPath(file) {
+  if (file.includes("..") || file.startsWith("/")) return false;
+  return GENERATED_PATHS.filter(base => base.includes(".")).includes(file)
+    || /^news\/feed\.(?:xml|atom|json)$/.test(file)
+    || /^news\/(?:[a-z0-9-]+\/)*index\.html$/.test(file)
+    || /^wirkungsticker\/(?:feed\.(?:xml|atom|json)|data\/stories\.json|(?:[a-z0-9-]+\/)*index\.html|(?:analyse\/|lage\/)?\.generated-[a-z-]+\.json)$/.test(file)
+    || /^(?:admin\/)?umfragen\/(?:[a-z0-9-]+\/)*index\.html$/.test(file);
+}
+// The app is rebuilt from the committed stores by every Pages release.
+export function derivedTickerProjection(file) {
+  if (!file || file.startsWith('/') || file.split('/').includes('..')) return false;
+  return file.startsWith('wirkungsticker/data/app/');
+}
+const stdout = result => typeof result === "string" ? result : result?.stdout || "";
+async function git(args) {
+  // A three-way recovery reads complete story stores; each can be up to the
+  // guarded repository limit. A 64 MiB stdout cap rejected valid compact JSON.
+  return exec("git", args, { maxBuffer: 128 * 1024 * 1024, env: { ...process.env, GIT_EDITOR: "true" } });
+}
+export async function rebuildPublication({ run = exec, env = process.env } = {}) {
+  // No collection, image generation or paid analysis. Re-render the retained
+  // canonical data with the newly integrated generators before publication.
+  for (const script of ["news:test", "news:build", "polls:build", "build:search", "taxonomy:build", "news:source-integrity:audit", "news:source-portfolio:audit", "news:validate"]) {
+    // Match the regular workflow's isolated test configuration. Only mocked
+    // unit tests use API mode; every real build keeps the production mode.
+    const childEnv = script === "news:test" ? { ...env, WIRKUNGSTICKER_PROCESSING_MODE: "api", VISUAL_GENERATION_PROVIDER: "higgsfield" } : env;
+    const result = await run("npm", ["run", script, ...(script.endsWith(":audit") ? ["--", "--strict"] : [])], { maxBuffer: 16 * 1024 * 1024, env: childEnv });
+    if (result.stdout) process.stdout.write(result.stdout);
+  }
+}
+
+// Actions checks out one commit. An unbounded pull can fetch years of binary
+// publication history while holding the shared publication lane. Fetch only
+// enough history to prove the common ancestor; never rebase unrelated roots.
+// An unchanged main is already the worker commit's parent. Fetch its tip first
+// instead of downloading 64 large publication snapshots before proving that.
+export async function fetchPublicationBase(run = git) {
+  const shallow = stdout(await run(["rev-parse", "--is-shallow-repository"])).trim() === "true";
+  if (!shallow) { await run(["fetch", "--no-tags", "origin", "main"]); return; }
+  for (const depth of [1, 64, 256, 1024]) {
+    await run(["fetch", "--no-tags", `--depth=${depth}`, "origin", "main"]);
+    try {
+      const base=stdout(await run(["merge-base", "HEAD", "FETCH_HEAD"])).trim();
+      if (/^[a-f0-9]{40,64}$/.test(base)) return;
+    } catch { /* need more ancestry; no mutation or unsafe fallback */ }
+  }
+  throw new Error("PUBLISH_COMMON_ANCESTOR_NOT_FOUND");
+}
+
+async function readGitStorySnapshot(reference, run = git, {readReleasePart = readReleasedPart} = {}) {
+  const manifest = JSON.parse(stdout(await run(['show', `${reference}:${STORY_STORE}`])));
+  if (!manifest.storage_format) return {store: manifest, manifest};
+  const parts = new Map();
+  for (const part of newsroomParts(manifest)) {
+    if (!/^[a-f0-9]{64}$/.test(part.sha256 || '')) throw Error('NEWSROOM_PART_INVALID');
+    if (!parts.has(part.sha256)) parts.set(part.sha256, part.release
+      ? await readReleasePart(part)
+      : Buffer.from(stdout(await run(['show', `${reference}:${STORY_PARTS}/${part.sha256}.json`]))));
+  }
+  return {store: decodeNewsroom(manifest, part => parts.get(part.sha256)), manifest};
+}
+export async function readGitStoryStore(reference, run = git, options) {
+  return (await readGitStorySnapshot(reference, run, options)).store;
+}
+
+export function enforcePublicationStorage({phase, base, root = process.cwd()} = {}) {
+  if (phase === 'staged') return checkStagedGitSize({root, automatic: true});
+  if (phase === 'outgoing') return checkOutgoingGitSize({root, base, automatic: true});
+  throw Error('PUBLISH_STORAGE_PHASE_INVALID');
+}
+export function isStorageQuotaRejection(error) {
+  const message = [error?.message, error?.stderr, error?.stdout].filter(Boolean).join('\n');
+  return /repository is above its size quota|repository (?:is )?(?:over|exceeds) (?:its |the )?size (?:limit|quota)|exceeds github's file size limit|GH001:[^\n]*large files/i.test(message);
+}
+
+export async function publishGitUpdate({ run = git, rebuild = rebuildPublication, writeStoryStore = (store, options) => writeRepositoryJson(STORY_STORE, store, options), persistStoryParts = persistEnabledReleaseData, readReleasePart = readReleasedPart, storageGate = enforcePublicationStorage, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
+  let regenerated = false;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const before = stdout(await run(["rev-parse", "HEAD"])).trim();
+    let recovered = false;
+    try {
+      await fetchPublicationBase(run);
+      await run(["rebase", "FETCH_HEAD"]);
+    } catch (error) {
+      const firstConflicts = stdout(await run(["diff", "--name-only", "--diff-filter=U", "-z"])).split("\0").filter(Boolean);
+      if (!firstConflicts.length) throw error;
+      let failure = error, finished = false;
+      try {
+        // A push retry can contain both a worker commit and a previous rebuild.
+        // Continue through each safe conflict, not only the first stopped commit.
+        for (let step = 0; step < 20; step++) {
+          const conflicts = step === 0 ? firstConflicts : stdout(await run(["diff", "--name-only", "--diff-filter=U", "-z"])).split("\0").filter(Boolean);
+          if (!conflicts.length) throw failure;
+          let combinedStories, storageOptions;
+          if (conflicts.some(storyStoragePath)) {
+            try {
+              // In a rebase: stage 1 = common base, 2 = upstream, 3 = worker.
+              let versions = conflicts.includes(STORY_STORE) ? await Promise.all([1, 2, 3].map(async stage => JSON.parse(stdout(await run(["show", `:${stage}:${STORY_STORE}`]))))) : null;
+              if (!versions || versions.some(value => value.storage_format)) {
+                const base = stdout(await run(['merge-base', 'HEAD', 'REBASE_HEAD'])).trim();
+                const snapshots = await Promise.all([base, 'HEAD', 'REBASE_HEAD'].map(ref => readGitStorySnapshot(ref, run, {readReleasePart})));
+                versions = snapshots.map(snapshot => snapshot.store);
+                if (snapshots.some(snapshot => snapshot.manifest.parts_storage === RELEASE_STORE_FORMAT)) {
+                  storageOptions = {releaseStorage: true, releasedParts: snapshots.flatMap(snapshot =>
+                    snapshot.manifest.storage_format ? newsroomParts(snapshot.manifest).filter(part => part.release) : [])};
+                }
+              }
+              combinedStories = mergeDisjointStoryStores(...versions);
+            } catch { /* Malformed or overlapping records stay blocked. */ }
+          }
+          if (!conflicts.every(file => regeneratablePublicationPath(file) || (storyStoragePath(file) && combinedStories))) {
+            throw new Error(`PUBLISH_CANONICAL_CONFLICT:${conflicts.join(",")}`, { cause: failure });
+          }
+          if (combinedStories) {
+            const saved = await writeStoryStore(combinedStories, storageOptions);
+            if (saved?.parts_storage) await persistStoryParts();
+            await run(["add", "--", STORY_STORE]);
+            if (saved?.storage_format && !saved.parts_storage) await run(['add', '--', STORY_PARTS]);
+          }
+          const generatedConflicts = conflicts.filter(regeneratablePublicationPath);
+          if (generatedConflicts.length) await run(["restore", "--source=HEAD", "--staged", "--worktree", "--", ...generatedConflicts]);
+          // A generated-only commit can become empty. Rebuild once from all
+          // retained canonical inputs after the complete rebase, before push.
+          const staged = stdout(await run(["diff", "--cached", "--name-only", "-z"])).trim();
+          // A recovered store or regenerated index must pass before the
+          // continuation can create another local commit.
+          if (staged) await storageGate({phase: 'staged'});
+          try {
+            await run(staged ? ["-c", "core.editor=true", "rebase", "--continue"] : ["rebase", "--skip"]);
+            finished = true;
+            break;
+          } catch (next) { failure = next; }
+        }
+        if (!finished) throw new Error("PUBLISH_REBASE_RECOVERY_LIMIT", { cause: failure });
+      }
+      // Never choose a side for canonical overlap or leave a partial rebase.
+      catch (failure) { await run(["rebase", "--abort"]); throw failure; }
+      recovered = true;
+    }
+    if (recovered || stdout(await run(["rev-parse", "HEAD"])).trim() !== before) {
+      await rebuild();
+      const rebuiltPaths = [...new Set(stdout(await run(["ls-files", "--modified", "--deleted", "--others", "--exclude-standard", "-z"])).split("\0").filter(Boolean))];
+      const derived = rebuiltPaths.filter(derivedTickerProjection);
+      if (derived.length) {
+        // Stage then restore includes new files as well as tracked edits, leaving
+        // no generated checkout changes to interfere with a subsequent retry.
+        await run(["add", "--", ...derived]);
+        await run(["restore", "--source=HEAD", "--staged", "--worktree", "--", ...derived]);
+      }
+      const generated = rebuiltPaths.filter(file => !derivedTickerProjection(file) && regeneratablePublicationPath(file));
+      if (generated.length) await run(["add", "--", ...generated]);
+      const changed = stdout(await run(["diff", "--cached", "--name-only", "-z"])).split("\0").filter(Boolean);
+      if (changed.some(file => !regeneratablePublicationPath(file))) throw new Error("PUBLISH_UNEXPECTED_STAGED_CHANGE");
+      if (changed.length) {
+        await storageGate({phase: 'staged'});
+        await run(["commit", "-m", "[wirkungsticker] Ansichten nach parallelem Release neu erzeugen"]);
+      }
+      regenerated = true;
+    }
+    // Check the complete outgoing range after every rebase/rebuild, even
+    // when the staging area is now empty. A failed gate never enters retries.
+    const checked = await storageGate({phase: 'outgoing', base: 'FETCH_HEAD'});
+    if (checked?.head) {
+      if (!/^[a-f0-9]{40,64}$/.test(checked.head) ||
+          stdout(await run(['rev-parse', 'HEAD'])).trim() !== checked.head) {
+        throw Error('PUBLISH_STORAGE_HEAD_CHANGED');
+      }
+      // The latest fetched main already contains this exact commit.
+      if (checked.commits === 0) return {attempts: attempt, regenerated};
+    }
+    const target = checked?.head ? `${checked.head}:main` : 'HEAD:main';
+    try {
+      await run(["push", "origin", target]);
+      return { attempts: attempt, regenerated };
+    } catch (error) {
+      if (isStorageQuotaRejection(error)) throw new Error('PUBLISH_REPOSITORY_SIZE_QUOTA', {cause: error});
+      if (attempt === 3) throw error;
+      // A parallel release may advance main during the expensive object upload.
+      // Re-read and integrate it before a bounded idempotent push retry.
+      await sleep(attempt * 2000);
+    }
+  }
+}
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await publishGitUpdate();

@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import { telephoneBooking } from "../components/natalie/telephone-booking.mjs";
+const html = telephoneBooking();
+assert.ok(html.includes("höchstens drei Kalendermonate"));
+assert.ok(html.includes("15. Dezember 2026 bis einschließlich 15. Januar 2027"));
+assert.ok(!html.includes("vier Wochen"));
+assert.ok(html.includes('data-booking data-endpoint="https://130.162.217.58.sslip.io/api/telephone-booking"'));
+assert.ok(html.includes('data-booking-form'));
+const generator = fs.readFileSync(new URL("../scripts/natalie/build-natalie-pages.mjs", import.meta.url), "utf8");
+assert.ok(generator.includes("${telephoneBooking()}"));
+assert.ok(!generator.includes("höchstens vier Wochen"));
+process.stdout.write("11th targeted case: component render and existing generator contract PASS\n");

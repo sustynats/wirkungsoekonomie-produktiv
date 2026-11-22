@@ -1,0 +1,56 @@
+{
+  "lexikon": {
+    "released": true,
+    "publicArtifact": {
+      "url": "https://github.com/sustynats/wirkungsoekonomie.de/releases/download/wirkungslexikon-v10-20261016-journal-r4/wirkungslexikon-public-v10-20261016-journal-r4.tar.gz",
+      "sha256": "0e5ff27049d19a35fd4ebd5671d5ee4b3cbb5a1df20fbc0796aa29608aca4efd",
+      "cards": 180,
+      "families": 20,
+      "programmeDossiers": 21,
+      "privateCards": 0
+    },
+    "status": "V9_DIRECT_HUMAN_APPROVAL",
+    "historicalV3Approval": {
+      "person": "Natalie Weber",
+      "date": "2026-10-15T20:09:42.401Z",
+      "approvalReference": "Direkte Chat-Freigabe und Livegang-Auftrag vom 15.10.2026"
+    },
+    "version": "V9",
+    "person": "Natalie Weber",
+    "approvalReceipt": "natalie-weber-v9-final-20261016",
+    "archiveSha256": "a0d7f812580c380c78958b9ac5e094ed2e34e6c26ce037ec5afa88cb51af6315",
+    "dataSha256": "e3cacc477e9d802acaf18b47e6f0c209c1473b0f4744f399b5a595dbf4157ee6",
+    "payloadSha256": "de59dd5bd401e9da57b45c052aaf7fa3adfe28ba47184380fbabf2c3c93c65b3",
+    "examplesRevision": "V10",
+    "examplesApproval": "natalie-weber-examples-v10-20261016",
+    "inventoryReleaseAuthority": "Direkte Freigabe Natalie Weber im Gespräch; automatisch fortgeschriebene aggregierte Bestandszahlen. Konkrete neue Eintragstexte werden gesondert zugeordnet."
+  },
+  "journal": {
+    "released": true,
+    "requiresLexiconLive": true,
+    "requiresNatalieWeberApproval": true,
+    "sourceVersion": "V9",
+    "releaseMode": "AUTHOR_PUBLISHED_REFERENCE_ONLY",
+    "publicationConfirmedBy": "Natalie Weber",
+    "publicationConfirmation": "Zur Info, der Journalbeitrag ist veröffentlicht. wegen der Verlinkung.",
+    "publishedArticle": {
+      "href": "/blog/wirkungslexikon-politische-sprache-was-worte-vorbereiten.html",
+      "title": "Das Wirkungslexikon politischer Sprache: Was Worte vorbereiten können",
+      "image": "/assets/img/blog/2026-10-16-wirkungslexikon-politische-sprache.png",
+      "imageAlt": "Titelillustration zum Wirkungslexikon politischer Sprache. Symbolbild, keine dokumentarische Aufnahme.",
+      "publishedAt": "2026-10-16T10:00:00+02:00"
+    }
+  },
+  "linkedin": {
+    "released": false,
+    "requiresLexiconLive": true,
+    "requiresNatalieWeberApproval": true,
+    "sourceVersion": "V9"
+  },
+  "preview": {
+    "authenticationRequired": true,
+    "robots": "noindex, nofollow, noarchive",
+    "noPublicSearch": true
+  },
+  "notes": "Direkte neue Freigabe der Abschlussfassung durch Natalie Weber am 16.10.2026; Originale und frühere Sperren bleiben privat versioniert. Keine automatische Freigabe späterer Änderungen. V10-Gedankenbeispiele: direkte fachliche und Veröffentlichungsfreigabe von Natalie Weber am 16.10.2026, revisionsgebunden. Keine Behauptung zusätzlicher Einzelquellenprüfungen."
+}

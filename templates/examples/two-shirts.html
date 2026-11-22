@@ -1,0 +1,152 @@
+<header class="story-cover" id="hero">
+  <div class="story-frame cover-grid">
+    <div class="cover-copy">
+      <p class="eyebrow">Wirtschaft verstehen</p>
+      <h1>Zwei T-Shirts.<br>Was steht <em>hinter dem Preis?</em></h1>
+      <p class="intro">Gleicher Schnitt, zwei Lieferketten. Folge der Baumwolle vom Rohstoff bis zur Kasse und prüfe, was eine neue Regel am Preis ändern könnte.</p>
+      <div class="cover-actions"><a class="story-button primary" href="#start">Reise starten</a><a class="story-button" href="#price">Zur Steuerrechnung</a></div>
+      <p class="cover-note">{{reading_time}} · Fiktiver Lernfall</p>
+    </div>
+    <div class="shirt-pair" role="group" aria-label="Zahlbeträge im fiktiven Ausgangsfall">
+      {{baseline_prices}}
+      <p>Modellpreise mit {{base_vat_rate}} % Umsatzsteuer</p>
+    </div>
+  </div>
+</header>
+
+<div class="story-nav" data-read-aloud-skip>
+  <div class="story-frame nav-inner">
+    <details class="chapter-menu">
+      <summary>Kapitel <span id="story-current">Überblick</span></summary>
+      <nav aria-label="Kapitel der T-Shirt-Reise">
+        <a href="#start">Vergleich</a><a href="#chain">Lieferkette</a><a href="#goals">SDG und SDG+</a><a href="#nace">NACE</a><a href="#data">Daten</a><a href="#limits">Grenzwerte</a><a href="#score">Bewertung</a><a href="#tariffs">Registertarife</a><a href="#price">Preis</a><a href="#profit">Anrechnung</a><a href="#market">Markt</a><a href="#state">Staat</a><a href="#effects">Wirkungsordnungen</a><a href="#beyond">Reality Check</a>
+      </nav>
+    </details>
+    <div class="view-controls"><button type="button" aria-pressed="true" id="short-mode">In 3 Minuten verstehen</button><button type="button" aria-pressed="false" id="deep-mode">Fachansicht</button></div>
+    <progress id="story-progress" value="0" max="14" aria-label="Erreichtes Kapitel"></progress>
+  </div>
+</div>
+
+<section class="story-frame story-section" id="start">
+  <div class="section-intro"><h2>Was der Preis allein nicht erzählt</h2><p>Beide Shirts wiegen im Modell 200 g und sollen dieselbe Aufgabe erfüllen. B enthält mehr zurückgewonnene Fasern. Ob beide gleich lange halten und sich gleich gut tragen lassen, bleibt offen.</p></div>
+  <div class="material-grid">{{material_figures}}</div>
+  <p class="rule-note">Die Shirts, Betriebe und Preise sind fiktiv. Rezyklat zeigt, woher Fasern stammen. Für eine Gesamtbewertung braucht es auch Belege zu Arbeitsbedingungen, Umwelt und Nutzung.</p>
+</section>
+
+<section class="story-band mist" id="chain">
+  <div class="story-frame story-section">
+    <div class="section-intro"><h2>Ein Shirt beginnt bei der Faser</h2><p>Öffne die Stationen, um zu sehen, welche Daten entstehen, wer sie liefern und wer sie prüfen kann.</p></div>
+    <div class="station-list">{{stage_details}}</div>
+    <details data-evidence><summary>Chargen verbinden und Doppelzählung vermeiden</summary><div class="detail"><p>Eine Stoffcharge kann an mehrere Kunden gehen. Lieferschein, Materialmenge, Chargennummer und Zeitraum zeigen, welcher Anteil zum Shirt gehört. Dieselbe Emission kann in den Berichten zweier Firmen stehen. In der Produktbilanz wird sie einmal erfasst. Nutzung und Entsorgung bleiben im vorliegenden Profil offen. <a href="#s-E7">[E7]</a></p></div></details>
+  </div>
+</section>
+
+<section class="story-frame story-section" id="goals">
+  <div class="section-intro"><h2>Welche Ziele berührt das Shirt?</h2><p>Die UN-Nachhaltigkeitsziele helfen, passende Fragen zu stellen. SDG+ ergänzt sie in der WÖk, etwa um den Zugang zu Information, überprüfbare Entscheidungen und wirksame Beschwerden.</p></div>
+  <ul class="goal-strip"><li><strong>SDG 6</strong><a href="#s-E11">Wasserqualität</a></li><li><strong>SDG 8</strong><a href="#s-E12">Arbeit und Löhne</a></li><li><strong>SDG 12</strong><a href="#s-E13">Materialverbrauch</a></li><li><strong>SDG 13</strong><a href="#s-E14">Klima</a></li></ul>
+  <p>Ein Zielbezug zeigt, was untersucht werden sollte. Die UN vergeben damit kein Zertifikat für dieses Produkt. Ob sich ein Zustand verändert und welcher Beitrag dem Produkt zugerechnet werden kann, prüfen wir anhand eigener Belege. <a href="/verstehen/sdgs-sdgplus/">SDG und SDG+ vertiefen</a></p>
+  <details data-evidence><summary>Zuordnung aller Stationen</summary><div class="detail table-scroll" tabindex="0" role="region" aria-label="Zielbezug der Lieferkette"><table><caption>Zielbezug im fiktiven Fall</caption><thead><tr><th scope="col">Station</th><th scope="col">Zielbezug</th><th scope="col">Offener Nachweis</th></tr></thead><tbody>{{mapping_rows}}</tbody></table></div></details>
+</section>
+
+<section class="story-band sand" id="nace">
+  <div class="story-frame story-section">
+    <div class="section-intro"><h2>13.30 beschreibt die Arbeit in der Färberei</h2><p>In NACE Rev. 2.1 steht 13.30 für Textilveredlung. Eine Anlage mit wirksamer Klärtechnik und eine schlecht kontrollierte Anlage können denselben Code haben. Der Code hilft, die Tätigkeit und geeignete Prüffragen zu finden. Die Qualität zeigen die Belege. <a href="#s-E1">[E1]</a> <a href="#s-E2">[E2]</a></p></div>
+    <dl class="identity-list"><div><dt>NACE</dt><dd>Welche wirtschaftliche Tätigkeit liegt vor?</dd></div><div><dt>Warenkennnummer</dt><dd>Welche Ware wird zolltariflich eingeordnet? Die konkrete Kennnummer bleibt hier offen. <a href="#s-E3">[E3]</a></dd></div><div><dt>Produkt- oder Chargen-ID</dt><dd>Welches Modell oder Los ist betroffen?</dd></div><div><dt>WÖk-ID</dt><dd>Welcher Gegenstand wird nach dem Register geprüft?</dd></div></dl>
+  </div>
+</section>
+
+<section class="story-frame story-section" id="data">
+  <div class="section-intro"><h2>Jede Zahl braucht einen Beleg</h2><p>Die Zahlen in diesem Fall sind modelliert. In einer realen Prüfung würden die Betriebe die Rohdaten liefern. Eine Prüfstelle würde zum Beispiel kontrollieren, ob der Beleg zur richtigen Charge und zum passenden Zeitraum gehört.</p></div>
+  <div class="measurement-grid">{{measurements}}</div>
+  <ol class="evidence-path" aria-label="Datenprüfung"><li>Rohdaten erfassen</li><li>Beleg zuordnen</li><li>Einheit und Grenze prüfen</li><li>Datenpunkt freigeben</li></ol>
+  <details data-evidence><summary>Quelle, Zuständigkeit und Unsicherheit je Zahl</summary><div class="detail table-scroll" tabindex="0" role="region" aria-label="Nachweise zu den Modellwerten"><table><caption>Fiktive Werte und reale Nachweiswege</caption><thead><tr><th scope="col">Größe</th><th scope="col">Bezug</th><th scope="col">Nachweisweg</th><th scope="col">Unsicherheit</th></tr></thead><tbody>{{measurement_rows}}</tbody></table></div></details>
+</section>
+
+<section class="story-band mist" id="limits">
+  <div class="story-frame story-section">
+    <div class="section-intro"><h2>Wasserverbrauch und Abwassergrenze beantworten andere Fragen</h2><p>Liter pro Shirt helfen beim Vergleich des Verbrauchs. Ob ein Betrieb eine Auflage einhält, hängt unter anderem von Schadstoff, Konzentration, Messstelle, Genehmigung und Einleitungsweg ab.</p></div>
+    <dl class="identity-list"><div><dt>Gesetzlicher Grenzwert</dt><dd>Verbindlich für den konkreten Betrieb, Parameter und Zeitraum. In Deutschland kann <a href="https://www.gesetze-im-internet.de/abwv/anhang_38.html">Anhang 38 AbwV</a> einschlägig sein.</dd></div><div><dt>Technischer Benchmark</dt><dd>Vergleich mit ähnlichen Anlagen oder Verfahren, mit passender Bezugsgröße.</dd></div><div><dt>Wissenschaftliche Referenz</dt><dd>Begründeter Vergleichswert aus Forschung, dessen Übertragbarkeit geprüft wird.</dd></div><div><dt>WÖk-Regel</dt><dd>Dokumentierte Zuordnung aus dem Register. Ein Beispiel ist WOK-S-101, R27, zur Lebenslohnabdeckung. <a href="#s-W3">[W3]</a></dd></div></dl>
+    <p class="rule-note"><strong>Schutzstatus A und B: OFFEN.</strong> Standort und Genehmigung fehlen. Die <a href="https://eur-lex.europa.eu/eli/dec_impl/2022/2508">BVT-Schlussfolgerungen für Textilien</a> bieten bei einschlägigen Anlagen weitere Anhaltspunkte.</p>
+  </div>
+</section>
+
+<section class="story-frame story-section" id="score">
+  <div class="section-intro"><h2>Eine schwere Verletzung bleibt sichtbar</h2><p>Die Reverse Merit Order lenkt Entscheidungen auf wesentliche Engpässe. Eine belegte schwere Schutzverletzung bleibt auch bei einem guten Klimawert bestehen. Sind für die Schutzprüfung Daten nötig, bleibt die Freigabe offen.</p></div>
+  <div class="protection-path"><div><strong>Schutzverletzung bestätigt</strong><p>Schutzverletzung und notwendige Abhilfe ausweisen.</p></div><div><strong>Schutzprüfung offen</strong><p>Belege ergänzen und Produktbewertung offenlassen.</p></div><div><strong>Schutzprüfung abgeschlossen</strong><p>Materielle Indikatoren und anwendbare Methoden prüfen.</p></div></div>
+  <p><strong>Produkt-FinalScore für beide Shirts: OFFEN.</strong> Für eine vollständige Bewertung fehlen Daten und eine nachgewiesene Produktgruppenregel.</p>
+  <details data-evidence><summary>Lebenslohnregel und Wirkungspass</summary><div class="detail"><p>Für WOK-S-101 ergibt die Registerformel R27 bei angenommenen 50 % den AutoScore -2 und bei 90 % den AutoScore +2. Die Arbeitskalibrierung verwendet die Grenzen 40, 60, 80 und 95 %. Ein Zeilenergebnis kann zusätzlich einen aktiven Benchmark und Assurance einbeziehen. Diese Einzelwerte betreffen die jeweilige fiktive Näherei. <a href="#s-W3">[W3]</a></p><div class="table-scroll" tabindex="0" role="region" aria-label="Wirkungspässe für A und B"><table><caption>Wirkungspass 0.1-draft · 14. November 2026</caption><thead><tr><th scope="col">Prüffeld</th><th scope="col">A</th><th scope="col">B</th></tr></thead><tbody>{{profile_table}}</tbody></table></div><p>Der <a href="/werkzeuge/impact-controlling/methodenpapiere/t-sroi-transformationsmessung/">T-SROI</a> kann eine geeignete Investition prüfen, etwa den Umbau der Färberei. Der Produktvergleich arbeitet mit Produktdaten, Schutzprüfung und Registerregeln.</p></div></details>
+</section>
+
+<div class="story-band dark tax-band">
+  <section class="story-frame story-section" id="tariffs">
+    <div class="section-intro"><h2>Sieben Klassen im Arbeitsmodell</h2><p>Die technische Staffel stammt aus dem Masterregister v1.4, Blatt 04_Tarifmodell, B6:C12. Sie ist dort als WÖk-Arbeitsmodell v1.3 ausgewiesen und dient hier der Simulation. Die Produktklassen von A und B bleiben offen. <a href="#s-W3">[W3]</a></p></div>
+    <div class="tax-scale table-scroll" tabindex="0" role="region" aria-label="Vollständige technische Tarifstaffel"><table><caption>Klassen und Sätze im Simulationsmodell</caption><thead><tr><th scope="col">Technische Klasse</th><th scope="col">Simulationssatz</th></tr></thead><tbody>{{tariff_rows}}</tbody></table></div>
+  </section>
+  <section class="story-frame story-section tax-calculator" id="price">
+    <div class="section-intro"><h2>Wie ändert sich die Rechnung?</h2><p>Die Registerdaten können einen Nachweis liefern. Der WStG-3.0-Entwurf sieht gesetzlich bestimmte Module vor. Der Gesetzgeber müsste Tatbestand, Schuldner, Basis, Tarif, Anrechnung, Übergang und Rechtsschutz festlegen. <a href="#s-W2">[W2]</a></p></div>
+    <div class="calculator-surface">
+      <p class="eyebrow">Wenn-dann-Rechnung · hypothetische Wirkungsabgabe</p>
+      <p>Der Ausgangsfall verwendet {{baseline_nets}} netto und {{base_vat_rate}} % Umsatzsteuer. Die Auswahl weist den Shirts keine echte Klasse zu. Es gibt hierfür kein wirksames WÖk-Einzelmodul. <a href="#s-E20">[E20]</a></p>
+      <div class="tax-fields">
+        <div><label for="tariff-a">Hypothetische Klasse A</label><select id="tariff-a"><option value="">Bitte wählen</option>{{class_options}}</select></div>
+        <div><label for="tariff-b">Hypothetische Klasse B</label><select id="tariff-b"><option value="">Bitte wählen</option>{{class_options}}</select></div>
+        <div><label for="vat-basis">Umsatzsteuerbasis im Szenario</label><select id="vat-basis"><option value="excludes">Abgabe bleibt außerhalb</option><option value="includes">Abgabe geht ein</option></select></div>
+        <div><label for="pass-through">Weitergegebener Abgabenanteil</label><select id="pass-through"><option value="100">100 %</option><option value="50">50 %</option><option value="0">0 %</option></select></div>
+      </div>
+      <div class="price-comparison">
+        <div class="shirt-a"><span>Shirt A</span><span class="baseline-price">Vorher {{price_a}}</span><strong id="price-after-a">OFFEN</strong></div>
+        <div class="shirt-b"><span>Shirt B</span><span class="baseline-price">Vorher {{price_b}}</span><strong id="price-after-b">OFFEN</strong></div>
+      </div>
+      <p id="scenario-announcement" class="sr-only" role="status"></p>
+      <div class="table-scroll" id="scenario-result" tabindex="0" role="region" aria-label="Berechnete Szenariowerte">Wähle für beide Shirts eine hypothetische Klasse.</div>
+      <noscript><p>Mit JavaScript lassen sich die Klassen und Rechenvarianten direkt vergleichen. Die technische Staffel steht in der Tabelle oberhalb.</p></noscript>
+      <details data-evidence><summary>Bemessungsgrundlage, Rundung und Preisweitergabe</summary><div class="detail"><p>Fixe Nettobasis × hypothetischer Satz ergibt die Wirkungsabgabe. Der weitergegebene Anteil erhöht die Zahlung vor Umsatzsteuer. Der restliche Anteil mindert unter den Modellannahmen den Stücküberschuss. Abgabe, Weitergabe und Umsatzsteuer werden auf den nächsten Cent gerundet. Art. 78 der Mehrwertsteuerrichtlinie sieht die Einbeziehung bestimmter Abgaben in die Umsatzsteuerbasis vor. Die Option außerhalb der Basis zeigt die Sensitivität. <a href="#s-E15">[E15]</a></p></div></details>
+      <details data-evidence><summary>Historischer Exkurs zur Wirkungs-MwSt</summary><div class="detail"><p>Die frühere Idee sah eine nach Produktwirkung gestaffelte Mehrwertsteuer vor. EU-Recht setzt den Mitgliedstaaten Grenzen bei ermäßigten Sätzen und bei weiteren umsatzsteuerähnlichen Abgaben. Die Zulässigkeit einer eigenständigen Produktabgabe hängt von ihrer Konstruktion ab. <a href="/wirkungssteuerung/wustg/">Historisches WUStG-Zielmodell</a> · <a href="#s-E15">[E15]</a></p></div></details>
+    </div>
+  </section>
+</div>
+
+<section class="story-frame story-section" id="profit">
+  <div class="section-intro"><h2>Wer zahlt auf jeder Stufe?</h2><p>Ein eigener Lehrfall mit {{chain_rate}} % fiktiver Wirkungssteuer je Stufe zeigt die Anrechnung einer Eingangsabgabe. Die Nettopreise bleiben fest. Die reguläre Umsatzsteuer ist für diese Rechnung ausgeblendet.</p></div>
+  <fieldset class="credit-options"><legend>Annahme zur Eingangs-Wirkungssteuer</legend><label><input type="radio" name="credit" value="full" checked> Voll anrechenbar</label><label><input type="radio" name="credit" value="limited"> Sperre in der Färberei</label><label><input type="radio" name="credit" value="none"> Ohne Anrechnung</label></fieldset>
+  <ol class="chain-flow" aria-label="Zahllasten je Stufe">{{chain_stage_cards}}</ol>
+  <div class="chain-summary"><span>Gesamtabführung</span><strong id="chain-total">{{chain_full_total}}</strong><span id="chain-status" class="sr-only" role="status"></span></div>
+  <p>Mit voller Anrechnung ergibt sich {{chain_full_total}}, ohne Anrechnung {{chain_none_total}}. Die Differenz von {{chain_difference}} entsteht durch die Steuerkaskade. Ein monetarisierter Schaden müsste eigens ermittelt werden.</p>
+  <details data-evidence><summary>Alle Zwischenbeträge und Abzugsarten</summary><div class="detail"><div class="table-scroll" tabindex="0" role="region" aria-label="Zahllast in drei Varianten"><table><caption>Hypothetische Abführung je Lieferstufe</caption><thead><tr><th scope="col">Stufe</th><th scope="col">Netto</th><th scope="col">Ausgang</th><th scope="col">Eingang</th><th scope="col">Voll</th><th scope="col">Sperre in der Färberei</th><th scope="col">Ohne</th></tr></thead><tbody>{{chain_table}}</tbody></table></div><p>Die Eingangs-Wirkungssteuer gehört zum simulierten Modul. Die Umsatzsteuer-Vorsteuer folgt <a href="https://www.gesetze-im-internet.de/ustg_1980/__15.html">§ 15 UStG</a>. Der Betriebsausgabenabzug betrifft den steuerlichen Gewinn nach <a href="https://www.gesetze-im-internet.de/estg/__4.html">§ 4 EStG</a>. Überwälzung beschreibt, wer die wirtschaftliche Last über Preise und Margen trägt.</p></div></details>
+</section>
+
+<section class="story-band mist" id="market">
+  <div class="story-frame story-section">
+    <div class="section-intro"><h2>Wie ein Betrieb reagieren könnte</h2><p>Eine Marke kann Klärtechnik verbessern, Löhne erhöhen, Lieferanten wechseln oder das Shirt haltbarer machen. Welche Option sich rechnet, hängt auch von Nachfrage, Verträgen und Investitionskosten ab. Wer eine Abgabe schuldet, kann sich von dem unterscheiden, der sie über Preise oder Kosten trägt.</p></div>
+    <p><a href="/wirkungsfelder/wirtschaft-unternehmen/">Wirtschaft und Unternehmen</a> · <a href="/wirkungssteuerung/digitaler-produktpass/">Digitaler Produktpass</a></p>
+    <details data-evidence id="trade"><summary>Einfuhr, Ausfuhr und vergleichbare Nachweise</summary><div class="detail"><p>Die Herkunft allein liefert keinen Wirkungsbefund. Ein Modul müsste für EU- und Drittlandverkehr anwendbare Vorschriften, gleichwertige Nachweise, die Einfuhrbehandlung und etwaige Ausfuhrerleichterungen festlegen. Status: <strong>{{trade_status}}</strong>. <a href="#s-W2">[W2]</a> <a href="#s-E17">[E17]</a> <a href="#s-E18">[E18]</a></p></div></details>
+  </div>
+</section>
+
+<section class="story-frame story-section" id="state">
+  <div class="section-intro"><h2>Wer wird entlastet, und woraus?</h2><p>Der Staat könnte nach einem Gesetz Mittel für eine gezielte Entlastung einsetzen. Dafür braucht es einen begründeten Anspruch, verfügbares Budget und eine Prüfung, wer von der Auszahlung profitiert. Vermiedene Schäden und hypothetische Einnahmen ergeben noch kein verfügbares Geld.</p></div>
+  <div class="state-links"><a href="/verstehen/preise-und-wirkungsfonds/">Preise und Wirkungsfonds</a><a href="/wirkungssteuerung/wirkungshaushalt/">Wirkungshaushalt</a><a href="/wirkungssteuerung/beschaffung-foerderung/">Beschaffung und Förderung</a></div>
+</section>
+
+<section class="story-band sand" id="effects">
+  <div class="story-frame story-section">
+    <div class="section-intro"><h2>Die Rechnung ist erst der Anfang</h2><p>Der Zahlbetrag lässt sich modellieren. Wie Betriebe, Haushalte und die Branche reagieren, bleibt eine Hypothese. In diesem Lernfall gibt es keine beobachtete Wirkung.</p></div>
+    <div class="effects-map">{{effects}}</div>
+  </div>
+</section>
+
+<section class="story-frame story-section" id="beyond">
+  <div class="section-intro"><h2>Was hätte sich wirklich verändert?</h2><p>Nach einem Pilotversuch würde die Evaluation Preise, Löhne, Wasserqualität, Absatz und Verteilung mit einem begründeten Verlauf ohne die Regel vergleichen. So lässt sich prüfen, ob die Regel einen Beitrag geleistet hat.</p></div>
+  <ol class="evidence-path overview-path" aria-label="Vom Produkt bis zur Wirkungsprüfung"><li>Produktfunktion</li><li>Aktivität</li><li>Daten</li><li>SDG und SDG+</li><li>Register</li><li>Schutz und RMO</li><li>Technischer Befund</li><li>Gesetzesmodul</li><li>Marktsignal</li><li>Ex-post-Wirkung</li></ol>
+  <dl class="identity-list last-check"><div><dt>Heute technisch möglich</dt><dd>Quellen, Chargen, Beobachtung und Bewertungsregeln dokumentieren.</dd></div><div><dt>Als Entwurf erproben</dt><dd>Wirkungspass, Rechenvarianten und Kriterien für die spätere Prüfung.</dd></div><div><dt>Demokratisch zu entscheiden</dt><dd>Abgabenform, Tarif, Anrechnung, Rückverteilung und Rechtsschutz.</dd></div></dl>
+  <p><a href="/woek-id-register/">WÖk-Masterregister</a> · <a href="/werkzeuge/reverse-merit-order/">Reverse Merit Order</a> · <a href="/akademie/studienstruktur.html">Akademie</a></p>
+</section>
+
+<section class="story-band mist" id="sources">
+  <div class="story-frame story-section"><h2>Quellen und Stand</h2><p>Revisionsentwurf vom 14. November 2026 zur fachlichen Prüfung. Firmen, Daten, Preise und angenommene Steuerklassen bilden einen Lernfall. Grundlage zur Terminologie ist der <a href="/bibliothek/woek-begriffsleitfaden-fuehrend/">Begriffsleitfaden v1.8</a>.</p>
+  <details data-evidence><summary>Quellenverzeichnis öffnen</summary><div class="detail"><ul class="source-list">{{sources}}</ul></div></details></div>
+</section>
+
+<div class="story-frame story-tools" data-search-exclude>
+  <details><summary>Vorlesen, speichern und Notizen</summary><div data-read-aloud-placement></div><div data-wirkungsraum-page-tools><div class="wirkungsraum-save-row" data-wirkungsraum-actions-row></div></div></details>
+</div>

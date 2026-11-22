@@ -1,0 +1,202 @@
+// Completed paid outputs from the failed/cancelled runners remain encrypted in
+// its immutable artifacts. Recover only spending/attempt receipts here; neither
+// an unpublished answer nor a new publication/review decision enters Git.
+import fs from 'node:fs';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import {repositoryJson} from './newsroom-store.mjs';
+import {recoverUsageReport, verifyInterruptedPaidRuns, verifyMigratedPaidRuns, LEGACY_PAID_REPOSITORY, NEW_PAID_REPOSITORY} from './recover-failed-usage.mjs';
+import {quarantine419Enabled} from './quarantined-419-evidence.mjs';
+import {paidPreflightDiagnostic} from './paid-preflight-diagnostics.mjs';
+
+const run = Object.freeze({id: 40321851363, conclusion: 'failure',
+  created_at: '2026-10-26T12:21:01Z', updated_at: '2026-10-26T12:44:53Z',
+  html_url: 'https://github.com/sustynats/wirkungsoekonomie.de/actions/runs/40321851363'});
+const evidence = Object.freeze({run_id: run.id, recovery_artifact_id: 12650697316,
+  recovery_sha256: '48147f0ccfb99957166a981e92518ab4f2fe2e27d94e9dc44748eb71afddd20e',
+  raw_artifact_id: 12651130768,
+  raw_sha256: 'bb7dd22ab2858493c7c0cf0c74695d1b316512e4e659eee2423d49e1fcbb57eb'});
+const report = Object.freeze({started_at: '2026-10-26T12:33:54.295Z', completed_at: '2026-10-26T12:41:23.849Z',
+  berlin_slot: 'Automatischer Lauf 13:00', processing_version: '2026-09-15-direct-3',
+  ai_calls: 2, ai_stories: 2, input_tokens: 29980, output_tokens: 13082,
+  estimated_cost_usd: 0.021694, token_source: 'provider_reported_usage', published_stories: 0, updated_stories: 1});
+const fingerprints = Object.freeze({
+  'wt-c637d82374e8e890': ['49b0a7fecb9fb9e301978b5c31227db174740a15888d0231a298ee154efe7927', '8d44c7fceae1a485638a7bf0f2bcfdbd21b0056f71e0a458359cefd43875cee4', 2],
+  'wt-2c796868270ba89b': ['1387768cee6abb9462b6af642ed474b1517c78697035960f76a6e3259585a701', '3a69a3786d91d8b22b62949b3b5c112c5c77623d96690a4b034799ee9839a5aa', 1],
+});
+
+// The 28 October runner completed two paid answers before cancellation during
+// atomic publication. Its complete recovery bundle and sealed originals were
+// verified before binding these receipts. Feed-clock changes are not new input.
+const cancelledRun = Object.freeze({id: 40760217932, conclusion: 'cancelled',
+  created_at: '2026-10-28T20:06:01Z', updated_at: '2026-10-28T21:00:59Z',
+  html_url: 'https://github.com/sustynats/wirkungsoekonomie.de/actions/runs/40760217932'});
+const cancelledEvidence = Object.freeze({run_id: cancelledRun.id, recovery_artifact_id: 12851371088,
+  recovery_sha256: 'cca3a42317447e9257d922685ade12a3bdbaf6bedf3dbf06f4af6d3f3cfe3923',
+  raw_artifact_id: 12849864754,
+  raw_sha256: '830c0f36491b93cf076546f24e390c7f5e91cd6f2e71cca7b74b33139c1dbbd8'});
+const cancelledReport = Object.freeze({started_at: '2026-10-28T20:26:07.083Z', completed_at: '2026-10-28T20:33:53.995Z',
+  berlin_slot: 'Automatischer Lauf 21:00', processing_version: '2026-09-15-direct-3',
+  ai_calls: 2, ai_stories: 2, input_tokens: 37954, output_tokens: 14728,
+  estimated_cost_usd: 0.025264, token_source: 'provider_reported_usage', published_stories: 2, updated_stories: 0});
+const cancelledFingerprints = Object.freeze({
+  'wt-715a06a921b3b78c': ['870f8f40ece586ac674767805fcb39b46217967642f2e8c4d1d4af41fd94da08', '06f142b17013d7a956808cd4e4b64186e571e123c93d9977e22e0564410dc6ff', '599c271b7dfab84d69fc7b084127fd1f3f5bfb1d1c44fef85565e167c0d2de87'],
+  'wt-01433c0b78d3c46b': ['8d80d4cdc153cea572b698b67880cad5994ad436448e9dfb54afc1dc807e34cf', '54886038c43db25f67909d2514e2e8491e2bc53078fb60223e568dade19bab71', 'a66a43ab038fbfc167b6ddb011b642cce63de32282bb65d007273035c8071ac6'],
+});
+
+// The 4 November runner completed two paid requests before the data-release
+// write failed. Its original report, records and sealed artifacts were restored
+// from the private backup. These receipts preserve costs and input locks only.
+const quotaFailedRun = Object.freeze({
+  "id": 41913667334,
+  "conclusion": "failure",
+  "created_at": "2026-11-04T21:11:02Z",
+  "updated_at": "2026-11-04T21:30:08Z",
+  "html_url": "https://github.com/sustynats/wirkungsoekonomie.de/actions/runs/41913667334"
+});
+const quotaFailedReport = Object.freeze({
+  "started_at": "2026-11-04T21:14:51.641Z",
+  "completed_at": "2026-11-04T21:26:36.568Z",
+  "berlin_slot": "manueller Lauf",
+  "processing_version": "2026-09-15-direct-3",
+  "ai_calls": 2,
+  "ai_stories": 2,
+  "input_tokens": 35892,
+  "output_tokens": 14041,
+  "estimated_cost_usd": 0.024027,
+  "token_source": "provider_reported_usage",
+  "published_stories": 1,
+  "updated_stories": 0
+});
+const quotaFailedEvidence = Object.freeze({
+  "run_id": 41913667334,
+  "recovery_artifact_id": 13365026904,
+  "sealed_artifact_id": 13365251813,
+  "private_retention_archive_sha256": "027fd3a1615c77688d89cb25373f5bd67b4a4b19713039c0ed2da45d289429ff",
+  "native_report_sha256": "7b5b36849b2063016d64335425573a7fd266cd80544cd3e5115a058c63216f0a",
+  "input_receipt_sha256": "c7a13f271f7e81b9efdf05128d902a4ed22cc9910230fbcaf3c498188d1a4d0e"
+});
+const quotaFailedFingerprints = Object.freeze({
+  "wt-9d7f160ac0f47000": [
+    "46673cb2a92ae167c7ed0743592b5192625330e79d0ef4e8ab212acf10a2d1c8",
+    "3291b18e5dd4f2e4e501389dc35ab52977576b90bce0cbde8b41ad2282e1946c",
+    "completed_uncommitted"
+  ],
+  "wt-6de83078b2772501": [
+    "b1f222e599829f77e0c21b5f9a20c997d785ffae716115562822e754fc40be00",
+    "c5d0c7de16ddb3075480969d3b2af6fe2c76256f11c7398e913531696907489e",
+    "completed_quality_held"
+  ]
+});
+
+// These runs completed their native analysis step with zero provider starts and
+// zero usage. The first full recovery archive was independently restored from
+// Dropbox; the other native reports and absence of paid starts were verified.
+// They omit the zero-attempt counter. Bind every nonvolatile report field and
+// the exact terminal run metadata; a matching report alone never bypasses the
+// independent provider-start check in verifyInterruptedPaidRuns.
+const zeroAttemptRuns = Object.freeze({
+  40810169757: {conclusion:'failure',created_at:'2026-10-29T03:05:44Z',updated_at:'2026-10-29T03:18:40Z',
+    report_sha256:'081fe9f573d9d95033e947a120c8005b807baa6a0da94791743a2609f53ad637',fields:133,freshness:1457,followups:626},
+  41418607343: {conclusion:'cancelled',created_at:'2026-11-02T09:11:19Z',updated_at:'2026-11-02T09:35:44Z',
+    report_sha256:'c8688879204bf23eef360a844eb4e54e578d3a845d1cecf33db7281c87ffd35a',fields:134,freshness:1258,followups:706},
+  41436498548: {conclusion:'failure',created_at:'2026-11-02T11:23:48Z',updated_at:'2026-11-02T11:53:07Z',
+    report_sha256:'abd3bca66c91c763ba6d7a55bdefe0a9432d5405fff5df501763d6eb47e4a6d4',fields:134,freshness:1254,followups:706},
+});
+export function zeroAttemptReportFingerprint(report) {
+  const ignored=new Set(['transport','configured_model','freshness','followups_due']);
+  const keys=Object.keys(report).filter(key=>!ignored.has(key)).sort();
+  const lines=keys.map(key=>`${key}:${createHash('sha256').update(JSON.stringify(report[key])).digest('hex')}\n`).join('');
+  return {sha256:createHash('sha256').update(lines).digest('hex'),fields:keys.length};
+}
+export function documentedZeroPaidAttempt(run, report) {
+  if (!Number.isSafeInteger(run?.id) || !Object.hasOwn(zeroAttemptRuns,run.id)) return false;
+  const expected=zeroAttemptRuns[run?.id];
+  if (!expected || run.run_attempt !== 1 || run.status !== 'completed'
+      || run.conclusion !== expected.conclusion || run.created_at !== expected.created_at
+      || run.updated_at !== expected.updated_at || report?.run_id !== String(run.id)
+      || report.ai_calls !== 0 || report.input_tokens !== 0 || report.output_tokens !== 0
+      || report.estimated_cost_usd !== 0 || Object.hasOwn(report, 'ai_request_attempts')
+      || !Array.isArray(report.title_images) || report.title_images.length !== 0
+      || !Array.isArray(report.freshness) || report.freshness.length !== expected.freshness
+      || !Array.isArray(report.followups_due) || report.followups_due.length !== expected.followups) return false;
+  const {sha256,fields}=zeroAttemptReportFingerprint(report);
+  return fields===expected.fields && sha256===expected.report_sha256;
+}
+
+export function documentedFailedPaidAttempts(storyId) {
+  if (Object.hasOwn(quotaFailedFingerprints, storyId)) {
+    const [fingerprint, evidence_fingerprint, provider_outcome] = quotaFailedFingerprints[storyId];
+    return [{version: quotaFailedReport.processing_version, fingerprint,
+      evidence_fingerprint_version: 'paid-input-evidence-1', evidence_fingerprint,
+      first_failed_at: quotaFailedReport.started_at, failed_at: quotaFailedReport.completed_at,
+      retry_after: quotaFailedRun.updated_at, retry_count: 1,
+      recovery: {...quotaFailedEvidence, provider_outcome, publication_committed: false}}];
+  }
+  if (Object.hasOwn(cancelledFingerprints, storyId)) {
+    const [fingerprint, evidence_fingerprint, retained_visual_source_sha256] = cancelledFingerprints[storyId];
+    return [{version: cancelledReport.processing_version, fingerprint,
+      evidence_fingerprint_version: 'paid-input-evidence-1', evidence_fingerprint,
+      first_failed_at: cancelledReport.started_at, failed_at: cancelledReport.completed_at,
+      retry_after: cancelledRun.updated_at, retry_count: 1,
+      recovery: {...cancelledEvidence, retained_visual_source_sha256,
+        provider_outcome: 'completed_uncommitted', publication_committed: false}}];
+  }
+  if (!Object.hasOwn(fingerprints, storyId)) return [];
+  const [fingerprint, evidence_fingerprint, retry_count] = fingerprints[storyId];
+  const repeated = retry_count === 2;
+  return [{version: report.processing_version, fingerprint, evidence_fingerprint_version: 'paid-input-evidence-1', evidence_fingerprint,
+    first_failed_at: report.started_at, failed_at: repeated ? '2026-10-26T12:51:03.302Z' : report.started_at,
+    retry_after: repeated ? '2026-10-26T13:06:03.302Z' : '2026-10-26T12:48:54.295Z', retry_count,
+    recovery: {...evidence, provider_outcome: 'completed_quality_held', publication_committed: false,
+      ...(repeated ? {additional_attempt: {run_id:40323807371,raw_artifact_id:12652705406,
+        raw_sha256:'01247d414109c637733a9d54294d097a695d765b5ed677db2d8ce10de2c979f7',recovery_artifact_id:12651569235,
+        recovery_sha256:'5d3206dce6171297f4da5745cd465ebecb4ec98f42d8fcb5688f868182a45e8f'}} : {})}}];
+}
+
+export function recoverDocumentedFailedPaidUsage(usage, now) {
+  if (!Number.isFinite(Date.parse(now))) throw Error('PAID_RECOVERY_TIME_INVALID');
+  if (Date.parse(now) < Date.parse(run.updated_at)) return {recovered: false, reason: 'before_completed_run'};
+  const recoveries = [{recovered: recoverUsageReport(usage, report, run, now), ...evidence}];
+  if (Date.parse(now) >= Date.parse(cancelledRun.updated_at)) {
+    recoveries.push({recovered: recoverUsageReport(usage, cancelledReport, cancelledRun, now), ...cancelledEvidence});
+  }
+  if (Date.parse(now) >= Date.parse(quotaFailedRun.updated_at)) {
+    recoveries.push({recovered: recoverUsageReport(usage, quotaFailedReport, quotaFailedRun, now), ...quotaFailedEvidence});
+  }
+  return {recovered: recoveries.some(row => row.recovered), recoveries, provider_called: false};
+}
+
+export function runInterruptedPaidPreflight({root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'),
+  now = new Date().toISOString(), env = process.env, gh, write = true} = {}) {
+  const file = path.join(root, 'data/news/usage.json');
+  const usage = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const repository = env.GITHUB_REPOSITORY || (env.GITHUB_ACTIONS === 'true' ? null : LEGACY_PAID_REPOSITORY);
+  if (![LEGACY_PAID_REPOSITORY, NEW_PAID_REPOSITORY].includes(repository)) throw Error('PAID_PREFLIGHT_REPOSITORY_INVALID');
+  const options = {usage, now, runId:env.GITHUB_RUN_ID, runAttempt:env.GITHUB_RUN_ATTEMPT,
+    gh, documentedAttempts:documentedFailedPaidAttempts, documentedZeroAttempt:documentedZeroPaidAttempt,
+    allowQuarantined419:repository === NEW_PAID_REPOSITORY && quarantine419Enabled(env)};
+  const guard = repository === NEW_PAID_REPOSITORY ? verifyMigratedPaidRuns(options) : verifyInterruptedPaidRuns(options);
+  if (write) fs.writeFileSync(file, repositoryJson(usage));
+  return {version:guard.version,status:guard.status,checked_at:guard.checked_at,
+    unresolved_run_ids:guard.unresolved_run_ids,unresolved_reasons:guard.unresolved_reasons,verification_error:guard.verification_error,
+    quarantined_visual_run_ids:guard.quarantined_visual_run_ids || [],
+    recovered_runs:guard.recovered_runs,diagnostics:guard.diagnostics || [],provider_called:false};
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  if (!process.argv.includes('--preflight')) throw Error('PAID_PREFLIGHT_MODE_REQUIRED');
+  try {
+    const result = runInterruptedPaidPreflight({write:!process.argv.includes('--dry-run')});
+    console.log(JSON.stringify(result));
+    // In the migrated workflow an open cross-repository guard must stop the
+    // remaining workflow, including later editorial claims, not just API AI.
+    if (process.env.GITHUB_REPOSITORY === NEW_PAID_REPOSITORY && result.status !== 'checked') process.exitCode = 1;
+  } catch (error) {
+    console.error(JSON.stringify({error:'PAID_PREFLIGHT_FAILED', provider_called:false,
+      diagnostics:[paidPreflightDiagnostic(error, {repository:process.env.GITHUB_REPOSITORY,
+        operation:'preflight', phase:'guard', run_id:Number(process.env.GITHUB_RUN_ID)})]}));
+    process.exitCode = 1;
+  }
+}

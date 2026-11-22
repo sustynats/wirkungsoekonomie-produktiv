@@ -1,0 +1,1671 @@
+{
+  "year": 2026,
+  "url": "https://wirkungsoekonomie.de/werteadvent/",
+  "hiddenRoute": "werte-advent-2026-creators-k7m4p9x2",
+  "releaseBase": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/werteadvent-2026-v2",
+  "tiktok": "https://www.tiktok.com/@sustynats",
+  "discord": "https://discord.com/users/1206956406805102593",
+  "community": "https://discord.gg/AtJpB3ErPZ",
+  "gallery": {
+    "enabled": false,
+    "entries": []
+  },
+  "values": [
+    {
+      "day": 1,
+      "value": "Menschenwürde",
+      "question": "Ist jeder Mensch gleich viel wert?",
+      "explanation": "Menschenwürde bedeutet: Jeder Mensch verdient Achtung, unabhängig von Leistung, Herkunft oder Beliebtheit. Auch bei einem Fehler oder im Streit verliert niemand seinen Wert.",
+      "creatorIdeas": [
+        {
+          "area": "Gaming",
+          "idea": "Zeig, wie dein Team mit einem Anfänger umgeht, der einen Fehler macht."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprich darüber, wie Kinder Grenzen erleben können, ohne beschämt zu werden."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Vergleiche den Umgang mit einer Führungskraft und einer Reinigungskraft."
+        },
+        {
+          "area": "Gesellschaft",
+          "idea": "Diskutiere, wie wir über Menschen sprechen, die auf Unterstützung angewiesen sind."
+        }
+      ],
+      "liveQuestions": [
+        "Wann wurdest du ernst genommen, obwohl du einen Fehler gemacht hast?",
+        "Wie kritisieren wir Verhalten, ohne einen Menschen abzuwerten?",
+        "Wo wird der Wert von Menschen an Leistung geknüpft?",
+        "Wie kann eine Community auch unbeliebte Mitglieder fair behandeln?",
+        "Welche Grenze sollte selbst im heftigsten Streit gelten?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Dein Rang sagt nichts über deinen Wert.",
+          "thought": "Zeig denselben respektvollen Gruß für zwei Menschen mit unterschiedlichem Status.",
+          "invitation": "Woran merkst du Achtung im Alltag?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Ein Fehler macht dich nicht weniger wert.",
+          "thought": "Stelle eine beschämende und eine respektvolle Reaktion auf einen Fehler gegenüber.",
+          "invitation": "Welche Reaktion hilft dir weiter?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Wer wird hier übersehen?",
+          "thought": "Erzähle als Beispiel vom Empfang und vom Reinigungsteam im selben Haus. Frage, wer angesprochen und gehört wird.",
+          "invitation": "Was würdest du im Umgang miteinander ändern?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Person wird an der Kasse vor anderen bloßgestellt, weil ihr Geld nicht reicht. Eine andere spricht sie ruhig an und bietet diskret Hilfe an. Erzähle, welche Reaktion du dir wünschen würdest.",
+      "effect": "Beispiel: Ein Team bespricht Fehler ohne öffentliche Beschämung und gibt Betroffenen Gelegenheit zur Antwort. Prüfen ließe sich, ob Menschen Probleme früher ansprechen und fair behandelt werden.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/01_menschenwurde.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/01_menschenwurde.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "1. Dezember: Menschenwürde | #WerteAdvent",
+        "Video-Teaser": "Dein Rang sagt nichts über deinen Wert. Ist jeder Mensch gleich viel wert?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Menschenwürde. Ist jeder Mensch gleich viel wert? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-01",
+        "Angepinnter Kommentar": "Wann wurdest du ernst genommen, obwohl du einen Fehler gemacht hast? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 2,
+      "value": "Respekt",
+      "question": "Muss ich jede Meinung teilen, um respektvoll zu sein?",
+      "explanation": "Respekt heißt, Menschen ernst zu nehmen und ihre Grenzen zu achten. Du kannst einer Aussage klar widersprechen und trotzdem fair mit der Person umgehen.",
+      "creatorIdeas": [
+        {
+          "area": "Politik",
+          "idea": "Zeig einen sachlichen Widerspruch zu einem Argument, das du ablehnst."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Formuliere eine Teamkritik, die ohne Beleidigung auskommt."
+        },
+        {
+          "area": "Beziehungen",
+          "idea": "Erkläre den Unterschied zwischen Zuhören und Zustimmen."
+        },
+        {
+          "area": "Beauty",
+          "idea": "Sprich über ungefragte Kommentare zu Körpern und Aussehen."
+        }
+      ],
+      "liveQuestions": [
+        "Wie fühlt sich respektvoller Widerspruch für dich an?",
+        "Wann wird aus Kritik eine persönliche Abwertung?",
+        "Welche Grenze möchtest du in einem Live setzen?",
+        "Wie gehen wir mit jemandem um, der selbst respektlos wird?",
+        "Kann Schweigen manchmal respektlos sein?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Ich widerspreche dir. Und höre trotzdem zu.",
+          "thought": "Zeig einen kurzen Satz, der ein Argument statt die Person kritisiert.",
+          "invitation": "Wie würdest du antworten?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Zustimmung ist keine Eintrittskarte für Respekt.",
+          "thought": "Spiele zwei Varianten eines Kommentarwechsels und vergleiche die Formulierungen.",
+          "invitation": "Welche öffnet ein Gespräch?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Was tun, wenn es im Chat kippt?",
+          "thought": "Zeig eine Beispielmoderation: Abwertung stoppen, Streitpunkt benennen, offene Frage stellen.",
+          "invitation": "Welche Formulierung würdest du übernehmen?"
+        }
+      ],
+      "story": "Beispielsituation: Zwei Freunde streiten über ein politisches Thema. Einer fragt nach dem konkreten Grund der anderen Sicht, bevor er widerspricht. Spiele durch, wie dieses Gespräch weitergehen könnte.",
+      "effect": "Beispiel: In einem Live gelten klare Regeln gegen persönliche Angriffe. Beobachte, ob dadurch mehr Menschen ihre Argumente äußern können; ein ruhiger Chat allein beweist noch keinen respektvollen Umgang.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/02_respekt.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/02_respekt.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "2. Dezember: Respekt | #WerteAdvent",
+        "Video-Teaser": "Ich widerspreche dir. Und höre trotzdem zu. Muss ich jede Meinung teilen, um respektvoll zu sein?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Respekt. Muss ich jede Meinung teilen, um respektvoll zu sein? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-02",
+        "Angepinnter Kommentar": "Wie fühlt sich respektvoller Widerspruch für dich an? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 3,
+      "value": "Solidarität",
+      "question": "Wann haben andere für dich eingestanden?",
+      "explanation": "Solidarität bedeutet, Menschen bei Belastungen und Benachteiligungen nicht allein zu lassen. Sie zeigt sich in gemeinsamem Handeln und in der Bereitschaft, Verantwortung zu teilen.",
+      "creatorIdeas": [
+        {
+          "area": "Beruf",
+          "idea": "Sprich darüber, wie Kolleginnen und Kollegen bei Überlastung füreinander einstehen."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Zeig, was ein Team gegen Ausgrenzung im Voice-Chat tun kann."
+        },
+        {
+          "area": "Nachbarschaft",
+          "idea": "Sammle alltagstaugliche Hilfe bei Krankheit oder eingeschränkter Mobilität."
+        },
+        {
+          "area": "LGBTQ+",
+          "idea": "Frage, wie Unterstützung aussehen kann, ohne Betroffenen die Stimme zu nehmen."
+        }
+      ],
+      "liveQuestions": [
+        "Wann ist jemand für dich eingestanden?",
+        "Was unterscheidet Solidarität von Mitleid?",
+        "Wie kann Hilfe die Selbstbestimmung achten?",
+        "Wo liegen Grenzen deiner eigenen Kräfte?",
+        "Wie wird aus einer spontanen Hilfe dauerhafte Unterstützung?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Du musst das nicht allein schaffen.",
+          "thought": "Zeig eine kleine konkrete Unterstützung statt einer bloßen Ermutigung.",
+          "invitation": "Was hat dir wirklich geholfen?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Ein Herz im Kommentar ist ein Anfang.",
+          "thought": "Vergleiche Zustimmung im Netz mit einem verabredeten Hilfsangebot im Alltag.",
+          "invitation": "Was wäre dein nächster Schritt?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Wer trägt hier alles allein?",
+          "thought": "Zeichne eine Beispielwoche mit Pflege, Arbeit und Haushalt und verteile Aufgaben gemeinsam neu.",
+          "invitation": "Welche Aufgabe könntest du übernehmen?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Nachbarin fällt wegen Krankheit aus. Statt ungefragt alles zu organisieren, fragt die Hausgemeinschaft, welche Unterstützung sie möchte, und teilt die Aufgaben auf.",
+      "effect": "Beispiel: Ein verlässlicher Einkaufsdienst entlastet eine erkrankte Person. Entscheidend ist, ob notwendige Besorgungen ankommen und ihre Wünsche respektiert werden.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/03_solidaritat.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/03_solidaritat.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "3. Dezember: Solidarität | #WerteAdvent",
+        "Video-Teaser": "Du musst das nicht allein schaffen. Wann haben andere für dich eingestanden?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Solidarität. Wann haben andere für dich eingestanden? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-03",
+        "Angepinnter Kommentar": "Wann ist jemand für dich eingestanden? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 4,
+      "value": "Gerechtigkeit",
+      "question": "Was ist gerecht und was nur gleich?",
+      "explanation": "Gerechtigkeit fragt, wie Chancen, Lasten und Möglichkeiten fair verteilt werden. Dieselbe Behandlung kann Menschen unterschiedlich treffen, weil ihre Ausgangslagen verschieden sind.",
+      "creatorIdeas": [
+        {
+          "area": "Schule",
+          "idea": "Vergleiche gleiche Lernzeit mit unterschiedlichem Unterstützungsbedarf."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere faire Regeln für Anfänger und erfahrene Teams."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Sprich über die Verteilung unbeliebter Dienste."
+        },
+        {
+          "area": "Familie",
+          "idea": "Zeig, wie Aufgaben nach Zeit und Möglichkeiten verteilt werden können."
+        }
+      ],
+      "liveQuestions": [
+        "Wann ist dieselbe Regel für alle fair?",
+        "Wann braucht Fairness unterschiedliche Unterstützung?",
+        "Wer sollte bei einer Verteilung mitentscheiden?",
+        "Wie bewerten wir Leistung und unterschiedliche Startbedingungen?",
+        "Welche ungerechte Regel würdest du im Alltag ändern?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Gleich viel ist nicht immer fair.",
+          "thought": "Zeig zwei Menschen mit derselben Aufgabe und sehr verschiedenen Voraussetzungen.",
+          "invitation": "Was wäre eine faire Hilfe?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Alle machen eine Stunde. Passt das?",
+          "thought": "Vergleiche eine Haushaltsregel mit unterschiedlichen Arbeits- und Pflegezeiten.",
+          "invitation": "Wie würdet ihr verteilen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Fair nach welcher Regel?",
+          "thought": "Verteile beispielhaft knappe Teamzeiten nach Bedarf, Los und bisherigem Einsatz. Zeig Vor- und Nachteile.",
+          "invitation": "Welchen Maßstab begründest du?"
+        }
+      ],
+      "story": "Beispielsituation: Zwei Geschwister bekommen dieselbe Hilfe bei Hausaufgaben. Eines braucht wegen einer Lernschwierigkeit mehr Zeit. Die Familie diskutiert, was faire Unterstützung bedeutet.",
+      "effect": "Beispiel: Ein Kurs bietet zugängliche Lernmaterialien und bedarfsgerechte Unterstützung. Prüfe, ob bisher ausgeschlossene Menschen tatsächlich besser teilnehmen können.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/04_gerechtigkeit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/04_gerechtigkeit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "4. Dezember: Gerechtigkeit | #WerteAdvent",
+        "Video-Teaser": "Gleich viel ist nicht immer fair. Was ist gerecht und was nur gleich?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Gerechtigkeit. Was ist gerecht und was nur gleich? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-04",
+        "Angepinnter Kommentar": "Wann ist dieselbe Regel für alle fair? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 5,
+      "value": "Freiheit",
+      "question": "Wo endet meine Freiheit?",
+      "explanation": "Freiheit bedeutet, das eigene Leben mitgestalten und Entscheidungen treffen zu können. Dabei zählen auch die Freiheit und der Schutz anderer Menschen.",
+      "creatorIdeas": [
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere freie Spielweisen und gemeinsam vereinbarte Serverregeln."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprecht über Selbstständigkeit von Jugendlichen und begründete Grenzen."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Zeig, wer flexible Arbeitszeiten tatsächlich nutzen kann."
+        },
+        {
+          "area": "Alltag",
+          "idea": "Vergleiche das Recht, etwas zu tun, mit den praktischen Möglichkeiten dazu."
+        }
+      ],
+      "liveQuestions": [
+        "Welche Entscheidung möchtest du selbst treffen können?",
+        "Was hindert Menschen daran, eine Freiheit zu nutzen?",
+        "Wann schützt eine Grenze die Freiheit anderer?",
+        "Wie viel Risiko darf jemand für sich selbst wählen?",
+        "Wer sollte über gemeinsame Grenzen entscheiden?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Dürfen heißt noch nicht können.",
+          "thought": "Zeig eine Wahlmöglichkeit, die ohne Zeit oder Geld kaum nutzbar ist.",
+          "invitation": "Was fehlt für echte Wahlfreiheit?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Meine Freiheit, deine Nachtruhe.",
+          "thought": "Spiele einen Konflikt um laute Musik durch und suche eine tragfähige Vereinbarung.",
+          "invitation": "Wo würdest du die Grenze setzen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Wer kann hier wirklich Nein sagen?",
+          "thought": "Erkläre an einer erfundenen Arbeitssituation, wie Abhängigkeit eine scheinbar freie Entscheidung beeinflusst.",
+          "invitation": "Was würde die Wahl freier machen?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Jugendliche möchte allein ausgehen. Die Familie verhandelt Erreichbarkeit und Heimweg, statt ohne Gespräch alles zu erlauben oder zu verbieten.",
+      "effect": "Beispiel: Ein barrierefreier Zugang macht eine vorhandene Freizeitmöglichkeit tatsächlich nutzbar. Prüfe, ob Betroffene sie selbstständig erreichen und frei wählen können.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/05_freiheit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/05_freiheit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "5. Dezember: Freiheit | #WerteAdvent",
+        "Video-Teaser": "Dürfen heißt noch nicht können. Wo endet meine Freiheit?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Freiheit. Wo endet meine Freiheit? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-05",
+        "Angepinnter Kommentar": "Welche Entscheidung möchtest du selbst treffen können? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 6,
+      "value": "Sicherheit",
+      "question": "Was gibt Menschen echte Sicherheit?",
+      "explanation": "Sicherheit bedeutet, vor vermeidbaren Gefahren geschützt zu sein und Unterstützung erreichen zu können. Dazu können körperlicher Schutz, verlässliche Lebensbedingungen und sichere digitale Räume gehören.",
+      "creatorIdeas": [
+        {
+          "area": "Familie",
+          "idea": "Sprecht über einen sicheren Heimweg und erreichbare Vertrauenspersonen."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Zeig Einstellungen gegen unerwünschte Kontakte und Belästigung."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Diskutiere verlässliche Dienstpläne und Schutz bei Problemen."
+        },
+        {
+          "area": "Alltag",
+          "idea": "Frage, an welchen Orten sich Menschen unterschiedlich sicher fühlen."
+        }
+      ],
+      "liveQuestions": [
+        "Was gibt dir im Alltag Sicherheit?",
+        "Wie unterscheiden sich Sicherheitsgefühl und tatsächliche Gefahr?",
+        "Welche Schutzmaßnahme hilft wem konkret?",
+        "Wann schränkt eine Maßnahme andere Menschen unangemessen ein?",
+        "Wie muss Hilfe aussehen, damit sie erreichbar ist?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Sicher ist auch: Ich erreiche jemanden.",
+          "thought": "Zeig eine bewusst vereinbarte Kontaktmöglichkeit für einen Heimweg.",
+          "invitation": "Was gibt dir Rückhalt?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Gleicher Weg, anderes Gefühl.",
+          "thought": "Stelle zwei Perspektiven auf einen dunklen Haltepunkt nebeneinander, ohne reale Orte oder Personen bloßzustellen.",
+          "invitation": "Was sollte sich dort ändern?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Schutz für wen?",
+          "thought": "Vergleiche Beleuchtung, verlässliche Anbindung und Ansprechpersonen an einem Beispiel. Benenne auch Grenzen der Ideen.",
+          "invitation": "Welche Hilfe würde bei dir ankommen?"
+        }
+      ],
+      "story": "Beispielsituation: Ein Auszubildender traut sich nicht, einen gefährlichen Arbeitsablauf anzusprechen. Eine vertrauliche Ansprechstelle und eine klare Reaktion auf Hinweise könnten ihm Rückhalt geben.",
+      "effect": "Beispiel: Nach einem Gefahrenhinweis wird eine defekte Treppe gesperrt und repariert. Prüfe, ob die Gefahr beseitigt ist und der alternative Weg für alle nutzbar bleibt.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/06_sicherheit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/06_sicherheit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "6. Dezember: Sicherheit | #WerteAdvent",
+        "Video-Teaser": "Sicher ist auch: Ich erreiche jemanden. Was gibt Menschen echte Sicherheit?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Sicherheit. Was gibt Menschen echte Sicherheit? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-06",
+        "Angepinnter Kommentar": "Was gibt dir im Alltag Sicherheit? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 7,
+      "value": "Vertrauen",
+      "question": "Wie entsteht Vertrauen und wie geht es verloren?",
+      "explanation": "Vertrauen wächst, wenn Zusagen, Handlungen und nachvollziehbare Informationen zusammenpassen. Es braucht die Möglichkeit, Fragen zu stellen und Fehler zu korrigieren.",
+      "creatorIdeas": [
+        {
+          "area": "Beziehungen",
+          "idea": "Sprich über eingehaltene kleine Versprechen."
+        },
+        {
+          "area": "Creator-Alltag",
+          "idea": "Zeig, wie du einen Fehler transparent berichtigen würdest."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere nachvollziehbare Entscheidungen der Moderation."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Vergleiche große Versprechen mit verlässlichen Rückmeldungen."
+        }
+      ],
+      "liveQuestions": [
+        "Welche kleine Handlung stärkt dein Vertrauen?",
+        "Wie kann verlorenes Vertrauen wieder wachsen?",
+        "Wann ist Misstrauen gut begründet?",
+        "Welche Informationen brauchst du für eine Entscheidung?",
+        "Wie sollte jemand mit einem gebrochenen Versprechen umgehen?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Vertrauen beginnt bei kleinen Zusagen.",
+          "thought": "Zeig eine Zusage und eine ehrliche Rückmeldung, wenn sie nicht klappt.",
+          "invitation": "Was zählt für dich mehr als Worte?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Ein Fehler. Zwei Reaktionen.",
+          "thought": "Vergleiche Vertuschen mit einer sichtbaren Korrektur und einer Erklärung.",
+          "invitation": "Welche Reaktion wäre glaubwürdig?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Würdest du dieser Regel vertrauen?",
+          "thought": "Erkläre eine Beispielentscheidung einer Community-Moderation: Regel, Begründung, Einspruch und Korrektur.",
+          "invitation": "Was fehlt für Vertrauen?"
+        }
+      ],
+      "story": "Beispielsituation: Ein Creator merkt, dass eine Information im Video falsch war. Er korrigiert sie sichtbar und verlinkt die Grundlage, statt den Kommentar nur zu löschen.",
+      "effect": "Beispiel: Ein Team dokumentiert Zusagen und meldet Verzögerungen früh. Beobachte, ob Absprachen verlässlicher werden; Zustimmung allein ist kein Beleg für Vertrauenswürdigkeit.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/07_vertrauen.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/07_vertrauen.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "7. Dezember: Vertrauen | #WerteAdvent",
+        "Video-Teaser": "Vertrauen beginnt bei kleinen Zusagen. Wie entsteht Vertrauen und wie geht es verloren?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Vertrauen. Wie entsteht Vertrauen und wie geht es verloren? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-07",
+        "Angepinnter Kommentar": "Welche kleine Handlung stärkt dein Vertrauen? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 8,
+      "value": "Gesundheit",
+      "question": "Sollte Gesundheit vom Geld abhängen?",
+      "explanation": "Gesundheit betrifft körperliches und seelisches Wohlbefinden und den Zugang zu Unterstützung. Lebens- und Arbeitsbedingungen beeinflussen, welche Möglichkeiten Menschen haben, gesund zu bleiben.",
+      "creatorIdeas": [
+        {
+          "area": "Beruf",
+          "idea": "Sprich über Pausen, Belastung und Erreichbarkeit nach Feierabend."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere Schlaf, Erholung und Druck, immer online zu sein."
+        },
+        {
+          "area": "Familie",
+          "idea": "Frage, wie Arzttermine und Sorgearbeit organisiert werden."
+        },
+        {
+          "area": "Alltag",
+          "idea": "Betrachte erreichbare Versorgung aus Sicht von Menschen mit wenig Zeit oder Geld."
+        }
+      ],
+      "liveQuestions": [
+        "Welche Hürde macht es schwer, Hilfe zu suchen?",
+        "Was hilft dir, Erholung im Alltag zu ermöglichen?",
+        "Wie können Arbeitsbedingungen Gesundheit schützen?",
+        "Wie sprechen wir über seelische Belastung ohne Stigmatisierung?",
+        "Welche Unterstützung sollte unabhängig vom Einkommen erreichbar sein?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Eine Pause muss auch möglich sein.",
+          "thought": "Zeig den Unterschied zwischen einem guten Vorsatz und einer tatsächlich geschützten Pause.",
+          "invitation": "Was macht Erholung bei dir möglich?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Der Termin ist frei. Aber kommst du hin?",
+          "thought": "Erzähle ein Beispiel mit Arbeitszeit, Anfahrt und Betreuung als Hürden für einen Termin.",
+          "invitation": "Welche Hürde wird oft vergessen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Gesundheit ist mehr als ein Tipp.",
+          "thought": "Skizziere einen belasteten Alltag und mögliche Entlastung durch verlässliche Arbeit, erreichbare Hilfe und Unterstützung.",
+          "invitation": "Welche Bedingung würdest du zuerst verbessern?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Person verschiebt einen Untersuchungstermin, weil sie keine Betreuung organisieren kann. Sprich über die organisatorische Hürde, ohne Diagnosen oder Behandlungstipps zu geben.",
+      "effect": "Beispiel: Eine Beratungsstelle bietet zugängliche Zeiten und barrierearme Kontaktwege. Prüfe, ob Menschen mit bisherigen Hürden die Unterstützung tatsächlich erreichen.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/08_gesundheit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/08_gesundheit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "8. Dezember: Gesundheit | #WerteAdvent",
+        "Video-Teaser": "Eine Pause muss auch möglich sein. Sollte Gesundheit vom Geld abhängen?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Gesundheit. Sollte Gesundheit vom Geld abhängen? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-08",
+        "Angepinnter Kommentar": "Welche Hürde macht es schwer, Hilfe zu suchen? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 9,
+      "value": "Bildung",
+      "question": "Hat jedes Kind dieselben Chancen?",
+      "explanation": "Bildung eröffnet Möglichkeiten, die Welt zu verstehen und das eigene Leben mitzugestalten. Gute Lernbedingungen hängen auch von Zeit, Unterstützung, zugänglichen Materialien und einem sicheren Umfeld ab.",
+      "creatorIdeas": [
+        {
+          "area": "Schule",
+          "idea": "Vergleiche Lernen mit ruhigem Arbeitsplatz und ohne Rückzugsmöglichkeit."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Zeig, wie ein gutes Tutorial neue Mitspieler einbezieht."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprich über Unterstützung ohne teure Nachhilfe."
+        },
+        {
+          "area": "Wissenschaft",
+          "idea": "Erkläre, wie man eine Frage prüft und eine Quelle einordnet."
+        }
+      ],
+      "liveQuestions": [
+        "Was hat dir beim Lernen besonders geholfen?",
+        "Welche Lernhürde wird oft als fehlende Motivation missverstanden?",
+        "Wie können Lernmaterialien mehr Menschen erreichen?",
+        "Welche Fähigkeit sollte Schule stärker fördern?",
+        "Wie schaffen wir Raum, um ohne Scham Fragen zu stellen?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Gleiche Aufgabe, anderer Start.",
+          "thought": "Zeig zwei beispielhafte Lernplätze mit verschiedenen Bedingungen.",
+          "invitation": "Welche Unterstützung würde helfen?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Was macht ein gutes Tutorial aus?",
+          "thought": "Erkläre eine kleine Spielmechanik erst mit Fachwörtern und dann Schritt für Schritt.",
+          "invitation": "Welche Version öffnet dir die Tür?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Ein Kind braucht Hilfe. Wer hat Zeit?",
+          "thought": "Zeichne den Weg von der Aufgabe zur Unterstützung und benenne Hürden wie Sprache, Geld und fehlenden Raum.",
+          "invitation": "Was könnte Schule konkret ändern?"
+        }
+      ],
+      "story": "Beispielsituation: Ein Kind kann eine digitale Aufgabe nicht abgeben, weil es ein Gerät mit der ganzen Familie teilt. Die Lehrkraft sucht mit ihm eine zugängliche Lösung.",
+      "effect": "Beispiel: Eine Schule stellt Geräte und betreute Lernzeit bereit. Prüfe, ob Aufgaben dadurch zugänglich werden und Lernen tatsächlich besser gelingt, statt nur Geräte zu zählen.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/09_bildung.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/09_bildung.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "9. Dezember: Bildung | #WerteAdvent",
+        "Video-Teaser": "Gleiche Aufgabe, anderer Start. Hat jedes Kind dieselben Chancen?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Bildung. Hat jedes Kind dieselben Chancen? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-09",
+        "Angepinnter Kommentar": "Was hat dir beim Lernen besonders geholfen? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 10,
+      "value": "Gleichberechtigung",
+      "question": "Wo erleben wir noch Ungleichbehandlung?",
+      "explanation": "Gleichberechtigung heißt, Menschen gleiche Rechte und faire Möglichkeiten zuzugestehen. Sie verlangt, Benachteiligungen zu erkennen und konkrete Barrieren abzubauen.",
+      "creatorIdeas": [
+        {
+          "area": "Beruf",
+          "idea": "Diskutiere nachvollziehbare Kriterien bei Bezahlung und Beförderung."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprecht über die Verteilung von Sorgearbeit."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Frage, ob alle im Voice-Chat dieselbe Chance bekommen, gehört zu werden."
+        },
+        {
+          "area": "LGBTQ+",
+          "idea": "Zeig respektvolle Ansprache und Zugänge ohne Zwang zum Outing."
+        }
+      ],
+      "liveQuestions": [
+        "Wo werden Menschen trotz gleicher Fähigkeiten unterschiedlich behandelt?",
+        "Welche Regel wirkt neutral und schafft dennoch eine Barriere?",
+        "Wie lässt sich Sorgearbeit fairer verteilen?",
+        "Was brauchen Menschen, um Benachteiligung ansprechen zu können?",
+        "Wie erkennen wir, ob eine Veränderung tatsächlich hilft?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Gleiche Idee. Andere Reaktion?",
+          "thought": "Spiele zwei Reaktionen auf denselben Vorschlag als erkennbare Beispielszenen.",
+          "invitation": "Woran würdest du Ungleichbehandlung erkennen?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Wer organisiert eigentlich alles?",
+          "thought": "Zeig sichtbare Aufgaben und unsichtbare Planung im Familienalltag.",
+          "invitation": "Wie würdet ihr Verantwortung teilen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Fair befördern: Wie geht das?",
+          "thought": "Vergleiche eine spontane Bauchentscheidung mit transparenten Kriterien und zugänglicher Bewerbung.",
+          "invitation": "Welche Barriere wird dadurch kleiner?"
+        }
+      ],
+      "story": "Beispielsituation: In einem Team wird eine Person regelmäßig für Mitschriften eingeplant, obwohl die Aufgabe wechseln könnte. Das Team macht die Verteilung sichtbar und bespricht eine faire Regel.",
+      "effect": "Beispiel: Ein Team veröffentlicht Kriterien für Beförderungen und prüft seine Verfahren auf Barrieren. Entscheidend sind faire Zugänge und Entscheidungen, nicht nur ein neues Leitbild.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/10_gleichberechtigung.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/10_gleichberechtigung.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "10. Dezember: Gleichberechtigung | #WerteAdvent",
+        "Video-Teaser": "Gleiche Idee. Andere Reaktion? Wo erleben wir noch Ungleichbehandlung?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Gleichberechtigung. Wo erleben wir noch Ungleichbehandlung? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-10",
+        "Angepinnter Kommentar": "Wo werden Menschen trotz gleicher Fähigkeiten unterschiedlich behandelt? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 11,
+      "value": "Vielfalt",
+      "question": "Was gewinnen wir durch Unterschiede?",
+      "explanation": "Vielfalt bedeutet, dass Menschen unterschiedliche Erfahrungen, Lebensweisen und Perspektiven mitbringen. Gemeinsam profitieren wir davon, wenn Unterschiede ohne Abwertung Raum bekommen.",
+      "creatorIdeas": [
+        {
+          "area": "Gaming",
+          "idea": "Zeig, wie unterschiedliche Spielstile ein Team ergänzen."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprecht über unterschiedliche Traditionen ohne eine zur Norm zu erklären."
+        },
+        {
+          "area": "LGBTQ+",
+          "idea": "Diskutiere Sichtbarkeit und das Recht, Privates für sich zu behalten."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Frage, welche Perspektive bei einer Produktidee bisher fehlt."
+        }
+      ],
+      "liveQuestions": [
+        "Welche andere Perspektive hat deinen Blick verändert?",
+        "Wann wird Vielfalt nur gezeigt, ohne Menschen zuzuhören?",
+        "Wie können Unterschiede bestehen bleiben, ohne Ausgrenzung?",
+        "Welche Gemeinsamkeit überrascht dich über Unterschiede hinweg?",
+        "Wer fehlt in den Gesprächen deiner Community?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Nicht alle sehen dasselbe.",
+          "thought": "Beschreibe einen Alltag aus zwei unterschiedlichen Blickwinkeln.",
+          "invitation": "Welche Perspektive fehlt noch?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Ein Team, verschiedene Stärken.",
+          "thought": "Zeig eine Spielaufgabe mit verschiedenen Rollen und Fähigkeiten.",
+          "invitation": "Welche Stärke wird oft übersehen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Vielfalt braucht mehr als ein Gruppenfoto.",
+          "thought": "Erzähle eine Beispielsitzung, in der Menschen anwesend sind, aber nur wenige sprechen. Zeig eine andere Gesprächsform.",
+          "invitation": "Was würde mehr Stimmen hörbar machen?"
+        }
+      ],
+      "story": "Beispielsituation: Bei einem gemeinsamen Essen werden unterschiedliche Essgewohnheiten besprochen. Statt jemanden zur Erklärung der eigenen Herkunft zu drängen, fragt die Gruppe nach konkreten Wünschen.",
+      "effect": "Beispiel: Eine Veranstaltung bietet verschiedene zugängliche Beteiligungsformen. Prüfe, wer tatsächlich teilnehmen und mitentscheiden kann, ohne private Merkmale offenlegen zu müssen.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/11_vielfalt.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/11_vielfalt.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "11. Dezember: Vielfalt | #WerteAdvent",
+        "Video-Teaser": "Nicht alle sehen dasselbe. Was gewinnen wir durch Unterschiede?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Vielfalt. Was gewinnen wir durch Unterschiede? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-11",
+        "Angepinnter Kommentar": "Welche andere Perspektive hat deinen Blick verändert? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 12,
+      "value": "Nachhaltigkeit",
+      "question": "Was sollten wir der nächsten Generation hinterlassen?",
+      "explanation": "Nachhaltigkeit fragt, ob unser heutiges Handeln langfristig tragfähig ist. Dazu gehören natürliche Lebensgrundlagen und faire Lebensbedingungen, auch für Menschen, die nach uns kommen.",
+      "creatorIdeas": [
+        {
+          "area": "Familie",
+          "idea": "Sprecht darüber, welche Dinge und Gewohnheiten weitergegeben werden."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Vergleiche eine kurzfristige Ersparnis mit Folgekosten für andere."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere langlebige Hardware und Reparaturmöglichkeiten."
+        },
+        {
+          "area": "Alltag",
+          "idea": "Prüfe ein Versprechen auf Haltbarkeit statt auf ein grünes Etikett."
+        }
+      ],
+      "liveQuestions": [
+        "Welche Entscheidung von heute prägt den Alltag von morgen?",
+        "Was möchtest du kommenden Generationen erhalten?",
+        "Wann ist eine kurzfristige Lösung langfristig teuer?",
+        "Wie berücksichtigen wir Menschen, die wenig Wahlmöglichkeiten haben?",
+        "Woran erkennen wir ein tragfähiges Versprechen?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Was bleibt, wenn wir weiter sind?",
+          "thought": "Zeig einen Gegenstand, der lange nutzbar bleibt, und frage nach den Bedingungen dafür.",
+          "invitation": "Was würdest du weitergeben?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Billig heute. Teuer morgen?",
+          "thought": "Vergleiche Reparierbarkeit und häufigen Ersatz an einem Beispiel ohne erfundene Ökobilanz.",
+          "invitation": "Was müsste man vor der Entscheidung wissen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Ein guter Vorsatz reicht nicht.",
+          "thought": "Verfolge eine Beispielentscheidung über Herstellung, Nutzung und spätere Entsorgung. Benenne offene Informationen.",
+          "invitation": "Was sollte sich im System ändern?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Familie sucht einen neuen Tisch. Sie vergleicht ein reparierbares gebrauchtes Stück mit anderen Angeboten und bespricht Budget, Transport und Haltbarkeit.",
+      "effect": "Beispiel: Eine Einrichtung kauft reparierbare Ausstattung und hält Ersatzteile bereit. Prüfe Nutzungsdauer, Materialbedarf und mögliche zusätzliche Belastungen, statt allein das Einkaufsetikett zu bewerten.",
+      "category": "Mensch",
+      "iconWithLabel": "Mit_Beschriftung/12_nachhaltigkeit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/12_nachhaltigkeit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "12. Dezember: Nachhaltigkeit | #WerteAdvent",
+        "Video-Teaser": "Was bleibt, wenn wir weiter sind? Was sollten wir der nächsten Generation hinterlassen?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Nachhaltigkeit. Was sollten wir der nächsten Generation hinterlassen? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-12",
+        "Angepinnter Kommentar": "Welche Entscheidung von heute prägt den Alltag von morgen? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 13,
+      "value": "Klimaschutz",
+      "question": "Was bedeutet Verantwortung fürs Klima?",
+      "explanation": "Klimaschutz zielt darauf, den Ausstoß klimaschädlicher Treibhausgase zu verringern und natürliche Speicher zu bewahren. Dabei geht es um persönliche Möglichkeiten ebenso wie um Infrastruktur und gemeinsame Regeln.",
+      "creatorIdeas": [
+        {
+          "area": "Alltag",
+          "idea": "Zeig, welche Verkehrsmittel tatsächlich erreichbar sind."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Diskutiere Dienstreisen und verfügbare Alternativen."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprecht über Wärme, Wohnqualität und bezahlbare Veränderungen."
+        },
+        {
+          "area": "Wissenschaft",
+          "idea": "Unterscheide eine Klimaschutzabsicht von einem überprüften Ergebnis."
+        }
+      ],
+      "liveQuestions": [
+        "Welche klimafreundliche Möglichkeit fehlt dir im Alltag?",
+        "Was können Einzelne ändern, was braucht gemeinsame Entscheidungen?",
+        "Wie lassen sich Belastungen fair verteilen?",
+        "Woran sollte sich ein Klimaschutzversprechen messen lassen?",
+        "Wie diskutieren wir Verantwortung ohne gegenseitige Beschämung?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Die Alternative muss erreichbar sein.",
+          "thought": "Zeig eine beispielhafte Wegentscheidung und die verfügbaren Optionen.",
+          "invitation": "Was fehlt für eine andere Wahl?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Heizen ist auch eine Wohnfrage.",
+          "thought": "Erkläre am Beispiel, wie Gebäudezustand und Budget Handlungsmöglichkeiten begrenzen.",
+          "invitation": "Welche Unterstützung wäre fair?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Vom Versprechen zur Veränderung.",
+          "thought": "Zeige, wie man eine beispielhafte Mobilitätsmaßnahme anhand weniger Fahrten und möglicher Verlagerungen prüft. Erfinde keine Einsparzahl.",
+          "invitation": "Was müsste dafür bekannt sein?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Beschäftigte möchte mit dem Bus fahren, erreicht damit aber ihre Frühschicht nicht. Im Team wird über passende Verbindungen und Arbeitszeiten gesprochen.",
+      "effect": "Beispiel: Eine verlässliche Busverbindung kann Autofahrten ersetzen, wenn sie genutzt wird. Für ein Ergebnis sind tatsächliche Änderungen, zusätzliche Verkehre und Emissionen zu prüfen.",
+      "category": "Planet",
+      "iconWithLabel": "Mit_Beschriftung/13_klimaschutz.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/13_klimaschutz.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "13. Dezember: Klimaschutz | #WerteAdvent",
+        "Video-Teaser": "Die Alternative muss erreichbar sein. Was bedeutet Verantwortung fürs Klima?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Klimaschutz. Was bedeutet Verantwortung fürs Klima? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-13",
+        "Angepinnter Kommentar": "Welche klimafreundliche Möglichkeit fehlt dir im Alltag? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 14,
+      "value": "Ressourcenschutz",
+      "question": "Wie viel brauchen wir wirklich?",
+      "explanation": "Ressourcenschutz heißt, sorgsam mit Materialien, Wasser, Flächen und Energie umzugehen. Dazu gehören weniger unnötiger Verbrauch, lange Nutzung und passende gemeinsame Angebote.",
+      "creatorIdeas": [
+        {
+          "area": "Beauty",
+          "idea": "Sprich über aufgebrauchte Produkte und unnötige Vorräte."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Frage, wann ein Hardwarewechsel wirklich nötig ist."
+        },
+        {
+          "area": "Familie",
+          "idea": "Zeig ein Leihregal für selten benutzte Dinge."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Suche nach vermeidbarem Materialverbrauch in einem Arbeitsablauf."
+        }
+      ],
+      "liveQuestions": [
+        "Was besitzt du, das du kaum nutzt?",
+        "Wann ist Teilen praktisch und wann nicht?",
+        "Welche Reparatur würdest du gern leichter erledigen können?",
+        "Wo wird sparsames Verhalten durch Angebote erschwert?",
+        "Wie reduzieren wir Verbrauch, ohne notwendige Versorgung zu beschneiden?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Brauche ich das oder nur den Kaufmoment?",
+          "thought": "Zeig einen selten genutzten Gegenstand und eine mögliche Leihoption.",
+          "invitation": "Was könntest du teilen?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Ein Gerät. Noch ein Jahr?",
+          "thought": "Prüfe an einem Beispiel Akku, Reparatur und tatsächlichen Bedarf vor einem Neukauf.",
+          "invitation": "Was müsste einfacher werden?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Weniger verbrauchen, gut versorgt bleiben.",
+          "thought": "Zeichne den Weg eines gemeinsam genutzten Werkzeugs samt Transport und Pflege. Benenne die Grenzen des Teilens.",
+          "invitation": "Wann lohnt sich das für euch?"
+        }
+      ],
+      "story": "Beispielsituation: Für ein einzelnes Loch in der Wand braucht jemand eine Bohrmaschine. Eine organisierte Ausleihe könnte einen Neukauf ersparen, wenn Übergabe und Sicherheit passen.",
+      "effect": "Beispiel: Ein Leihangebot ersetzt tatsächlich Neuanschaffungen. Prüfe Materialbedarf, zusätzliche Wege und Nutzbarkeit, statt die Zahl ausgeliehener Dinge schon als Einsparung zu zählen.",
+      "category": "Planet",
+      "iconWithLabel": "Mit_Beschriftung/14_ressourcenschutz.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/14_ressourcenschutz.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "14. Dezember: Ressourcenschutz | #WerteAdvent",
+        "Video-Teaser": "Brauche ich das oder nur den Kaufmoment? Wie viel brauchen wir wirklich?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Ressourcenschutz. Wie viel brauchen wir wirklich? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-14",
+        "Angepinnter Kommentar": "Was besitzt du, das du kaum nutzt? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 15,
+      "value": "Natur- und Tierschutz",
+      "question": "Welchen Wert hat Natur unabhängig von ihrem Nutzen?",
+      "explanation": "Natur- und Tierschutz achtet Lebensräume und Tiere auch jenseits ihres Nutzens für Menschen. Unser Handeln kann Lebensbedingungen erhalten, verbessern oder beschädigen.",
+      "creatorIdeas": [
+        {
+          "area": "Alltag",
+          "idea": "Zeig Rückzugsräume für Tiere, ohne sie zu stören."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprecht über rücksichtsvolles Verhalten bei Begegnungen mit Wildtieren."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Vergleiche virtuelle Naturlandschaften mit Fragen zum Schutz echter Lebensräume."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Diskutiere Flächenpflege und geeignete fachliche Beratung."
+        }
+      ],
+      "liveQuestions": [
+        "Welcher Ort in der Natur ist dir wichtig?",
+        "Wie erkennen wir Schutzbedürfnisse, die wir nicht direkt sehen?",
+        "Wann stört unsere Begeisterung ein Tier?",
+        "Wie lassen sich unterschiedliche Nutzungsansprüche an Flächen besprechen?",
+        "Was bedeutet Verantwortung für Tiere im eigenen Alltag?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Nicht alles ist für unser Foto da.",
+          "thought": "Zeig aus Distanz einen Naturraum und sprich über Rückzug.",
+          "invitation": "Wann lassen wir bewusst Abstand?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Ordentlich für wen?",
+          "thought": "Vergleiche eine aufgeräumte Fläche mit möglichen Rückzugsorten, ohne ungeprüfte Artenschutzbehauptungen.",
+          "invitation": "Welche Fachinformation brauchen wir?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Ein Lebensraum ist mehr als Kulisse.",
+          "thought": "Erzähle die Beispielplanung einer Grünfläche aus Sicht von Erholung, Pflege und Schutz. Frage nach fehlenden Informationen.",
+          "invitation": "Wie würdet ihr Bedürfnisse abwägen?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Gruppe entdeckt ein Tier und möchte näher heran. Jemand schlägt vor, Abstand zu halten und das Foto auszulassen, damit der Rückzugsraum erhalten bleibt.",
+      "effect": "Beispiel: Eine fachlich geplante Flächenpflege erhält geeignete Rückzugsräume. Prüfe vor Ort, ob die betreffenden Lebensbedingungen und Arten tatsächlich geschützt werden.",
+      "category": "Planet",
+      "iconWithLabel": "Mit_Beschriftung/15_natur-und-tierschutz.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/15_natur-und-tierschutz.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "15. Dezember: Natur- und Tierschutz | #WerteAdvent",
+        "Video-Teaser": "Nicht alles ist für unser Foto da. Welchen Wert hat Natur unabhängig von ihrem Nutzen?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Natur- und Tierschutz. Welchen Wert hat Natur unabhängig von ihrem Nutzen? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-15",
+        "Angepinnter Kommentar": "Welcher Ort in der Natur ist dir wichtig? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 16,
+      "value": "Kreislaufwirtschaft",
+      "question": "Warum werfen wir Wertvolles weg?",
+      "explanation": "Kreislaufwirtschaft hält Produkte und Materialien möglichst lange nutzbar. Vermeiden, weiterverwenden und reparieren stehen dabei vor der Frage, wie Abfälle wiederverwertet werden können.",
+      "creatorIdeas": [
+        {
+          "area": "Gaming",
+          "idea": "Zeig Reparatur- und Gebrauchtoptionen für Zubehör."
+        },
+        {
+          "area": "Mode",
+          "idea": "Sprich über Ändern, Weitergeben und Materialqualität."
+        },
+        {
+          "area": "Familie",
+          "idea": "Organisiert einen freiwilligen Tausch von nutzbaren Dingen."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Frage nach Rücknahme, Ersatzteilen und wiederverwendbarer Verpackung."
+        }
+      ],
+      "liveQuestions": [
+        "Was wurde weggeworfen, obwohl es noch nutzbar war?",
+        "Was macht Reparieren schwer?",
+        "Wann ist Wiederverwendung sinnvoller als Recycling?",
+        "Welche Verantwortung sollten Hersteller übernehmen?",
+        "Wie vermeiden wir, dass Rücknahme nur zu mehr Käufen anregt?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Kaputt ist nicht immer das Ende.",
+          "thought": "Zeig einen kleinen reparierbaren Defekt, ohne riskante Reparaturanleitung.",
+          "invitation": "Was würdest du gern retten?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Recycling beginnt nicht am Mülleimer.",
+          "thought": "Vergleiche langlebiges Design, Reparatur und spätere Verwertung an einem Gegenstand.",
+          "invitation": "Was sollte am Anfang anders sein?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Zurückgenommen. Und dann?",
+          "thought": "Verfolge beispielhaft ein altes Gerät: Prüfung, Wiederverwendung, Teile und Material. Markiere unbekannte Schritte.",
+          "invitation": "Welche Auskunft würdest du verlangen?"
+        }
+      ],
+      "story": "Beispielsituation: Ein Rucksack hat einen defekten Reißverschluss. Vor dem Neukauf sucht die Besitzerin nach einer Reparaturmöglichkeit und vergleicht Aufwand, Kosten und weitere Nutzbarkeit.",
+      "effect": "Beispiel: Ein Reparaturangebot verlängert die Nutzung von Geräten. Prüfe, ob Ersatzkäufe und Materialbedarf tatsächlich sinken und die Reparatur sicher gelingt.",
+      "category": "Planet",
+      "iconWithLabel": "Mit_Beschriftung/16_kreislaufwirtschaft.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/16_kreislaufwirtschaft.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "16. Dezember: Kreislaufwirtschaft | #WerteAdvent",
+        "Video-Teaser": "Kaputt ist nicht immer das Ende. Warum werfen wir Wertvolles weg?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Kreislaufwirtschaft. Warum werfen wir Wertvolles weg? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-16",
+        "Angepinnter Kommentar": "Was wurde weggeworfen, obwohl es noch nutzbar war? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 17,
+      "value": "Saubere Energie",
+      "question": "Wie gestalten wir die Energieversorgung der Zukunft?",
+      "explanation": "Saubere Energie fragt nach einer Versorgung mit möglichst geringen Klima- und Umweltbelastungen. Verlässlichkeit, sparsame Nutzung, Bezahlbarkeit und Folgen für betroffene Orte gehören dazu.",
+      "creatorIdeas": [
+        {
+          "area": "Gaming",
+          "idea": "Sprich über Strombedarf und sinnvolle Geräteeinstellungen."
+        },
+        {
+          "area": "Familie",
+          "idea": "Vergleiche alltäglichen Bedarf mit Möglichkeiten zum Sparen."
+        },
+        {
+          "area": "Gesellschaft",
+          "idea": "Diskutiere Mitgestaltung bei Energieprojekten vor Ort."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Frage, wie Prozesse weniger Energie benötigen können."
+        }
+      ],
+      "liveQuestions": [
+        "Was muss eine gute Energieversorgung für dich leisten?",
+        "Wie lassen sich Versorgungssicherheit und geringe Belastungen verbinden?",
+        "Wer trägt Kosten und wer profitiert von einem Projekt?",
+        "Welche Energiesparmöglichkeit ist im Alltag wirklich praktikabel?",
+        "Wie sollten Menschen vor Ort mitentscheiden können?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Sauber ist mehr als ein Etikett.",
+          "thought": "Zeige die Fragen nach Herkunft, Bedarf und Belastungen eines Energieangebots.",
+          "invitation": "Welche Information fehlt dir?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Weniger brauchen ist auch eine Option.",
+          "thought": "Stelle eine unnötige Dauerfunktion und eine passende Nutzung gegenüber, ohne Fantasie-Einsparzahl.",
+          "invitation": "Was kannst du sinnvoll abschalten?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Ein Energieprojekt, viele Perspektiven.",
+          "thought": "Spiele ein Beispielgespräch zwischen Nachbarschaft, Betrieb und Kommune. Trenne Bedarf, Kosten und Schutzfragen.",
+          "invitation": "Wie sollte die Entscheidung vorbereitet werden?"
+        }
+      ],
+      "story": "Beispielsituation: In einem Ort wird ein Energieprojekt diskutiert. Anwohner möchten früh wissen, welche Folgen, Beteiligungsmöglichkeiten und überprüfbaren Zusagen es gibt.",
+      "effect": "Beispiel: Ein Betrieb reduziert den tatsächlichen Energiebedarf und prüft seine Versorgung. Vergleiche Verbrauch, Versorgung und Umweltfolgen einschließlich zusätzlicher Anforderungen.",
+      "category": "Planet",
+      "iconWithLabel": "Mit_Beschriftung/17_saubere-energie.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/17_saubere-energie.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "17. Dezember: Saubere Energie | #WerteAdvent",
+        "Video-Teaser": "Sauber ist mehr als ein Etikett. Wie gestalten wir die Energieversorgung der Zukunft?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Saubere Energie. Wie gestalten wir die Energieversorgung der Zukunft? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-17",
+        "Angepinnter Kommentar": "Was muss eine gute Energieversorgung für dich leisten? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 18,
+      "value": "Ernährungssicherheit",
+      "question": "Sollte gutes Essen für alle möglich sein?",
+      "explanation": "Ernährungssicherheit bedeutet, dass Menschen verlässlich ausreichend geeignete und sichere Nahrung erreichen können. Bezahlbarkeit, Verfügbarkeit und die Bedingungen von Herstellung und Verteilung spielen zusammen.",
+      "creatorIdeas": [
+        {
+          "area": "Familie",
+          "idea": "Sprecht über verlässliche Mahlzeiten trotz knapper Zeit und Mittel."
+        },
+        {
+          "area": "Food",
+          "idea": "Zeig vielseitige Verwendung vorhandener Zutaten ohne Gesundheitsversprechen."
+        },
+        {
+          "area": "Schule",
+          "idea": "Diskutiere zugängliches Essen ohne Beschämung."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Frage nach Arbeitsbedingungen und Verlusten in Lebensmittelketten."
+        }
+      ],
+      "liveQuestions": [
+        "Was hindert Menschen daran, regelmäßig gut zu essen?",
+        "Wie kann gemeinsames Essen ohne Beschämung organisiert werden?",
+        "Welche Verantwortung tragen Handel, Politik und Einrichtungen?",
+        "Wie vermeiden wir Lebensmittelverluste, ohne Sicherheit zu gefährden?",
+        "Was macht eine Versorgung widerstandsfähig gegen Ausfälle?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Ein voller Laden heißt nicht: alle sind versorgt.",
+          "thought": "Erkläre die Hürde zwischen Angebot und bezahlbarer Mahlzeit.",
+          "invitation": "Welche Hürde wird übersehen?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Was steckt noch im Kühlschrank?",
+          "thought": "Zeig die Planung einer Mahlzeit mit vorhandenen, geeigneten Zutaten und sicherer Lagerung.",
+          "invitation": "Wie plant ihr ohne Druck?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Gutes Essen, erreichbarer Zugang.",
+          "thought": "Erzähle die Beispielplanung einer Schulküche: Preis, Zeit, Bedürfnisse und zuverlässige Versorgung.",
+          "invitation": "Was müsste für alle mitgedacht werden?"
+        }
+      ],
+      "story": "Beispielsituation: Ein Kind möchte am gemeinsamen Mittagessen teilnehmen, seine Familie kann den Beitrag aber nicht zuverlässig zahlen. Die Einrichtung sucht einen diskreten, verlässlichen Zugang.",
+      "effect": "Beispiel: Eine Einrichtung ermöglicht Mahlzeiten ohne bloßstellende Zugangshürden. Prüfe, ob Menschen ausreichend versorgt werden und das Angebot zuverlässig nutzen können.",
+      "category": "Planet",
+      "iconWithLabel": "Mit_Beschriftung/18_ernahrungssicherheit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/18_ernahrungssicherheit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "18. Dezember: Ernährungssicherheit | #WerteAdvent",
+        "Video-Teaser": "Ein voller Laden heißt nicht: alle sind versorgt. Sollte gutes Essen für alle möglich sein?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Ernährungssicherheit. Sollte gutes Essen für alle möglich sein? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-18",
+        "Angepinnter Kommentar": "Was hindert Menschen daran, regelmäßig gut zu essen? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 19,
+      "value": "Demokratie",
+      "question": "Was bedeutet Demokratie im Alltag?",
+      "explanation": "Demokratie lebt davon, dass Menschen Entscheidungen mitgestalten und Macht kontrollieren können. Dazu gehören freie Auseinandersetzung, faire Verfahren und der Schutz von Minderheiten.",
+      "creatorIdeas": [
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere nachvollziehbare Community-Regeln und Mitbestimmung."
+        },
+        {
+          "area": "Schule",
+          "idea": "Sprich über Entscheidungen in der Klassenvertretung."
+        },
+        {
+          "area": "Gesellschaft",
+          "idea": "Zeig, wie man vor Ort Fragen an zuständige Stellen richtet."
+        },
+        {
+          "area": "Alltag",
+          "idea": "Vergleiche Abstimmen mit vorherigem Informieren und anschließendem Rechenschaftgeben."
+        }
+      ],
+      "liveQuestions": [
+        "Wo entscheidest du im Alltag mit?",
+        "Was muss vor einer fairen Abstimmung geklärt sein?",
+        "Wie werden Menschen gehört, die in der Minderheit sind?",
+        "Was macht Macht überprüfbar?",
+        "Wie gehen wir mit einer demokratischen Entscheidung um, die wir ablehnen?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Mitreden beginnt vor dem Kreuz.",
+          "thought": "Zeige eine Alltagsentscheidung, bei der Informationen und Alternativen fehlen.",
+          "invitation": "Was brauchst du zum Mitentscheiden?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Mehrheit entschieden. Und jetzt?",
+          "thought": "Erkläre an einer Community-Regel, warum Begründung und Schutz anderer weiter zählen.",
+          "invitation": "Was wäre ein faires Verfahren?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Unser Chat stimmt ab. Ist das schon Demokratie?",
+          "thought": "Spiele ein Beispiel mit ungleichem Zugang, fehlender Information und Einspruch durch.",
+          "invitation": "Was würde das Verfahren besser machen?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Gruppe stimmt über einen Treffpunkt ab. Erst danach wird deutlich, dass eine Person ihn nicht erreichen kann. Die Gruppe bespricht Zugang und Alternativen erneut.",
+      "effect": "Beispiel: Ein Jugendgremium erhält Informationen, echte Entscheidungsmöglichkeiten und Rückmeldungen. Prüfe, welche Vorschläge Entscheidungen verändern und wer weiterhin ausgeschlossen bleibt.",
+      "category": "Demokratie",
+      "iconWithLabel": "Mit_Beschriftung/19_demokratie.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/19_demokratie.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "19. Dezember: Demokratie | #WerteAdvent",
+        "Video-Teaser": "Mitreden beginnt vor dem Kreuz. Was bedeutet Demokratie im Alltag?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Demokratie. Was bedeutet Demokratie im Alltag? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-19",
+        "Angepinnter Kommentar": "Wo entscheidest du im Alltag mit? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 20,
+      "value": "Rechtsstaatlichkeit",
+      "question": "Warum brauchen auch Mehrheiten Grenzen?",
+      "explanation": "Rechtsstaatlichkeit bedeutet, dass staatliche Macht an Recht gebunden und überprüfbar ist. Auch unpopuläre Menschen brauchen faire Verfahren und Schutz vor Willkür.",
+      "creatorIdeas": [
+        {
+          "area": "Gesellschaft",
+          "idea": "Diskutiere, warum unabhängige Kontrolle auch unbequeme Entscheidungen ermöglichen muss."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Nutze transparente Serverregeln als Alltagsanalogie und benenne ihre Grenzen gegenüber staatlichem Recht."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Sprich über nachvollziehbare Verfahren bei Beschwerden."
+        },
+        {
+          "area": "Alltag",
+          "idea": "Frage, wie Menschen eine Entscheidung überprüfen lassen können."
+        }
+      ],
+      "liveQuestions": [
+        "Warum sollte auch eine unbeliebte Person fair behandelt werden?",
+        "Was unterscheidet eine feste Regel von Willkür?",
+        "Welche Rolle spielt eine unabhängige Überprüfung?",
+        "Wie zugänglich muss ein Beschwerdeweg sein?",
+        "Wie gehen wir mit rechtlichen Grenzen um, die einer Mehrheit unbequem sind?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Beliebt sein darf kein Schutzrecht ersetzen.",
+          "thought": "Zeig ein Beispiel, in dem Sympathie eine Entscheidung verzerrt.",
+          "invitation": "Welche Regel muss für alle gelten?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Wer kontrolliert die Entscheidung?",
+          "thought": "Erkläre nachvollziehbare Begründung und Überprüfung als Prinzip, ohne Rechtsrat zu geben.",
+          "invitation": "Was würdest du wissen wollen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Eine Mehrheit kann sich irren.",
+          "thought": "Erzähle ein erfundenes Verfahren mit Vorwurf, Anhörung, Begründung und unabhängiger Prüfung. Benenne die Community-Analogie als begrenzt.",
+          "invitation": "Welcher Schritt schützt vor Willkür?"
+        }
+      ],
+      "story": "Beispielsituation: Jemand erhält eine belastende Entscheidung und versteht die Begründung nicht. Sprich darüber, warum verständliche Informationen und zugängliche Überprüfung wichtig sind.",
+      "effect": "Beispiel: Eine Stelle begründet Entscheidungen verständlich und ermöglicht eine unabhängige Kontrolle. Prüfe Zugänglichkeit und faire Anwendung; das ist ein Gesprächsbeispiel, keine Rechtsberatung.",
+      "category": "Demokratie",
+      "iconWithLabel": "Mit_Beschriftung/20_rechtsstaatlichkeit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/20_rechtsstaatlichkeit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "20. Dezember: Rechtsstaatlichkeit | #WerteAdvent",
+        "Video-Teaser": "Beliebt sein darf kein Schutzrecht ersetzen. Warum brauchen auch Mehrheiten Grenzen?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Rechtsstaatlichkeit. Warum brauchen auch Mehrheiten Grenzen? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-20",
+        "Angepinnter Kommentar": "Warum sollte auch eine unbeliebte Person fair behandelt werden? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 21,
+      "value": "Meinungsfreiheit und Dialog",
+      "question": "Wie gehen wir mit anderen Meinungen um?",
+      "explanation": "Meinungsfreiheit ermöglicht unterschiedliche Positionen und Kritik. Dialog braucht die Bereitschaft, zuzuhören, Gründe zu prüfen und Menschen vor persönlichen Angriffen zu schützen.",
+      "creatorIdeas": [
+        {
+          "area": "Creator-Alltag",
+          "idea": "Zeig, wie du eine sachliche Gegenrede im Kommentar beantwortest."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere Moderation und Raum für begründete Kritik."
+        },
+        {
+          "area": "Familie",
+          "idea": "Sprecht über einen Streit, ohne jemanden vorzuführen."
+        },
+        {
+          "area": "Wissenschaft",
+          "idea": "Unterscheide überprüfbare Behauptungen von persönlichen Wertungen."
+        }
+      ],
+      "liveQuestions": [
+        "Wann hast du deine Meinung nach einem Gespräch verändert?",
+        "Was brauchst du, um einer anderen Sicht zuzuhören?",
+        "Wie unterscheiden wir Widerspruch von persönlicher Abwertung?",
+        "Wie reagieren wir auf eine überprüfbar falsche Behauptung?",
+        "Wann ist eine Gesprächspause sinnvoll?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Du darfst widersprechen. Ich auch.",
+          "thought": "Formuliere eine kritische Antwort mit einem konkreten Grund.",
+          "invitation": "Was ist dein Gegenargument?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Meinung oder überprüfbare Behauptung?",
+          "thought": "Zeig an erfundenen Beispielsätzen den Unterschied und frage nach passenden Belegen.",
+          "invitation": "Was würdest du prüfen?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Ein Streit kann eine Frage werden.",
+          "thought": "Spiele eine beispielhafte Moderation: Behauptung benennen, Grundlage erfragen, Betroffene schützen, nächsten Gesprächspunkt öffnen.",
+          "invitation": "Welche Frage bringt euch weiter?"
+        }
+      ],
+      "story": "Beispielsituation: Im Familienchat kursiert eine zugespitzte Behauptung. Eine Person fragt nach der Originalquelle und erklärt ihren Widerspruch, ohne den Absender zu beschämen.",
+      "effect": "Beispiel: Eine Community lässt sachliche Kritik zu und stoppt persönliche Angriffe. Prüfe, ob unterschiedliche Argumente tatsächlich zu Wort kommen und Fehler korrigiert werden können.",
+      "category": "Demokratie",
+      "iconWithLabel": "Mit_Beschriftung/21_meinungsfreiheit-und-dialog.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/21_meinungsfreiheit-und-dialog.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "21. Dezember: Meinungsfreiheit und Dialog | #WerteAdvent",
+        "Video-Teaser": "Du darfst widersprechen. Ich auch. Wie gehen wir mit anderen Meinungen um?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Meinungsfreiheit und Dialog. Wie gehen wir mit anderen Meinungen um? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-21",
+        "Angepinnter Kommentar": "Wann hast du deine Meinung nach einem Gespräch verändert? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 22,
+      "value": "Teilhabe und Mitgestaltung",
+      "question": "Wer wird gehört und wer nicht?",
+      "explanation": "Teilhabe bedeutet, Zugang zu gemeinschaftlichem Leben und Entscheidungen zu haben. Mitgestaltung geht weiter: Menschen können Vorschläge einbringen und Entscheidungen tatsächlich beeinflussen.",
+      "creatorIdeas": [
+        {
+          "area": "Gaming",
+          "idea": "Zeig Beteiligung für Menschen, die nicht im Voice-Chat sprechen können."
+        },
+        {
+          "area": "Schule",
+          "idea": "Frage, welche Vorschläge der Schülerschaft tatsächlich umgesetzt werden."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Diskutiere zugängliche Besprechungen und frühzeitige Unterlagen."
+        },
+        {
+          "area": "Alltag",
+          "idea": "Prüfe eine Veranstaltung auf Zeit-, Sprach- und Zugangsbarrieren."
+        }
+      ],
+      "liveQuestions": [
+        "Wer fehlt bei einer Entscheidung und warum?",
+        "Welche Beteiligungsform liegt dir besonders?",
+        "Wann wird man angehört, ohne etwas verändern zu können?",
+        "Welche Barriere könntet ihr sofort abbauen?",
+        "Wie sollte eine Rückmeldung auf Vorschläge aussehen?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Eingeladen heißt nicht dabei.",
+          "thought": "Zeig eine beispielhafte Einladung mit einer übersehenen Zugangshürde.",
+          "invitation": "Wer kann so nicht kommen?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Gehört. Und dann?",
+          "thought": "Vergleiche eine Ideenbox ohne Antwort mit einer nachvollziehbaren Rückmeldung.",
+          "invitation": "Was wäre echte Mitgestaltung?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Plane ein Treffen für mehr Menschen.",
+          "thought": "Gehe Uhrzeit, Zugänglichkeit, Sprache und alternative Beiträge an einem Beispiel durch. Frage nach bislang fehlenden Bedürfnissen.",
+          "invitation": "Welche Hürde kennst du?"
+        }
+      ],
+      "story": "Beispielsituation: Ein Treffen findet immer statt, wenn eine pflegende Person nicht wegkann. Die Gruppe ergänzt schriftliche Beiträge und bespricht andere Zeiten.",
+      "effect": "Beispiel: Ein Beteiligungsverfahren bietet mehrere zugängliche Wege und begründete Rückmeldungen. Prüfe, wer erreicht wird und welche Vorschläge Entscheidungen tatsächlich verändern.",
+      "category": "Demokratie",
+      "iconWithLabel": "Mit_Beschriftung/22_teilhabe-und-mitgestaltung.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/22_teilhabe-und-mitgestaltung.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "22. Dezember: Teilhabe und Mitgestaltung | #WerteAdvent",
+        "Video-Teaser": "Eingeladen heißt nicht dabei. Wer wird gehört und wer nicht?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Teilhabe und Mitgestaltung. Wer wird gehört und wer nicht? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-22",
+        "Angepinnter Kommentar": "Wer fehlt bei einer Entscheidung und warum? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 23,
+      "value": "Globale Verantwortung",
+      "question": "Wo endet unsere Verantwortung für andere?",
+      "explanation": "Globale Verantwortung nimmt Menschen und Lebensgrundlagen auch außerhalb der eigenen Umgebung in den Blick. Konsum, Arbeit und politische Entscheidungen können Folgen über Grenzen hinweg haben.",
+      "creatorIdeas": [
+        {
+          "area": "Mode",
+          "idea": "Frage nach Arbeitsbedingungen und nachvollziehbaren Herstellerinformationen."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Sprich über die Materialien und Lebensdauer von Hardware."
+        },
+        {
+          "area": "Food",
+          "idea": "Verfolge beispielhaft die Herkunft einer Zutat und kennzeichne Wissenslücken."
+        },
+        {
+          "area": "Gesellschaft",
+          "idea": "Diskutiere gemeinsame Verantwortung ohne pauschale Schuldzuweisungen an Einzelne."
+        }
+      ],
+      "liveQuestions": [
+        "Welche Verbindung deines Alltags zu anderen Orten überrascht dich?",
+        "Welche Auskunft brauchst du über ein Produkt?",
+        "Was können Verbraucher beeinflussen und was brauchen gemeinsame Regeln?",
+        "Wie vermeiden wir, Probleme nur an andere Orte zu verschieben?",
+        "Wie hören wir Betroffenen zu, ohne für sie zu sprechen?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Unser Alltag endet nicht an der Grenze.",
+          "thought": "Zeig einen Gegenstand und die Fragen zu seiner Herkunft.",
+          "invitation": "Was möchtest du darüber wissen?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Günstig für wen?",
+          "thought": "Skizziere mögliche Stationen eines Produkts und markiere unbekannte Arbeits- und Umweltbedingungen.",
+          "invitation": "Welche Information sollte zugänglich sein?"
+        },
+        {
+          "seconds": 60,
+          "hook": "Verantwortung braucht Zusammenhänge.",
+          "thought": "Erzähle einen ausdrücklich beispielhaften Beschaffungsprozess mit Preis, Arbeit, Transport und Nutzung. Erfinde keine konkreten Lieferkettenbelege.",
+          "invitation": "Wer könnte an welcher Stelle etwas verändern?"
+        }
+      ],
+      "story": "Beispielsituation: Eine kleine Firma beschafft Arbeitskleidung. Sie fragt neben dem Preis nach nachvollziehbaren Informationen zu Produktion, Arbeitsbedingungen und Haltbarkeit.",
+      "effect": "Beispiel: Ein Einkauf ändert verbindlich Anforderungen und prüft ihre Umsetzung bei Lieferanten. Entscheidend sind belegte Veränderungen vor Ort, nicht allein ein neues Versprechen.",
+      "category": "Demokratie",
+      "iconWithLabel": "Mit_Beschriftung/23_globale-verantwortung.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/23_globale-verantwortung.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "23. Dezember: Globale Verantwortung | #WerteAdvent",
+        "Video-Teaser": "Unser Alltag endet nicht an der Grenze. Wo endet unsere Verantwortung für andere?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Globale Verantwortung. Wo endet unsere Verantwortung für andere? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-23",
+        "Angepinnter Kommentar": "Welche Verbindung deines Alltags zu anderen Orten überrascht dich? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    },
+    {
+      "day": 24,
+      "value": "Zukunftsfähigkeit",
+      "question": "In welcher Welt wollen wir morgen leben?",
+      "explanation": "Zukunftsfähigkeit heißt, auch unter veränderten Bedingungen gut leben und handeln zu können. Dafür brauchen wir tragfähige Lebensgrundlagen, lernfähige Institutionen und Spielraum für die nächsten Generationen.",
+      "creatorIdeas": [
+        {
+          "area": "Familie",
+          "idea": "Formuliert einen Wunsch und einen konkreten Schritt für das kommende Jahr."
+        },
+        {
+          "area": "Gaming",
+          "idea": "Diskutiere, was eine Community dauerhaft offen und lernfähig hält."
+        },
+        {
+          "area": "Beruf",
+          "idea": "Frage, welche Fähigkeit oder Reserve bei einem Ausfall wichtig wäre."
+        },
+        {
+          "area": "Gesellschaft",
+          "idea": "Schaut auf langfristige Folgen heutiger Entscheidungen und Möglichkeiten zur Korrektur."
+        }
+      ],
+      "liveQuestions": [
+        "Was soll in zehn Jahren besser möglich sein als heute?",
+        "Welche heutige Entscheidung legt uns lange fest?",
+        "Was sollten wir erhalten, obwohl es sich kurzfristig nicht bezahlt macht?",
+        "Wie merken wir rechtzeitig, dass ein Plan geändert werden muss?",
+        "Welchen konkreten nächsten Schritt nimmst du aus dem Werte-Advent mit?"
+      ],
+      "videos": [
+        {
+          "seconds": 15,
+          "hook": "Morgen beginnt mit einer Entscheidung heute.",
+          "thought": "Nenne einen Zukunftswunsch und einen dazu passenden kleinen Schritt.",
+          "invitation": "Was wäre dein Schritt?"
+        },
+        {
+          "seconds": 30,
+          "hook": "Was soll bleiben, was soll sich ändern?",
+          "thought": "Stelle zwei konkrete Wünsche für das gemeinsame Leben gegenüber und frage nach den Bedingungen.",
+          "invitation": "Wer müsste daran beteiligt sein?"
+        },
+        {
+          "seconds": 60,
+          "hook": "24 Werte. Und was folgt daraus?",
+          "thought": "Verbinde einen ausgewählten Wert mit einer Handlung, möglichen Folgen und einem Termin zum Nachschauen. Keine Erfolgsgarantie.",
+          "invitation": "Woran würdest du eine Verbesserung erkennen?"
+        }
+      ],
+      "story": "Beispielsituation: Eine Nachbarschaft will einen gemeinsamen Raum erhalten. Sie plant nicht nur die Eröffnung, sondern auch Pflege, Finanzierung, zugängliche Nutzung und eine spätere Überprüfung.",
+      "effect": "Beispiel: Ein Team setzt eine Veränderung um und prüft später Nutzen, Belastungen und unerwartete Folgen. Es passt den Plan an, wenn die tatsächliche Entwicklung nicht zu den Zielen passt.",
+      "category": "Demokratie",
+      "iconWithLabel": "Mit_Beschriftung/24_zukunftsfahigkeit.png",
+      "iconWithoutLabel": "Ohne_Beschriftung/24_zukunftsfahigkeit.png",
+      "formats": [
+        "Video",
+        "Live",
+        "Geschichte",
+        "Community-Frage",
+        "Duett / Stitch"
+      ],
+      "copy": {
+        "Live-Titel": "24. Dezember: Zukunftsfähigkeit | #WerteAdvent",
+        "Video-Teaser": "Morgen beginnt mit einer Entscheidung heute. In welcher Welt wollen wir morgen leben?",
+        "TikTok-Beschreibung": "Heute beim #WerteAdvent: Zukunftsfähigkeit. In welcher Welt wollen wir morgen leben? Deine Perspektive ist gefragt. Alle Themen & Icons: https://wirkungsoekonomie.de/werteadvent/#tag-24",
+        "Angepinnter Kommentar": "Was soll in zehn Jahren besser möglich sein als heute? Teile deine Sicht und bleib respektvoll. #WerteAdvent"
+      }
+    }
+  ]
+}

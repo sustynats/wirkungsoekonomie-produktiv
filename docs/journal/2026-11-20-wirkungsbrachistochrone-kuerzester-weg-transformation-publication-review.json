@@ -1,0 +1,48 @@
+{
+  "article": "https://wirkungsoekonomie.de/blog/wirkungsbrachistochrone-kuerzester-weg-transformation.html",
+  "date": "2026-11-20",
+  "author": "Natalie Weber",
+  "repository": "sustynats/wirkungsoekonomie-produktiv",
+  "pdfRepository": "sustynats/wirkungsoekonomie-medien",
+  "sourceManuscriptSha256": "f6d4102b465a38e1e702fa53616b2ee00113e2286e34bc0b47824bb82effb557",
+  "imageSha256": "ea367cb54b8172c903f91568c1b12df338ef6d678fa223d98437ef610209e814",
+  "sourceEntries": 9,
+  "embeddedCharts": 3,
+  "contentTables": 1,
+  "tocComponents": 1,
+  "proposalStatus": "Neue methodische Vorschläge, keine etablierten wissenschaftlichen Verfahren. Keine Änderung verbindlicher Methoden- oder Rechenregeln.",
+  "editorialPrecisions": [
+    {
+      "before": "tragfähige positive Wirkung erzielt.",
+      "after": "tragfähige positive Netto-Wirkung erzielt."
+    },
+    {
+      "before": "Weder Menschenrechte noch ökologische Mindestgrenzen stehen dabei zum Verrechnen zur Verfügung.",
+      "after": "Weder Menschenrechte noch ökologische Mindestgrenzen stehen dabei zum Verrechnen zur Verfügung. Dieses Schutzprinzip heißt Nichtkompensation. Die Reverse Merit Order unterstützt die Priorisierung materieller Defizite und kann bei kritischen Schwächen die Gesamtbewertung begrenzen. [9]"
+    },
+    {
+      "before": "dem Netto-Wirkungsindex",
+      "after": "dem WÖk-Netto-Wirkungsindex"
+    },
+    {
+      "before": "A oben, B weiter unten.",
+      "after": "A oben, B weiter unten und seitlich versetzt."
+    }
+  ],
+  "publicationNotes": [
+    "Titelbild und drei Word-Diagramme übernommen. Die einspaltige Merksatz-Tabelle als Zitatkasten erhalten.",
+    "Quellen fortlaufend 1-9 nummeriert, passende Verweise im Text ergänzt; Begriffsleitfaden v1.8 als zusätzliche Grundlage.",
+    "Zahlen der physikalischen Vergleichsgrafik unabhängig reproduziert; reibungsfreier Massepunkt, Start aus Ruhe, x=h=1 m und g=9,81 m/s² in der Bildunterschrift offengelegt.",
+    "Fiktive gesellschaftliche Wirkungskurven ausdrücklich als Illustration gekennzeichnet; keine behauptete empirische Überlegenheit.",
+    "Autorinnennennung bleibt auch im PDF-Text enthalten. Keine Video-Wiedergabe oder Kopie des historischen Fremdmaterials veröffentlicht.",
+    "Die sichtbare Vorschlagskennzeichnung verwendet die bestehende status-note-Komponente; interne article-status-note-Hinweise werden vom allgemeinen Frontend entfernt."
+  ],
+  "physicalExample": {
+    "horizontalM": 1,
+    "heightDropM": 1,
+    "g": 9.81,
+    "straightSeconds": 0.638550856814101,
+    "cycloidSeconds": 0.5828954631547426
+  },
+  "checks": "Quellenbezogene Publikationsprüfung, keine externe fachwissenschaftliche Validierung."
+}

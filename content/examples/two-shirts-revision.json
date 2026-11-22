@@ -1,0 +1,397 @@
+{
+  "version": "0.2-draft",
+  "vat_rate": 19,
+  "source_version": {
+    "register": "Masterregister v1.4 FINAL, 16.08.2026",
+    "tax_model": "04_Tarifmodell B6:C12, WÖk-Arbeitsmodell v1.3",
+    "glossary": "Begriffsleitfaden v1.8, 01.10.2026",
+    "legal_draft": "WStG 3.0, Gesamtneufassung 2026",
+    "scenario": "T-Shirt-Erlebnisreise 0.2-draft, 14.11.2026"
+  },
+  "products": [
+    {
+      "id": "A",
+      "net_cents": 1200,
+      "cost_cents": 800,
+      "primary_fibre_g": 200,
+      "recovered_fibre_g": 0,
+      "emissions_kg": 8,
+      "wage_coverage_pct": 50,
+      "dye_water_l": 30,
+      "source_id": "T-SHIRT-ILLUSTRATION-A",
+      "data_status": "MODELLIERT"
+    },
+    {
+      "id": "B",
+      "net_cents": 1400,
+      "cost_cents": 1000,
+      "primary_fibre_g": 50,
+      "recovered_fibre_g": 150,
+      "emissions_kg": 3.4,
+      "wage_coverage_pct": 90,
+      "dye_water_l": 15,
+      "source_id": "T-SHIRT-ILLUSTRATION-B",
+      "data_status": "MODELLIERT"
+    }
+  ],
+  "working_scale": {
+    "-3": 25,
+    "-2": 20,
+    "-1": 15,
+    "0": 10,
+    "1": 5,
+    "2": 0,
+    "3": 0
+  },
+  "chain": {
+    "net_cents": [
+      400,
+      700,
+      1200
+    ],
+    "rate": 20,
+    "credit": {
+      "full": [
+        0,
+        100,
+        100
+      ],
+      "limited": [
+        0,
+        0,
+        100
+      ],
+      "none": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "stages": [
+    {
+      "name": "Fasern anbauen oder zurückgewinnen",
+      "nace": "01.16",
+      "label": "Anbau von Faserpflanzen",
+      "note": "01.16 betrifft den Anbau frischer Fasern, nicht das Recycling. Die passende Recyclingaktivität ist fallbezogen gesondert zu klassifizieren."
+    },
+    {
+      "name": "Garn spinnen",
+      "nace": "13.10",
+      "label": "Spinnstoffaufbereitung und Spinnerei"
+    },
+    {
+      "name": "Jerseystoff herstellen",
+      "nace": "13.91",
+      "label": "Herstellung von gewirktem und gestricktem Stoff"
+    },
+    {
+      "name": "Stoff färben und veredeln",
+      "nace": "13.30",
+      "label": "Veredlung von Textilien"
+    },
+    {
+      "name": "T-Shirt herstellen",
+      "nace": "14.10",
+      "label": "Herstellung von Bekleidung aus gewirktem und gestricktem Stoff",
+      "note": "Zuordnung des hier angenommenen gestrickten Jerseyprodukts. Die tatsächliche Tätigkeit und die Erläuterungen der Klassifikation bleiben maßgeblich."
+    }
+  ],
+  "sources": [
+    {
+      "id": "E1",
+      "title": "Eurostat: NACE - Übersicht",
+      "url": "https://ec.europa.eu/eurostat/web/nace",
+      "role": "Version und Funktion der Wirtschaftszweigklassifikation"
+    },
+    {
+      "id": "E2",
+      "title": "NACE Rev. 2.1: Verordnung (EU) 2023/137, Anhang",
+      "url": "https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32023R0137",
+      "role": "Codes 01.16, 13.10, 13.30, 13.91, 14.10; keine Wirkungsbewertung"
+    },
+    {
+      "id": "E3",
+      "title": "Europäische Kommission: Combined Nomenclature",
+      "url": "https://taxation-customs.ec.europa.eu/customs/common-customs-tariff-cct/tariff-classification-goods/combined-nomenclature_en",
+      "role": "Unterscheidung Waren-/Zollklassifikation und Wirtschaftszweigklassifikation. Konkrete Warennummer nicht ohne Produkteigenschaften vergeben."
+    },
+    {
+      "id": "E4",
+      "title": "GRI 301: Materials 2016, Angaben 301-1 und 301-2",
+      "url": "https://www.globalreporting.org/publications/documents/english/gri-301-materials-2016/",
+      "role": "Materialinput und Rezyklatanteil auf Organisationsebene. Produktzuordnung benötigt zusätzliche Nachweise."
+    },
+    {
+      "id": "E5",
+      "title": "GRI 303: Water and Effluents 2018, Angaben 303-3, 303-4, 303-5",
+      "url": "https://www.globalreporting.org/publications/documents/english/gri-303-water-and-effluents-2018",
+      "role": "Entnahme, Einleitung, Verbrauch und Standortkontext; kein universeller Schadenswert pro Liter"
+    },
+    {
+      "id": "E6",
+      "title": "GRI 305: Emissions 2016, Angaben 305-1 bis 305-3",
+      "url": "https://www.globalreporting.org/publications/documents/english/gri-305-emissions-2016/",
+      "role": "Organisations- und Wertschöpfungskettenemissionen; Produktfußabdruck nicht ohne Zurechnung ableiten"
+    },
+    {
+      "id": "E7",
+      "title": "GHG Protocol: Product Life Cycle Accounting and Reporting Standard",
+      "url": "https://ghgprotocol.org/product-standard",
+      "role": "Produktbezogene Bilanzgrenze, Material- und Prozesszuordnung; Vergleich braucht passende Produktregeln"
+    },
+    {
+      "id": "E8",
+      "title": "GRI 414: Supplier Social Assessment 2016, insbesondere 414-2",
+      "url": "https://www.globalreporting.org/publications/documents/english/gri-414-supplier-social-assessment-2016/",
+      "role": "Lieferantenbewertung und soziale Auswirkungen; keine automatische Living-Wage-Quote und kein Wirksamkeitsbeweis aus Auditquoten"
+    },
+    {
+      "id": "E9",
+      "title": "GRI 403: Occupational Health and Safety 2018, insbesondere 403-9",
+      "url": "https://www.globalreporting.org/publications/documents/english/gri-403-occupational-health-and-safety-2018/",
+      "role": "Arbeitsunfälle und Bezugsstunden; kein automatischer Unfallwert je T-Shirt"
+    },
+    {
+      "id": "E10",
+      "title": "GRI: Aktualisierte Klima- und Energiestandards",
+      "url": "https://www.globalreporting.org/standards/standards-development/topic-standard-for-climate-change-and-energy/",
+      "role": "GRI 102/103 veröffentlicht 2025, wirksam ab Januar 2027; Berichtsfassung und Zeitpunkt offenlegen"
+    },
+    {
+      "id": "E11",
+      "title": "UN: SDG 6",
+      "url": "https://sdgs.un.org/goals/goal6",
+      "role": "Zielbezüge 6.3 und 6.4, keine Produktzertifizierung"
+    },
+    {
+      "id": "E12",
+      "title": "UN: SDG 8",
+      "url": "https://sdgs.un.org/goals/goal8",
+      "role": "Zielbezüge 8.5, 8.7 und 8.8"
+    },
+    {
+      "id": "E13",
+      "title": "UN: SDG 12",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "role": "Zielbezüge 12.2, 12.4 und 12.5"
+    },
+    {
+      "id": "E14",
+      "title": "UN: SDG 13",
+      "url": "https://sdgs.un.org/goals/goal13",
+      "role": "Klimabezug; 13.2 ist eine politische Zielvorgabe, kein T-Shirt-Messstandard"
+    },
+    {
+      "id": "E15",
+      "title": "Mehrwertsteuersystemrichtlinie 2006/112/EG, konsolidiert",
+      "url": "https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:02006L0112-20250414",
+      "role": "Art. 73/78, 168 und 401: Bemessungsgrundlage, Vorsteuer und Grenzen weiterer Abgaben"
+    },
+    {
+      "id": "E16",
+      "title": "EU-Richtlinie 2025/1892: Textilien und erweiterte Herstellerverantwortung",
+      "url": "https://eur-lex.europa.eu/eli/dir/2025/1892/oj/eng",
+      "role": "Realer sektorspezifischer Anschluss. Keine Rechtsgrundlage für das gesamte hier entworfene Abgabenmodell."
+    },
+    {
+      "id": "E17",
+      "title": "WTO: GATT, insbesondere Artikel II und III",
+      "url": "https://www.wto.org/english/docs_e/legal_e/gatt47_e.htm",
+      "role": "Inländerbehandlung und Abgrenzung zum Zoll; keine pauschale Freigabe produktionsbezogener Wirkungsabgaben"
+    },
+    {
+      "id": "E18",
+      "title": "AEUV Artikel 110",
+      "url": "https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:12016E110",
+      "role": "Keine diskriminierende inländische Besteuerung gleichartiger Waren anderer Mitgliedstaaten"
+    },
+    {
+      "id": "W1",
+      "title": "Begriffsleitfaden v1.8, 1. Oktober 2026",
+      "url": "/bibliothek/woek-begriffsleitfaden-fuehrend/",
+      "role": "Projektquelle: Definitionen, getrennte Datenrollen, Nichtkompensation, IOOI und SDG+"
+    },
+    {
+      "id": "W2",
+      "title": "WStG 3.0, Gesamtneufassung 2026, §§ 59, 65-67",
+      "url": "https://wirkungsoekonomie.de/bibliothek/wirkungssteuer-wstg-3-0/",
+      "role": "Projektquelle: vorgeschlagene steuerrechtliche Architektur; kein geltendes Gesetz"
+    },
+    {
+      "id": "E19",
+      "title": "Umsatzsteuergesetz § 10 Absatz 1",
+      "url": "https://www.gesetze-im-internet.de/ustg_1980/__10.html",
+      "role": "Preisbezogene Subventionen als Gegenleistung; keine Freigabe des Fondsmoduls"
+    },
+    {
+      "id": "W3",
+      "title": "Masterregister v1.4 FINAL, 16. August 2026",
+      "url": "https://github.com/sustynats/wirkungsoekonomie.de/releases/download/woek-public-assets-v2/WOeK_Masterregister_v1.4_FINAL_2026-08-16.xlsx",
+      "role": "Nachweis der Referenzregel WOK-S-101 (R27) und der Simulationsstaffel 04_Tarifmodell, B6:C12. Workbook-Fassungen und Einsatzbereich benennen."
+    },
+    {
+      "id": "W4",
+      "title": "Preise und Wirkungsfonds",
+      "url": "/verstehen/preise-und-wirkungsfonds/",
+      "role": "Modellidee der gesetzlich begründeten Rückverteilung und Anforderungen an die Finanzierung."
+    },
+    {
+      "id": "E20",
+      "title": "UStG § 12 - Steuersätze",
+      "url": "https://www.gesetze-im-internet.de/ustg_1980/__12.html",
+      "role": "Umsatzsteuer-Regelsatz für den modellierten deutschen Verkauf. Der Vorsteuerabzug folgt § 15 UStG."
+    }
+  ],
+  "metadata": {
+    "source_id": "T-SHIRT-ILLUSTRATION",
+    "version": "0.2-draft",
+    "data_status": "MODELLIERT",
+    "legal_status": "NOT_IN_FORCE",
+    "evidence_boundary": "Faser bis Marktbereitstellung; Nutzung und Entsorgung offen",
+    "author_approval_status": "PENDING"
+  },
+  "measurements": [
+    {
+      "key": "primary_fibre_g",
+      "title": "Primärfaser",
+      "unit": "g",
+      "scope": "Masse im fertigen Shirt",
+      "source": "E4",
+      "owner": "Materialbuchhaltung und Einkauf",
+      "gap": "Durchgehender Chargennachweis"
+    },
+    {
+      "key": "emissions_kg",
+      "title": "Treibhausgase",
+      "unit": "kg CO₂e",
+      "scope": "Faser bis Marktbereitstellung",
+      "source": "E7",
+      "owner": "Betriebe und Produktbilanzierung",
+      "gap": "Nutzung, Ende der Lebensdauer und Unsicherheit der Emissionsfaktoren"
+    },
+    {
+      "key": "dye_water_l",
+      "title": "Färbewasser",
+      "unit": "l",
+      "scope": "Wasserverbrauch der betrachteten Färbecharge, anteilig je Shirt",
+      "source": "E5",
+      "owner": "Färberei und Wasserbuchhaltung",
+      "gap": "Standort, Wasserstress und Schadstofffracht"
+    },
+    {
+      "key": "wage_coverage_pct",
+      "title": "Lebenslohnabdeckung",
+      "unit": "%",
+      "scope": "Beschäftigte in einer fiktiven Näherei je Produkt",
+      "source": "W3",
+      "owner": "Näherei und unabhängige Prüfung",
+      "gap": "Passende lokale Referenz und übrige Lieferkette"
+    }
+  ],
+  "journey_stages": [
+    {
+      "id": "faser",
+      "name": "Fasern",
+      "process": "Baumwolle wird angebaut oder aus Textilien zurückgewonnen.",
+      "nace": "01.16 für Faserpflanzen. Rückgewinnung je Verfahren OFFEN.",
+      "sdg": "12.2 Ressourcen, 12.5 Abfallvermeidung",
+      "evidence": "Stückliste, Materialeingang und Chargen-ID",
+      "owner": "Erzeuger und Materiallieferant; Einkauf prüft Mengen und Herkunft",
+      "gap": "Verluste, Flächennutzung und Herkunft"
+    },
+    {
+      "id": "garn",
+      "name": "Garn",
+      "process": "Fasern werden aufbereitet und versponnen.",
+      "nace": "13.10 Spinnstoffaufbereitung und Spinnerei",
+      "sdg": "8.8 Arbeitsschutz, 13 Klima",
+      "evidence": "Energie, Faserinput und Garnoutput",
+      "owner": "Spinnerei; Produktbilanzierung prüft die Zuordnung",
+      "gap": "Energieträger, Ausschuss und Beschäftigtendaten"
+    },
+    {
+      "id": "stoff",
+      "name": "Stoff",
+      "process": "Garn wird zu Jersey gestrickt.",
+      "nace": "13.91 Gewirkte und gestrickte Stoffe",
+      "sdg": "12.2 Ressourcen, 13 Klima",
+      "evidence": "Garnmenge, Maschinenstrom, Stoffmenge",
+      "owner": "Stoffbetrieb; Einkauf prüft Liefer- und Chargenbelege",
+      "gap": "Ausschuss und Energie je Charge"
+    },
+    {
+      "id": "farbe",
+      "name": "Farbe",
+      "process": "Der Stoff wird gefärbt und ausgerüstet.",
+      "nace": "13.30 Textilveredlung",
+      "sdg": "6.3 Wasserqualität, 8.8 Arbeitsschutz",
+      "evidence": "Wassermenge, Chemikalien, Probe und Einleitungsauflage",
+      "owner": "Färberei und Labor; Behörde prüft Auflagen",
+      "gap": "Standort, Anwendbarkeit und Schadstofffracht"
+    },
+    {
+      "id": "naht",
+      "name": "Nähen",
+      "process": "Aus dem Jersey entsteht ein Kurzarmshirt.",
+      "nace": "14.10 Gestrickte und gewirkte Bekleidung",
+      "sdg": "1.2 Armut, 8.5 Entgelt, 8.8 Arbeitsrechte",
+      "evidence": "Produktgewicht, Lohn- und Arbeitszeitnachweise",
+      "owner": "Näherei; unabhängige Prüfung der anonymisierten Aggregate",
+      "gap": "Haltbarkeit und Abdeckung der Vorkette"
+    },
+    {
+      "id": "transport",
+      "name": "Transport",
+      "process": "Das fertige Shirt gelangt zum Vertrieb und in den Handel.",
+      "nace": "Einzelfall nach Transportart und Handelsaktivität.",
+      "sdg": "13 Klima; SDG+ Transparenz",
+      "evidence": "Mengen, Strecke, Verkehrsträger und Auslastung",
+      "owner": "Frachtführer und Handel; Bilanzierung prüft Transportanteil",
+      "gap": "Route, Auslastung und Lagerverbrauch"
+    },
+    {
+      "id": "nutzung",
+      "name": "Nutzung",
+      "process": "Das Shirt wird getragen, gewaschen und gegebenenfalls repariert.",
+      "nace": "Private Nutzung hat hier keine NACE-Zuordnung.",
+      "sdg": "6 Wasser, 12 Ressourcen",
+      "evidence": "Nutzungsdauer, Wäsche, Reparaturen",
+      "owner": "Nutzungsstudie oder ein transparenter Prüfversuch",
+      "gap": "Nutzungsmuster und gleichwertige Lebensdauer"
+    },
+    {
+      "id": "ende",
+      "name": "Weitergabe",
+      "process": "Das Shirt wird weitergegeben, verwertet oder entsorgt.",
+      "nace": "Die Tätigkeit hängt vom tatsächlichen Entsorgungsweg ab.",
+      "sdg": "12.5 Abfallvermeidung und Wiederverwertung",
+      "evidence": "Sammelmenge, Sortierverluste, Verwertungsweg",
+      "owner": "Sammlung und Verwertung; Nachweis der tatsächlichen Fraktionen",
+      "gap": "Anteile je Entsorgungspfad und verdrängte Primärfaser"
+    }
+  ],
+  "effects": [
+    {
+      "label": "1. Ordnung",
+      "status": "MODELLIERT",
+      "title": "Eine Abgabe verändert die Rechnung",
+      "text": "Bei festen Nettopreisen und vollständiger Weitergabe ändert sich der Zahlbetrag sofort. Verkaufspreise, Aufkommen und Stücküberschüsse sind Größen der Simulation.",
+      "check": "Preis, Absatz und Marge mit dem Ausgangsfall abgleichen."
+    },
+    {
+      "label": "2. Ordnung",
+      "status": "HYPOTHESE",
+      "title": "Betriebe und Haushalte reagieren",
+      "text": "Eine Marke könnte die Klärtechnik verbessern. Kundschaft könnte ausweichen. Strenge Regeln an einem Ort könnten Färbeaufträge anderswo konzentrieren.",
+      "check": "Wasserqualität, Löhne und Ausweichkäufe gegenüber einem Vergleich ohne Maßnahme untersuchen."
+    },
+    {
+      "label": "3. Ordnung",
+      "status": "HYPOTHESE",
+      "title": "Die Branche stellt sich um",
+      "text": "Mehr Reparatur und Recycling könnten Rohstoffe sparen. Mehr Verkäufe können einen Teil pro Stück erzielter Einsparungen aufzehren. Langfristige Verträge und Anlagen beeinflussen die Anpassung.",
+      "check": "Materialflüsse, Wettbewerb, Lieferresilienz und Nutzung über mehrere Jahre beobachten."
+    }
+  ]
+}

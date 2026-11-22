@@ -1,0 +1,305 @@
+html:has(#shirt-example), body:has(#shirt-example) { overflow-x: clip; }
+
+#shirt-example {
+  --story-ink: #142b29;
+  --story-paper: #faf7ee;
+  --story-sand: #f2ebdc;
+  --story-mist: #e7eee5;
+  --story-deep: #122e2c;
+  --story-line: #aab8aa;
+  --shirt-a: #913e2b;
+  --shirt-b: #065e57;
+  background: var(--story-paper);
+  color: var(--story-ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+#shirt-example [hidden] { display: none !important; }
+
+#shirt-example .story-frame {
+  width: min(1120px, calc(100% - 2 * clamp(1rem, 5vw, 3rem)));
+  margin-inline: auto;
+}
+
+#shirt-example h1, #shirt-example h2, #shirt-example h3 {
+  color: inherit;
+  margin: 0 0 .5em;
+}
+
+#shirt-example h1 {
+  max-width: 12ch;
+  font: 600 clamp(2.75rem, 5.1vw, 5.1rem)/1.02 var(--font-heading);
+  letter-spacing: -.053em;
+}
+
+#shirt-example h1 em { color: var(--shirt-b); }
+
+#shirt-example h2 {
+  font: 600 clamp(2rem, 4vw, 3.65rem)/1.04 var(--font-heading);
+  letter-spacing: -.036em;
+  text-wrap: balance;
+}
+
+#shirt-example h3 { font-size: 1.15rem; }
+
+#shirt-example p { max-width: 68ch; margin: 0 0 1rem; }
+
+#shirt-example a {
+  text-decoration-thickness: .08em;
+  text-underline-offset: .15em;
+}
+
+#shirt-example .eyebrow {
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+#shirt-example .story-cover {
+  background:
+    radial-gradient(ellipse at 82% 27%, #f3ded1 0, transparent 38%),
+    linear-gradient(130deg, #f9f4e8, #f7f0e3 65%, #e4ede1);
+  padding-block: clamp(2.2rem, 6vw, 6.4rem);
+  border-bottom: 1px solid var(--story-line);
+}
+
+#shirt-example .cover-grid {
+  display: grid;
+  grid-template-columns: .95fr 1.05fr;
+  align-items: center;
+  gap: clamp(1rem, 4vw, 4rem);
+}
+
+#shirt-example .intro {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  max-width: 38ch;
+}
+
+#shirt-example .cover-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+
+#shirt-example .story-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 46px;
+  padding: .6rem 1rem;
+  border: 1px solid var(--story-ink);
+  border-radius: 999px;
+  font-weight: 750;
+  color: var(--story-ink);
+  text-decoration: none;
+}
+
+#shirt-example .story-button.primary { color: white; background: var(--story-deep); }
+
+#shirt-example .cover-note { font-size: .87rem; }
+
+#shirt-example .shirt-pair {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: .25rem;
+  background: repeating-linear-gradient(0deg, transparent 0 31px, #556a5b19 32px 33px);
+}
+
+#shirt-example .shirt-product { min-width: 0; margin: 0; }
+#shirt-example .shirt-a { color: var(--shirt-a); }
+#shirt-example .shirt-b { color: var(--shirt-b); }
+
+#shirt-example .shirt-product img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(1px 12px 7px #38392c2e);
+}
+
+#shirt-example .shirt-product.shirt-a img { transform: rotate(-8deg); }
+#shirt-example .shirt-product.shirt-b img { transform: rotate(8deg) translateY(7%); }
+
+#shirt-example .shirt-product figcaption {
+  position: relative;
+  width: max-content;
+  max-width: 100%;
+  margin: .25rem auto 0;
+  padding: .4rem .8rem;
+  background: var(--story-paper);
+  border: 1px solid currentColor;
+  border-radius: 4px;
+}
+
+#shirt-example .shirt-product figcaption span { display: block; font-size: .76rem; font-weight: 800; }
+#shirt-example .shirt-product figcaption strong { font: 700 clamp(1.16rem, 2.4vw, 2.1rem)/1.15 var(--font-heading); }
+#shirt-example .shirt-pair > p { grid-column: 1 / -1; text-align: center; font-size: .82rem; margin: .8rem auto 0; }
+
+#shirt-example .story-nav {
+  position: sticky;
+  top: 70px;
+  z-index: 5;
+  background: #f8f6ee;
+  border-bottom: 1px solid var(--story-line);
+}
+
+#shirt-example .nav-inner { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; position: relative; padding-block: .45rem; }
+#shirt-example .nav-inner > progress { width: min(8.5rem, 100%); height: .85rem; margin-inline-start: auto; accent-color: var(--shirt-b); }
+#shirt-example .chapter-menu { position: relative; margin: 0; }
+#shirt-example .chapter-menu summary { display: flex; gap: .6rem; align-items: center; padding: .45rem .68rem; min-height: 44px; border: 1px solid var(--story-line); }
+#shirt-example .chapter-menu summary::before { content: '☰'; }
+#shirt-example .chapter-menu summary span { font-size: .82rem; font-weight: 500; }
+#shirt-example .chapter-menu nav {
+  position: absolute; inset: calc(100% + .3rem) auto auto 0; z-index: 7;
+  width: min(19rem, 85vw); max-height: 65vh; overflow: auto;
+  padding: .25rem; background: var(--story-paper); border: 1px solid var(--story-line);
+  box-shadow: 0 10px 26px #162b2a21;
+}
+
+#shirt-example .chapter-menu a { min-height: 44px; display: flex; align-items: center; padding-inline: .6rem; }
+#shirt-example .chapter-menu a[aria-current] { background: var(--story-mist); font-weight: 800; }
+#shirt-example .view-controls { display: flex; flex-wrap: wrap; gap: .3rem; }
+#shirt-example .view-controls button {
+  min-height: 44px; padding: .35rem .66rem; font: inherit; font-size: .87rem; font-weight: 700;
+  color: var(--story-ink); background: transparent; border: 1px solid transparent; border-radius: 4px;
+}
+#shirt-example .view-controls button[aria-pressed="true"] { background: var(--story-mist); border-color: var(--story-line); }
+
+#shirt-example .story-section { padding-block: clamp(3rem, 7vw, 6.25rem); }
+#shirt-example [id] { scroll-margin-top: 9rem; }
+@media (max-width: 570px) { #shirt-example [id] { scroll-margin-top: 11.25rem; } }
+#shirt-example .story-band { border-block: 1px solid #9bab9d66; }
+#shirt-example .mist { background: var(--story-mist); }
+#shirt-example .sand { background: var(--story-sand); }
+#shirt-example .dark { background: var(--story-deep); color: #faf7ed; }
+#shirt-example .dark a { color: #bce9db; }
+#shirt-example .section-intro { display: grid; grid-template-columns: 1fr .8fr; align-items: start; gap: clamp(1rem, 5vw, 4rem); margin-bottom: 1.25rem; }
+#shirt-example .section-intro > p { margin-top: .35rem; }
+#shirt-example .material-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1rem 0 1.6rem; }
+#shirt-example .material-line { border-top: 2px solid currentColor; padding: .85rem 0 .2rem; }
+#shirt-example .material-bar { display: flex; height: .8rem; margin-block: .65rem; border-radius: 4px; overflow: hidden; }
+#shirt-example .material-bar span { width: var(--share); background: currentColor; }
+#shirt-example .material-bar span.recovered { background: repeating-linear-gradient(135deg, currentColor 0 2px, #fff 2px 4px); }
+#shirt-example .rule-note { background: #fbf4e2; border-inline-start: 4px solid #796237; max-width: none; padding: .95rem 1rem; }
+
+#shirt-example details { margin-block: .85rem; }
+#shirt-example summary { min-height: 44px; cursor: pointer; font-weight: 750; padding: .7rem .9rem; }
+#shirt-example details[data-evidence] { border-block-start: 1px solid var(--story-line); }
+#shirt-example details[data-evidence] > summary { padding-inline: 0; }
+#shirt-example .detail { padding: .25rem 1rem 1rem; }
+#shirt-example .station-list { border-top: 1px solid var(--story-line); }
+#shirt-example .station { position: relative; margin: 0; border-bottom: 1px solid var(--story-line); }
+#shirt-example .station summary { padding-inline: .5rem; }
+#shirt-example .station summary span { margin-inline: .25rem .85rem; font-size: .76rem; font-variant-numeric: tabular-nums; }
+#shirt-example .station[open] { background: #fffdf7; }
+#shirt-example .station[open]::before { content: ''; position: absolute; left: 0; width: 4px; height: 100%; background: var(--shirt-b); animation: station-enter .22s ease-out; }
+@keyframes station-enter { from { transform: scaleY(.15); transform-origin: top; } to { transform: scaleY(1); transform-origin: top; } }
+#shirt-example .station dl { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(12rem, 100%),1fr)); gap: 1rem; margin: 0; }
+
+#shirt-example dt { font-weight: 800; }
+#shirt-example dd { margin: .2rem 0 0; }
+#shirt-example .goal-strip, #shirt-example .evidence-path { list-style: none; padding: 0; display: flex; flex-wrap: wrap; margin-block: 1.3rem; }
+#shirt-example .goal-strip li { padding: .7rem 1rem; min-width: 9rem; border-block: 1px solid var(--story-line); }
+#shirt-example .goal-strip strong { display: block; }
+#shirt-example .evidence-path { gap: .4rem; }
+#shirt-example .evidence-path li { background: var(--story-mist); padding: .45rem .66rem; font-weight: 700; font-size: .86rem; }
+#shirt-example .evidence-path li:not(:last-child)::after { content: ' →'; }
+#shirt-example .identity-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .65rem 1.45rem; margin: 0 0 1.4rem; }
+#shirt-example .identity-list > div { padding-block: .6rem; border-bottom: 1px solid var(--story-line); }
+#shirt-example .measurement-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+#shirt-example .measurement { padding-top: .7rem; border-top: 1px solid var(--story-line); }
+#shirt-example .measurement-amounts { display: flex; flex-wrap: wrap; gap: .8rem; }
+#shirt-example .measurement-amounts strong { font: 700 clamp(1.28rem, 2.7vw, 2.1rem)/1.2 var(--font-heading); }
+#shirt-example .measurement > p { font-size: .9rem; margin-top: .35rem; }
+#shirt-example .protection-path { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; margin: 1rem 0; }
+#shirt-example .protection-path > div { border-top: 3px solid var(--story-line); padding-top: .7rem; }
+#shirt-example .protection-path > div:first-child { border-color: var(--shirt-a); }
+
+#shirt-example .table-scroll { overflow-x: auto; max-width: 100%; margin-block: .75rem; }
+#shirt-example table { width: 100%; border-collapse: collapse; font-size: .96rem; line-height: 1.42; }
+#shirt-example caption { padding-block: .55rem; font-weight: 800; text-align: left; }
+#shirt-example th, #shirt-example td { padding: .6rem .62rem; vertical-align: top; text-align: left; border-bottom: 1px solid var(--story-line); }
+#shirt-example thead { background: #dce8dc; color: var(--story-ink); }
+#shirt-example .tax-scale { max-width: 38rem; }
+#shirt-example .tax-scale th, #shirt-example .tax-scale td { border-color: #6a8b7f; }
+#shirt-example .tax-calculator { padding-top: 0; }
+#shirt-example .calculator-surface { color: var(--story-ink); background: #fffcf5; padding: clamp(1rem, 3.5vw, 2.2rem); border-radius: 7px; }
+#shirt-example .calculator-surface a { color: var(--shirt-b); }
+#shirt-example .tax-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .9rem; }
+#shirt-example .tax-fields label { display: block; font-weight: 750; font-size: .9rem; margin-bottom: .3rem; }
+#shirt-example select { appearance: auto; width: 100%; min-height: 46px; padding: .45rem .6rem; color: var(--story-ink); background: #fffefa; border: 1px solid #708276; border-radius: 4px; font: inherit; }
+#shirt-example .price-comparison { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .7rem; margin-top: 1rem; }
+#shirt-example .price-comparison > div { display: grid; grid-template-columns: auto 1fr; gap: .15rem .65rem; padding: .7rem; border-top: 3px solid currentColor; background: #f4eee4; }
+#shirt-example .price-comparison > div + div { background: #e6eee6; }
+#shirt-example .price-comparison strong { grid-column: 1 / -1; font: 700 clamp(1.7rem, 4vw, 3.1rem)/1.14 var(--font-heading); }
+#shirt-example .baseline-price { justify-self: end; color: var(--story-ink); font-size: .86rem; }
+#shirt-example #scenario-result td { white-space: nowrap; font-variant-numeric: tabular-nums; }
+#shirt-example .credit-options { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .55rem; }
+#shirt-example .credit-options legend { font-weight: 800; margin-bottom: .5rem; }
+#shirt-example .credit-options label { display: flex; align-items: center; gap: .4rem; border: 1px solid var(--story-line); min-height: 44px; padding: .35rem .7rem; border-radius: 4px; }
+#shirt-example input[type="radio"] { accent-color: var(--shirt-b); width: 1rem; height: 1rem; }
+#shirt-example .chain-flow { list-style: none; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .9rem; padding-left: 0; }
+#shirt-example .chain-flow li { padding: .8rem; border-top: 2px solid var(--shirt-b); background: #fffdf7; }
+#shirt-example .chain-flow strong { display: block; font: 700 clamp(1.4rem, 3vw, 2.15rem)/1.2 var(--font-heading); }
+#shirt-example .chain-flow small { display: block; }
+#shirt-example .chain-summary { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .55rem; background: var(--story-deep); color: white; padding: .65rem .8rem; margin-bottom: 1rem; }
+#shirt-example .chain-summary strong { font: 700 clamp(1.4rem, 3vw, 2.15rem)/1.2 var(--font-heading); }
+#shirt-example .state-links { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
+#shirt-example .state-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+#shirt-example .effect { border-top: 1px solid var(--story-line); margin-block: 0; }
+#shirt-example .effect summary { padding-inline: 0; }
+#shirt-example .effect summary span { margin-inline: .3rem .7rem; font-size: .85rem; }
+#shirt-example .last-check { grid-template-columns: repeat(3,minmax(0,1fr)); }
+#shirt-example .source-list { list-style: none; padding: 0; }
+#shirt-example .source-list li { border-top: 1px solid var(--story-line); padding: .65rem 0; overflow-wrap: anywhere; }
+
+#shirt-example :is(a,button,select,summary,input,[tabindex]):focus-visible {
+  outline: 3px solid #aa4a18;
+  outline-offset: 3px;
+}
+#shirt-example .dark :is(a,summary,[tabindex]):focus-visible { outline-color: #ffe092; }
+#shirt-example .calculator-surface :is(summary,[tabindex]):focus-visible { outline-color: #aa4a18; }
+
+@media (max-width: 770px) {
+  #shirt-example .section-intro { grid-template-columns: 1fr; gap: .2rem; }
+  #shirt-example .cover-grid { gap: .5rem; }
+  #shirt-example .cover-actions { margin: 1rem 0; }
+  #shirt-example .nav-inner > progress { width: 5.5rem; }
+}
+@media (max-width: 570px) {
+  #shirt-example .story-cover { padding-block: 1.8rem 1.5rem; }
+  #shirt-example .story-nav { top: 61px; }
+  #shirt-example .cover-grid { grid-template-columns: 1fr; gap: .65rem; }
+  #shirt-example h1 { max-width: 15ch; }
+  #shirt-example .shirt-pair { width: min(100%, 21rem); margin-inline: auto; }
+  #shirt-example .shirt-product img { max-height: 180px; }
+  #shirt-example .shirt-product figcaption { margin-top: -.2rem; }
+  #shirt-example .nav-inner { gap: .35rem; }
+  #shirt-example .chapter-menu { order: 0; }
+  #shirt-example .nav-inner > progress { order: 1; margin-inline-start: auto; }
+  #shirt-example .view-controls { order: 2; width: 100%; }
+  #shirt-example .view-controls button { min-height: 44px; }
+  #shirt-example .identity-list, #shirt-example .protection-path, #shirt-example .chain-flow { grid-template-columns: 1fr; }
+  #shirt-example .chain-flow li { display: grid; grid-template-columns: auto auto; gap: .2rem .5rem; }
+  #shirt-example .chain-flow strong { justify-self: end; }
+  #shirt-example .chain-flow small:last-child { justify-self: end; }
+  #shirt-example .baseline-price { justify-self: start; }
+  #shirt-example .price-comparison > div { grid-template-columns: 1fr; }
+  #shirt-example .tax-fields { grid-template-columns: 1fr; }
+  #shirt-example th, #shirt-example td { padding-inline: .38rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #shirt-example *, #shirt-example *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media print {
+  #shirt-example .story-nav, #shirt-example .cover-actions, #shirt-example .tax-fields, #shirt-example .credit-options, #shirt-example .story-tools { display: none; }
+  #shirt-example .story-section { padding-block: 1rem; }
+  #shirt-example .story-band, #shirt-example .story-cover, #shirt-example .chain-summary { background: white; color: black; }
+  #shirt-example .dark a { color: black; }
+  #shirt-example details:not([open]) > :not(summary) { display: block; }
+  #shirt-example h2, #shirt-example caption { break-after: avoid; }
+}
+
+@media (max-width: 375px) {
+  #shirt-example h1 { font-size: 2.45rem; }
+  #shirt-example .cover-actions { gap: .45rem; }
+  #shirt-example .story-button { font-size: .87rem; padding-inline: .75rem; }
+}

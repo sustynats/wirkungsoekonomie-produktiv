@@ -1,0 +1,166 @@
+{
+  "sources": [
+    {
+      "code": "WÖK-Q-9051",
+      "title": "St. Galler Management-Modell: Aufgaben- und Praxisperspektive",
+      "author": "Universität St. Gallen",
+      "year": 2026,
+      "url": "https://www.unisg.ch/de/universitaet/schools/management/fachbereiche-und-forschung/lehrstuhl-fuer-organizational-behavior/das-st-galler-management-modell/",
+      "type": "fachquelle",
+      "typeLabel": "Originaldarstellung",
+      "cluster": "F",
+      "clusterLabel": "Ökonomie / BWL / Management",
+      "origin": "extern",
+      "reviewStatus": "quellengebunden geprüft",
+      "dataQuality": "Originalquelle",
+      "summary": "Die HSG beschreibt das Zusammenspiel von Umwelt, Organisation und Management anhand von Aufgaben- und Praxisperspektive.",
+      "einordnung": "Belegt die eigenständige St. Galler Managementtradition; keine Anerkennung der WÖk.",
+      "domain": "www.unisg.ch",
+      "checkedAt": "2026-11-10",
+      "verificationScope": "HTML gelesen; undatierte Webseite, Abrufjahr 2026.",
+      "citation": "Universität St. Gallen (2026): St. Galler Management-Modell: Aufgaben- und Praxisperspektive. https://www.unisg.ch/de/universitaet/schools/management/fachbereiche-und-forschung/lehrstuhl-fuer-organizational-behavior/das-st-galler-management-modell/",
+      "relatedPublications": [
+        {
+          "title": "WÖk und BWL/VWL: wissenschaftliche Einordnung",
+          "url": "/wirkungswissenschaften/wirkungsoekonomie/#wissenschaftliche-einordnung",
+          "label": "Redaktionelle Einordnung"
+        }
+      ]
+    },
+    {
+      "code": "WÖK-Q-9052",
+      "title": "Das St. Galler Management-Modell: Publikationen",
+      "author": "Johannes Rüegg-Stürm; Simon Grand",
+      "year": 2020,
+      "url": "https://www.sgmm.ch/publikationen/",
+      "type": "fachquelle",
+      "typeLabel": "Originaldarstellung",
+      "cluster": "F",
+      "clusterLabel": "Ökonomie / BWL / Management",
+      "origin": "extern",
+      "reviewStatus": "quellengebunden geprüft",
+      "dataQuality": "Originalquelle",
+      "summary": "Die Übersicht dokumentiert die St. Galler Modellgenerationen und die zweite überarbeitete Auflage von Rüegg-Stürm und Grand (2020).",
+      "einordnung": "Historischer und bibliographischer Anschluss; keine WÖk-Integration.",
+      "domain": "www.sgmm.ch",
+      "checkedAt": "2026-11-10",
+      "verificationScope": "Publikationsverzeichnis gelesen; Bücher nicht vollständig ausgelesen.",
+      "citation": "Johannes Rüegg-Stürm; Simon Grand (2020): Das St. Galler Management-Modell: Publikationen. https://www.sgmm.ch/publikationen/",
+      "relatedPublications": [
+        {
+          "title": "WÖk und BWL/VWL: wissenschaftliche Einordnung",
+          "url": "/wirkungswissenschaften/wirkungsoekonomie/#wissenschaftliche-einordnung",
+          "label": "Redaktionelle Einordnung"
+        }
+      ]
+    },
+    {
+      "code": "WÖK-Q-9053",
+      "title": "SGMM 5.0 - Arbeitspapier 2026",
+      "author": "Jacky Tseng; Thomas Bieger; Dario Mitterer; Manuel Gehring; Rainer Lampe; Steffen Losch; Florian Leser",
+      "year": 2026,
+      "url": "https://alexandria.unisg.ch/entities/publication/93baee3f-1fd5-40dc-9ccc-6590ad024977",
+      "type": "arbeitspapier",
+      "typeLabel": "Arbeitspapier",
+      "cluster": "F",
+      "clusterLabel": "Ökonomie / BWL / Management",
+      "origin": "extern",
+      "reviewStatus": "quellengebunden geprüft",
+      "dataQuality": "vorläufiger Diskussionsstand",
+      "summary": "Das Arbeitspapier vom 31.08.2026 dokumentiert einen Zwischenstand der kollaborativen Weiterentwicklung für weitere Diskussion und Konkretisierung.",
+      "einordnung": "Vorläufiger externer Vergleichsgegenstand; kein verbindlicher WÖk-Kernstandard, keine Kooperation und keine Übernahme in WÖMM/WÖMS.",
+      "domain": "alexandria.unisg.ch",
+      "checkedAt": "2026-11-10",
+      "verificationScope": "Offizielle HSG-Repository-API: Metadaten und Abstract gelesen; kein vollständiger Volltextvergleich.",
+      "citation": "Jacky Tseng; Thomas Bieger; Dario Mitterer; Manuel Gehring; Rainer Lampe; Steffen Losch; Florian Leser (2026): SGMM 5.0 - Arbeitspapier 2026. https://alexandria.unisg.ch/entities/publication/93baee3f-1fd5-40dc-9ccc-6590ad024977",
+      "relatedPublications": [
+        {
+          "title": "WÖk und BWL/VWL: wissenschaftliche Einordnung",
+          "url": "/wirkungswissenschaften/wirkungsoekonomie/#wissenschaftliche-einordnung",
+          "label": "Redaktionelle Einordnung"
+        }
+      ]
+    },
+    {
+      "code": "WÖK-Q-9054",
+      "title": "Systemic Management Education as an Adaptive Venture: 60-Year Evolution of the St. Gallen Management Model",
+      "author": "Markus Schwaninger",
+      "year": 2026,
+      "url": "https://doi.org/10.1002/sres.70076",
+      "type": "journalartikel",
+      "typeLabel": "Fachartikel",
+      "cluster": "F",
+      "clusterLabel": "Ökonomie / BWL / Management",
+      "origin": "extern",
+      "reviewStatus": "quellengebunden geprüft",
+      "dataQuality": "Originalquelle",
+      "summary": "Die Fallstudie untersucht die Entwicklung systemorientierter Managementlehre an der Universität St. Gallen über mehrere Modellgenerationen.",
+      "einordnung": "Historischer und systemwissenschaftlicher Vergleich; keine Validierung der WÖk.",
+      "domain": "doi.org",
+      "checkedAt": "2026-11-10",
+      "verificationScope": "Verlagsvolltext gelesen; Erstveröffentlichung 20.05.2026.",
+      "citation": "Markus Schwaninger (2026): Systemic Management Education as an Adaptive Venture: 60-Year Evolution of the St. Gallen Management Model. https://doi.org/10.1002/sres.70076",
+      "relatedPublications": [
+        {
+          "title": "WÖk und BWL/VWL: wissenschaftliche Einordnung",
+          "url": "/wirkungswissenschaften/wirkungsoekonomie/#wissenschaftliche-einordnung",
+          "label": "Redaktionelle Einordnung"
+        }
+      ]
+    },
+    {
+      "code": "WÖK-Q-9055",
+      "title": "Measuring public value: scale development and construct validation",
+      "author": "Timo Meynhardt; Anna Jasinenko",
+      "year": 2020,
+      "url": "https://alexandria.unisg.ch/entities/publication/41b086aa-a2d2-4319-b22c-16f73d2de7f5",
+      "type": "journalartikel",
+      "typeLabel": "Fachartikel",
+      "cluster": "F",
+      "clusterLabel": "Ökonomie / BWL / Management",
+      "origin": "extern",
+      "reviewStatus": "quellengebunden geprüft",
+      "dataQuality": "Originalquelle",
+      "summary": "Der Beitrag entwickelt und validiert eine Skala zur Erfassung der gesellschaftlichen Bewertung einer Organisation.",
+      "einordnung": "Belegt vorhandene Public-Value-Forschung und Wahrnehmungsmessung; nicht automatisch kausal zugerechnete WÖk-Netto-Wirkung.",
+      "domain": "alexandria.unisg.ch",
+      "checkedAt": "2026-11-10",
+      "verificationScope": "HSG-Metadaten und Abstract gelesen; online 29.10.2020, Zeitschriftenausgabe 2021. Kein vollständiger Artikelvergleich.",
+      "citation": "Timo Meynhardt; Anna Jasinenko (2020): Measuring public value: scale development and construct validation. https://alexandria.unisg.ch/entities/publication/41b086aa-a2d2-4319-b22c-16f73d2de7f5",
+      "relatedPublications": [
+        {
+          "title": "WÖk und BWL/VWL: wissenschaftliche Einordnung",
+          "url": "/wirkungswissenschaften/wirkungsoekonomie/#wissenschaftliche-einordnung",
+          "label": "Redaktionelle Einordnung"
+        }
+      ]
+    },
+    {
+      "code": "WÖK-Q-9056",
+      "title": "Public Value in Public Management",
+      "author": "Timo Meynhardt",
+      "year": 2022,
+      "url": "https://alexandria.unisg.ch/entities/publication/d9bc8e7e-d678-49e2-ba6f-cfb8aeaab6bc",
+      "type": "fachquelle",
+      "typeLabel": "Buchkapitel",
+      "cluster": "F",
+      "clusterLabel": "Ökonomie / BWL / Management",
+      "origin": "extern",
+      "reviewStatus": "quellengebunden geprüft",
+      "dataQuality": "Originalquelle",
+      "summary": "Der Beitrag erläutert Public Value als subjektiv relevanten positiven oder negativen Beitrag einer Organisation zum Gemeinwohl.",
+      "einordnung": "Belegt den bestehenden gesellschaftlichen Bezugsraum der Public-Value-Theorie; Wahrnehmung, Zustandsveränderung und Kausalität getrennt prüfen.",
+      "domain": "alexandria.unisg.ch",
+      "checkedAt": "2026-11-10",
+      "verificationScope": "HSG-Metadaten und Abstract gelesen; August 2022. Kein vollständiger Kapitelvergleich.",
+      "citation": "Timo Meynhardt (2022): Public Value in Public Management. https://alexandria.unisg.ch/entities/publication/d9bc8e7e-d678-49e2-ba6f-cfb8aeaab6bc",
+      "relatedPublications": [
+        {
+          "title": "WÖk und BWL/VWL: wissenschaftliche Einordnung",
+          "url": "/wirkungswissenschaften/wirkungsoekonomie/#wissenschaftliche-einordnung",
+          "label": "Redaktionelle Einordnung"
+        }
+      ]
+    }
+  ]
+}

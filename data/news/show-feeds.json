@@ -1,0 +1,258 @@
+{
+  "version": "2026-10-01.1",
+  "draft_policy": "all-followed-episodes-2026-10-01",
+  "note": "Episodenquellen der verfolgten Sendungen für automatische Nachgesehen/Nachgehört-Aufträge (scripts/news/sendungs-kandidaten.mjs). Mediathek-Sendungen laufen über die MediathekViewWeb-Abfrage, weil sie die amtlichen Untertitel für Hörgeschädigte (Barrierefreiheit) mitliefert; Podcasts über ihren offiziellen Feed mit podcast:transcript. Logo-Rechte stehen getrennt in show-visual-identities.json.",
+  "shows": [
+    {
+      "id": "machtwechsel",
+      "show_name": "Machtwechsel",
+      "kind": "listened",
+      "provider": "Dagmar Rosenfeld und Robin Alexander / Studio Bummens, offizieller Podigee-Feed",
+      "feed": "https://machtwechsel.podigee.io/feed/mp3",
+      "homepage": "https://machtwechsel.podigee.io/",
+      "hosts": ["Dagmar Rosenfeld", "Robin Alexander"],
+      "publication_days": ["Wednesday", "Friday"],
+      "feed_verified_at": "2026-09-26",
+      "feed_evidence_url": "https://machtwechsel.podigee.io/291-neue-episode",
+      "feed_evidence": "Offizielles HTML rel=alternate application/rss+xml und RSS atom:link rel=self; HTTP 200. Rhythmus Mittwoch/Freitag in der Kanalbeschreibung. robots.txt: HTTP 404 am 26.09.2026, keine Sperrregel; bei jedem Lauf erneut nach bestehender Cache-Regel pruefen.",
+      "observation_only": false,
+      "respect_robots": true,
+      "require_transcript": true,
+      "allow_paid_transcription": true,
+      "monitoring_since": "2026-09-25T00:00:00.000Z",
+      "editorial_context": "Neue Folgen automatisch als private Nachgehoert-Analyseentwuerfe vorbereiten. Fragen im Titel sind keine Tatsachenbestaetigung. Offizielles Transkript bevorzugen; nach dem Wartefenster ist die bestehende, begrenzte eigene Transkriptionsroute zulaessig. Keine Paywall oder Zugriffssperre umgehen, keine fremden Volltranskripte veroeffentlichen. Jede Publikation braucht Natalies abschliessende, fassungsgebundene Freigabe.",
+      "max_age_days": 14,
+      "enabled": true
+    },
+    {
+      "id": "missverstehen-sie-mich-richtig",
+      "show_name": "Missverstehen Sie mich richtig",
+      "kind": "watched",
+      "provider": "tRÄNENpALAST, offizieller YouTube-Kanal",
+      "channel_url": "https://www.youtube.com/@MISSVERSTEHENSIEMICHRICHTIG",
+      "youtube_channel_id": "UCBWSgdr27NcLig0XzWLq2gQ",
+      "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCBWSgdr27NcLig0XzWLq2gQ",
+      "min_duration_seconds": 1800,
+      "max_age_days": 21,
+      "require_transcript": true,
+      "allow_paid_transcription": false,
+      "enabled": true
+    },
+    {
+      "id": "tech-ki-schmetterlinge",
+      "show_name": "Tech, KI & Schmetterlinge",
+      "kind": "watched",
+      "provider": "Sascha Lobo / Schwarz Digits, offizieller YouTube-Kanal und Podcast-Feed",
+      "editorial_context": "Die Reihe entsteht in Zusammenarbeit mit Schwarz Digits. Unternehmensinteressen und unabhängige Belege unterscheiden; Werbung nicht als redaktionellen Befund übernehmen.",
+      "channel_url": "https://www.youtube.com/@Techundschmetterlinge",
+      "youtube_channel_id": "UC1l3kHbAR0l6ilXHd6B1FAg",
+      "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UC1l3kHbAR0l6ilXHd6B1FAg",
+      "podcast_feed": "https://tech-ki.podigee.io/feed/mp3",
+      "min_duration_seconds": 900,
+      "max_age_days": 14,
+      "require_transcript": true,
+      "allow_paid_transcription": false,
+      "enabled": true
+    },
+    {
+      "id": "politik-mit-anne-will",
+      "show_name": "Politik mit Anne Will",
+      "kind": "watched",
+      "provider": "Will Media, offizieller YouTube-Kanal und Podcast-Feed",
+      "channel_url": "https://www.youtube.com/@PolitikmitAnneWill",
+      "youtube_channel_id": "UCbRJHkDuRmTdUj8ETeIp2rw",
+      "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCbRJHkDuRmTdUj8ETeIp2rw",
+      "podcast_feed": "https://feeds.megaphone.fm/WMG5916123897",
+      "min_duration_seconds": 900,
+      "max_age_days": 14,
+      "require_transcript": true,
+      "enabled": true
+    },
+    {
+      "id": "maybrit-illner",
+      "show_name": "maybrit illner",
+      "kind": "watched",
+      "provider": "ZDF-Mediathek über MediathekViewWeb, amtliche Untertitel",
+      "min_duration_seconds": 1500,
+      "enabled": true,
+      "require_transcript": true,
+      "allow_paid_transcription": false,
+      "mediathek": {
+        "topic": "maybrit illner",
+        "title": "maybrit illner",
+        "channel": "ZDF"
+      },
+      "max_age_days": 14
+    },
+    {
+      "id": "markus-lanz",
+      "show_name": "Markus Lanz",
+      "kind": "watched",
+      "provider": "ZDF-Mediathek über MediathekViewWeb, amtliche Untertitel bis 14:00 des Folgetags",
+      "min_duration_seconds": 1500,
+      "enabled": true,
+      "require_transcript": true,
+      "allow_paid_transcription": false,
+      "mediathek": {
+        "topic": "Markus Lanz",
+        "title": "Markus Lanz",
+        "channel": "ZDF"
+      },
+      "transcript_deadline": {
+        "day_offset": 1,
+        "berlin_hour": 14
+      }
+    },
+    {
+      "id": "maischberger",
+      "show_name": "maischberger",
+      "kind": "watched",
+      "provider": "ARD-Mediathek (WDR) über MediathekViewWeb, amtliche Untertitel bis 14:00 des Folgetags",
+      "min_duration_seconds": 2400,
+      "enabled": true,
+      "mediathek": {
+        "topic": "maischberger",
+        "title": "maischberger",
+        "channel": "WDR"
+      },
+      "transcript_deadline": {
+        "day_offset": 1,
+        "berlin_hour": 14
+      },
+      "max_age_days": 14
+    },
+    {
+      "id": "maithink-x",
+      "show_name": "MAITHINK X",
+      "kind": "watched",
+      "provider": "ZDFneo-Mediathek über MediathekViewWeb; Staffelsendung, zwischen den Staffeln Wiederholungen",
+      "min_duration_seconds": 900,
+      "enabled": true,
+      "mediathek": {
+        "topic": "MAITHINK X - Die Show",
+        "title": "MAITHINK X",
+        "channel": "ZDFneo"
+      },
+      "max_age_days": 210
+    },
+    {
+      "id": "terra-x-lesch-co",
+      "show_name": "Terra X Lesch & Co",
+      "kind": "watched",
+      "provider": "ZDF-Mediathek über MediathekViewWeb; Reihe mit langen Pausen, Wiederholungen zaehlen",
+      "min_duration_seconds": 600,
+      "enabled": true,
+      "mediathek": {
+        "topic": "Terra X Lesch & Co",
+        "title": "Terra X Lesch & Co",
+        "channel": "ZDF"
+      },
+      "max_age_days": 120
+    },
+    {
+      "id": "caren-miosga",
+      "show_name": "Caren Miosga",
+      "kind": "watched",
+      "provider": "ARD-Mediathek (NDR) über MediathekViewWeb, amtliche Untertitel",
+      "podcast_feed": "https://www.ndr.de/podcast/carenmiosga146.xml",
+      "min_duration_seconds": 2400,
+      "enabled": true,
+      "mediathek": {
+        "topic": "Caren Miosga",
+        "title": "Caren Miosga",
+        "channel": "NDR"
+      },
+      "transcript_deadline": {
+        "day_offset": 1,
+        "berlin_hour": 14
+      },
+      "max_age_days": 14
+    },
+    {
+      "id": "hart-aber-fair",
+      "show_name": "Hart aber fair",
+      "kind": "watched",
+      "provider": "ARD-Mediathek (WDR) über MediathekViewWeb, amtliche Untertitel",
+      "min_duration_seconds": 2400,
+      "enabled": true,
+      "mediathek": {
+        "topic": "Hart aber fair",
+        "title": "Hart aber fair",
+        "channel": "WDR"
+      },
+      "transcript_deadline": {
+        "day_offset": 1,
+        "berlin_hour": 14
+      },
+      "max_age_days": 14
+    },
+    {
+      "id": "presseclub",
+      "show_name": "Presseclub",
+      "kind": "watched",
+      "provider": "ARD-Mediathek (WDR) über MediathekViewWeb, amtliche Untertitel",
+      "min_duration_seconds": 1800,
+      "enabled": true,
+      "mediathek": {
+        "topic": "Presseclub",
+        "title": "Presseclub",
+        "channel": "WDR"
+      },
+      "transcript_deadline": {
+        "day_offset": 1,
+        "berlin_hour": 14
+      },
+      "max_age_days": 14
+    },
+    {
+      "id": "phoenix-runde",
+      "show_name": "phoenix runde",
+      "kind": "watched",
+      "provider": "phoenix über MediathekViewWeb. ACHTUNG: keine amtlichen Untertitel in der Mediathek, jede Folge braucht eigene Spracherkennung (rund 0,45 USD). Bei taeglicher Sendung sprengt das das Monatsbudget - deshalb bis zu Natalies Entscheidung abgeschaltet.",
+      "min_duration_seconds": 2100,
+      "enabled": false,
+      "mediathek": {
+        "topic": "phoenix runde",
+        "title": "phoenix runde",
+        "channel": "PHOENIX"
+      },
+      "transcript_deadline": {
+        "day_offset": 1,
+        "berlin_hour": 14
+      },
+      "max_age_days": 14
+    },
+    {
+      "id": "lanz-precht",
+      "show_name": "Lanz + Precht",
+      "kind": "listened",
+      "feed": "https://cdn.julephosting.de/podcasts/1355-lanz-precht/feed.rss",
+      "provider": "ZDF/Podstars, offizieller Podcast-Feed",
+      "min_duration_seconds": 900,
+      "enabled": true
+    },
+    {
+      "id": "neudenken",
+      "show_name": "NEU DENKEN",
+      "kind": "listened",
+      "feed": "https://neu-denken-podcast.podigee.io/feed/mp3",
+      "provider": "Mission Wertvoll, offizieller Podcast-Feed",
+      "min_duration_seconds": 900,
+      "enabled": true
+    },
+    {
+      "id": "ronzheimer",
+      "show_name": "RONZHEIMER.",
+      "kind": "listened",
+      "provider": "Paul Ronzheimer, Podigee-Feed",
+      "feed": "https://ronzheimer.podigee.io/feed/mp3",
+      "homepage": "https://ronzheimer.tv",
+      "enabled": true,
+      "require_transcript": true,
+      "allow_paid_transcription": false,
+      "respect_robots": true,
+      "monitoring_since": "2026-11-01T00:00:00.000Z",
+      "max_age_days": 14
+    }
+  ]
+}

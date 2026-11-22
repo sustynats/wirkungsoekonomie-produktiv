@@ -1,0 +1,78 @@
+name: Publish verified newsletter repair
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_commit:
+        description: Exact reviewed main commit to release
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+  deployments: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  newsletter:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /assets/js/newsletter.js
+            /datenschutz.html
+            /scripts/ops/prepare-newsletter-release.py
+            /scripts/ops/prepare-pages-republication.py
+            /scripts/quality/test-newsletter-client-relay.cjs
+            /scripts/quality/check-size.mjs
+            /scripts/quality/check-public-artifact-privacy.mjs
+            /tests/ops/test_newsletter_release.py
+      - name: Verify reviewed source commit
+        env:
+          EXPECTED: ${{ inputs.expected_commit }}
+        run: |
+          [[ "$EXPECTED" =~ ^[0-9a-f]{40}$ && "$EXPECTED" == "$GITHUB_SHA" && "$(git rev-parse HEAD)" == "$GITHUB_SHA" ]]
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check newsletter client and bounded artifact edits
+        run: |
+          node --check assets/js/newsletter.js
+          node --test scripts/quality/test-newsletter-client-relay.cjs
+          python -m unittest discover -s tests/ops -p test_newsletter_release.py
+      - name: Prepare only newsletter changes against current production
+        run: |
+          python scripts/ops/prepare-newsletter-release.py
+          ln -s "$RUNNER_TEMP/newsletter-release/public" _site
+          node scripts/quality/check-size.mjs
+          node scripts/quality/check-public-artifact-privacy.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: newsletter-release-proof
+          path: ${{ runner.temp }}/newsletter-release/proof.json
+          retention-days: 30
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ runner.temp }}/newsletter-release/public
+      - name: Refuse a stale production baseline
+        run: python scripts/ops/prepare-newsletter-release.py --verify-baseline
+      - name: Publish verified newsletter repair
+        id: deployment
+        uses: actions/deploy-pages@v5

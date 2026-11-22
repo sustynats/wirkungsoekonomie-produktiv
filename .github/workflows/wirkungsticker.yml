@@ -1,0 +1,362 @@
+name: Wirkungsticker
+run-name: ${{ inputs.request_id || 'Wirkungsticker' }}
+
+# Direktbetrieb seit 15.09.2026: ein Workflow, eine gerade Linie.
+# Quellen einsammeln → lokal bewerten (LIFO) → genau ein OpenAI-Aufruf je
+# Meldung → deterministisches Gate → Build → Commit → Pages. Keine Bridge,
+# kein Dropbox, keine ChatGPT-Worker, keine bezahlte Zweitprüfung.
+# Doku: docs/ops/WIRKUNGSTICKER-DIREKTBETRIEB.md
+
+on:
+  schedule:
+    # Versetzte Minuten: GitHub lässt Zeitpläne auf :00/:15/:30/:45 häufig aus.
+    - cron: "4,19,34,49 * * * *"
+  push:
+    # Oracle-Takt als Ausfallreserve: der systemd-Timer auf Oracle legt alle 15
+    # Minuten einen leeren Commit mit dem aktuellen main-Baum auf diesen Branch.
+    # Am 15.09.2026 feuerte der GitHub-Cron nur alle vier bis fünf Stunden.
+    branches:
+      - codex/wirkungsticker-clock
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "Interne Zuordnung eines manuellen Laufs"
+        type: string
+        default: ""
+      max_ai_stories:
+        description: "Höchstzahl bezahlter Meldungen in diesem Lauf (leer = Standard)"
+        type: string
+        default: ""
+      reassess_limit:
+        description: "Jüngste veröffentlichte Meldungen ohne vollständiges Wirkungspotenzial zur Neubewertung einreihen (0 = keine)"
+        type: number
+        default: 0
+      dry_run:
+        description: "Nur Import und lokale Bewertung, kein Aufruf, kein Commit"
+        type: boolean
+        default: false
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: wirkungsticker-main
+  cancel-in-progress: false
+
+jobs:
+  update:
+    # The existing paid preflight must complete before any provider work.
+    if: vars.WIRKUNGSTICKER_PROCESSING_MODE == 'api' || vars.WIRKUNGSTICKER_PROCESSING_MODE == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      WIRKUNGSTICKER_PROCESSING_MODE: api
+      VISUAL_GENERATION_PROVIDER: disabled
+      WOEK_NEWS_ONLY: "true"
+      WOEK_NEWS_ORDER_FILE: ""
+      WOEK_NEWS_ORDER_RESULT_FILE: ""
+      WOEK_NEWS_BRIDGE_URL: ""
+      WOEK_NEWS_BRIDGE_TOKEN: ""
+      WOEK_NEWS_ANALYSIS_TOKEN: ""
+      WOEK_NEWS_VISUAL_API_URL: ""
+      GITHUB_EVENT_SCHEDULE: ${{ github.event.schedule }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Select run slot
+        id: slot
+        run: node scripts/news/schedule.mjs
+      - name: Check repository storage before automatic processing
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/news/check-git-size.mjs --preflight
+      - name: Set up pinned title-image rasterizer
+        continue-on-error: true
+        if: steps.slot.outputs.should_run == 'true'
+        id: chrome
+        uses: browser-actions/setup-chrome@48ad923757ca74d66703209fe939badbdf80f2f4
+        with:
+          chrome-version: "152.0.7977.82"
+      - name: Record expected run start
+        if: steps.slot.outputs.should_run == 'true'
+        run: echo "WOEK_NEWS_EXPECTED_AFTER=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+      - name: Verify enabled immutable ticker data before processing
+        if: steps.slot.outputs.should_run == 'true'
+        run: node scripts/news/release-hydrate.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Unit and security tests
+        if: steps.slot.outputs.should_run == 'true'
+        run: bash scripts/news/run-isolated-unit-tests.sh
+      - name: Queue potential reassessments for the newest online stories
+        # Fester Bestandteil jedes Laufs (seit 16.09.): die jüngsten Online-Meldungen
+        # ohne vollständiges freigegebenes Profil bleiben eingereiht, bis die Neufassung
+        # das Gate passiert; ab vier Plaetzen bleibt ein Reparaturplatz reserviert.
+        if: ${{ false && (steps.slot.outputs.should_run == 'true') }}
+        env:
+          REASSESS_LIMIT: ${{ inputs.reassess_limit || vars.WOEK_NEWS_REASSESS_LIMIT || '30' }}
+        run: node scripts/news/queue-reassessment.mjs --limit="$REASSESS_LIMIT"
+      - name: Validate the existing archive encryption key before paid work
+        if: steps.slot.outputs.should_run == 'true'
+        run: node scripts/news/sealed-raw-output.mjs --check-key
+      - name: Verify interrupted paid work before another provider request
+        id: paid_preflight
+        if: steps.slot.outputs.should_run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/news/retained-failed-paid-work.mjs --preflight
+      # Natalies Meldungsauftraege: seit dem Direktbetrieb (15.09.2026) analysierte
+      # sie niemand mehr - sie blieben nach bestandener Recherche liegen. Der Lauf
+      # holt sie ab, analysiert sie zuerst und gibt sie an ihre Freigabeliste.
+      - name: Fetch Natalie's news orders from the private editorial desk
+        id: news_order_fetch
+        if: ${{ false && (steps.slot.outputs.should_run == 'true' && inputs.dry_run != true) }}
+        continue-on-error: true
+        env:
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+          WOEK_NEWS_ORDER_FILE: ${{ runner.temp }}/meldungsauftraege/auftraege.json
+        run: node scripts/news/meldungsauftraege.mjs holen
+      - name: Import, analyze (one call per story) and build
+        if: steps.slot.outputs.should_run == 'true'
+        env:
+          # Privat, nur im Runner: Auftraege hinein, fertige Meldungen hinaus.
+          # Der Schlüssel liegt ausschließlich im Repository-Secret WIRKUNGSTICKER.
+          OPENAI_API_KEY: ${{ secrets.WIRKUNGSTICKER }}
+          # Aktueller Direktbetrieb; nur eine ausdrueckliche neue Bedienpause
+          # schaltet ihn ab. Die alte Oracle-Pause ist keine GitHub-Sperre.
+          WOEK_NEWS_AI_ENABLED: ${{ vars.WOEK_NEWS_AI_ENABLED || 'true' }}
+          WOEK_NEWS_MODEL: ${{ vars.WOEK_NEWS_MODEL || 'gpt-5.4-mini' }}
+          # medium seit 15.09. abends: gpt-5.6-luna entgleiste bei low in 2 von 4 Antworten
+          # im hinteren Teil (Planet/Demokratie als Fragmente, Kennungen verkürzt).
+          WOEK_NEWS_REASONING_EFFORT: ${{ vars.WOEK_NEWS_REASONING_EFFORT || 'medium' }}
+          # Private Diagnosekopie der bezahlten Antworten (nur Laufartefakt, nie im Repo).
+          WOEK_NEWS_RAW_OUTPUT_DIR: ${{ runner.temp }}/ai-raw-output
+          # Bild-Uploads (Wirkungskarten) nutzen weiterhin den vorhandenen Release-Speicher.
+          # Der Bilddienst fuer gekennzeichnete Symbolmotive. Der Umbau auf den
+          # Direktbetrieb (#776, 15.09.2026) hat diese Zeile entfernt; seitdem
+          # fiel jede Meldung auf die Wirkungskarte zurueck (HIGGSFIELD_NOT_
+          # CONFIGURED), und der Monitor hielt das fuer gewollt. Natalies
+          # Entscheidung vom 15.09. war: gekennzeichnetes Symbolmotiv ODER
+          # Wirkungskarte, nie blockierend - nicht: gar kein Motiv mehr.
+          GH_TOKEN: ${{ github.token }}
+          WT_CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+          WT_CHROME_NO_SANDBOX: "true"
+          # Durchsatz: Natalie am 16.09. „vier der relevantesten Meldungen pro
+          # Stunde". Die Stundengrenze zählt Meldungen, nicht Aufrufe; das Geld
+          # begrenzt zusätzlich die Taktung aus der Monatsfreigabe.
+          WOEK_NEWS_MAX_AI_STORIES_PER_RUN: ${{ inputs.max_ai_stories || vars.WOEK_NEWS_MAX_AI_STORIES_PER_RUN || '4' }}
+          WOEK_NEWS_MAX_AI_STORIES_PER_HOUR: ${{ vars.WOEK_NEWS_MAX_AI_STORIES_PER_HOUR || '4' }}
+          # Tagesprofil: tagsueber das volle Kontingent, nachts gedrosselt.
+          # Drei veroeffentlichte Meldungen je Stunde brauchen rund sechs
+          # Aufrufe; rund um die Uhr waere das ausserhalb des Monatsrahmens.
+          WOEK_NEWS_NIGHT_STORIES_PER_HOUR: ${{ vars.WOEK_NEWS_NIGHT_STORIES_PER_HOUR || '' }}
+          WOEK_NEWS_DAY_FROM_HOUR: ${{ vars.WOEK_NEWS_DAY_FROM_HOUR || '7' }}
+          WOEK_NEWS_DAY_UNTIL_HOUR: ${{ vars.WOEK_NEWS_DAY_UNTIL_HOUR || '23' }}
+          WOEK_NEWS_MAX_AI_CALLS_PER_HOUR: ${{ vars.WOEK_NEWS_MAX_AI_CALLS_PER_HOUR || '4' }}
+          # LIFO ab heute: unveröffentlichte Kandidaten älter als der Horizont werden ohne Aufruf geschlossen.
+          WOEK_NEWS_MAX_SOURCE_AGE_HOURS: ${{ vars.WOEK_NEWS_MAX_SOURCE_AGE_HOURS || '24' }}
+          # Ein bezahlter Versuch je Eingabestand, auch bei formalen Gate-Fehlern.
+          # Bereits bezahlte Antworten behalten; keine kostenpflichtige Ersatzgenerierung.
+          WOEK_NEWS_MAX_PAID_ATTEMPTS_PER_INPUT: "1"
+          WOEK_NEWS_AI_ATTEMPTS_PER_STORY: "1"
+          WOEK_NEWS_AI_BATCH_SIZE: "1"
+          WOEK_NEWS_AI_BATCH_DELAY_MS: "1500"
+          # Lauf 6: zwei luna-Aufrufe liefen über 240 s. Sechs Minuten je Aufruf; die
+          # Ausgabe ist zusätzlich auf 24k Token begrenzt.
+          WOEK_NEWS_AI_TIMEOUT_MS: "360000"
+          # 32k seit 16.09.: bei mittlerem Denkaufwand zählen Reasoning-Token mit; zwei
+          # Antworten der Nacht brachen bei 24k ab (incomplete, bezahlt, unbrauchbar).
+          WOEK_NEWS_MAX_OUTPUT_TOKENS: ${{ vars.WOEK_NEWS_MAX_OUTPUT_TOKENS || '32000' }}
+          WOEK_NEWS_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$WOEK_NEWS_DRY_RUN" = "true" ]; then node scripts/news/run-api.mjs --dry-run; else node scripts/news/run-api.mjs --defer-site-build; fi
+      - name: Hand analysed news orders to Natalie's approval list
+        id: news_order_delivery
+        if: ${{ false && (!cancelled() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && steps.paid_preflight.outcome == 'success') }}
+        continue-on-error: true
+        env:
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+          WOEK_NEWS_ORDER_RESULT_FILE: ${{ runner.temp }}/meldungsauftraege/ergebnisse.json
+        run: node scripts/news/meldungsauftraege.mjs abgeben
+      - name: Take over editions approved in the private editorial desk
+        id: approved
+        if: ${{ false && (steps.slot.outputs.should_run == 'true' && inputs.dry_run != true) }}
+        continue-on-error: true
+        env:
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+        run: node scripts/news/import-approved-editorials.mjs --claim
+      # #1080 fixed the St.-Pauli sentence check, not the already paid held
+      # answer. Replay only its pinned bytes through every existing gate.
+      # The serial worker owns the write; no competing data-PR snapshot.
+      - name: Recover the verified retained St. Pauli answer without a provider call
+        id: paid_answer_recovery
+        if: ${{ false && (steps.slot.outputs.should_run == 'true' && inputs.dry_run != true) }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WOEK_NEWS_MAX_SOURCE_AGE_HOURS: ${{ vars.WOEK_NEWS_MAX_SOURCE_AGE_HOURS || '24' }}
+        run: |
+          set -euo pipefail
+          if [ "$(node scripts/news/recover-st-pauli-paid.mjs --needed)" = "true" ]; then
+            gh run download 38888277070 --repo sustynats/wirkungsoekonomie.de --name ai-raw-output-38888277070-1 --dir "$RUNNER_TEMP/retained-st-pauli"
+            node scripts/news/recover-st-pauli-paid.mjs --recover --raw-dir="$RUNNER_TEMP/retained-st-pauli"
+          fi
+      - name: Read public ticker outcome
+        id: outcome
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        run: node -e 'const fs=require("node:fs"); const report=require("./reports/wirkungsticker-latest-run.json"); fs.appendFileSync(process.env.GITHUB_OUTPUT, "public_changed=" + Boolean(report.public_changed) + "\n");'
+      # Die redaktionelle Lage ist eine Ableitung aus den bereits
+      # veroeffentlichten Wirkungsakten: kein Modellaufruf, keine Kosten.
+      # Derselbe Lauf zweimal ergibt dieselbe Lage (upsertLage), ein
+      # wiederholter Lauf erzeugt also keine Doppelausgabe. Geschrieben wird
+      # die Lage des laufenden Fensters; vor 06:00 Berliner Zeit ist keine
+      # faellig und der Schritt schreibt nichts. Danach werden die Seiten
+      # erneuert, damit die Lage-Seite im selben Commit liegt.
+      # Dieser Schritt laeuft VOR dem Commit. Wuerde er den Lauf abbrechen, ginge
+      # die bereits bezahlte Analyse dieses Laufs verloren - Geld fuer nichts.
+      # Deshalb bricht er nicht ab. Stumm bleibt der Fehler trotzdem nicht: der
+      # Betriebsmonitor prueft, ob eine Lage fuer das laufende Fenster vorliegt.
+      - name: Redaktionelle Lage schreiben und Seiten erneuern
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node scripts/news/lage-schreiben.mjs
+      # Build once, after all imports and Lage. This is a required step even
+      # when the optional Lage writer failed; its errors cannot waive gates.
+      - name: Build public ticker after editorial imports and Lage
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        run: npm run news:build
+      - name: Synchronize public survey pages from Oracle
+        id: polls
+        if: ${{ false && (steps.slot.outputs.should_run == 'true' && inputs.dry_run != true) }}
+        continue-on-error: true
+        run: npm run polls:sync
+      - name: Build search index, taxonomy and validate output
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        env:
+          SOURCE_DATE_EPOCH: "1787270400"
+        run: |
+          npm run build:search
+          npm run taxonomy:build
+          npm run news:source-integrity:audit -- --strict
+          npm run news:source-portfolio:audit -- --strict
+          npm run news:validate
+      - name: Verify and persist enabled immutable ticker data parts
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/news/release-data.mjs persist --out="$RUNNER_TEMP/ticker-release-data"
+      - name: Commit one atomic update
+        id: commit
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        env:
+          SLOT_NAME: ${{ steps.slot.outputs.slot }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "wirkungsticker-bot"
+          git config user.email "wirkungsticker-bot@users.noreply.github.com"
+          git add -- data/news data/wirkungsticker/source-audit-2026-09-05.json news wirkungsticker reports/wirkungsticker-latest-run.json reports/wirkungsticker-source-integrity.json reports/wirkungsticker-source-portfolio.json sitemap.xml assets/search/search-index.json public/data/woek-search-meta.json content/taxonomy/site-map.json
+          # Pages rebuilds the complete app from the canonical stores. Keep the
+          # prior Git app projection coherent and leave a clean rebase worktree.
+          git restore --source=HEAD --staged --worktree -- wirkungsticker/data/app
+          node scripts/news/check-git-size.mjs --automatic
+          if git diff --cached --quiet; then
+            echo "Keine neue oder geänderte Wirkungsnachricht."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Oeffentlich heisst: die ausgelieferten Seiten aendern sich. Am
+          # 20.09.2026 stand die Morgenlage committet im Repository und war
+          # trotzdem nicht im Netz - der Lauf hatte keine neue Meldung
+          # veroeffentlicht, und nur daran hing die Auslieferung. Gemessen wird
+          # vor dem Commit (danach ist nichts mehr vorgemerkt), gemeldet erst
+          # nach der erfolgreichen Veroeffentlichung.
+          PUBLIC_FILES=false
+          # Vollstaendig lesen: grep -q in einer pipefail-Pipeline kann git
+          # nach einem fruehen Treffer per SIGPIPE beenden und false melden.
+          STAGED_FILES="$(git diff --cached --name-only)"
+          if grep -qE '^(news/|wirkungsticker/)' <<< "$STAGED_FILES"; then PUBLIC_FILES=true; fi
+          git commit -m "[wirkungsticker] ${SLOT_NAME} $(date -u +%Y-%m-%dT%H:%MZ)"
+          node scripts/news/publish-git.mjs
+          RELEASE_COMMIT="$(git rev-parse HEAD)"
+          [[ "$RELEASE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Invalid published commit." >&2; exit 1; }
+          echo "commit=$RELEASE_COMMIT" >> "$GITHUB_OUTPUT"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "public_files=$PUBLIC_FILES" >> "$GITHUB_OUTPUT"
+      # Die Quittung laeuft in JEDEM Lauf, nicht nur wenn dieser Lauf etwas
+      # uebernommen hat. Sie prueft die Seite live, und die Seite ist zum
+      # Zeitpunkt der Uebernahme noch nicht ausgeliefert - die Bestaetigung
+      # gehoert deshalb zwangslaeufig einem spaeteren Lauf, der selbst nichts
+      # uebernimmt. Mit der alten Bedingung blieb jede Freigabe dauerhaft auf
+      # "wird veroeffentlicht" stehen.
+      - name: Acknowledge approved editions after the durable push
+        id: approval_receipt
+        if: ${{ false && (steps.slot.outputs.should_run == 'true' && inputs.dry_run != true) }}
+        continue-on-error: true
+        env:
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+        run: node scripts/news/import-approved-editorials.mjs --finalize
+      - name: Publish the committed ticker automatically
+        if: steps.commit.outputs.changed == 'true' && (steps.outcome.outputs.public_changed == 'true' || steps.polls.outputs.changed == 'true' || steps.approved.outputs.changed == 'true' || steps.commit.outputs.public_files == 'true')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TICKER_COMMIT: ${{ steps.commit.outputs.commit }}
+        run: |
+          set -euo pipefail
+          [[ "$TICKER_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Missing exact published commit; refusing an unbound release." >&2; exit 1; }
+          gh workflow run deploy.yml --ref main -f ticker_only=true -f "ticker_commit=$TICKER_COMMIT"
+      - name: Verify ticker run health
+        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        run: npm run news:health -- --started-after="$WOEK_NEWS_EXPECTED_AFTER"
+      - name: Seal paid originals for private recovery
+        id: sealed_raw
+        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        run: node scripts/news/sealed-raw-output.mjs --seal "$RUNNER_TEMP/ai-raw-output" "$RUNNER_TEMP/sealed-paid-output"
+      - name: Preserve encrypted paid model answers for gate diagnosis
+        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && steps.sealed_raw.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-raw-output-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 3
+          if-no-files-found: ignore
+          path: ${{ runner.temp }}/sealed-paid-output
+      - name: Report incomplete editorial takeover or receipt
+        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && (steps.approved.outcome == 'failure' || steps.approval_receipt.outcome == 'failure' || steps.news_order_fetch.outcome == 'failure' || steps.news_order_delivery.outcome == 'failure' || steps.paid_answer_recovery.outcome == 'failure')
+        run: |
+          echo "::error::Redaktionelle Auftragsuebergabe, Freigabequittung oder archivierte Wiederaufnahme fehlgeschlagen. Nachrichten und bezahlte Antworten bleiben gesichert; der Gesamtprozess ist nicht gesund."
+          exit 1
+      - name: Preserve failed-run work and usage for recovery
+        # A job timeout is cancelled, not failure(). Preserve completed paid
+        # work in that case as well; never rerun a provider to reconstruct it.
+        if: always() && (failure() || cancelled()) && steps.slot.outputs.should_run == 'true' && steps.paid_preflight.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: news-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 3
+          compression-level: 6
+          if-no-files-found: warn
+          path: |
+            data/news/stories.json
+            data/news/stories.json.parts/
+            data/news/state.json
+            data/news/newsroom.json
+            data/news/newsroom.json.parts/
+            data/news/usage.json
+            data/news/editorial-analyses.json
+            data/news/personal-editorials.json
+            reports/wirkungsticker-latest-run.json

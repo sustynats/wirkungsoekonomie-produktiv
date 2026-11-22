@@ -1,0 +1,126 @@
+as_of: '2026-11-14'
+review_base: 6430135e54ff167cd199e8bec6490dcf73dce1c3
+approval: Natalie Weber
+conflicts:
+  - id: K-01
+    subject: Gesamtmodell und Einstiegsversprechen
+    observed: Startseite und Einstieg reduzieren den Preisvergleich auf eine sicher wirkende Entlastung im Lehrfall.
+    leading_source: Begriffsleitfaden v1.8 und WStG 3.0 §§ 61 und 100
+    resolution_status: clarified
+    implementation_status: draft_implemented
+  - id: P-01
+    subject: Faserabgabe und Fondsentlastung im T-Shirt-Beispiel
+    observed: Die ältere Website-Rechnung setzt einen Fasersatz und eine Reserve. Die Revisionsentwürfe verwenden konditionale Tarife. Die Kernreferenz § 9.2 dokumentiert eine frühere Vorgabe für eine aktive Entlastung.
+    leading_source: WStG 3.0 §§ 56, 61, 66, 96 und 100, Buchband I § 22.11
+    resolution_status: requires_author_decision
+    implementation_status: draft_implemented
+    decision: Soll der T-Shirt-Lernfall die aktive Fondsentlastung bis zur Spezifikation eines finanzierten Anspruchs als offene Option darstellen?
+  - id: T-01
+    subject: Score und Steuerschuld
+    observed: In der Steuerübersicht klingt der Übergang von der Scorecard zur Steuerklasse automatisch.
+    leading_source: WStG 3.0 §§ 54-59 und 66
+    resolution_status: clarified
+    implementation_status: draft_implemented
+  - id: T-02
+    subject: Historische Mehrwertsteuerarchitektur
+    observed: WStG-2.0-LawReader ohne Versionsnummer im Seitentitel, weitere WUStG-Einstiege mit älterem Zielmodell.
+    leading_source: WStG 3.0 § 66, frühere Fassungen für historische Lesefassung
+    resolution_status: clarified
+    implementation_status: draft_implemented_for_reviewed_routes
+  - id: T-03
+    subject: Tragweite bestehender Produkt-Rechner
+    observed: Die Lieferketten-Demo leitete einen Satz aus Beispielscores ab. Der Produktwirkungsrechner behandelte Leerfelder als null und bezog Datenqualität in den Modellwert ein.
+    leading_source: Masterregister v1.4 04_Tarifmodell und 06_Scorecards, WStG 3.0 § 56
+    resolution_status: clarified_for_reviewed_routes
+    implementation_status: draft_implemented
+  - id: T-04
+    subject: Einmalige Abgabe oder mehrstufige Wirkungssteuer
+    observed: Die Entwürfe lassen eine einmalige Abgabe und verschiedene mehrstufige Varianten offen. Sie erzeugen unterschiedliche Belastungen entlang der Lieferkette.
+    leading_source: WStG 3.0 §§ 54-59 und 66, Rechtsprüfauftrag
+    resolution_status: requires_author_decision
+    implementation_status: scenario_only
+    decision: Welche Abgabenform soll zuerst Gegenstand einer fachrechtlichen Machbarkeitsprüfung sein?
+  - id: T-05
+    subject: Verfahren bei einer Eingangsabgabe
+    observed: Frühe Vorsteuerdarstellungen vermischen Anrechnung, Betriebsausgaben und Überwälzung. Die Sperrvarianten belasten Lieferketten unterschiedlich.
+    leading_source: WStG 3.0 §§ 58-59, UStG § 15 und EStG § 4
+    resolution_status: requires_author_decision
+    implementation_status: scenario_only
+    decision: Soll bei Wahl einer mehrstufigen Variante eine nachweisgebundene Teil- oder Vollsperre als Pilotoption untersucht werden?
+  - id: T-06
+    subject: Steuerbasis, Handel und Rechtsschutz
+    observed: Fallbezogene Kompetenz, USt-Einbezug, Übergang und Behandlung importierter und exportierter Waren sind offen.
+    leading_source: GG Art. 19, 105-108, MwStSystRL Art. 78 und 401, AEUV Art. 110, GATT Art. II-III und WStG 3.0 §§ 67, 101-107
+    resolution_status: open_legal_review
+    implementation_status: scenario_only
+  - id: T-07
+    subject: Einkommensteuer und frühere WEStG-Rollenformel
+    observed: Der öffentliche Einstieg beschrieb die Organisationswirkung mit einem individuellen Einflussfaktor als Teil der Einkommensteuerbewertung.
+    leading_source: WStG 3.0 § 78 und Kommentar, historisches WEStG 2025
+    resolution_status: clarified
+    implementation_status: draft_implemented
+  - id: D-01
+    subject: Masterregister v1.4 und v1.5
+    observed: Der Zeilenabgleich bestätigt 621 identische IDs und die Tarifzellen. v1.5 ergänzt Blätter 11-13. Die 18 abweichenden AutoScore-Formeltexte verwenden 26 zusätzliche Nullen in numerisch gleichen Konstanten. Der Begriffskatalog in v1.5 verweist zeitbedingt auf Begriffsleitfaden v1.6.
+    leading_source: Originaldatei v1.4 für den Auftrag; v1.5 für explizit versionierte Veröffentlichungen
+    resolution_status: requires_author_decision
+    implementation_status: original_reviewed
+    decision: Soll v1.5 für die öffentliche Registeranzeige als führende Fassung ausgewiesen werden?
+  - id: D-02
+    subject: Registerzeile und Produkt-FinalScore
+    observed: Die Formel in 06_Scorecards P5 behandelt eine Zeile. Das Detailkonzept 17 erläutert RMO am relevanten Produktengpass. Für dieses Shirt ist keine vollständige anwendbare und belegte Produktregel nachgewiesen.
+    leading_source: Masterregister v1.4, Detailkonzept 17 v1.1, Begriffsleitfaden v1.8
+    resolution_status: requires_author_decision
+    implementation_status: status_only
+    decision: Welche Produktgruppenregel soll für einen Pilotvergleich zur Gesamtklassifizierung geprüft werden?
+  - id: D-03
+    subject: Wirkungspass und Register-Schnittstelle
+    observed: Der Revisionsentwurf verlangt eine neue versionierte Schnittstelle für Evidenz, Schutz und Recht.
+    leading_source: Begriffsleitfaden v1.8; Register und WÖMM/WÖMS 2.0; Revisionsentwürfe ohne Freigabe
+    resolution_status: requires_author_decision
+    implementation_status: draft_only
+    decision: Soll der Produktpass-Entwurf v0.1 als separates Erprobungsschema genehmigt werden?
+  - id: D-04
+    subject: Abwasser und harte Schutzgrenzen
+    observed: Der Revisionsentwurf enthält fiktive Verhältniszahlen. Für die Modellstandorte fehlen Mess- und Genehmigungsdaten.
+    leading_source: AbwV Anhang 38, Durchführungsbeschluss (EU) 2022/2508 und konkrete Einleitgenehmigung
+    resolution_status: open
+    implementation_status: offen_displayed
+  - id: D-05
+    subject: NACE als Prüfpfad-Einstieg
+    observed: Die Registermethodik nannte die Grenzen von NACE nicht an der Stelle, an der sie die Fallauswahl erklärt.
+    leading_source: Eurostat NACE Rev. 2.1 und Masterregister
+    resolution_status: clarified
+    implementation_status: draft_implemented
+  - id: M-01
+    subject: Rolle des T-SROI
+    observed: Die Revisionsentwürfe verwerfen T-SROI als Pflicht der Produktklassifizierung. Historische Whitepaper verwenden überholte Multiplikatoren.
+    leading_source: T-SROI-Rechenstandard v1.1, Begriffsleitfaden v1.8
+    resolution_status: clarified
+    implementation_status: shirt_draft_only
+  - id: M-02
+    subject: Begriffsleitfaden des Parlament-Portals
+    observed: Das lokale Parlament-AGENTS nennt v1.5. Die fachlich führende Terminologiefassung ist v1.8.
+    leading_source: Begriffsleitfaden v1.8 und geltender Portalvertrag
+    resolution_status: clarified
+    implementation_status: draft_implemented_for_portal_guidance
+  - id: L-01
+    subject: Nicht auflösbare oder zugriffsbeschränkte URLs
+    observed: Crawl-Befunde stehen in den Inventaren. Geschützte Zugänge und nicht aufgelöste fachliche Linkziele brauchen unterschiedliche Prüfung.
+    leading_source: HTTP-Antwort, Quellseite und zuständige Release-Quelle
+    resolution_status: open
+    implementation_status: inventoried
+  - id: E-01
+    subject: Beobachtungsdatum und Planet-Wirkung im Lörrach-Tickerprofil
+    observed: Die Polizei meldet am 11. November baulichen Sachschaden durch das Ereignis vom 10. November. Das Profil weist den 11. November als Beobachtungsdatum aus. Eine beobachtete Veränderung im Feld Planet ist in der Originalmeldung nicht belegt.
+    leading_source: Polizeipräsidium Freiburg, Meldung 6388763; Wirkungsticker Impact-Semantik 2.1
+    resolution_status: clarified_observation
+    implementation_status: projection_correction
+    followup: Eine erneute Freigabe des Wirkungsprofils braucht einen Beleg für die behauptete Umweltveränderung.
+  - id: E-02
+    subject: Schutzgrenzen in den historischen Kapitalsimulationen
+    observed: Sieben Tool-Ansichten dokumentieren ältere Formeln mit einem verrechenbaren Malus für rote Linien. Der fachliche Standhinweis benennt den Konflikt zur Nichtkompensation und den historischen Charakter der Formel.
+    leading_source: Begriffsleitfaden v1.8; T-SROI-Rechenstandard v1.1, Schutz-Gate
+    resolution_status: requires_author_decision
+    implementation_status: historical_status_in_draft
+    decision: Soll für die sieben Kapitalwerkzeuge eine eigene Rechenspezifikation mit vorgeschalteter Schutzprüfung erstellt werden?

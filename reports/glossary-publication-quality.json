@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-10-13T20:49:19.482Z",
+  "terms": 2161,
+  "errors": [],
+  "warnings": [],
+  "sourceCoverage": {
+    "linked": 2161,
+    "missing": 0
+  },
+  "sourceArchive": {
+    "generatedGlossaryRecords": 212,
+    "recordsWithResolvableLocator": 212,
+    "allPublishedSourceLinksUseArchive": true
+  },
+  "unresolvedRelationCount": 0
+}

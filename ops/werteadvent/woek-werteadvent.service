@@ -1,0 +1,27 @@
+[Unit]
+Description=Werte-Advent private reports and consented aggregate counters
+After=network.target
+[Service]
+Type=simple
+User=woek-advent
+Group=woek-advent
+WorkingDirectory=/opt/woek-werteadvent/current
+ExecStart=/usr/bin/python3 /opt/woek-werteadvent/current/service.py
+Environment=WA_DATABASE=/var/lib/woek-werteadvent/campaign.sqlite3
+Environment=PYTHONDONTWRITEBYTECODE=1
+StateDirectory=woek-werteadvent
+StateDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=3
+MemoryMax=64M
+CPUQuota=10%
+TasksMax=24
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/woek-werteadvent
+RestrictAddressFamilies=AF_INET AF_UNIX
+[Install]
+WantedBy=multi-user.target

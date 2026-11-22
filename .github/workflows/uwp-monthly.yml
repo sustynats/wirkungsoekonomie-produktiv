@@ -1,0 +1,62 @@
+name: UWP monthly data refresh
+
+on:
+  schedule:
+    - cron: '19 5 3 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uwp-monthly
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/uwp/refresh-public-profile.py
+            /scripts/uwp/prtr_provider.py
+            /data/uwp/public-sources.json
+            /data/uwp/company-universe.uwp100.json
+            /data/uwp/snapshots/uwp-100.impact-data.latest.json
+            /data/uwp/snapshots/uwp-100.public.latest.json
+      - name: Refresh and validate public evidence
+        run: |
+          set -euo pipefail
+          python3 scripts/uwp/refresh-public-profile.py refresh
+          python3 scripts/uwp/refresh-public-profile.py validate | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Publish snapshot through existing GitHub Pages workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          snapshot=data/uwp/snapshots/uwp-100.public.latest.json
+          if git diff --quiet -- "$snapshot"; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$snapshot"
+          git commit -m 'UWP-100: Monatlichen Datenstand aktualisieren'
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              gh workflow run deploy.yml --ref main
+              exit 0
+            fi
+            if [[ "$attempt" == 3 ]]; then
+              exit 1
+            fi
+            git fetch --depth=2 origin main
+            git rebase origin/main
+          done

@@ -1,0 +1,856 @@
+{
+  "lobby": {
+    "uwp100-1-1": [
+      "R001943",
+      "1&1 AG"
+    ],
+    "uwp100-adidas": [
+      "R001743",
+      "adidas AG"
+    ],
+    "uwp100-airbus": [
+      "R001179",
+      "Airbus SE"
+    ],
+    "uwp100-allianz": [
+      "R001562",
+      "Allianz SE"
+    ],
+    "uwp100-aurubis": [
+      "R001636",
+      "Aurubis AG"
+    ],
+    "uwp100-basf": [
+      "R002326",
+      "BASF SE"
+    ],
+    "uwp100-bayer": [
+      "R002249",
+      "Bayer AG"
+    ],
+    "uwp100-bechtle": [
+      "R005714",
+      "Bechtle AG"
+    ],
+    "uwp100-beiersdorf": [
+      "R006972",
+      "Beiersdorf AG"
+    ],
+    "uwp100-bilfinger": [
+      "R005293",
+      "Bilfinger SE"
+    ],
+    "uwp100-bmw": [
+      "R002370",
+      "Bayerische Motoren Werke Aktiengesellschaft "
+    ],
+    "uwp100-brenntag": [
+      "R005440",
+      "Brenntag SE"
+    ],
+    "uwp100-cewe-stiftung-co-kgaa": [
+      "R005791",
+      "CEWE Stiftung & Co. KGaA"
+    ],
+    "uwp100-commerzbank": [
+      "R001772",
+      "Commerzbank AG"
+    ],
+    "uwp100-continental": [
+      "R002074",
+      "Continental AG"
+    ],
+    "uwp100-daimler-truck": [
+      "R002123",
+      "Daimler Truck  AG"
+    ],
+    "uwp100-delivery-hero": [
+      "R001759",
+      "Delivery Hero SE"
+    ],
+    "uwp100-deutsche-bank": [
+      "R001998",
+      "Deutsche Bank AG"
+    ],
+    "uwp100-deutsche-borse": [
+      "R001339",
+      "Deutsche Börse AG"
+    ],
+    "uwp100-deutsche-post": [
+      "R001114",
+      "DHL AG"
+    ],
+    "uwp100-deutsche-telekom": [
+      "R002346",
+      "Deutsche Telekom AG"
+    ],
+    "uwp100-deutz": [
+      "R002516",
+      "DEUTZ AG"
+    ],
+    "uwp100-e-on": [
+      "R002309",
+      "E.ON SE"
+    ],
+    "uwp100-evonik": [
+      "R002081",
+      "Evonik Industries AG"
+    ],
+    "uwp100-fraport": [
+      "R002573",
+      "Fraport AG"
+    ],
+    "uwp100-freenet": [
+      "R001607",
+      "freenet AG"
+    ],
+    "uwp100-fresenius": [
+      "R001428",
+      "Fresenius SE & Co. KGaA"
+    ],
+    "uwp100-fresenius-medical-care": [
+      "R001098",
+      "Fresenius Medical Care AG"
+    ],
+    "uwp100-hannover-re": [
+      "R006768",
+      "Hannover Rück SE"
+    ],
+    "uwp100-heidelberg-materials": [
+      "R001318",
+      "Heidelberg Materials AG"
+    ],
+    "uwp100-hellofresh": [
+      "R001372",
+      "HelloFresh SE"
+    ],
+    "uwp100-henkel": [
+      "R001301",
+      "Henkel AG & Co. KGaA"
+    ],
+    "uwp100-hensoldt": [
+      "R001628",
+      "HENSOLDT AG"
+    ],
+    "uwp100-hochtief": [
+      "R003332",
+      "HOCHTIEF Aktiengesellschaft"
+    ],
+    "uwp100-hugo-boss": [
+      "R005344",
+      "HUGO BOSS AG"
+    ],
+    "uwp100-infineon-technologies": [
+      "R001801",
+      "Infineon Technologies AG"
+    ],
+    "uwp100-k-s": [
+      "R001658",
+      "K+S Aktiengesellschaft"
+    ],
+    "uwp100-lanxess": [
+      "R002571",
+      "LANXESS AG"
+    ],
+    "uwp100-leg-immobilien": [
+      "R002757",
+      "LEG Immobilien SE"
+    ],
+    "uwp100-lufthansa": [
+      "R001474",
+      "Deutsche Lufthansa Aktiengesellschaft"
+    ],
+    "uwp100-mercedes-benz": [
+      "R002034",
+      "Mercedes-Benz Group AG"
+    ],
+    "uwp100-merck": [
+      "R001503",
+      "Merck KGaA"
+    ],
+    "uwp100-mtu-aero-engines": [
+      "R002076",
+      "MTU Aero Engines AG"
+    ],
+    "uwp100-munich-re": [
+      "R001697",
+      "Münchener Rückversicherungs-Gesellschaft Aktiengesellschaft in München"
+    ],
+    "uwp100-nordex": [
+      "R004917",
+      "Nordex "
+    ],
+    "uwp100-porsche-se": [
+      "R006691",
+      "Porsche Automobil Holding SE"
+    ],
+    "uwp100-redcare-pharmacy": [
+      "R001374",
+      "Redcare Pharmacy N.V."
+    ],
+    "uwp100-rheinmetall": [
+      "R002018",
+      "Rheinmetall AG"
+    ],
+    "uwp100-rwe": [
+      "R001655",
+      "RWE"
+    ],
+    "uwp100-sap": [
+      "R002180",
+      "SAP SE"
+    ],
+    "uwp100-siemens": [
+      "R001875",
+      "Siemens AG"
+    ],
+    "uwp100-siemens-healthineers": [
+      "R002236",
+      "Siemens Healthineers AG"
+    ],
+    "uwp100-siltronic": [
+      "R006189",
+      "Siltronic AG"
+    ],
+    "uwp100-stroer": [
+      "R005503",
+      "Ströer"
+    ],
+    "uwp100-thyssenkrupp": [
+      "R001468",
+      "thyssenkrupp AG"
+    ],
+    "uwp100-tui": [
+      "R001264",
+      "TUI AG"
+    ],
+    "uwp100-united-internet": [
+      "R001932",
+      "United Internet AG"
+    ],
+    "uwp100-volkswagen": [
+      "R001681",
+      "Volkswagen AG"
+    ],
+    "uwp100-vonovia": [
+      "R001894",
+      "Vonovia SE"
+    ],
+    "uwp100-wacker-chemie": [
+      "R001803",
+      "Wacker Chemie AG"
+    ],
+    "uwp100-zalando": [
+      "R003005",
+      "Zalando "
+    ]
+  },
+  "reports": [
+    {
+      "company_id": "uwp100-deutz",
+      "url": "https://www.deutz.com/fileadmin/contents/global/investoren/financial_reports/2025/EN/20260326_FY2025_Sustainability_Statement_en_sec.pdf#page=27",
+      "locator": "DEUTZ Nachhaltigkeitserklärung 2025 · ESRS E1-6, S. 116",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert. Für Vertriebs- und Servicestandorte nutzt DEUTZ Hochrechnungen.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          10669
+        ],
+        [
+          "scope2_location",
+          2025,
+          54935
+        ],
+        [
+          "scope2_market",
+          2025,
+          1884
+        ],
+        [
+          "scope3",
+          2025,
+          17956588,
+          "Berichtete wesentliche Kategorien. Enthält modellierte Emissionen aus der Nutzung verkaufter Produkte."
+        ],
+        [
+          "scope1",
+          2024,
+          10038
+        ],
+        [
+          "scope2_location",
+          2024,
+          12372
+        ],
+        [
+          "scope2_market",
+          2024,
+          824
+        ],
+        [
+          "scope3",
+          2024,
+          19571152,
+          "Vergleichswert aus der Nachhaltigkeitserklärung 2025. Enthält modellierte Emissionen aus der Nutzung verkaufter Produkte."
+        ]
+      ]
+    },
+    {
+      "company_id": "uwp100-deutz",
+      "url": "https://www.deutz.com/fileadmin/contents/global/investoren/financial_reports/2025/EN/20260326_FY2025_Sustainability_Statement_en_sec.pdf#page=55",
+      "locator": "DEUTZ Nachhaltigkeitserklärung 2025 · ESRS S1-14, PDF-S. 55",
+      "retrieved_at": "2026-11-12",
+      "note": "Meldepflichtige Arbeitsunfälle bei eigenen Beschäftigten laut Konzernbericht.",
+      "values": [
+        [
+          "work_accidents",
+          2025,
+          77,
+          "Meldepflichtige Arbeitsunfälle bei eigenen Beschäftigten. Die in der zweiten Jahreshälfte erworbene SOBEK-Gruppe ist ausgenommen."
+        ],
+        [
+          "work_accidents",
+          2024,
+          87
+        ]
+      ]
+    },
+    {
+      "company_id": "uwp100-cancom-se",
+      "url": "https://omext.cancom.de/dam/?mdocs-file=21445#page=25",
+      "locator": "CANCOM Nachhaltigkeitserklärung 2025 · ESRS E1-6, S. 23-24",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert einschließlich weiterer Gesellschaften unter operativer Kontrolle. Verbrauchsdaten teilweise hochgerechnet.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          8049
+        ],
+        [
+          "scope2_location",
+          2025,
+          6890
+        ],
+        [
+          "scope2_market",
+          2025,
+          2970
+        ],
+        [
+          "scope3",
+          2025,
+          945776,
+          "Erste Scope-3-Bilanz. Die als wesentlich eingestufte Kategorie 3.4 (vorgelagerter Transport und Vertrieb) fehlt im Wert."
+        ]
+      ]
+    },
+    {
+      "company_id": "uwp100-hensoldt",
+      "url": "https://dam.hensoldt.net/asset/68063063-1c2a-4961-a656-1d4d7cf49b54/Annual-Report-2025-incl-Sustainability-Report-English.pdf#page=77",
+      "locator": "HENSOLDT Geschäftsbericht 2025 · ESRS E1-6, PDF-S. 77",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert. Für 2024 ist der Vorjahreswert aus der Tabelle angegeben.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          2202
+        ],
+        [
+          "scope2_location",
+          2025,
+          28693
+        ],
+        [
+          "scope2_market",
+          2025,
+          9831
+        ],
+        [
+          "scope3",
+          2025,
+          701918,
+          "Die Berechnung der Scope-3-Emissionen nutzt teilweise geänderte Emissionsfaktoren. Die Werte sind dadurch nur eingeschränkt vergleichbar."
+        ],
+        [
+          "scope1",
+          2024,
+          2644
+        ],
+        [
+          "scope2_location",
+          2024,
+          25993
+        ],
+        [
+          "scope2_market",
+          2024,
+          9025
+        ],
+        [
+          "scope3",
+          2024,
+          517947,
+          "Vorjahreswert aus dem Geschäftsbericht 2025."
+        ]
+      ],
+      "comparable_metrics": [
+        "scope1",
+        "scope2_location",
+        "scope2_market"
+      ]
+    },
+    {
+      "company_id": "uwp100-nemetschek",
+      "url": "https://www.nemetschek.com/sites/default/files/documents/NEM_AnnualReport_2025_EN.pdf#page=99",
+      "locator": "Nemetschek Geschäftsbericht 2025 · Emissionsbilanz, PDF-S. 99",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert. Der Anteil hochgerechneter Energiedaten hat sich gegenüber 2024 verändert.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          1673
+        ],
+        [
+          "scope2_location",
+          2025,
+          1627
+        ],
+        [
+          "scope2_market",
+          2025,
+          1689
+        ],
+        [
+          "scope3",
+          2025,
+          83518,
+          "Die Scope-3-Bilanz 2025 enthält erstmals Emissionen aus dem Pendeln der Beschäftigten."
+        ],
+        [
+          "scope1",
+          2024,
+          1668
+        ],
+        [
+          "scope2_location",
+          2024,
+          1445
+        ],
+        [
+          "scope2_market",
+          2024,
+          1549
+        ],
+        [
+          "scope3",
+          2024,
+          77112,
+          "Vorjahreswert aus dem Geschäftsbericht 2025. Die Pendelwege der Beschäftigten fehlen in der Bilanz 2024."
+        ]
+      ]
+    },
+    {
+      "company_id": "uwp100-nemetschek",
+      "url": "https://www.nemetschek.com/sites/default/files/documents/NEM_AnnualReport_2025_EN.pdf#page=110",
+      "locator": "Nemetschek Geschäftsbericht 2025 · Arbeitssicherheit, PDF-S. 110",
+      "retrieved_at": "2026-11-12",
+      "note": "Aufzeichnungspflichtige Arbeitsunfälle bei eigenen Beschäftigten laut Konzernbericht.",
+      "values": [
+        [
+          "work_accidents",
+          2025,
+          10
+        ]
+      ]
+    },
+    {
+      "company_id": "uwp100-fraport",
+      "url": "https://www.fraport.com/content/dam/fraport-company/documents/investoren/eng/publications/sustainability-reports/Group_Sustainability_Statement_2025.pdf/_jcr_content/renditions/original.media_file.download_attachment.file/Group_Sustainability_Statement_2025.pdf#page=52",
+      "locator": "Fraport Nachhaltigkeitserklärung 2025 · ESRS E1-6, PDF-S. 52",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert. Die standort- und marktbasierte Erfassung des Strombezugs folgt unterschiedlichen Regeln.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          36195
+        ],
+        [
+          "scope2_location",
+          2025,
+          195198
+        ],
+        [
+          "scope2_market",
+          2025,
+          72977
+        ],
+        [
+          "scope3",
+          2025,
+          22277423,
+          "Berichtete wesentliche Kategorien einschließlich der dem Konzernbericht zugerechneten Emissionen aus dem Flugbetrieb."
+        ],
+        [
+          "scope1",
+          2024,
+          36555
+        ],
+        [
+          "scope2_location",
+          2024,
+          194605
+        ],
+        [
+          "scope2_market",
+          2024,
+          122942
+        ],
+        [
+          "scope3",
+          2024,
+          22204800,
+          "Vergleichswert aus der Nachhaltigkeitserklärung 2025."
+        ]
+      ]
+    },
+    {
+      "company_id": "uwp100-adesso-se",
+      "url": "https://www.adesso-group.de/adesso-group-de/investor-relations/corporate-governance/nachhaltigkeitsbericht/sustainability-report-2025.pdf#page=21",
+      "locator": "adesso Nachhaltigkeitsbericht 2025 · ESRS E1-6, S. 21",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert. Der Bericht weist für 2024 methodisch neu berechnete Vergleichswerte aus.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          4561
+        ],
+        [
+          "scope2_location",
+          2025,
+          3107
+        ],
+        [
+          "scope2_market",
+          2025,
+          1750
+        ],
+        [
+          "scope3",
+          2025,
+          42057
+        ],
+        [
+          "scope1",
+          2024,
+          5167
+        ],
+        [
+          "scope2_location",
+          2024,
+          2408
+        ],
+        [
+          "scope2_market",
+          2024,
+          1434
+        ],
+        [
+          "scope3",
+          2024,
+          40587
+        ]
+      ],
+      "comparable_metrics": [
+        "scope1",
+        "scope2_location",
+        "scope2_market",
+        "scope3"
+      ]
+    },
+    {
+      "company_id": "uwp100-atoss-software",
+      "url": "https://backend.atoss.com/sites/default/files/2026-03/atoss-geschaeftsbericht-2025.pdf#page=40",
+      "locator": "ATOSS Geschäftsbericht 2025 · THG-Bilanz, PDF-S. 40",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert. Die Scope-3-Werte für 2024 wurden nach einer Methodenänderung rückwirkend angepasst.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          721
+        ],
+        [
+          "scope2_location",
+          2025,
+          506
+        ],
+        [
+          "scope2_market",
+          2025,
+          132
+        ],
+        [
+          "scope3",
+          2025,
+          2658
+        ],
+        [
+          "scope1",
+          2024,
+          679
+        ],
+        [
+          "scope2_location",
+          2024,
+          457
+        ],
+        [
+          "scope2_market",
+          2024,
+          127
+        ],
+        [
+          "scope3",
+          2024,
+          2491
+        ]
+      ],
+      "comparable_metrics": [
+        "scope1",
+        "scope2_location",
+        "scope2_market",
+        "scope3"
+      ]
+    },
+    {
+      "company_id": "uwp100-alzchem",
+      "url": "https://www.alzchem.com/fileadmin/Investor_Relations/Finanzberichte/Alzchem-Annual-Report-2025s.pdf#page=179",
+      "locator": "Alzchem Geschäftsbericht 2025 · Scope 1, S. 179",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert aus der Emissionsbilanz.",
+      "values": [
+        [
+          "scope1",
+          2025,
+          109977
+        ],
+        [
+          "scope1",
+          2024,
+          103103
+        ]
+      ]
+    },
+    {
+      "company_id": "uwp100-alzchem",
+      "url": "https://www.alzchem.com/fileadmin/Investor_Relations/Finanzberichte/Alzchem-Annual-Report-2025s.pdf#page=180",
+      "locator": "Alzchem Geschäftsbericht 2025 · Scope 2, S. 180",
+      "retrieved_at": "2026-11-12",
+      "note": "Berichteter Konzernwert. Bei der marktbasierten Rechnung nutzt der Bericht für Deutschland teils vorläufige Faktoren.",
+      "values": [
+        [
+          "scope2_location",
+          2025,
+          160249
+        ],
+        [
+          "scope2_location",
+          2024,
+          155598
+        ],
+        [
+          "scope2_market",
+          2025,
+          135589
+        ],
+        [
+          "scope2_market",
+          2024,
+          131589
+        ]
+      ]
+    }
+  ],
+  "prtr": {
+    "uwp100-airbus": {
+      "state": "HH",
+      "id": "https://registry.gdi-de.org/id/de.hh/pf.bube-eureg_/12275",
+      "name": "Airbus Operations GmbH",
+      "city": "Hamburg",
+      "relationship_url": "https://www.airbus.com/en/about-us/our-worldwide-presence/airbus-in-europe/airbus-in-germany"
+    },
+    "uwp100-alzchem": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00251",
+      "name": "Alzchem Trostberg GmbH, Werk Trostberg",
+      "city": "Trostberg",
+      "relationship_url": "https://www.alzchem.com/de/unternehmen/"
+    },
+    "uwp100-aurubis": {
+      "state": "HH",
+      "id": "https://registry.gdi-de.org/id/de.hh/pf.bube-eureg_/13200",
+      "name": "Aurubis AG",
+      "city": "Hamburg"
+    },
+    "uwp100-basf": {
+      "state": "RP",
+      "id": "https://registry.gdi-de.org/id/de.rp.inspire.pf.bube-eureg/5000671",
+      "name": "BASF SE",
+      "city": "Ludwigshafen am Rhein"
+    },
+    "uwp100-bayer": {
+      "state": "HE",
+      "id": "https://registry.gdi-de.org/id/de.he.0945.de7.pf.eu_industrie/30000010",
+      "name": "Bayer AG, Division Crop Science",
+      "city": "Frankfurt am Main, St."
+    },
+    "uwp100-befesa": {
+      "state": "NI",
+      "id": "https://registry.gdi-de.org/id/de.ni.mu/06060517550",
+      "name": "Befesa Salzschlacke GmbH",
+      "city": "Hannover",
+      "relationship_url": "https://www.befesa.com/de/services/aluminium/"
+    },
+    "uwp100-bmw": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00471",
+      "name": "BMW Werk Dingolfing 02.40",
+      "city": "Dingolfing"
+    },
+    "uwp100-brenntag": {
+      "state": "BW",
+      "id": "https://registry.gdi-de.org/id/de.bw.lubw.inspire.pf/pf-450-6823637-00000000",
+      "name": "Brenntag GmbH",
+      "city": "Plochingen",
+      "relationship_url": "https://www.brenntag.com/de-de/information-der-oeffentlichkeit.html"
+    },
+    "uwp100-daimler-truck": {
+      "state": "BW",
+      "id": "https://registry.gdi-de.org/id/de.bw.lubw.inspire.pf/pf-450-9000003-00000000",
+      "name": "Daimler Truck AG Werk Mannheim Eisengießer",
+      "city": "Mannheim"
+    },
+    "uwp100-evonik": {
+      "state": "NW",
+      "id": "https://registry.gdi-de.org/id/de.nw.inspire.pf.bube-eureg/arb-2017-362040-300-0420058",
+      "name": "Evonik Operations GmbH - Werk Wesseling",
+      "city": "Wesseling",
+      "relationship_url": "https://wesseling.evonik.de/de/nachbarn/attachment/141658?rev=417b48d70f92f3694c01ae536ba1bd47"
+    },
+    "uwp100-gerresheimer": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00681",
+      "name": "Gerresheimer Tettau GmbH",
+      "city": "Tettau",
+      "relationship_url": "https://www.gerresheimer.com/kunden/unternehmen/standorte/deutschland/tettau"
+    },
+    "uwp100-heidelberg-materials": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00600",
+      "name": "Heidelberg Materials AG, Zementwerk Burglengenfeld",
+      "city": "Burglengenfeld"
+    },
+    "uwp100-hella": {
+      "state": "NW",
+      "id": "https://registry.gdi-de.org/id/de.nw.inspire.pf.bube-eureg/arb-2017-974028-900-0087550",
+      "name": "Hella GmbH & Co. KGaA Werk 2",
+      "city": "Lippstadt"
+    },
+    "uwp100-henkel": {
+      "state": "NW",
+      "id": "https://registry.gdi-de.org/id/de.nw.inspire.pf.bube-eureg/arb-2017-111000-100-0036701",
+      "name": "Henkel AG & Co. KGaA",
+      "city": "Düsseldorf"
+    },
+    "uwp100-infineon-technologies": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00514",
+      "name": "Infineon Technologies AG",
+      "city": "Regensburg"
+    },
+    "uwp100-k-s": {
+      "state": "HE",
+      "id": "https://registry.gdi-de.org/id/de.he.0945.de7.pf.eu_industrie/50002124",
+      "name": "Werk Neuhof-Ellers",
+      "city": "Neuhof",
+      "relationship_url": "https://www.kpluss.com/de-de/ueber-ks/standorte/europa/neuhof-ellers/"
+    },
+    "uwp100-krones": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00578",
+      "name": "Krones AG",
+      "city": "Neutraubling"
+    },
+    "uwp100-lanxess": {
+      "state": "NW",
+      "id": "https://registry.gdi-de.org/id/de.nw.inspire.pf.bube-eureg/arb-2017-114000-100-9021122",
+      "name": "LANXESS Deutschland GmbH CHEMPARK Krefeld-Uerdingen",
+      "city": "Krefeld",
+      "relationship_url": "https://lanxess.com/de-de/unternehmen/organisation/standorte/standorte-deutschland"
+    },
+    "uwp100-mercedes-benz": {
+      "state": "BW",
+      "id": "https://registry.gdi-de.org/id/de.bw.lubw.inspire.pf/pf-450-1574906-00000000",
+      "name": "Mercedes Benz AG, Werk Sindelfingen Mercedes-Benz Werk Sindelfingen",
+      "city": "Sindelfingen",
+      "relationship_url": "https://group.mercedes-benz.com/karriere/ueber-uns/standorte/standort-detailseite-5125.html"
+    },
+    "uwp100-merck": {
+      "state": "HE",
+      "id": "https://registry.gdi-de.org/id/de.he.0945.de7.pf.eu_industrie/20000102",
+      "name": "Merck KGaA",
+      "city": "Darmstadt, Stadt"
+    },
+    "uwp100-mtu-aero-engines": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00074",
+      "name": "MTU Aero Engines AG",
+      "city": "München"
+    },
+    "uwp100-rwe": {
+      "state": "NW",
+      "id": "https://registry.gdi-de.org/id/de.nw.inspire.pf.bube-eureg/arb-2017-362008-300-0326774",
+      "name": "RWE Power AG Kraftwerk Niederaußem",
+      "city": "Bergheim",
+      "relationship_url": "https://www.rwe.com/der-konzern/laender-und-standorte/kraftwerk-niederaussem/"
+    },
+    "uwp100-siemens-healthineers": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00668",
+      "name": "Siemens Healthineers AG",
+      "city": "Forchheim"
+    },
+    "uwp100-symrise": {
+      "state": "NI",
+      "id": "https://registry.gdi-de.org/id/de.ni.mu/07236909240",
+      "name": "Symrise AG Werk Weser",
+      "city": "Holzminden"
+    },
+    "uwp100-thyssenkrupp": {
+      "state": "NW",
+      "id": "https://registry.gdi-de.org/id/de.nw.inspire.pf.bube-eureg/arb-2017-112000-100-0209707",
+      "name": "thyssenkrupp Steel Europe AG Werk Beeckerwerth",
+      "city": "Duisburg",
+      "relationship_url": "https://www.thyssenkrupp-steel.com/de/unternehmen/standorte/standorte-uebersicht.html"
+    },
+    "uwp100-volkswagen": {
+      "state": "NI",
+      "id": "https://registry.gdi-de.org/id/de.ni.mu/01241117210",
+      "name": "Volkswagen AG Werk Wolfsburg",
+      "city": "Wolfsburg"
+    },
+    "uwp100-wacker-chemie": {
+      "state": "BY",
+      "id": "https://registry.gdi-de.org/id/de.by.inspire.pf.ied/S00114",
+      "name": "Wacker Chemie AG, Werk Burghausen",
+      "city": "Burghausen"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-11-22T02:36:49.477Z",
+  "gate_version": "1.2",
+  "stories_checked": 1032,
+  "sources_checked": 1748,
+  "passed": 1032,
+  "held": 0,
+  "warnings": 8,
+  "findings": [],
+  "warning_findings": [
+    {
+      "story_id": "wt-32f0aa5f0a6a7761",
+      "slug": "nach-afd-wahlsieg-soder-lehnt-verbot-ab-und-nennt-brandmauer-konzept-gescheitert-6a7761",
+      "title": "Nach AfD-Wahlsieg: Söder lehnt Verbot ab und nennt Brandmauer-Konzept gescheitert",
+      "warnings": [
+        {
+          "source_id": "mi-sachsen-anhalt-context",
+          "url": "https://mi.sachsen-anhalt.de/verfassungsschutz/themenfelder/page/rechtsextremismus",
+          "code": "SOURCE_REFERENCE_UNDATED",
+          "detail": "Amtlicher Kontext ohne ausgewiesenes Veröffentlichungsdatum; Abrufdatum separat dokumentiert, kein Aktualitätssignal."
+        },
+        {
+          "source_id": "bundesrecht-context",
+          "url": "https://www.gesetze-im-internet.de/gg/art_21.html",
+          "code": "SOURCE_REFERENCE_UNDATED",
+          "detail": "Amtlicher Kontext ohne ausgewiesenes Veröffentlichungsdatum; Abrufdatum separat dokumentiert, kein Aktualitätssignal."
+        },
+        {
+          "source_id": "bundesrecht-context",
+          "url": "https://www.gesetze-im-internet.de/bverfgg/__43.html",
+          "code": "SOURCE_REFERENCE_UNDATED",
+          "detail": "Amtlicher Kontext ohne ausgewiesenes Veröffentlichungsdatum; Abrufdatum separat dokumentiert, kein Aktualitätssignal."
+        }
+      ]
+    },
+    {
+      "story_id": "wt-7ebecf5b3f91d490",
+      "slug": "vor-sachsen-anhalt-wahl-siegmund-lasst-kandidatur-bei-knapper-mehrheit-offen-91d490",
+      "title": "Sachsen-Anhalt-Wahl: Unterschiedliche Berichte zu Siegmunds Kandidatur bei knapper Mehrheit",
+      "warnings": [
+        {
+          "source_id": "landtag-sachsen-anhalt-context",
+          "url": "https://www.landtag.sachsen-anhalt.de/fileadmin/Downloads/Broschueren/Verfassung_und_Grundgesetz_web_2025_10.pdf",
+          "code": "SOURCE_REFERENCE_UNDATED",
+          "detail": "Amtlicher Kontext ohne ausgewiesenes Veröffentlichungsdatum; Abrufdatum separat dokumentiert, kein Aktualitätssignal."
+        },
+        {
+          "source_id": "sachsen-anhalt-election-context",
+          "url": "https://wahlen.sachsen-anhalt.de/zu-den-wahlen/landtagswahl/faq-zur-landtagswahl-2026",
+          "code": "SOURCE_REFERENCE_UNDATED",
+          "detail": "Amtlicher Kontext ohne ausgewiesenes Veröffentlichungsdatum; Abrufdatum separat dokumentiert, kein Aktualitätssignal."
+        }
+      ]
+    },
+    {
+      "story_id": "wt-4fb94d2cebfca746",
+      "slug": "mutmasslich-sabotage-versuch-an-umspannwerk-in-dormagen-fca746",
+      "title": "Mutmaßlich Sabotage-Versuch an Umspannwerk in Dormagen",
+      "warnings": [
+        {
+          "source_id": "wdr-nachrichten",
+          "url": "https://www1.wdr.de/nrw/moeglicherweise-sabotage-versuch-an-umspannwerk-in-dormagen-100.html",
+          "code": "SOURCE_MUTABLE_URL_REUSED",
+          "detail": "Dieselbe veränderliche URL liegt in 1 fachlich abweichenden Akte(n); die aktuelle Inhaltsübereinstimmung ist beim Abruf erneut zu prüfen."
+        }
+      ]
+    },
+    {
+      "story_id": "wt-a5874ae28ed5533f",
+      "slug": "liveticker-sek-zugriff-bei-hambacher-forst-d5533f",
+      "title": "Liveticker - SEK-Zugriff bei Hambacher Forst",
+      "warnings": [
+        {
+          "source_id": "wdr-nachrichten",
+          "url": "https://www1.wdr.de/nrw/moeglicherweise-sabotage-versuch-an-umspannwerk-in-dormagen-100.html",
+          "code": "SOURCE_MUTABLE_URL_REUSED",
+          "detail": "Dieselbe veränderliche URL liegt in 1 fachlich abweichenden Akte(n); die aktuelle Inhaltsübereinstimmung ist beim Abruf erneut zu prüfen."
+        }
+      ]
+    },
+    {
+      "story_id": "wt-5547189d2645384a",
+      "slug": "umspannwerk-sabotage-sek-einsatz-in-gevelsberg-45384a",
+      "title": "Umspannwerk-Sabotage: SEK-Einsatz in Gevelsberg",
+      "warnings": [
+        {
+          "source_id": "wdr-nachrichten",
+          "url": "https://www1.wdr.de/nrw/moeglicherweise-sabotage-versuch-an-umspannwerk-in-dormagen-100.html",
+          "code": "SOURCE_MUTABLE_URL_REUSED",
+          "detail": "Dieselbe veränderliche URL liegt in 1 fachlich abweichenden Akte(n); die aktuelle Inhaltsübereinstimmung ist beim Abruf erneut zu prüfen."
+        }
+      ]
+    }
+  ],
+  "known_findings_before": []
+}

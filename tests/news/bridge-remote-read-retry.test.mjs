@@ -1,0 +1,86 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { bridgeSession } from '../../scripts/news/bridge/remote.mjs';
+const env={WOEK_NEWS_BRIDGE_URL:'https://130.162.217.58.sslip.io/api/news-bridge',WOEK_NEWS_BRIDGE_TOKEN:'private-test-token',GITHUB_RUN_ID:'12345'};
+test('a truncated successful response gets one idempotent reread',async()=>{
+  let calls=0;const s=bridgeSession(env,{fetchImpl:async()=>++calls===1?new Response('{"ok":'):Response.json({ok:true,result:{completed:2}})});
+  assert.deepEqual(await s.store.observation('completion-metrics'),{completed:2});assert.equal(calls,2);
+});
+test('persistent invalid reads fail with safe diagnostics after two attempts',async()=>{
+  let calls=0;const s=bridgeSession(env,{fetchImpl:async()=>{calls++;return new Response('not-json');}});
+  await assert.rejects(()=>s.store.observation('completion-metrics'),e=>e.message==='BRIDGE_REMOTE_INVALID_RESPONSE'&&e.retryable===true&&e.transient_read_failure===true&&e.http_status===200&&e.operation==='store.observation'&&e.response_bytes===8&&!JSON.stringify(e).includes('private-test-token'));
+  assert.equal(calls,2);
+});
+test('an uncertain write is never replayed',async()=>{
+  let calls=0;const s=bridgeSession(env,{fetchImpl:async()=>{calls++;return new Response('not-json');}});
+  await assert.rejects(()=>s.store.put({input:{job_id:'test'}}),e=>e.message==='BRIDGE_REMOTE_INVALID_RESPONSE'&&e.transient_read_failure===false);assert.equal(calls,1);
+});
+test('an uncertain lane acquisition is confirmed by owner readback without replay',async()=>{
+  const calls=[];
+  const s=bridgeSession(env,{fetchImpl:async(_url,init)=>{
+    const op=JSON.parse(init.body).op;calls.push(op);
+    return op==='store.acquire' ? new Response('not-json')
+      : Response.json({ok:true,result:{run_lock:{lane:'import',owner:'12345:1',process_holds_lock:true}}});
+  }});
+  assert.equal(await s.store.acquire('2026-10-12T17:00:00Z','import'),true);
+  assert.deepEqual(calls,['store.acquire','bridge.monitor']);
+});
+test('an uncertain lane acquisition with another owner remains a failure',async()=>{
+  const calls=[];
+  const s=bridgeSession(env,{fetchImpl:async(_url,init)=>{
+    const op=JSON.parse(init.body).op;calls.push(op);
+    return op==='store.acquire' ? new Response('not-json')
+      : Response.json({ok:true,result:{run_lock:{lane:'import',owner:'other:1',process_holds_lock:true}}});
+  }});
+  await assert.rejects(()=>s.store.acquire('2026-10-12T17:00:00Z','import'),/BRIDGE_REMOTE_INVALID_RESPONSE/);
+  assert.deepEqual(calls,['store.acquire','bridge.monitor']);
+});
+test('an uncertain lane acquisition cannot be inferred from an unlocked lane',async()=>{
+  const calls=[];
+  const s=bridgeSession(env,{fetchImpl:async(_url,init)=>{
+    const op=JSON.parse(init.body).op;calls.push(op);
+    return op==='store.acquire' ? new Response('not-json')
+      : Response.json({ok:true,result:{run_lock:{lane:'import',owner:'12345:1',process_holds_lock:false}}});
+  }});
+  await assert.rejects(()=>s.store.acquire('2026-10-12T17:00:00Z','import'),/BRIDGE_REMOTE_INVALID_RESPONSE/);
+  assert.deepEqual(calls,['store.acquire','bridge.monitor']);
+});
+test('authentication failures during acquisition do not trigger owner readback',async()=>{
+  const calls=[];
+  const s=bridgeSession(env,{fetchImpl:async(_url,init)=>{
+    calls.push(JSON.parse(init.body).op);
+    return new Response('access denied',{status:401});
+  }});
+  await assert.rejects(()=>s.store.acquire('2026-10-12T17:00:00Z','import'),/BRIDGE_REMOTE_INVALID_RESPONSE/);
+  assert.deepEqual(calls,['store.acquire']);
+});
+test('unauthorized or forbidden responses and valid application errors are not retried',async()=>{
+  for(const status of [401,403,409]){let calls=0;const s=bridgeSession(env,{fetchImpl:async()=>{calls++;return new Response('access denied',{status});}});await assert.rejects(()=>s.monitor(),/BRIDGE_REMOTE_INVALID_RESPONSE/);assert.equal(calls,1);}
+  let calls=0;const s=bridgeSession(env,{fetchImpl:async()=>{calls++;return Response.json({ok:false,error:'BRIDGE_RUN_LOCKED'},{status:409});}});
+  await assert.rejects(()=>s.store.acquire(),/BRIDGE_RUN_LOCKED/);assert.equal(calls,1);
+});
+
+// 17.09.2026: Ticker und Redaktionslauf haengen beide am selben Oracle-Takt
+// und starten in derselben Sekunde. Der Verlierer des Rennens um die Spur bekam
+// BRIDGE_OPERATION_BUSY und der ganze Lauf scheiterte - waehrend Natalies
+// eingereichte Auftraege unbearbeitet lagen. Der Server wirft BUSY, bevor er
+// die Operation ausfuehrt: es wurde nichts geschrieben, Warten ist sicher.
+test('eine besetzte Spur wird abgewartet, auch bei einer Schreiboperation', async () => {
+  let calls = 0; const pausen = [];
+  const s = bridgeSession(env, { sleep: async (ms) => { pausen.push(ms); },
+    fetchImpl: async () => ++calls <= 2
+      ? Response.json({ ok: false, error: 'BRIDGE_OPERATION_BUSY' }, { status: 409 })
+      : Response.json({ ok: true, result: true }) });
+  assert.equal(await s.store.put({ input: { job_id: 'manual-meta' } }), true);
+  assert.equal(calls, 3);
+  assert.deepEqual(pausen, [2000, 4000]);
+});
+
+test('eine dauerhaft besetzte Spur scheitert sichtbar, nicht endlos', async () => {
+  let calls = 0; const pausen = [];
+  const s = bridgeSession(env, { sleep: async (ms) => { pausen.push(ms); },
+    fetchImpl: async () => { calls++; return Response.json({ ok: false, error: 'BRIDGE_OPERATION_BUSY' }, { status: 409 }); } });
+  await assert.rejects(() => s.store.editorialClaim('manual-meta'), /BRIDGE_OPERATION_BUSY/);
+  assert.equal(calls, 6);
+  assert.deepEqual(pausen, [2000, 4000, 6000, 8000, 10000]); // zusammen 30 Sekunden
+});

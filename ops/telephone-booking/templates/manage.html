@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <title>Gesprächsanfrage prüfen · Natalie Weber</title>
+  <link rel="stylesheet" href="/api/telephone-booking/manage.css">
+  <script src="/api/telephone-booking/manage.js" defer></script>
+</head>
+<body><main>
+  <p>Private Terminverwaltung</p><h1>Gesprächsanfrage prüfen</h1>
+  <p id="message" role="status" aria-live="polite">Anfrage wird geladen …</p>
+  <noscript>Bitte JavaScript aktivieren und den privaten Link aus Discord erneut öffnen.</noscript>
+  <section id="detail" hidden>
+    <h2 id="title"></h2><dl id="fields"></dl>
+    <p id="state"></p><p id="calendar-state"></p>
+    <div id="actions">
+      <button data-action="approve">Termin zusagen</button>
+      <button data-action="decline">Anfrage ablehnen</button>
+      <button data-action="cancel">Bestätigten Termin absagen</button>
+    </div>
+    <button id="reload">Status aktualisieren</button>
+    <section id="reply" hidden>
+      <h2>Persönliche Antwort senden</h2>
+      <p id="reply-info">Sende deine Antwort persönlich über den gewählten Kontaktweg.</p>
+      <p id="email-preview" hidden></p>
+      <label for="draft">Vorbereiteter Antworttext</label><textarea id="draft" rows="9" readonly></textarea>
+      <button data-action="send_confirmation_email" hidden>Antwort per E-Mail senden</button>
+      <a id="email">E-Mail-Entwurf öffnen</a>
+      <button id="copy">Antworttext kopieren</button>
+      <button data-action="sent">Ich habe die Antwort versandt</button>
+      <button id="participant-download" hidden>Kalenderdatei für den Kontakt herunterladen</button>
+      <p id="participant-calendar-info" hidden>Die Teilnehmerdatei enthält nur Gesprächstermin und Gesprächsweg. Bei einer Antwort per Discord kannst du sie persönlich weitergeben. Google- und Outlook-Links stehen im Antworttext.</p>
+      <button id="download" hidden>Kalenderdatei herunterladen</button>
+      <p>Deine eigene Kalenderdatei für „Nats“ enthält Erinnerungen 24 Stunden und 30 Minuten vorher. Falls du sie manuell importierst, wähle den Kalender „Nats“. Manuell importierte Einträge müssen bei einer Absage auch manuell entfernt werden.</p>
+    </section>
+  </section>
+</main></body></html>
