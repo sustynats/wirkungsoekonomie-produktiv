@@ -10,6 +10,16 @@ if [[ "${WOEK_CLOCK_LANE:-discovery}" == "import" ]]; then
   clock_branch="codex/wirkungsticker-import-clock"
   clock_state="${clock_state}-import"
 fi
+# The retired origin rejects clock pushes at the GitHub size quota. Preserve
+# the queue and schedulers while skipping this unreachable dispatch path.
+clock_origin="$(git config --file "${clock_repo}/config" --get remote.origin.url 2>/dev/null || true)"
+case "$clock_origin" in
+  ssh://git@ssh.github.com:443/sustynats/wirkungsoekonomie.de.git|git@github.com:sustynats/wirkungsoekonomie.de.git|https://github.com/sustynats/wirkungsoekonomie.de.git)
+    echo "LEGACY_CLOCK_DISPATCH_PAUSED: retired repository rejects clock pushes"
+    exit 0
+    ;;
+esac
+
 # Discovery and import wake-ups share one bare Git repository, not a publisher.
 exec 9>"${clock_repo}.wake.lock"
 flock -w 30 9
