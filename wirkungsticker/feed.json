@@ -1,5 +1,5 @@
 {
-  "_woek_revision": "20260912-news-freshness:2026-11-22T21:24:11.776Z",
+  "_woek_revision": "20260912-news-freshness:2026-11-22T22:24:11.841Z",
   "version": "https://jsonfeed.org/version/1.1",
   "title": "Wirkungsticker",
   "home_page_url": "https://wirkungsoekonomie.de/wirkungsticker/",
@@ -191,6 +191,38 @@
           "magnitude": 1,
           "direction": "mixed",
           "status": "emerging"
+        }
+      }
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/drohnenangriff-auf-russischen-frachter-in-der-ostsee-b263ff/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/drohnenangriff-auf-russischen-frachter-in-der-ostsee-b263ff/",
+      "title": "Drohnen treffen russischen Frachter in der Ostsee, Löscharbeiten dauern an",
+      "summary": "Ein russischer Frachter ist laut den vorliegenden Berichten vor Finnland von Drohnen getroffen worden und brannte. Die Löscharbeiten dauern an; Urheberschaft, Schäden und Angaben zur Besatzung sind offen.",
+      "date_published": "2026-11-21T19:15:01.000Z",
+      "date_modified": "2026-11-21T19:15:01.000Z",
+      "_woek_released_at": "2026-11-22T22:25:56.748Z",
+      "tags": [
+        "Wirtschaft",
+        "Politik"
+      ],
+      "_woek_type": "Wirkungsakte",
+      "_woek_late_delivery": true,
+      "_woek_impact_profile": {
+        "human": {
+          "magnitude": 2,
+          "direction": "negative",
+          "status": "potential"
+        },
+        "planet": {
+          "magnitude": 1,
+          "direction": "negative",
+          "status": "potential"
+        },
+        "democracy": {
+          "magnitude": 1,
+          "direction": "negative",
+          "status": "potential"
         }
       }
     },

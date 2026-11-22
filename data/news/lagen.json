@@ -17,11 +17,6 @@
         "fortgeschrieben": 0
       },
       "entries": [],
-      "processing_status": {
-        "state": "processing_limited",
-        "checked_at": "2026-11-22T22:11:19.759Z",
-        "note": "Die Nachrichtenverarbeitung ist derzeit verzögert. Eingegangene Meldungen sind noch nicht vollständig geprüft oder veröffentlicht. Dies ist keine Feststellung, dass es keine relevanten Nachrichten gibt."
-      },
       "publication_recovery": {
         "recovered_at": "2026-11-22T21:12:49.570Z",
         "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
