@@ -226,3 +226,9 @@ Nachrichtenanalyse. Ein offener Paid-Hold bleibt unverändert und schützt spät
 Anbieteraufrufe. Quittungen prüfen weiterhin ausschließlich den live sichtbaren
 Hash. Bei einem Fehler der Übernahme startet ebenfalls keine bezahlte Verarbeitung.
 Die persönliche Freigabe, Quellen- und Inhaltsprüfungen bleiben erforderlich.
+
+Die Freigabeübernahme wartet bei einer ausdrücklich abgewiesenen Importsperre
+bis zu zwei Minuten auf deren reguläre Freigabe. Die private Vorschauprüfung
+kann die Spur länger als eine Minute halten. Nur der Sperrerwerb wird wiederholt;
+unklare Schreibantworten, Claims und Quittungen niemals. Nach Ablauf bleiben die
+Fassungen für einen späteren regulären Lauf erhalten, ohne fremde Sperren zu lösen.
