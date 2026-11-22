@@ -1,7 +1,116 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-21T17:00:00.000Z",
+  "updated_at": "2026-11-22T17:00:00.000Z",
   "lagen": [
+    {
+      "lage_id": "2026-11-22-abendlage",
+      "slot": "abendlage",
+      "label": "Abendlage",
+      "date": "2026-11-22",
+      "window_from": "2026-11-22T11:00:00.000Z",
+      "window_to": "2026-11-22T17:00:00.000Z",
+      "stand": "2026-11-22T17:00:00.000Z",
+      "headline": "Noch keine neue Nachricht seit 12 Uhr veröffentlicht.",
+      "counts": {
+        "total": 0,
+        "neu": 0,
+        "fortgeschrieben": 0
+      },
+      "entries": [],
+      "publication_recovery": {
+        "recovered_at": "2026-11-22T21:12:49.570Z",
+        "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
+      }
+    },
+    {
+      "lage_id": "2026-11-22-mittagslage",
+      "slot": "mittagslage",
+      "label": "Mittagslage",
+      "date": "2026-11-22",
+      "window_from": "2026-11-22T05:00:00.000Z",
+      "window_to": "2026-11-22T11:00:00.000Z",
+      "stand": "2026-11-22T11:00:00.000Z",
+      "headline": "Noch keine neue Nachricht seit 6 Uhr veröffentlicht.",
+      "counts": {
+        "total": 0,
+        "neu": 0,
+        "fortgeschrieben": 0
+      },
+      "entries": [],
+      "publication_recovery": {
+        "recovered_at": "2026-11-22T21:12:49.570Z",
+        "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
+      }
+    },
+    {
+      "lage_id": "2026-11-22-morgenlage",
+      "slot": "morgenlage",
+      "label": "Morgenlage",
+      "date": "2026-11-22",
+      "window_from": "2026-11-21T17:00:00.000Z",
+      "window_to": "2026-11-22T05:00:00.000Z",
+      "stand": "2026-11-22T05:00:00.000Z",
+      "headline": "Das sind die 6 Entwicklungen, die seit gestern Abend wirkungsrelevant geworden sind.",
+      "counts": {
+        "total": 6,
+        "neu": 6,
+        "fortgeschrieben": 0
+      },
+      "entries": [
+        {
+          "story_id": "wt-379923e0a646815f",
+          "slug": "nach-igh-urteil-frankreich-will-uno-sicherheitsrat-zu-myanmar-einberufen-46815f",
+          "title": "Frankreich will nach IGH-Urteil den UNO-Sicherheitsrat zu Myanmar einberufen",
+          "state": "neu",
+          "at": "2026-11-22T02:32:14.345Z",
+          "score": 5.7948
+        },
+        {
+          "story_id": "wt-023eec38e03b89a2",
+          "slug": "rhein-neckar-kreis-dichter-rauch-feuerwehr-evakuiert-hochhaus-in-eppelheim-3b89a2",
+          "title": "Eppelheim: Feuerwehr evakuiert Hochhaus wegen Rauch",
+          "state": "neu",
+          "at": "2026-11-22T02:30:13.540Z",
+          "score": 6.292
+        },
+        {
+          "story_id": "wt-4bd1afc791bf2499",
+          "slug": "starke-rauchentwicklung-in-hochhaus-menschen-werden-teilweise-evakuiert-bf2499",
+          "title": "Rauchentwicklung in Hochhaus in Eppelheim: Teilweise Evakuierung, Ursache laut Polizei unklar",
+          "state": "neu",
+          "at": "2026-11-22T02:27:57.818Z",
+          "score": 10.2888
+        },
+        {
+          "story_id": "wt-4a9e693e98a34954",
+          "slug": "ukraine-news-einschlage-in-polen-und-schaden-an-botschaften-in-kiew-a34954",
+          "title": "Einschläge in Polen und Schäden an Botschaften in Kiew",
+          "state": "neu",
+          "at": "2026-11-21T17:14:28.691Z",
+          "score": 9.5201
+        },
+        {
+          "story_id": "wt-7ec61a34fb8e402d",
+          "slug": "gerard-depardieu-und-michel-houellebecq-vorwurf-der-gemeinschaftliche-vergewaltigung-jus-8e402d",
+          "title": "Vorwurf gegen Depardieu und Houellebecq, Justiz ermittelt",
+          "state": "neu",
+          "at": "2026-11-21T17:13:19.871Z",
+          "score": 5.0185
+        },
+        {
+          "story_id": "wt-16a79088b5d25d74",
+          "slug": "weltwirtschaft-eu-und-indonesien-besiegeln-umfassendes-handelsabkommen-d25d74",
+          "title": "EU und Indonesien besiegeln Handels- und Investitionsschutzabkommen",
+          "state": "neu",
+          "at": "2026-11-21T17:11:59.944Z",
+          "score": 5.0167
+        }
+      ],
+      "publication_recovery": {
+        "recovered_at": "2026-11-22T21:12:49.570Z",
+        "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
+      }
+    },
     {
       "lage_id": "2026-11-21-abendlage",
       "slot": "abendlage",

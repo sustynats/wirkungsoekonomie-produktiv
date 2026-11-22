@@ -80411,6 +80411,20 @@
       "typ": "artikel"
     },
     {
+      "url": "/blog/lernfaehige-demokratie-politische-kurskorrekturen.html",
+      "title": "Die lernfähige Demokratie",
+      "rubrik": "Bibliothek",
+      "sammlung": "blog",
+      "typ": "artikel"
+    },
+    {
+      "url": "/blog/lernfaehige-demokratie.html",
+      "title": "Lernfähige Demokratie",
+      "rubrik": "Bibliothek",
+      "sammlung": "blog",
+      "typ": "artikel"
+    },
+    {
       "url": "/blog/linkedin-artikel.html",
       "title": "LinkedIn-Artikel - Wirkungsökonomie",
       "rubrik": "Bibliothek",
@@ -117133,6 +117147,13 @@
       "typ": "dokument"
     },
     {
+      "url": "/wirkungsticker/explosion-auf-russischem-schiff-in-libyen-behorden-vermuten-drohnenangriff-d49a54/",
+      "title": "Explosion auf russischem Schiff in Libyen: Behörden vermuten Drohnenangriff",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
       "url": "/wirkungsticker/explosion-auf-wertstoffhof-in-uberlingen-ein-mitarbeiter-schwer-verletzt-64f8c8/",
       "title": "Laut SWR: Explosion auf Wertstoffhof in Überlingen: Mitarbeiter schwer verletzt, Ursache weiter offen",
       "rubrik": "Sonstiges",
@@ -119891,6 +119912,27 @@
       "typ": "dokument"
     },
     {
+      "url": "/wirkungsticker/lage/2026-11-22-abendlage/",
+      "title": "Abendlage · 2026-11-22",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/lage/2026-11-22-mittagslage/",
+      "title": "Mittagslage · 2026-11-22",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/lage/2026-11-22-morgenlage/",
+      "title": "Morgenlage · 2026-11-22",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
       "url": "/wirkungsticker/landkreis-oberhavel-polizeieinsatz-in-velten-gefahrenlage-abgewendet-4b4f92/",
       "title": "Laut stern: Mann mit Schusswaffen verschanzt sich in Velten",
       "rubrik": "Sonstiges",
@@ -119956,6 +119998,13 @@
     {
       "url": "/wirkungsticker/leute-berichte-kevin-allein-zu-haus-soll-fortgesetzt-werden-00c66b/",
       "title": "Berichte: „Kevin - Allein zu Haus“ soll fortgesetzt werden",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/libyen-explosion-auf-russischem-schiff-ukrainischer-angriff-vermutet-2143b6/",
+      "title": "Laut Behörden: Libyen: Behörden vermuten Drohnenangriff auf russisches Kriegsschiff",
       "rubrik": "Sonstiges",
       "sammlung": "wirkungsticker",
       "typ": "dokument"
