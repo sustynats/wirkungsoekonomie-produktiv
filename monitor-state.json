@@ -36,10 +36,6 @@
   },
   "outbox": [
     {
-      "id": "62dd88b6f02013ac52b370ae",
-      "content": "⚠ WÖk-Betriebsstörung\nTitelbilder: 49 veröffentlichte Meldung(en) ohne nutzbares Titelbild; 2 mit Kartenfallback, weil der Bilddienst nicht lieferte.\nSeit: 2026-11-22T21:06:04.924Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
-    },
-    {
       "id": "fee009e0333d2972c8840829",
       "content": "⚠ WÖk-Betriebsstörung\nQuittung freigegebener Fassungen: 6 freigegebene Fassung(en) stehen veroeffentlicht, gelten in der Redaktions-App seit 432 Stunden aber weiter als offen. Die Quittung an den Schreibtisch greift nicht.\nSeit: 2026-11-22T21:06:04.924Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
     },
