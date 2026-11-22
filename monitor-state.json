@@ -36,10 +36,6 @@
   },
   "outbox": [
     {
-      "id": "a45dde7c3b12b8e154d1c9f9",
-      "content": "✓ WÖk-Störung behoben\nRedaktionslauf\nPrüfung: 2026-11-22T21:06:04.924Z"
-    },
-    {
       "id": "75481ee1f7bc0d676b90a8b7",
       "content": "✓ WÖk-Störung behoben\nSelbstheilung\nPrüfung: 2026-11-22T21:06:04.924Z"
     },
