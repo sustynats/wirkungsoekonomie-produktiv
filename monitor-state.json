@@ -36,10 +36,6 @@
   },
   "outbox": [
     {
-      "id": "fee009e0333d2972c8840829",
-      "content": "⚠ WÖk-Betriebsstörung\nQuittung freigegebener Fassungen: 6 freigegebene Fassung(en) stehen veroeffentlicht, gelten in der Redaktions-App seit 432 Stunden aber weiter als offen. Die Quittung an den Schreibtisch greift nicht.\nSeit: 2026-11-22T21:06:04.924Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
-    },
-    {
       "id": "389f6e225342451f3fddede9",
       "content": "⚠ WÖk-Betriebsstörung\nRedaktionslauf: Der letzte Lauf ist fehlgeschlagen. Fertige Ergebnisse sind damit nicht als ausgeliefert bestätigt.\nSeit: 2026-11-22T21:21:00.804Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
     },
