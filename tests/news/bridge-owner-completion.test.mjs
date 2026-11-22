@@ -9,6 +9,15 @@ const token = 'synthetic-unit-test-only';
 const ok = (name, status = 'completed', id = 123456) => ({ ok: true, async json() { return { id, status, repository: { full_name: name } }; } });
 const absent = { ok: false, status: 404 };
 
+test('public production owner is verifiable without a private read credential', async () => {
+  const calls=[];
+  assert.equal(await ownerCompleted(owner,{privateReadToken:null,fetchImpl:async (url,options)=>{
+    calls.push(url);assert.equal(options.headers.Authorization,undefined);
+    return url.includes(`/${newRepo}/`) ? ok(newRepo) : absent;
+  }}),true);
+  assert.equal(calls.length,2);
+});
+
 test('legacy completed owner remains verifiable without any token', async () => {
   let calls = 0;
   assert.equal(await ownerCompleted(owner, { privateReadToken: null, fetchImpl: async (url, options) => {

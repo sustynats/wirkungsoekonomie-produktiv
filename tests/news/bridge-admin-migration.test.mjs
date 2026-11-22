@@ -6,7 +6,8 @@ const oldRepo = 'sustynats/wirkungsoekonomie.de';
 const newRepo = 'sustynats/wirkungsoekonomie-produktiv';
 
 test('repository selection is bounded and cannot silently target another runtime', () => {
-  assert.equal(resolveAdminRepository({}), oldRepo);
+  assert.equal(resolveAdminRepository({}), newRepo);
+  assert.throws(() => resolveAdminRepository({WOEK_NEWS_REPOSITORY:oldRepo}), /BRIDGE_REPOSITORY_RETIRED/);
   assert.equal(resolveAdminRepository({ GITHUB_ACTIONS: 'true', GITHUB_REPOSITORY: newRepo }), newRepo);
   assert.equal(resolveAdminRepository({ WOEK_NEWS_REPOSITORY: newRepo }), newRepo);
   assert.throws(() => resolveAdminRepository({ GITHUB_ACTIONS: 'true' }), /BRIDGE_RUNTIME_REPOSITORY_REQUIRED/);
@@ -14,15 +15,12 @@ test('repository selection is bounded and cannot silently target another runtime
   assert.throws(() => resolveAdminRepository({ WOEK_NEWS_REPOSITORY: 'other/repo' }), /BRIDGE_REPOSITORY_INVALID/);
 });
 
-test('an active old-repository worker prevents any new dispatch', async () => {
+test('a retired repository cannot receive another dispatch or API write', async () => {
   const calls = [];
-  const result = await runAdminAction('IMPORT_NOW', { repo: newRepo, log: () => {}, watch: () => assert.fail('must not watch'), gh: async args => {
+  await assert.rejects(runAdminAction('IMPORT_NOW', { repo: oldRepo, log: () => {}, watch: () => assert.fail('must not watch'), gh: async args => {
     calls.push(args); return JSON.stringify([{ status: args.at(-1), url: 'https://example.org/run' }]);
-  } });
-  assert.equal(result.status, 'RUN_ALREADY_ACTIVE');
-  assert.equal(calls.length, 1);
-  assert.ok(calls[0].includes(oldRepo));
-  assert.equal(calls[0][0], 'run');
+  } }), /BRIDGE_REPOSITORY_RETIRED/);
+  assert.equal(calls.length,0);
 });
 
 test('an active new-repository worker also prevents a duplicate dispatch', async () => {
@@ -32,8 +30,8 @@ test('an active new-repository worker also prevents a duplicate dispatch', async
     return args.includes(oldRepo) ? '[]' : JSON.stringify([{ status: args.at(-1), url: 'https://example.org/run' }]);
   } });
   assert.equal(result.status, 'RUN_ALREADY_ACTIVE');
-  assert.equal(calls.length, 11);
-  assert.ok(calls[10].includes(newRepo));
+  assert.equal(calls.length, 1);
+  assert.ok(calls[0].includes(newRepo));
   assert.ok(calls.every(args => args[0] === 'run'));
 });
 
@@ -50,7 +48,7 @@ test('inaccessible new repository or uncertain state prevents dispatch', async (
   await assert.rejects(runAdminAction('IMPORT_NOW', { ...deps, gh: async () => JSON.stringify(Array.from({length:100}, () => ({status:'queued'}))) }), /BRIDGE_RUN_LIST_UNCERTAIN/);
 });
 
-test('new dispatch reads both repositories and remains serial', async () => {
+test('new dispatch checks both production workers and remains serial', async () => {
   const events = []; let request;
   const result = await runAdminAction('IMPORT_NOW', { repo: newRepo, log: () => {}, watch: async (id, repo) => events.push(`watch:${id}:${repo}`), gh: async args => {
     if (args[0] === 'workflow') { request = args.at(-1).slice('request_id='.length); events.push('dispatch'); return ''; }
@@ -58,5 +56,5 @@ test('new dispatch reads both repositories and remains serial', async () => {
     return JSON.stringify([{databaseId: 42, displayTitle: request, url: 'https://example.org/run'}]);
   } });
   assert.equal(result.status, 'COMPLETED');
-  assert.deepEqual(events, [...Array(10).fill(`read:${oldRepo}`), ...Array(10).fill(`read:${newRepo}`), 'dispatch', `watch:42:${newRepo}`]);
+  assert.deepEqual(events, [...Array(10).fill(`read:${newRepo}`), 'dispatch', `watch:42:${newRepo}`]);
 });

@@ -9,6 +9,7 @@ import {repositoryJson} from './newsroom-store.mjs';
 import {recoverUsageReport, verifyInterruptedPaidRuns, verifyMigratedPaidRuns, LEGACY_PAID_REPOSITORY, NEW_PAID_REPOSITORY} from './recover-failed-usage.mjs';
 import {quarantine419Enabled} from './quarantined-419-evidence.mjs';
 import {paidPreflightDiagnostic} from './paid-preflight-diagnostics.mjs';
+import {retainedHistoryReader} from './retired-history-reads.mjs';
 
 const run = Object.freeze({id: 40321851363, conclusion: 'failure',
   created_at: '2026-10-26T12:21:01Z', updated_at: '2026-10-26T12:44:53Z',
@@ -175,7 +176,8 @@ export function runInterruptedPaidPreflight({root = path.resolve(path.dirname(fi
   const repository = env.GITHUB_REPOSITORY || (env.GITHUB_ACTIONS === 'true' ? null : LEGACY_PAID_REPOSITORY);
   if (![LEGACY_PAID_REPOSITORY, NEW_PAID_REPOSITORY].includes(repository)) throw Error('PAID_PREFLIGHT_REPOSITORY_INVALID');
   const options = {usage, now, runId:env.GITHUB_RUN_ID, runAttempt:env.GITHUB_RUN_ATTEMPT,
-    gh, documentedAttempts:documentedFailedPaidAttempts, documentedZeroAttempt:documentedZeroPaidAttempt,
+    gh:repository === NEW_PAID_REPOSITORY ? retainedHistoryReader({root,gh}) : gh,
+    documentedAttempts:documentedFailedPaidAttempts, documentedZeroAttempt:documentedZeroPaidAttempt,
     allowQuarantined419:repository === NEW_PAID_REPOSITORY && quarantine419Enabled(env)};
   const guard = repository === NEW_PAID_REPOSITORY ? verifyMigratedPaidRuns(options) : verifyInterruptedPaidRuns(options);
   if (write) fs.writeFileSync(file, repositoryJson(usage));

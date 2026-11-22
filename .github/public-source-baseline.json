@@ -4,5 +4,6 @@
   "date": "2026-11-22",
   "repository": "sustynats/wirkungsoekonomie-produktiv",
   "scope": "Complete approved production source, with private filesystem and editor identifiers neutralized.",
-  "preservation": "Original source history and original publication artifacts remain in private archives. Historical download URLs are preserved separately."
+  "preservation": "Original source history and original publication artifacts remain in private archives. Historical download URLs are preserved separately.",
+  "retiredNewsHistorySha256": "ee89964cbde119bc7cadc14e2056b5efd781364f0e0c72b57a8f2ea29c07030f"
 }

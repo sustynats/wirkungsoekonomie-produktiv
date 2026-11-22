@@ -154,6 +154,25 @@ test('a wrong dimension, missing correction notice or old numeric artifact canno
   assert.throws(()=>readExpectedCorrection(record(),{}),/UNBOUND_HISTORICAL_CORRECTION/);
 });
 
+test('the bound correction dimension and original notice date are verified independently', () => {
+  const html=correctedArticle().replaceAll('wt-dim--planet','temporary').replaceAll('wt-dim--democracy','wt-dim--planet').replaceAll('temporary','wt-dim--democracy').replace('27.10.2026','28.10.2026');
+  const options={article:true,dimension:'democracy',at:'2026-10-28T19:40:32.000Z'};
+  assert.deepEqual(correctedPotentialErrors(html,html,'article',options),[]);
+  assert.ok(correctedPotentialErrors(html,html,'article',{...options,dimension:'planet'}).some(e=>e.endsWith('ARTIFACT_INVALID')));
+  assert.ok(correctedPotentialErrors(html,html,'article',{...options,at:'2026-10-27T00:00:00Z'}).some(e=>e.endsWith('ARTIFACT_INVALID')));
+});
+
+test('an exactly bound withdrawn profile must remain absent and match the full artifact', () => {
+  const html='<main><aside data-impact-context-correction>Korrektur vom 14. November 2026</aside>Original text</main>';
+  const options={article:true,kind:'withdrawn'};
+  assert.deepEqual(correctedPotentialErrors(html,html,'article',options),[]);
+  assert.ok(correctedPotentialErrors(html.replace('Original text','Changed'),html,'article',options).some(e=>e.endsWith('READBACK_MISMATCH')));
+  const scored=html.replace('</main>','<span data-magnitude="1"></span></main>');
+  assert.ok(correctedPotentialErrors(scored,scored,'article',options).some(e=>e.endsWith('ARTIFACT_INVALID')));
+  const unmarked=html.replace('data-impact-context-correction','unknown');
+  assert.ok(correctedPotentialErrors(unmarked,unmarked,'article',options).some(e=>e.endsWith('ARTIFACT_INVALID')));
+});
+
 test('a correction marker on an unbound record never weakens the ordinary three-modelled-dimension gate', async () => {
   const result=await livePotentialCheck(surfaces({html:correctedArticle()}));
   assert.equal(result.ok,false);

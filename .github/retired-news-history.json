@@ -1,0 +1,2152 @@
+{
+  "schema": 1,
+  "generation": "2026-11-22-privacy-reviewed",
+  "repository": "sustynats/wirkungsoekonomie-produktiv",
+  "replacement_repository_id": 1467786104,
+  "sealed_at": "2026-11-22T20:43:01.345Z",
+  "source_commit": "9286d8b3e0149543a2e34ed4110f06025a5e611e",
+  "retired_legacy_repository_id": 1241055331,
+  "retired_legacy_private_archived": true,
+  "retired_legacy_actions_disabled": true,
+  "retired_production_repository_id": 1447217605,
+  "retired_production_private_archived": true,
+  "spending_ledger_runs_sha256": "e84a40274bde51944d2b63dcd2ab7a40daf7e0ab88a699a7188aff3672dad39d",
+  "original_production_guard": {
+    "version": "interrupted-paid-1",
+    "status": "checked",
+    "checked_at": "2026-11-22T19:00:38.417Z",
+    "checked_for_run_id": "45056675363",
+    "checked_for_run_attempt": 1,
+    "checked_for_repository": "sustynats/wirkungsoekonomie-produktiv",
+    "window_start": "2026-11-22T02:23:56.725Z",
+    "tracked_run_ids": [],
+    "unresolved_run_ids": [],
+    "checked_runs": [
+      {
+        "run_id": 42378265988,
+        "attempt": 1,
+        "updated_at": "2026-11-07T13:51:08Z"
+      },
+      {
+        "run_id": 42368263001,
+        "attempt": 1,
+        "updated_at": "2026-11-07T11:34:18Z"
+      },
+      {
+        "run_id": 42384814734,
+        "attempt": 1,
+        "updated_at": "2026-11-07T15:41:17Z"
+      },
+      {
+        "run_id": 42419707652,
+        "attempt": 1,
+        "updated_at": "2026-11-07T22:34:34Z"
+      },
+      {
+        "run_id": 42434376671,
+        "attempt": 1,
+        "updated_at": "2026-11-08T01:53:46Z"
+      },
+      {
+        "run_id": 42460339020,
+        "attempt": 1,
+        "updated_at": "2026-11-08T08:17:18Z"
+      },
+      {
+        "run_id": 42492039164,
+        "attempt": 1,
+        "updated_at": "2026-11-08T15:17:05Z"
+      },
+      {
+        "run_id": 42515032641,
+        "attempt": 1,
+        "updated_at": "2026-11-08T19:55:25Z"
+      },
+      {
+        "run_id": 42551662934,
+        "attempt": 1,
+        "updated_at": "2026-11-09T02:35:26Z"
+      },
+      {
+        "run_id": 42533183659,
+        "attempt": 1,
+        "updated_at": "2026-11-08T23:25:58Z"
+      },
+      {
+        "run_id": 42600650136,
+        "attempt": 1,
+        "updated_at": "2026-11-09T10:49:58Z"
+      },
+      {
+        "run_id": 42698084559,
+        "attempt": 1,
+        "updated_at": "2026-11-09T21:32:21Z"
+      },
+      {
+        "run_id": 42748668228,
+        "attempt": 1,
+        "updated_at": "2026-11-10T03:50:34Z"
+      },
+      {
+        "run_id": 42808982231,
+        "attempt": 1,
+        "updated_at": "2026-11-10T12:09:37Z"
+      },
+      {
+        "run_id": 42879580174,
+        "attempt": 1,
+        "updated_at": "2026-11-10T19:24:54Z"
+      },
+      {
+        "run_id": 42927477580,
+        "attempt": 1,
+        "updated_at": "2026-11-11T00:32:08Z"
+      },
+      {
+        "run_id": 42966135572,
+        "attempt": 1,
+        "updated_at": "2026-11-11T05:53:26Z"
+      },
+      {
+        "run_id": 43024382784,
+        "attempt": 1,
+        "updated_at": "2026-11-11T13:25:00Z"
+      },
+      {
+        "run_id": 44739996854,
+        "attempt": 1,
+        "updated_at": "2026-11-20T13:37:12Z"
+      },
+      {
+        "run_id": 44672805056,
+        "attempt": 1,
+        "updated_at": "2026-11-20T04:19:45Z"
+      },
+      {
+        "run_id": 44637714391,
+        "attempt": 1,
+        "updated_at": "2026-11-19T23:34:48Z"
+      },
+      {
+        "run_id": 44570550768,
+        "attempt": 1,
+        "updated_at": "2026-11-19T16:57:32Z"
+      },
+      {
+        "run_id": 44482391439,
+        "attempt": 1,
+        "updated_at": "2026-11-19T07:57:15Z"
+      },
+      {
+        "run_id": 44428779430,
+        "attempt": 1,
+        "updated_at": "2026-11-19T00:33:09Z"
+      },
+      {
+        "run_id": 44366073404,
+        "attempt": 1,
+        "updated_at": "2026-11-18T18:14:42Z"
+      },
+      {
+        "run_id": 44273684873,
+        "attempt": 1,
+        "updated_at": "2026-11-18T09:19:47Z"
+      },
+      {
+        "run_id": 44217608423,
+        "attempt": 1,
+        "updated_at": "2026-11-18T01:48:23Z"
+      },
+      {
+        "run_id": 44157067371,
+        "attempt": 1,
+        "updated_at": "2026-11-17T19:26:30Z"
+      },
+      {
+        "run_id": 44064696610,
+        "attempt": 1,
+        "updated_at": "2026-11-17T10:34:28Z"
+      },
+      {
+        "run_id": 43999522969,
+        "attempt": 1,
+        "updated_at": "2026-11-17T02:06:38Z"
+      },
+      {
+        "run_id": 43927809517,
+        "attempt": 1,
+        "updated_at": "2026-11-16T18:29:39Z"
+      },
+      {
+        "run_id": 43827884064,
+        "attempt": 1,
+        "updated_at": "2026-11-16T08:09:28Z"
+      },
+      {
+        "run_id": 43784037930,
+        "attempt": 1,
+        "updated_at": "2026-11-16T01:10:43Z"
+      },
+      {
+        "run_id": 43762283318,
+        "attempt": 1,
+        "updated_at": "2026-11-15T21:21:07Z"
+      },
+      {
+        "run_id": 43735841558,
+        "attempt": 1,
+        "updated_at": "2026-11-15T16:38:22Z"
+      },
+      {
+        "run_id": 43699467591,
+        "attempt": 1,
+        "updated_at": "2026-11-15T09:37:10Z"
+      },
+      {
+        "run_id": 43666447228,
+        "attempt": 1,
+        "updated_at": "2026-11-15T02:18:28Z"
+      },
+      {
+        "run_id": 43649360592,
+        "attempt": 1,
+        "updated_at": "2026-11-14T22:48:08Z"
+      },
+      {
+        "run_id": 43626660890,
+        "attempt": 1,
+        "updated_at": "2026-11-14T18:33:47Z"
+      },
+      {
+        "run_id": 43595297756,
+        "attempt": 1,
+        "updated_at": "2026-11-14T12:40:53Z"
+      },
+      {
+        "run_id": 43562855574,
+        "attempt": 1,
+        "updated_at": "2026-11-14T05:49:28Z"
+      },
+      {
+        "run_id": 43529989125,
+        "attempt": 1,
+        "updated_at": "2026-11-13T23:57:39Z"
+      },
+      {
+        "run_id": 43483706033,
+        "attempt": 1,
+        "updated_at": "2026-11-13T18:39:39Z"
+      },
+      {
+        "run_id": 43415446368,
+        "attempt": 1,
+        "updated_at": "2026-11-13T11:20:54Z"
+      },
+      {
+        "run_id": 43358062468,
+        "attempt": 1,
+        "updated_at": "2026-11-13T03:25:39Z"
+      },
+      {
+        "run_id": 43323897200,
+        "attempt": 1,
+        "updated_at": "2026-11-12T23:00:17Z"
+      },
+      {
+        "run_id": 43272312988,
+        "attempt": 1,
+        "updated_at": "2026-11-12T17:51:55Z"
+      },
+      {
+        "run_id": 43192297694,
+        "attempt": 1,
+        "updated_at": "2026-11-12T09:40:42Z"
+      },
+      {
+        "run_id": 43137764024,
+        "attempt": 1,
+        "updated_at": "2026-11-12T02:03:42Z"
+      },
+      {
+        "run_id": 43093046835,
+        "attempt": 1,
+        "updated_at": "2026-11-11T21:01:48Z"
+      },
+      {
+        "run_id": 44816074379,
+        "attempt": 1,
+        "updated_at": "2026-11-20T21:25:20Z"
+      },
+      {
+        "run_id": 44853581587,
+        "attempt": 1,
+        "updated_at": "2026-11-21T02:24:11Z"
+      },
+      {
+        "run_id": 44890404635,
+        "attempt": 1,
+        "updated_at": "2026-11-21T09:56:22Z"
+      },
+      {
+        "run_id": 44954871690,
+        "attempt": 1,
+        "updated_at": "2026-11-21T22:11:35Z"
+      },
+      {
+        "run_id": 44927427248,
+        "attempt": 1,
+        "updated_at": "2026-11-21T17:23:44Z"
+      },
+      {
+        "run_id": 45009658267,
+        "attempt": 1,
+        "updated_at": "2026-11-22T09:52:41Z"
+      },
+      {
+        "run_id": 44975301299,
+        "attempt": 1,
+        "updated_at": "2026-11-22T02:41:07Z"
+      }
+    ],
+    "unresolved_reasons": {},
+    "quarantined_visual_run_ids": [],
+    "recovered_runs": 0,
+    "verification_error": null,
+    "diagnostics": [],
+    "provider_called": false
+  },
+  "legacy_guard": {
+    "version": "interrupted-paid-1",
+    "status": "checked",
+    "checked_at": "2026-11-22T19:00:38.417Z",
+    "checked_for_run_id": "45056675363",
+    "checked_for_run_attempt": 1,
+    "checked_for_repository": "sustynats/wirkungsoekonomie.de",
+    "window_start": "2026-11-22T19:00:38.417Z",
+    "tracked_run_ids": [],
+    "unresolved_run_ids": [
+      41913667334
+    ],
+    "checked_runs": [
+      {
+        "run_id": 40790131722,
+        "attempt": 1,
+        "updated_at": "2026-10-29T00:05:49Z"
+      },
+      {
+        "run_id": 40788442250,
+        "attempt": 1,
+        "updated_at": "2026-10-29T00:12:00Z"
+      },
+      {
+        "run_id": 40786709574,
+        "attempt": 1,
+        "updated_at": "2026-10-28T23:37:13Z"
+      },
+      {
+        "run_id": 40783040190,
+        "attempt": 1,
+        "updated_at": "2026-10-28T23:11:31Z"
+      },
+      {
+        "run_id": 40781231748,
+        "attempt": 1,
+        "updated_at": "2026-10-28T22:57:42Z"
+      },
+      {
+        "run_id": 40779310783,
+        "attempt": 1,
+        "updated_at": "2026-10-28T22:36:14Z"
+      },
+      {
+        "run_id": 40777298792,
+        "attempt": 1,
+        "updated_at": "2026-10-28T22:41:05Z"
+      },
+      {
+        "run_id": 40775300337,
+        "attempt": 1,
+        "updated_at": "2026-10-28T22:11:52Z"
+      },
+      {
+        "run_id": 40773415845,
+        "attempt": 1,
+        "updated_at": "2026-10-28T21:58:04Z"
+      },
+      {
+        "run_id": 40773283688,
+        "attempt": 1,
+        "updated_at": "2026-10-28T21:37:00Z"
+      },
+      {
+        "run_id": 40771173279,
+        "attempt": 1,
+        "updated_at": "2026-10-28T21:41:31Z"
+      },
+      {
+        "run_id": 40769039515,
+        "attempt": 1,
+        "updated_at": "2026-10-28T21:20:50Z"
+      },
+      {
+        "run_id": 40766900669,
+        "attempt": 1,
+        "updated_at": "2026-10-28T21:24:20Z"
+      },
+      {
+        "run_id": 40762470870,
+        "attempt": 1,
+        "updated_at": "2026-10-28T20:50:57Z"
+      },
+      {
+        "run_id": 40760217932,
+        "attempt": 1,
+        "updated_at": "2026-10-28T21:00:59Z"
+      },
+      {
+        "run_id": 40791769710,
+        "attempt": 1,
+        "updated_at": "2026-10-29T00:27:27Z"
+      },
+      {
+        "run_id": 40793463248,
+        "attempt": 1,
+        "updated_at": "2026-10-29T00:40:52Z"
+      },
+      {
+        "run_id": 40795096664,
+        "attempt": 1,
+        "updated_at": "2026-10-29T00:55:19Z"
+      },
+      {
+        "run_id": 40796694824,
+        "attempt": 1,
+        "updated_at": "2026-10-29T01:06:27Z"
+      },
+      {
+        "run_id": 40798291906,
+        "attempt": 1,
+        "updated_at": "2026-10-29T01:18:41Z"
+      },
+      {
+        "run_id": 40799490311,
+        "attempt": 1,
+        "updated_at": "2026-10-29T01:37:51Z"
+      },
+      {
+        "run_id": 40799908501,
+        "attempt": 1,
+        "updated_at": "2026-10-29T01:35:40Z"
+      },
+      {
+        "run_id": 40801351949,
+        "attempt": 1,
+        "updated_at": "2026-10-29T01:47:22Z"
+      },
+      {
+        "run_id": 40804320220,
+        "attempt": 1,
+        "updated_at": "2026-10-29T02:22:39Z"
+      },
+      {
+        "run_id": 40807344480,
+        "attempt": 1,
+        "updated_at": "2026-10-29T02:51:43Z"
+      },
+      {
+        "run_id": 41419864619,
+        "attempt": 1,
+        "updated_at": "2026-11-02T09:34:55Z"
+      },
+      {
+        "run_id": 40810169757,
+        "attempt": 1,
+        "updated_at": "2026-10-29T03:18:40Z"
+      },
+      {
+        "run_id": 40808744985,
+        "attempt": 1,
+        "updated_at": "2026-10-29T03:02:46Z"
+      },
+      {
+        "run_id": 41440023229,
+        "attempt": 1,
+        "updated_at": "2026-11-02T11:54:58Z"
+      },
+      {
+        "run_id": 41438082618,
+        "attempt": 1,
+        "updated_at": "2026-11-02T11:51:07Z"
+      },
+      {
+        "run_id": 41436498548,
+        "attempt": 1,
+        "updated_at": "2026-11-02T11:53:07Z"
+      },
+      {
+        "run_id": 41418607343,
+        "attempt": 1,
+        "updated_at": "2026-11-02T09:35:44Z"
+      }
+    ],
+    "unresolved_reasons": {
+      "41913667334": "PAID_PREFLIGHT_VISUAL_RECEIPT_MISSING"
+    },
+    "quarantined_visual_run_ids": [
+      41913667334
+    ],
+    "recovered_runs": 0,
+    "verification_error": null,
+    "diagnostics": [],
+    "provider_called": false
+  },
+  "responses": {
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker.yml/runs?per_page=100&page=1": {
+      "total_count": 6719,
+      "workflow_runs": [
+        {
+          "id": 41913667334,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-11-04T21:11:02Z",
+          "updated_at": "2026-11-04T21:30:08Z",
+          "head_sha": "67308ece267e1dc5f755e3c15467c46ff844b9ed",
+          "run_started_at": "2026-11-04T21:11:02Z",
+          "name": "Regulaerer Wiederanlauf 20261104T2110Z",
+          "event": "workflow_dispatch",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 41440023229,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-11-02T11:51:05Z",
+          "updated_at": "2026-11-02T11:54:58Z",
+          "head_sha": "b1705bd1d530f94cbce30b0ceccb95453442db6f",
+          "run_started_at": "2026-11-02T11:51:05Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 41438082618,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-11-02T11:35:52Z",
+          "updated_at": "2026-11-02T11:51:07Z",
+          "head_sha": "5bd113d7a299f9d3541a2f57a3cc5d047912a199",
+          "run_started_at": "2026-11-02T11:35:52Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 41436498548,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-11-02T11:23:48Z",
+          "updated_at": "2026-11-02T11:53:07Z",
+          "head_sha": "767c9d24f73432214ad570ae69651a6112756045",
+          "run_started_at": "2026-11-02T11:23:48Z",
+          "name": "recovery-20261102-1123",
+          "event": "workflow_dispatch",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 41419864619,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-11-02T09:20:43Z",
+          "updated_at": "2026-11-02T09:34:55Z",
+          "head_sha": "cdf4a04e23033ccd6c47342306545f2c8873535f",
+          "run_started_at": "2026-11-02T09:20:43Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 41418607343,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-11-02T09:11:19Z",
+          "updated_at": "2026-11-02T09:35:44Z",
+          "head_sha": "807cc248713c40a529a019aea622855b49f02951",
+          "run_started_at": "2026-11-02T09:11:19Z",
+          "name": "recovery-20261102-0910",
+          "event": "workflow_dispatch",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40810169757,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T03:05:44Z",
+          "updated_at": "2026-10-29T03:18:40Z",
+          "head_sha": "7a8bd6bb576df69f450323d0312691a195f24450",
+          "run_started_at": "2026-10-29T03:05:44Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40808744985,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T02:50:41Z",
+          "updated_at": "2026-10-29T03:02:46Z",
+          "head_sha": "7d94e68e96d033250262454958ea6deeccef61b2",
+          "run_started_at": "2026-10-29T02:50:41Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40807344480,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T02:36:21Z",
+          "updated_at": "2026-10-29T02:51:43Z",
+          "head_sha": "fcd52d3b59ee77775130a8dfc17c81572cf30452",
+          "run_started_at": "2026-10-29T02:36:21Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40804320220,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T02:05:49Z",
+          "updated_at": "2026-10-29T02:22:39Z",
+          "head_sha": "af6f9fb887de0991c16e99cc34960c201294ebdd",
+          "run_started_at": "2026-10-29T02:05:49Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40801351949,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T01:35:39Z",
+          "updated_at": "2026-10-29T01:47:22Z",
+          "head_sha": "73dbd4143dbadbf23d655915c7f0425ea1d1dbb2",
+          "run_started_at": "2026-10-29T01:35:39Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40799908501,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T01:21:18Z",
+          "updated_at": "2026-10-29T01:35:40Z",
+          "head_sha": "8370ba0d1cdf34023efd66dacfb48163094f2129",
+          "run_started_at": "2026-10-29T01:21:18Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40799490311,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T01:17:14Z",
+          "updated_at": "2026-10-29T01:37:51Z",
+          "head_sha": "db74063dd135a9c1e55b5c1178a1a61e585f54bc",
+          "run_started_at": "2026-10-29T01:17:14Z",
+          "name": "Wirkungsticker",
+          "event": "schedule",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40798291906,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T01:05:50Z",
+          "updated_at": "2026-10-29T01:18:41Z",
+          "head_sha": "664163750dc01a1daa2ee04deb9ee3dae21cca32",
+          "run_started_at": "2026-10-29T01:05:50Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40796694824,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T00:50:52Z",
+          "updated_at": "2026-10-29T01:06:27Z",
+          "head_sha": "316f78ba740695ced6817e1d2a5072291aed9b54",
+          "run_started_at": "2026-10-29T00:50:52Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40795096664,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T00:35:54Z",
+          "updated_at": "2026-10-29T00:55:19Z",
+          "head_sha": "63137f9e40a71e871bcf73ad6640862a93028eb0",
+          "run_started_at": "2026-10-29T00:35:54Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40793463248,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T00:20:57Z",
+          "updated_at": "2026-10-29T00:40:52Z",
+          "head_sha": "7aa33b7ef1de8d9f988d4e006323df0a0b41eedb",
+          "run_started_at": "2026-10-29T00:20:57Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40791769710,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-29T00:05:48Z",
+          "updated_at": "2026-10-29T00:27:27Z",
+          "head_sha": "f65a52c49fd89c2f3802be3858e0b41b4c7bdd1a",
+          "run_started_at": "2026-10-29T00:05:48Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40790131722,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T23:50:51Z",
+          "updated_at": "2026-10-29T00:05:49Z",
+          "head_sha": "4bdc10b0706221bd112756263afa567ec9ecba0c",
+          "run_started_at": "2026-10-28T23:50:51Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40788442250,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T23:35:40Z",
+          "updated_at": "2026-10-29T00:12:00Z",
+          "head_sha": "7b147baaff461ed248b74ca889683411e2063b19",
+          "run_started_at": "2026-10-28T23:35:40Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40786709574,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T23:20:53Z",
+          "updated_at": "2026-10-28T23:37:13Z",
+          "head_sha": "ebe58d6000497eae4346278290197e4d479f4cef",
+          "run_started_at": "2026-10-28T23:20:53Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40783040190,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T22:50:49Z",
+          "updated_at": "2026-10-28T23:11:31Z",
+          "head_sha": "2195cede1d4282152b0648d24156d13f5b086db6",
+          "run_started_at": "2026-10-28T22:50:49Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40781231748,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T22:36:13Z",
+          "updated_at": "2026-10-28T22:57:42Z",
+          "head_sha": "c9c09a49ce16c61be4bdfc5f03f92a2d821df9d5",
+          "run_started_at": "2026-10-28T22:36:13Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40779310783,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T22:21:16Z",
+          "updated_at": "2026-10-28T22:36:14Z",
+          "head_sha": "220dea2c34f0da7bf9f4edc96eab96c24e8ccaaa",
+          "run_started_at": "2026-10-28T22:21:16Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40777298792,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T22:06:00Z",
+          "updated_at": "2026-10-28T22:41:05Z",
+          "head_sha": "4b2e1bf4c54f728eaba8522aa6e3c2669e72d805",
+          "run_started_at": "2026-10-28T22:06:00Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40775300337,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T21:50:56Z",
+          "updated_at": "2026-10-28T22:11:52Z",
+          "head_sha": "18ba4f6e1e7edd064f8e19b1619f888dce40b94a",
+          "run_started_at": "2026-10-28T21:50:56Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40773415845,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T21:36:59Z",
+          "updated_at": "2026-10-28T21:58:04Z",
+          "head_sha": "a48ba184b9ab6e14ebf374d2381c17ca9205db00",
+          "run_started_at": "2026-10-28T21:36:59Z",
+          "name": "Wirkungsticker",
+          "event": "schedule",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40773283688,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T21:36:01Z",
+          "updated_at": "2026-10-28T21:37:00Z",
+          "head_sha": "9ffb808e37220eadb555c953a3b277ed133f4bb5",
+          "run_started_at": "2026-10-28T21:36:01Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40771173279,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T21:20:48Z",
+          "updated_at": "2026-10-28T21:41:31Z",
+          "head_sha": "d33ad61f1bfe6044239426d5df73d1a7187329cb",
+          "run_started_at": "2026-10-28T21:20:48Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40769039515,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T21:05:49Z",
+          "updated_at": "2026-10-28T21:20:50Z",
+          "head_sha": "2a03d8dbdcd730dc893e823e8d42d5066f68413e",
+          "run_started_at": "2026-10-28T21:05:49Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40766900669,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T20:50:56Z",
+          "updated_at": "2026-10-28T21:24:20Z",
+          "head_sha": "ef0ff38ce3610fbfd54665ce5ea0957a2edfa7bf",
+          "run_started_at": "2026-10-28T20:50:56Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40762470870,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T20:20:57Z",
+          "updated_at": "2026-10-28T20:50:57Z",
+          "head_sha": "d4e3df1db9d0cce215ee2da4083c6c43c187302f",
+          "run_started_at": "2026-10-28T20:20:57Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40760217932,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T20:06:01Z",
+          "updated_at": "2026-10-28T21:00:59Z",
+          "head_sha": "67cb6e8876181e8a83b290e84886f34b31c9c336",
+          "run_started_at": "2026-10-28T20:06:01Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40758000411,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T19:51:09Z",
+          "updated_at": "2026-10-28T20:20:26Z",
+          "head_sha": "ceadcf2008b8e76d4a6f547cbd5c36c16f3a1612",
+          "run_started_at": "2026-10-28T19:51:09Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40755732167,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T19:35:57Z",
+          "updated_at": "2026-10-28T20:04:01Z",
+          "head_sha": "202b5d4160dd6d45e3bcd66b641be4a164f79ed0",
+          "run_started_at": "2026-10-28T19:35:57Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40753474900,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T19:20:50Z",
+          "updated_at": "2026-10-28T19:47:04Z",
+          "head_sha": "b24eb727f500de709bedcbbfa63534ba3b31b476",
+          "run_started_at": "2026-10-28T19:20:50Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40751171369,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T19:05:45Z",
+          "updated_at": "2026-10-28T19:20:52Z",
+          "head_sha": "f42993d494ed9b519f3113e6a1fa4fab9dc42962",
+          "run_started_at": "2026-10-28T19:05:45Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40748923109,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T18:51:01Z",
+          "updated_at": "2026-10-28T19:26:40Z",
+          "head_sha": "4f734caf27b69dfb30e071c2fcad15b7479a808d",
+          "run_started_at": "2026-10-28T18:51:01Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40744243143,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T18:20:48Z",
+          "updated_at": "2026-10-28T18:51:02Z",
+          "head_sha": "419dfca5b5b2a75c492e72d56c6cc19a778a24f6",
+          "run_started_at": "2026-10-28T18:20:48Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40741915904,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T18:05:53Z",
+          "updated_at": "2026-10-28T18:54:45Z",
+          "head_sha": "73cdb7725be96c3c42844b3e4a3952410f28df8a",
+          "run_started_at": "2026-10-28T18:05:53Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40739540345,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T17:50:40Z",
+          "updated_at": "2026-10-28T18:14:08Z",
+          "head_sha": "2cd5c773773e921242710d33c0c4d1f9be94e55d",
+          "run_started_at": "2026-10-28T17:50:40Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40737224945,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T17:35:50Z",
+          "updated_at": "2026-10-28T17:52:58Z",
+          "head_sha": "b10607b009020d02e6c8285f00c986c96ba848dd",
+          "run_started_at": "2026-10-28T17:35:50Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40732446117,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T17:06:07Z",
+          "updated_at": "2026-10-28T17:34:00Z",
+          "head_sha": "829b42c68cccf57aba650de40a46694b12a53bb6",
+          "run_started_at": "2026-10-28T17:06:07Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40730021977,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T16:51:09Z",
+          "updated_at": "2026-10-28T17:15:59Z",
+          "head_sha": "50421c5944712b613d7682487d4604ec89e70db4",
+          "run_started_at": "2026-10-28T16:51:09Z",
+          "name": "Wirkungsticker",
+          "event": "schedule",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40729974935,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T16:50:51Z",
+          "updated_at": "2026-10-28T16:51:10Z",
+          "head_sha": "66d289be24569ed956dd8ba140aa2ddb9ed58f69",
+          "run_started_at": "2026-10-28T16:50:51Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40727519176,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T16:35:48Z",
+          "updated_at": "2026-10-28T16:58:07Z",
+          "head_sha": "3f59d02dd5d9d878df2b0f648486069cfaca4c45",
+          "run_started_at": "2026-10-28T16:35:48Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40725048150,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T16:20:48Z",
+          "updated_at": "2026-10-28T16:40:45Z",
+          "head_sha": "282de31e5a4a0a00afce20bc031be8f6d5415dab",
+          "run_started_at": "2026-10-28T16:20:48Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40717564244,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T15:35:50Z",
+          "updated_at": "2026-10-28T15:55:03Z",
+          "head_sha": "f766434ee28bfe7c99d32e0bb26d68f40653e9f0",
+          "run_started_at": "2026-10-28T15:35:50Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40715013512,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T15:20:53Z",
+          "updated_at": "2026-10-28T15:35:51Z",
+          "head_sha": "f7d1986d4f08c38de5ceb4970420be1e7652742e",
+          "run_started_at": "2026-10-28T15:20:53Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40712560233,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T15:06:19Z",
+          "updated_at": "2026-10-28T15:38:46Z",
+          "head_sha": "4d41be5b19f6fd941d451d05541e8f504b3981ef",
+          "run_started_at": "2026-10-28T15:06:19Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40709975618,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T14:50:49Z",
+          "updated_at": "2026-10-28T15:16:39Z",
+          "head_sha": "cb3e16d0ef3d4aeec2460f593706902df627a94b",
+          "run_started_at": "2026-10-28T14:50:49Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40705106402,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T14:21:24Z",
+          "updated_at": "2026-10-28T14:57:40Z",
+          "head_sha": "d86b0e6bf28987ad01f475a2c3c7993ad850bf1d",
+          "run_started_at": "2026-10-28T14:21:24Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40702672292,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T14:06:19Z",
+          "updated_at": "2026-10-28T14:29:02Z",
+          "head_sha": "c4c285ce8d24b29215f3473021399c16d9969fe2",
+          "run_started_at": "2026-10-28T14:06:19Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40700208096,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T13:50:52Z",
+          "updated_at": "2026-10-28T14:11:39Z",
+          "head_sha": "10ceb6e7a82bcb5325ec21b6409f59a931dbaa64",
+          "run_started_at": "2026-10-28T13:50:52Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40691186928,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T12:50:41Z",
+          "updated_at": "2026-10-28T13:19:33Z",
+          "head_sha": "bdaa02f060729e91a75cb719710b0cfcfd967e16",
+          "run_started_at": "2026-10-28T12:50:41Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40689136620,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T12:36:00Z",
+          "updated_at": "2026-10-28T12:50:42Z",
+          "head_sha": "83a153fb44c483f703ac5bd4b3780e4d486c9922",
+          "run_started_at": "2026-10-28T12:36:00Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40687114204,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T12:21:21Z",
+          "updated_at": "2026-10-28T13:02:02Z",
+          "head_sha": "5c3ab6c161bce9ae135a0c97b0c24f976532d1ca",
+          "run_started_at": "2026-10-28T12:21:21Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40685026528,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T12:05:41Z",
+          "updated_at": "2026-10-28T12:32:58Z",
+          "head_sha": "b1acdb6df3dbb75b3062d864a873b0f6f22ae4b7",
+          "run_started_at": "2026-10-28T12:05:41Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40683148654,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T11:51:12Z",
+          "updated_at": "2026-10-28T12:14:00Z",
+          "head_sha": "39f47fe3fa9f06a58024afdff0c02402cd6b11fc",
+          "run_started_at": "2026-10-28T11:51:12Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40681178482,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T11:35:45Z",
+          "updated_at": "2026-10-28T11:52:27Z",
+          "head_sha": "488dc00c9dc1aad972da52751960fbdc6e180d06",
+          "run_started_at": "2026-10-28T11:35:45Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40679227990,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T11:20:46Z",
+          "updated_at": "2026-10-28T11:37:11Z",
+          "head_sha": "34e813456302a9f30a2c7f37f0bfb4571846ea5c",
+          "run_started_at": "2026-10-28T11:20:46Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40675391079,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T10:51:19Z",
+          "updated_at": "2026-10-28T11:14:58Z",
+          "head_sha": "d051012e0600d42bd135063bbca828e9b1cc9100",
+          "run_started_at": "2026-10-28T10:51:19Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40674042068,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T10:40:55Z",
+          "updated_at": "2026-10-28T10:59:50Z",
+          "head_sha": "2a2c0597730c82ca05058b5a63a7cc3618e118d3",
+          "run_started_at": "2026-10-28T10:40:55Z",
+          "name": "Wirkungsticker",
+          "event": "schedule",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40669384369,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T10:05:50Z",
+          "updated_at": "2026-10-28T10:18:56Z",
+          "head_sha": "d844b409f1d1cfcd6f579e8770653969888c162a",
+          "run_started_at": "2026-10-28T10:05:50Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40665562880,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T09:36:29Z",
+          "updated_at": "2026-10-28T09:58:49Z",
+          "head_sha": "ecaac89139a6503e523c724083da7f6b7846d07e",
+          "run_started_at": "2026-10-28T09:36:29Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40663579039,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T09:21:19Z",
+          "updated_at": "2026-10-28T09:41:54Z",
+          "head_sha": "7efeecee42f0fc4f9b2ed01ed3853a5b3f27b241",
+          "run_started_at": "2026-10-28T09:21:19Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40661580634,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T09:05:46Z",
+          "updated_at": "2026-10-28T09:26:56Z",
+          "head_sha": "57181e9f6bec7e52e51d25ccbab28b0c2ce37681",
+          "run_started_at": "2026-10-28T09:05:46Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40659779515,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T08:51:14Z",
+          "updated_at": "2026-10-28T09:05:47Z",
+          "head_sha": "45fdde7da94af617bcb266ac289b5f918cc8fa00",
+          "run_started_at": "2026-10-28T08:51:14Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40657916707,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T08:35:41Z",
+          "updated_at": "2026-10-28T09:11:24Z",
+          "head_sha": "745ca970f233dea1807464ec27b04cfb99983b09",
+          "run_started_at": "2026-10-28T08:35:41Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40656103681,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T08:20:42Z",
+          "updated_at": "2026-10-28T08:39:32Z",
+          "head_sha": "fcd172b3c60963655b581dcf2d6a9409338a1742",
+          "run_started_at": "2026-10-28T08:20:42Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40652763990,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T07:51:20Z",
+          "updated_at": "2026-10-28T08:12:32Z",
+          "head_sha": "d188af86aad97759a5b4540515895bfb7e112307",
+          "run_started_at": "2026-10-28T07:51:20Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40651102046,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T07:35:49Z",
+          "updated_at": "2026-10-28T08:00:31Z",
+          "head_sha": "1d54c9225f6ed0ed9bfd8981c5a372b21edd95d6",
+          "run_started_at": "2026-10-28T07:35:49Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40649464551,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T07:20:43Z",
+          "updated_at": "2026-10-28T07:46:57Z",
+          "head_sha": "e65c6aa837b098b6b6416c21b45f89309cd04517",
+          "run_started_at": "2026-10-28T07:20:43Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40647879473,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T07:05:46Z",
+          "updated_at": "2026-10-28T07:29:52Z",
+          "head_sha": "e6d98c629c8cb83ad5b1666431f306017d45796e",
+          "run_started_at": "2026-10-28T07:05:46Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40644818752,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T06:35:49Z",
+          "updated_at": "2026-10-28T06:54:11Z",
+          "head_sha": "a4e126e68a6363bae7e78489c855fd5760330e87",
+          "run_started_at": "2026-10-28T06:35:49Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40643333040,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T06:21:17Z",
+          "updated_at": "2026-10-28T06:39:06Z",
+          "head_sha": "9e9a20c24c10698c727419325dde939e7c95405a",
+          "run_started_at": "2026-10-28T06:21:17Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40641771861,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T06:05:40Z",
+          "updated_at": "2026-10-28T06:20:00Z",
+          "head_sha": "12cf7f1de43848672926c55ddd1a2ceb250e43a0",
+          "run_started_at": "2026-10-28T06:05:40Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40640351201,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T05:50:52Z",
+          "updated_at": "2026-10-28T06:05:32Z",
+          "head_sha": "41bac6c2dc37c94f28affea37ce120c24db1f840",
+          "run_started_at": "2026-10-28T05:50:52Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40637505943,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T05:21:20Z",
+          "updated_at": "2026-10-28T05:38:03Z",
+          "head_sha": "3911781c0fda425830fbad27b1fd16d5e38b1486",
+          "run_started_at": "2026-10-28T05:21:20Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40635982991,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T05:05:48Z",
+          "updated_at": "2026-10-28T05:21:19Z",
+          "head_sha": "10f0a14d6365c99d11770a24b09580a481e1071a",
+          "run_started_at": "2026-10-28T05:05:48Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40633229664,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T04:35:58Z",
+          "updated_at": "2026-10-28T04:52:26Z",
+          "head_sha": "4a76b08ce28ea7fdc5c1d6c923c7002126af6d3f",
+          "run_started_at": "2026-10-28T04:35:58Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40631801025,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T04:20:48Z",
+          "updated_at": "2026-10-28T04:40:22Z",
+          "head_sha": "9722c037f1251eeaa9cb3758c49129d412f67159",
+          "run_started_at": "2026-10-28T04:20:48Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40626188274,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T03:21:10Z",
+          "updated_at": "2026-10-28T03:22:18Z",
+          "head_sha": "08525802d06bfea3dc892f80e80459b8791350c4",
+          "run_started_at": "2026-10-28T03:21:10Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40624975084,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T03:08:28Z",
+          "updated_at": "2026-10-28T03:23:49Z",
+          "head_sha": "28bcb1cb1fd2b666d4973e0dd135ac1c3a3d2963",
+          "run_started_at": "2026-10-28T03:08:28Z",
+          "name": "recovery-0982cb03c7f37e48",
+          "event": "workflow_dispatch",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40624718855,
+          "status": "completed",
+          "conclusion": "cancelled",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T03:05:50Z",
+          "updated_at": "2026-10-28T03:06:37Z",
+          "head_sha": "817c195985da7e06c76237d2bcb9bb2fbd1888ab",
+          "run_started_at": "2026-10-28T03:05:50Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40623305684,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T02:50:50Z",
+          "updated_at": "2026-10-28T03:07:11Z",
+          "head_sha": "b907981204a127f96663597d2700f50aa4fabc9e",
+          "run_started_at": "2026-10-28T02:50:50Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40621851691,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T02:35:40Z",
+          "updated_at": "2026-10-28T02:52:27Z",
+          "head_sha": "543f1b61bb6351bdd7cf1afb562442ad7de31e82",
+          "run_started_at": "2026-10-28T02:35:40Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40620363616,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T02:20:41Z",
+          "updated_at": "2026-10-28T02:35:38Z",
+          "head_sha": "c33cc03c3a9078d8c50af03968e6c33dd779f956",
+          "run_started_at": "2026-10-28T02:20:41Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40618944489,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T02:06:12Z",
+          "updated_at": "2026-10-28T02:18:01Z",
+          "head_sha": "b0470269e11c56c84ccf79e442cd8b235702ea8c",
+          "run_started_at": "2026-10-28T02:06:12Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40616000542,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T01:35:58Z",
+          "updated_at": "2026-10-28T01:46:03Z",
+          "head_sha": "53dd87f1f6c96118c4099557a7f9d488342eae9a",
+          "run_started_at": "2026-10-28T01:35:58Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40614484352,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T01:20:51Z",
+          "updated_at": "2026-10-28T01:36:36Z",
+          "head_sha": "24ab3244292abf6daa55ea2961980b4b45c4d04e",
+          "run_started_at": "2026-10-28T01:20:51Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40612936030,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T01:05:49Z",
+          "updated_at": "2026-10-28T01:23:03Z",
+          "head_sha": "2de42789baf5e809183c60f5bb7e497a474ba83d",
+          "run_started_at": "2026-10-28T01:05:49Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40609771488,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T00:35:55Z",
+          "updated_at": "2026-10-28T00:46:11Z",
+          "head_sha": "10d739f2fbb3da46e8739a8576079541b6e03ef1",
+          "run_started_at": "2026-10-28T00:35:55Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40608218935,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T00:21:17Z",
+          "updated_at": "2026-10-28T00:32:59Z",
+          "head_sha": "6b03e960ed97ee505f1ad3670c18ddcecaeab58a",
+          "run_started_at": "2026-10-28T00:21:17Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40606543935,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-28T00:05:58Z",
+          "updated_at": "2026-10-28T00:21:44Z",
+          "head_sha": "0380542e2feeafc80b07e8cf9d20673916ad6db7",
+          "run_started_at": "2026-10-28T00:05:58Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40605599416,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-27T23:57:25Z",
+          "updated_at": "2026-10-28T00:10:07Z",
+          "head_sha": "82856fc26400dd011be8a6e665474a4df4465eb3",
+          "run_started_at": "2026-10-27T23:57:25Z",
+          "name": "Wirkungsticker",
+          "event": "schedule",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40603196286,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-27T23:35:42Z",
+          "updated_at": "2026-10-27T23:51:21Z",
+          "head_sha": "cd708071ccc33b751f2fcda770e2651a84d88070",
+          "run_started_at": "2026-10-27T23:35:42Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40601513101,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-27T23:20:59Z",
+          "updated_at": "2026-10-27T23:35:39Z",
+          "head_sha": "581171ca7a00c690b5222e21161cf59b54ed8f57",
+          "run_started_at": "2026-10-27T23:20:59Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40599714519,
+          "status": "completed",
+          "conclusion": "failure",
+          "run_attempt": 1,
+          "created_at": "2026-10-27T23:06:01Z",
+          "updated_at": "2026-10-27T23:18:05Z",
+          "head_sha": "ba12a18fd721452443d15b83744d904a0693fd5b",
+          "run_started_at": "2026-10-27T23:06:01Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        },
+        {
+          "id": 40597880979,
+          "status": "completed",
+          "conclusion": "success",
+          "run_attempt": 1,
+          "created_at": "2026-10-27T22:50:56Z",
+          "updated_at": "2026-10-27T23:07:20Z",
+          "head_sha": "ea425abb5b72f68731076c810b1e682a45420f31",
+          "run_started_at": "2026-10-27T22:50:56Z",
+          "name": "Wirkungsticker",
+          "event": "push",
+          "path": ".github/workflows/wirkungsticker.yml"
+        }
+      ]
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/runs/41913667334": {
+      "id": 41913667334,
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-11-04T21:11:02Z",
+      "updated_at": "2026-11-04T21:30:08Z",
+      "head_sha": "67308ece267e1dc5f755e3c15467c46ff844b9ed",
+      "run_started_at": "2026-11-04T21:11:02Z",
+      "name": "Regulaerer Wiederanlauf 20261104T2110Z",
+      "event": "workflow_dispatch",
+      "path": ".github/workflows/wirkungsticker.yml"
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/runs/41913667334/jobs?per_page=100": {
+      "total_count": 1,
+      "jobs": [
+        {
+          "id": 126867554406,
+          "run_id": 41913667334,
+          "status": "completed",
+          "conclusion": "failure",
+          "name": "update",
+          "runner_id": 1000036827,
+          "runner_name": "GitHub Actions 1000036827",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-04T21:11:06Z",
+              "completed_at": "2026-11-04T21:11:07Z"
+            },
+            {
+              "name": "Checkout main",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-04T21:11:07Z",
+              "completed_at": "2026-11-04T21:12:10Z"
+            },
+            {
+              "name": "Setup Node",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-04T21:12:10Z",
+              "completed_at": "2026-11-04T21:12:11Z"
+            },
+            {
+              "name": "Select run slot",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-04T21:12:11Z",
+              "completed_at": "2026-11-04T21:12:11Z"
+            },
+            {
+              "name": "Set up pinned title-image rasterizer",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-04T21:12:11Z",
+              "completed_at": "2026-11-04T21:12:20Z"
+            },
+            {
+              "name": "Record expected run start",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-04T21:12:20Z",
+              "completed_at": "2026-11-04T21:12:20Z"
+            },
+            {
+              "name": "Verify enabled immutable ticker data before processing",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-04T21:12:20Z",
+              "completed_at": "2026-11-04T21:12:28Z"
+            },
+            {
+              "name": "Unit and security tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-04T21:12:28Z",
+              "completed_at": "2026-11-04T21:14:08Z"
+            },
+            {
+              "name": "Queue potential reassessments for the newest online stories",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-04T21:14:08Z",
+              "completed_at": "2026-11-04T21:14:10Z"
+            },
+            {
+              "name": "Fetch Natalie's news orders from the private editorial desk",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-04T21:14:10Z",
+              "completed_at": "2026-11-04T21:14:41Z"
+            },
+            {
+              "name": "Validate the existing archive encryption key before paid work",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-04T21:14:41Z",
+              "completed_at": "2026-11-04T21:14:42Z"
+            },
+            {
+              "name": "Verify interrupted paid work before another provider request",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-04T21:14:42Z",
+              "completed_at": "2026-11-04T21:14:51Z"
+            },
+            {
+              "name": "Import, analyze (one call per story) and build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-04T21:14:51Z",
+              "completed_at": "2026-11-04T21:26:41Z"
+            },
+            {
+              "name": "Hand analysed news orders to Natalie's approval list",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-04T21:26:41Z",
+              "completed_at": "2026-11-04T21:26:41Z"
+            },
+            {
+              "name": "Take over editions approved in the private editorial desk",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-04T21:26:41Z",
+              "completed_at": "2026-11-04T21:26:43Z"
+            },
+            {
+              "name": "Recover the verified retained St. Pauli answer without a provider call",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-04T21:26:43Z",
+              "completed_at": "2026-11-04T21:26:44Z"
+            },
+            {
+              "name": "Read public ticker outcome",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-04T21:26:44Z",
+              "completed_at": "2026-11-04T21:26:44Z"
+            },
+            {
+              "name": "Redaktionelle Lage schreiben und Seiten erneuern",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-04T21:26:44Z",
+              "completed_at": "2026-11-04T21:26:46Z"
+            },
+            {
+              "name": "Build public ticker after editorial imports and Lage",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-04T21:26:46Z",
+              "completed_at": "2026-11-04T21:28:04Z"
+            },
+            {
+              "name": "Synchronize public survey pages from Oracle",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-04T21:28:04Z",
+              "completed_at": "2026-11-04T21:28:05Z"
+            },
+            {
+              "name": "Build search index, taxonomy and validate output",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-04T21:28:05Z",
+              "completed_at": "2026-11-04T21:29:35Z"
+            },
+            {
+              "name": "Verify and persist enabled immutable ticker data parts",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 22,
+              "started_at": "2026-11-04T21:29:35Z",
+              "completed_at": "2026-11-04T21:29:57Z"
+            },
+            {
+              "name": "Commit one atomic update",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 23,
+              "started_at": "2026-11-04T21:29:57Z",
+              "completed_at": "2026-11-04T21:29:57Z"
+            },
+            {
+              "name": "Acknowledge approved editions after the durable push",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 24,
+              "started_at": "2026-11-04T21:29:57Z",
+              "completed_at": "2026-11-04T21:29:57Z"
+            },
+            {
+              "name": "Publish the committed ticker automatically",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 25,
+              "started_at": "2026-11-04T21:29:57Z",
+              "completed_at": "2026-11-04T21:29:57Z"
+            },
+            {
+              "name": "Verify ticker run health",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-04T21:29:57Z",
+              "completed_at": "2026-11-04T21:29:57Z"
+            },
+            {
+              "name": "Seal paid originals for private recovery",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-04T21:29:57Z",
+              "completed_at": "2026-11-04T21:29:57Z"
+            },
+            {
+              "name": "Preserve encrypted paid model answers for gate diagnosis",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-04T21:29:57Z",
+              "completed_at": "2026-11-04T21:29:58Z"
+            },
+            {
+              "name": "Report incomplete editorial takeover or receipt",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 29,
+              "started_at": "2026-11-04T21:29:58Z",
+              "completed_at": "2026-11-04T21:29:58Z"
+            },
+            {
+              "name": "Preserve failed-run work and usage for recovery",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-04T21:29:58Z",
+              "completed_at": "2026-11-04T21:30:05Z"
+            },
+            {
+              "name": "Post Setup Node",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 59,
+              "started_at": "2026-11-04T21:30:05Z",
+              "completed_at": "2026-11-04T21:30:05Z"
+            },
+            {
+              "name": "Post Checkout main",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 60,
+              "started_at": "2026-11-04T21:30:05Z",
+              "completed_at": "2026-11-04T21:30:05Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 61,
+              "started_at": "2026-11-04T21:30:05Z",
+              "completed_at": "2026-11-04T21:30:05Z"
+            }
+          ]
+        }
+      ]
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker.yml/runs?status=queued&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker.yml/runs?status=in_progress&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker.yml/runs?status=waiting&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker.yml/runs?status=pending&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker.yml/runs?status=requested&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker-discovery.yml/runs?status=queued&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker-discovery.yml/runs?status=in_progress&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker-discovery.yml/runs?status=waiting&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker-discovery.yml/runs?status=pending&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    },
+    "repos/sustynats/wirkungsoekonomie.de/actions/workflows/wirkungsticker-discovery.yml/runs?status=requested&per_page=100": {
+      "total_count": 0,
+      "workflow_runs": []
+    }
+  },
+  "zero_runner_original_run": {
+    "id": 45009658267,
+    "job_id": 137168937519,
+    "head_sha": "9286d8b3e0149543a2e34ed4110f06025a5e611e",
+    "runner_id": 0,
+    "steps": 0,
+    "checked_at": "2026-11-22T19:00:38.417Z",
+    "basis": "GitHub billing annotation confirms no job started; no provider request could execute."
+  }
+}

@@ -149,7 +149,7 @@ test('CLI catches local JSON errors and prints only a redacted diagnostic with e
     const source=fileURLToPath(new URL('../../scripts/news/',import.meta.url));
     const scripts=path.join(root,'scripts/news'); fs.mkdirSync(scripts,{recursive:true});
     for (const name of ['retained-failed-paid-work.mjs','recover-failed-usage.mjs','committed-paid-run-evidence.mjs','paid-preflight-diagnostics.mjs',
-      'quarantined-419-evidence.mjs','newsroom-store.mjs','release-part.mjs']) fs.copyFileSync(path.join(source,name),path.join(scripts,name));
+      'quarantined-419-evidence.mjs','newsroom-store.mjs','release-part.mjs','retired-history-reads.mjs']) fs.copyFileSync(path.join(source,name),path.join(scripts,name));
     fs.mkdirSync(path.join(root,'data/news'),{recursive:true}); fs.writeFileSync(path.join(root,'data/news/usage.json'),`{${secret}`);
     const result=spawnSync(process.execPath,[path.join(scripts,'retained-failed-paid-work.mjs'),'--preflight','--dry-run'],
       {encoding:'utf8',env:{GITHUB_REPOSITORY:NEW_PAID_REPOSITORY,GITHUB_RUN_ID:'900',GITHUB_RUN_ATTEMPT:'1'}});

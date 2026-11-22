@@ -44,3 +44,24 @@ das öffentliche Repository noch in Berichte oder Website-Artefakte.
 Oracle-Publisher als zuständige Instanz. Die beiden GitHub-RSS-Jobs bleiben dann
 inaktiv. Der Publisher führt eine dauerhafte Versandhistorie je Kanal und URL;
 Migrationen übernehmen den vorhandenen Bestand ohne erneute Veröffentlichung.
+
+## Historische Nachrichtenläufe nach dem Repositorywechsel
+
+GitHub-Laufnummern gehören zur ursprünglichen Repository-Identität. Der neue
+öffentliche Quellbestand übernimmt Ausgaben, Eingabesperren und den geprüften
+Monitorzustand; er darf die alten Laufnummern nicht als neue, unbekannte Aufträge
+behandeln. Ein vor Zuweisung eines Runners gesperrter Lauf wird nur mit seinem
+exakten Metadaten- und Jobnachweis als ungestartet übernommen.
+
+Die Originalrepositorys werden mit deaktivierten Actions privat archiviert.
+`.github/retired-news-history.json` enthält ausschließlich geprüfte technische
+Laufmetadaten der stillgelegten Nachrichtenpipeline. Die Baseline bindet ihre
+Prüfsumme. Private Modellantworten und Zugangsdaten bleiben außerhalb dieses
+Nachweises. Fehlende, geänderte oder widersprüchliche Nachweise stoppen den
+Vorabcheck; neue Produktionsläufe werden weiterhin unmittelbar bei GitHub
+geprüft. Offene Bildnachweise und bestehende Quarantänen bleiben bestehen.
+
+Neue manuelle Aufträge und Lexikon-Veröffentlichungen verwenden ausschließlich
+das Produktionsrepository. Die Sperrprüfung eines öffentlichen Produktionslaufs
+braucht keinen zusätzlichen privaten GitHub-Zugang. Historische Download-URLs
+bleiben von diesen operativen Zieladressen getrennt.
