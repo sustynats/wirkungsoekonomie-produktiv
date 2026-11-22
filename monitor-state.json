@@ -36,10 +36,6 @@
   },
   "outbox": [
     {
-      "id": "27c1b81039c763e68c821dca",
-      "content": "✓ WÖk-Störung behoben\nNachrichtenimport\nPrüfung: 2026-11-22T21:06:04.924Z"
-    },
-    {
       "id": "a45dde7c3b12b8e154d1c9f9",
       "content": "✓ WÖk-Störung behoben\nRedaktionslauf\nPrüfung: 2026-11-22T21:06:04.924Z"
     },
