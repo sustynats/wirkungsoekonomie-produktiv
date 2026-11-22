@@ -4928,6 +4928,13 @@
       "at": "2026-11-04T20:21:21.111Z",
       "status": "dispatch_rejected",
       "error": "MONITOR_STATE_HTTP_422"
+    },
+    {
+      "key": "b54fe8a38d3699bf169d72c842482c5f92dd24250fc25120897267800c193e32",
+      "workflow": "wirkungsticker.yml",
+      "head": "bfe5f72a1ef0dca1c79ad15afb7b09eeb8750bc9",
+      "at": "2026-11-22T22:54:40.981Z",
+      "status": "reserved"
     }
   ]
 }
