@@ -1,7 +1,90 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-22T17:00:00.000Z",
+  "updated_at": "2026-11-23T11:00:00.000Z",
   "lagen": [
+    {
+      "lage_id": "2026-11-23-mittagslage",
+      "slot": "mittagslage",
+      "label": "Mittagslage",
+      "date": "2026-11-23",
+      "window_from": "2026-11-23T05:00:00.000Z",
+      "window_to": "2026-11-23T11:00:00.000Z",
+      "stand": "2026-11-23T11:00:00.000Z",
+      "headline": "Noch keine neue Nachricht seit 6 Uhr veröffentlicht.",
+      "counts": {
+        "total": 0,
+        "neu": 0,
+        "fortgeschrieben": 0
+      },
+      "entries": [],
+      "processing_status": {
+        "state": "processing_unknown",
+        "checked_at": "2026-11-22T22:25:58.023Z",
+        "note": "Zum Zeitpunkt der Zusammenstellung liegt kein aktueller Nachweis über den Abschluss der Nachrichtenverarbeitung vor. Diese Ausgabe zeigt bereits veröffentlichte Nachrichten; sie belegt nicht, dass es keine weiteren relevanten Nachrichten gibt."
+      },
+      "publication_recovery": {
+        "recovered_at": "2026-11-23T15:56:18.519Z",
+        "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
+      }
+    },
+    {
+      "lage_id": "2026-11-23-morgenlage",
+      "slot": "morgenlage",
+      "label": "Morgenlage",
+      "date": "2026-11-23",
+      "window_from": "2026-11-22T17:00:00.000Z",
+      "window_to": "2026-11-23T05:00:00.000Z",
+      "stand": "2026-11-23T05:00:00.000Z",
+      "headline": "Das sind die 4 Entwicklungen, die seit gestern Abend wirkungsrelevant geworden sind.",
+      "counts": {
+        "total": 4,
+        "neu": 4,
+        "fortgeschrieben": 0
+      },
+      "entries": [
+        {
+          "story_id": "wt-c8777e626db263ff",
+          "slug": "drohnenangriff-auf-russischen-frachter-in-der-ostsee-b263ff",
+          "title": "Drohnen treffen russischen Frachter in der Ostsee, Löscharbeiten dauern an",
+          "state": "neu",
+          "at": "2026-11-22T22:25:56.748Z",
+          "score": 5.4527
+        },
+        {
+          "story_id": "wt-4907c4d913ad3307",
+          "slug": "angriffe-und-explosionen-im-mittelmeer-seedrohnen-zerstoren-russisches-kriegsschiff-und--ad3307",
+          "title": "Angriffe im Mittelmeer: Berichte über Schäden an russischen Schiffen",
+          "state": "neu",
+          "at": "2026-11-22T21:26:35.162Z",
+          "score": 3.3703
+        },
+        {
+          "story_id": "wt-84df86fc542143b6",
+          "slug": "libyen-explosion-auf-russischem-schiff-ukrainischer-angriff-vermutet-2143b6",
+          "title": "Laut Behörden: Libyen: Behörden vermuten Drohnenangriff auf russisches Kriegsschiff",
+          "state": "neu",
+          "at": "2026-11-22T21:12:43.393Z",
+          "score": 5.351
+        },
+        {
+          "story_id": "wt-eeb65dad51d49a54",
+          "slug": "explosion-auf-russischem-schiff-in-libyen-behorden-vermuten-drohnenangriff-d49a54",
+          "title": "Explosion auf russischem Schiff in Libyen: Behörden vermuten Drohnenangriff",
+          "state": "neu",
+          "at": "2026-11-22T21:12:00.246Z",
+          "score": 9.35
+        }
+      ],
+      "processing_status": {
+        "state": "processing_unknown",
+        "checked_at": "2026-11-22T22:25:58.023Z",
+        "note": "Zum Zeitpunkt der Zusammenstellung liegt kein aktueller Nachweis über den Abschluss der Nachrichtenverarbeitung vor. Diese Ausgabe zeigt bereits veröffentlichte Nachrichten; sie belegt nicht, dass es keine weiteren relevanten Nachrichten gibt."
+      },
+      "publication_recovery": {
+        "recovered_at": "2026-11-23T15:56:18.519Z",
+        "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
+      }
+    },
     {
       "lage_id": "2026-11-22-abendlage",
       "slot": "abendlage",
