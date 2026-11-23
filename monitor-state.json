@@ -35,10 +35,15 @@
     },
     "lage": {
       "firstSeen": "2026-11-23T05:00:11.937Z",
-      "active": false
+      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "23bad85679e056858529813e",
+      "content": "⚠ WÖk-Betriebsstörung\nKanonischer Lagenbestand: Im kanonischen Bestand fehlen fällige Ausgaben: 2026-11-23-morgenlage. Öffentliche Auslieferung ungeprüft.\nSeit: 2026-11-23T05:00:11.937Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
+    }
+  ],
   "dailyDate": "2026-11-22",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4189,7 +4194,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-23T05:00:11.937Z",
+    "checked_at": "2026-11-23T05:06:07.278Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
