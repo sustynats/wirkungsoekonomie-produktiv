@@ -1,8 +1,71 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-22T22:24:11.841Z",
+  "updated_at": "2026-11-23T00:12:38.850Z",
   "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
   "beitraege": [
+    {
+      "slug": "was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b",
+      "titel": "Was der Angriff auf die Krim-Brücke verändert – und was nicht",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:12:38.850Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b/"
+    },
+    {
+      "slug": "nachgehort-unbequeme-fragen-klare-grenzen-claudia-major-uber-deutschlands-ukraine-debatte-5420f6",
+      "titel": "Nachgehört: Unbequeme Fragen, klare Grenzen – Claudia Major über Deutschlands Ukraine-Debatte",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:12:29.726Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-unbequeme-fragen-klare-grenzen-claudia-major-uber-deutschlands-ukraine-debatte-5420f6/"
+    },
+    {
+      "slug": "wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4",
+      "titel": "Wenn die Koalition ohne den Kanzler weiterverhandelt",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:12:06.273Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/"
+    },
+    {
+      "slug": "wenn-ein-kriegspapier-europas-sicherheitsordnung-neu-sortieren-soll-756403",
+      "titel": "Wenn ein Kriegspapier Europas Sicherheitsordnung neu sortieren soll",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:11:49.965Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-ein-kriegspapier-europas-sicherheitsordnung-neu-sortieren-soll-756403/"
+    },
+    {
+      "slug": "drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd",
+      "titel": "Drei Staatschefs, vier Punkte – und viel Macht in den Bildern",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:11:40.583Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/"
+    },
+    {
+      "slug": "zwischen-deportation-und-zugehorigkeit-was-die-geschichte-der-russlanddeutschen-bis-heute-erkla-a380ff",
+      "titel": "Zwischen Deportation und Zugehörigkeit: Was die Geschichte der Russlanddeutschen bis heute erklärt",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:11:33.371Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-deportation-und-zugehorigkeit-was-die-geschichte-der-russlanddeutschen-bis-heute-erkla-a380ff/"
+    },
+    {
+      "slug": "was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062",
+      "titel": "Was ein General in Litauen über Abschreckung sagt",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:11:26.985Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/"
+    },
+    {
+      "slug": "ukraine-unterstutzung-zwischen-sicherheitsinteresse-kriegsfolgen-und-politischer-zumutung-f4b1d0",
+      "titel": "Ukraine-Unterstützung: Zwischen Sicherheitsinteresse, Kriegsfolgen und politischer Zumutung",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-23T00:11:18.467Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ukraine-unterstutzung-zwischen-sicherheitsinteresse-kriegsfolgen-und-politischer-zumutung-f4b1d0/"
+    },
+    {
+      "slug": "wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f",
+      "titel": "Wenn fünf Milliarden zum Machtkampf werden",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-23T00:11:10.778Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/"
+    },
     {
       "slug": "shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885",
       "titel": "Shenzhen zeigt Machtbilder – und Europas offene Flanke",
@@ -149,69 +212,6 @@
       "art": "watched",
       "veroeffentlicht": "2026-11-12T00:09:13.327Z",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/maischberger-zwischen-hoffnung-kriegsdruck-und-politischer-verantwortung-fa9293/"
-    },
-    {
-      "slug": "markus-lanz-wenn-debatten-uber-gewalt-antisemitismus-und-migration-ineinanderfallen-c0992a",
-      "titel": "Markus Lanz: Wenn Debatten über Gewalt, Antisemitismus und Migration ineinanderfallen",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-12T00:08:56.718Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/markus-lanz-wenn-debatten-uber-gewalt-antisemitismus-und-migration-ineinanderfallen-c0992a/"
-    },
-    {
-      "slug": "nachgehort-kinderschutz-braucht-mehr-als-ein-social-media-verbot-1758ab",
-      "titel": "Nachgehört: Kinderschutz braucht mehr als ein Social-Media-Verbot",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-12T00:08:38.726Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-kinderschutz-braucht-mehr-als-ein-social-media-verbot-1758ab/"
-    },
-    {
-      "slug": "zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b",
-      "titel": "Zuversicht ist kein gutes Gefühl, sondern eine demokratische Praxis",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-11T11:15:56.831Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zuversicht-ist-kein-gutes-gefuhl-sondern-eine-demokratische-praxis-a0104b/"
-    },
-    {
-      "slug": "nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82",
-      "titel": "Nachgesehen: Eine Wahlniederlage, die Trump nicht handlungsunfähig macht",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-10T06:04:43.183Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-eine-wahlniederlage-die-trump-nicht-handlungsunfahig-macht-30dd82/"
-    },
-    {
-      "slug": "nachgesehen-was-der-darm-wirklich-braucht-und-wo-das-mikrobiom-zur-verkaufsstory-wird-450f4d",
-      "titel": "Nachgesehen: Was der Darm wirklich braucht – und wo das Mikrobiom zur Verkaufsstory wird",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-09T13:02:19.033Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-was-der-darm-wirklich-braucht-und-wo-das-mikrobiom-zur-verkaufsstory-wird-450f4d/"
-    },
-    {
-      "slug": "nach-der-wahl-amerikas-demokratie-hat-noch-gegengewichte-und-verliert-spielraum-fae247",
-      "titel": "Nach der Wahl: Amerikas Demokratie hat noch Gegengewichte – und verliert Spielraum",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-09T13:02:08.722Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nach-der-wahl-amerikas-demokratie-hat-noch-gegengewichte-und-verliert-spielraum-fae247/"
-    },
-    {
-      "slug": "wenn-die-ki-zum-taschengott-wird-nachgehort-mit-sascha-lobo-und-elisabeth-l-orange-a5af43",
-      "titel": "Wenn die KI zum Taschengott wird: Nachgehört mit Sascha Lobo und Elisabeth L’Orange",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-07T23:12:39.087Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-die-ki-zum-taschengott-wird-nachgehort-mit-sascha-lobo-und-elisabeth-l-orange-a5af43/"
-    },
-    {
-      "slug": "machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d",
-      "titel": "Machtwechsel analysiert: Wie die Bundespräsidentenfrage Friedrich Merz unter Druck setzt",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-07T23:12:28.701Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/machtwechsel-analysiert-wie-die-bundesprasidentenfrage-friedrich-merz-unter-druck-setzt-35b62d/"
-    },
-    {
-      "slug": "markus-lanz-vom-3-november-2026-zwischen-protest-gewalt-und-politischer-verantwortung-44a76a",
-      "titel": "Markus Lanz vom 3. November 2026: Zwischen Protest, Gewalt und politischer Verantwortung",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-07T23:12:22.370Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/markus-lanz-vom-3-november-2026-zwischen-protest-gewalt-und-politischer-verantwortung-44a76a/"
     }
   ]
 }
