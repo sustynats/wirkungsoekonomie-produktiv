@@ -34,12 +34,7 @@
       "active": true
     }
   },
-  "outbox": [
-    {
-      "id": "ace85fb1286675584c621655",
-      "content": "✓ WÖk-Störung behoben\nKanonischer Lagenbestand\nPrüfung: 2026-11-23T23:05:52.362Z"
-    }
-  ],
+  "outbox": [],
   "dailyDate": "2026-11-23",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
