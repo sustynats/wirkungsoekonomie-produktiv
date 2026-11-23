@@ -1,11 +1,137 @@
 {
-  "_woek_revision": "20260912-news-freshness:2026-11-22T22:24:11.841Z",
+  "_woek_revision": "20260912-news-freshness:2026-11-23T00:12:38.850Z",
   "version": "https://jsonfeed.org/version/1.1",
   "title": "Wirkungsticker",
   "home_page_url": "https://wirkungsoekonomie.de/wirkungsticker/",
   "feed_url": "https://wirkungsoekonomie.de/wirkungsticker/feed.json",
   "language": "de",
   "items": [
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b/",
+      "title": "Nachgehört: Was der Angriff auf die Krim-Brücke verändert – und was nicht",
+      "summary": "Nachgehört: RONZHEIMER. mit Rebecca Barth über Logistik, Symbolik und die Grenzen eines spektakulären Schlags",
+      "date_published": "2026-11-23T00:12:38.850Z",
+      "date_modified": "2026-11-23T00:12:38.850Z",
+      "_woek_released_at": "2026-11-23T00:12:38.850Z",
+      "_woek_original_episode_date": "2026-11-18",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-unbequeme-fragen-klare-grenzen-claudia-major-uber-deutschlands-ukraine-debatte-5420f6/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-unbequeme-fragen-klare-grenzen-claudia-major-uber-deutschlands-ukraine-debatte-5420f6/",
+      "title": "Nachgehört: Unbequeme Fragen, klare Grenzen – Claudia Major über Deutschlands Ukraine-Debatte",
+      "summary": "Paul Ronzheimer lässt seine Community fragen: über Geld, Korruption, Rüstung, Diplomatie und die Grenzen westlicher Unterstützung. Die Folge ist stark, wenn sie Kritik zulässt und zugleich auf Belege besteht.",
+      "date_published": "2026-11-23T00:12:29.726Z",
+      "date_modified": "2026-11-23T00:12:29.726Z",
+      "_woek_released_at": "2026-11-23T00:12:29.726Z",
+      "_woek_original_episode_date": "2026-11-19",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/",
+      "title": "Nachgehört: Wenn die Koalition ohne den Kanzler weiterverhandelt",
+      "summary": "Nachgehört: Paul Ronzheimer spricht mit Mariam Lau über die Stromsteuer, Machtverschiebungen in der Union und die Frage, was politische Handlungsfähigkeit heute noch bedeutet.",
+      "date_published": "2026-11-23T00:12:06.273Z",
+      "date_modified": "2026-11-23T00:12:06.273Z",
+      "_woek_released_at": "2026-11-23T00:12:06.273Z",
+      "_woek_original_episode_date": "2026-11-21",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-ein-kriegspapier-europas-sicherheitsordnung-neu-sortieren-soll-756403/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-ein-kriegspapier-europas-sicherheitsordnung-neu-sortieren-soll-756403/",
+      "title": "Nachgehört: Wenn ein Kriegspapier Europas Sicherheitsordnung neu sortieren soll",
+      "summary": "Nachgehört: Paul Ronzheimer und Filipp Piatov über russische Forderungen, europäische Uneinigkeit, Sicherheitsgarantien für die Ukraine und den Machtkampf in der SPD.",
+      "date_published": "2026-11-23T00:11:49.965Z",
+      "date_modified": "2026-11-23T00:11:49.965Z",
+      "_woek_released_at": "2026-11-23T00:11:49.965Z",
+      "_woek_original_episode_date": "2026-11-16",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/",
+      "title": "Nachgehört: Drei Staatschefs, vier Punkte – und viel Macht in den Bildern",
+      "summary": "Nachgehört: Paul Ronzheimer spricht mit Hanna Notte über den Trump-Xi-Putin-Gipfel, Russlands Kalkül und Europas Rolle",
+      "date_published": "2026-11-23T00:11:40.583Z",
+      "date_modified": "2026-11-23T00:11:40.583Z",
+      "_woek_released_at": "2026-11-23T00:11:40.583Z",
+      "_woek_original_episode_date": "2026-11-20",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-deportation-und-zugehorigkeit-was-die-geschichte-der-russlanddeutschen-bis-heute-erkla-a380ff/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-deportation-und-zugehorigkeit-was-die-geschichte-der-russlanddeutschen-bis-heute-erkla-a380ff/",
+      "title": "Nachgehört: Zwischen Deportation und Zugehörigkeit: Was die Geschichte der Russlanddeutschen bis heute erklärt",
+      "summary": "Nachgehört: RONZHEIMER. – „ZEITREISE: Zwischen Hitler, Stalin & Putin: Die Russland-Deutschen. Mit Viktor Krieger“ vom 21. November 2026",
+      "date_published": "2026-11-23T00:11:33.371Z",
+      "date_modified": "2026-11-23T00:11:33.371Z",
+      "_woek_released_at": "2026-11-23T00:11:33.371Z",
+      "_woek_original_episode_date": "2026-11-21",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/",
+      "title": "Nachgehört: Was ein General in Litauen über Abschreckung sagt",
+      "summary": "Im Podcast spricht Brigadegeneral Christoph Huber über NATO-Verteidigung, Drohnenkrieg und die Zumutung, junge Menschen auf einen möglichen Krieg vorzubereiten.",
+      "date_published": "2026-11-23T00:11:26.985Z",
+      "date_modified": "2026-11-23T00:11:26.985Z",
+      "_woek_released_at": "2026-11-23T00:11:26.985Z",
+      "_woek_original_episode_date": "2026-11-22",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ukraine-unterstutzung-zwischen-sicherheitsinteresse-kriegsfolgen-und-politischer-zumutung-f4b1d0/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ukraine-unterstutzung-zwischen-sicherheitsinteresse-kriegsfolgen-und-politischer-zumutung-f4b1d0/",
+      "title": "Nachgesehen: Ukraine-Unterstützung: Zwischen Sicherheitsinteresse, Kriegsfolgen und politischer Zumutung",
+      "summary": "Der Presseclub diskutiert, wie lange Deutschland die Ukraine unterstützen kann und sollte. Die Sendung zeigt die politischen Konfliktlinien – und lässt eine entscheidende Wirkungsfrage offen: Welche Unterstützung verändert welchen Zustand, für wen und unter welchen Bedingungen?",
+      "date_published": "2026-11-23T00:11:18.467Z",
+      "date_modified": "2026-11-23T00:11:18.467Z",
+      "_woek_released_at": "2026-11-23T00:11:18.467Z",
+      "_woek_original_episode_date": "2026-11-22",
+      "tags": [
+        "Nachgesehen"
+      ],
+      "_woek_type": "Nachgesehen"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/",
+      "title": "Nachgehört: Wenn fünf Milliarden zum Machtkampf werden",
+      "summary": "Nachgehört: Paul Ronzheimer spricht mit Martin Greive über Stromsteuer, Haushaltslöcher und die Grenzen schwarz-roter Finanzpolitik.",
+      "date_published": "2026-11-23T00:11:10.778Z",
+      "date_modified": "2026-11-23T00:11:10.778Z",
+      "_woek_released_at": "2026-11-23T00:11:10.778Z",
+      "_woek_original_episode_date": "2026-11-17",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
     {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/angriffe-und-explosionen-im-mittelmeer-seedrohnen-zerstoren-russisches-kriegsschiff-und--ad3307/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/angriffe-und-explosionen-im-mittelmeer-seedrohnen-zerstoren-russisches-kriegsschiff-und--ad3307/",

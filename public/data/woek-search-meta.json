@@ -319930,7 +319930,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "bd7725659f962d8e",
+      "contentHash": "eda436d0fe4d9e17",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#lagen-titel": {
@@ -319938,7 +319938,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "bd7725659f962d8e",
+      "contentHash": "eda436d0fe4d9e17",
       "sectionId": "lagen-titel"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -320940,6 +320940,38 @@
       "sourceFile": "wirkungsticker/analyse/dormagen-was-der-sabotageverdacht-an-einem-umspannwerk-systemisch-bedeutet-255771/index.html",
       "contentHash": "c7ed587f4a1328c2",
       "sectionId": "analysis-visuals-title"
+    },
+    "/wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/index.html",
+      "contentHash": "36339fcfd7558d18",
+      "sectionId": "woek-page-74791dff8fcec3a6"
+    },
+    "/wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/index.html",
+      "contentHash": "36339fcfd7558d18",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/index.html",
+      "contentHash": "36339fcfd7558d18",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/drei-staatschefs-vier-punkte-und-viel-macht-in-den-bildern-442bcd/index.html",
+      "contentHash": "36339fcfd7558d18",
+      "sectionId": "planet"
     },
     "/wirkungsticker/analyse/dreitagige-angriffspause-auf-kyjiw-was-die-neue-vermittlungsphase-wirklich-verande-cf42f2/": {
       "documentType": "Referenz",
@@ -322565,6 +322597,14 @@
       "contentHash": "9d8394ec127ffd47",
       "sectionId": "woek-page-ca78fd9d9a96d1a2"
     },
+    "/wirkungsticker/analyse/nachgehort-unbequeme-fragen-klare-grenzen-claudia-major-uber-deutschlands-ukraine-debatte-5420f6/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-unbequeme-fragen-klare-grenzen-claudia-major-uber-deutschlands-ukraine-debatte-5420f6/index.html",
+      "contentHash": "d56f34ce614223a4",
+      "sectionId": "woek-page-c9ff6af65fdcd075"
+    },
     "/wirkungsticker/analyse/nachgehort-vergesellschaftung-schafft-keinen-neuen-wohnraum-kann-aber-mieten-begrenzen-a4f28c/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -323933,6 +323973,14 @@
       "contentHash": "3d5c009ffa0c7dc9",
       "sectionId": "woek-page-57d00be4beca5e96"
     },
+    "/wirkungsticker/analyse/ukraine-unterstutzung-zwischen-sicherheitsinteresse-kriegsfolgen-und-politischer-zumutung-f4b1d0/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/ukraine-unterstutzung-zwischen-sicherheitsinteresse-kriegsfolgen-und-politischer-zumutung-f4b1d0/index.html",
+      "contentHash": "4d529216aa1a57b6",
+      "sectionId": "woek-page-ac218eef46fdb2d4"
+    },
     "/wirkungsticker/analyse/vergesellschaftung-in-berlin-was-sie-verandert-und-was-nicht-87f28a/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -324020,6 +324068,14 @@
       "sourceFile": "wirkungsticker/analyse/was-bringt-psychotherapie-zwischen-wirksamer-hilfe-und-ungerechter-versorgung-f19560/index.html",
       "contentHash": "76fe3f1ce1f8682c",
       "sectionId": "woek-page-cb8853caae59b2b9"
+    },
+    "/wirkungsticker/analyse/was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b/index.html",
+      "contentHash": "702d153ec64449f1",
+      "sectionId": "woek-page-81394520fe40cc04"
     },
     "/wirkungsticker/analyse/was-die-schlafsendung-richtigstellt-und-wo-ihre-wirkung-endet-ddf04f/": {
       "documentType": "Referenz",
@@ -324139,6 +324195,38 @@
       "version": "2026.1",
       "sourceFile": "wirkungsticker/analyse/was-diese-wahldebatte-sichtbar-macht-reformen-macht-und-demokratische-grenzen-f6528a/index.html",
       "contentHash": "b3948650b4849bb1",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/index.html",
+      "contentHash": "8fea177444220d3b",
+      "sectionId": "woek-page-f2bbbc7122233761"
+    },
+    "/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/index.html",
+      "contentHash": "8fea177444220d3b",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/index.html",
+      "contentHash": "8fea177444220d3b",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/index.html",
+      "contentHash": "8fea177444220d3b",
       "sectionId": "planet"
     },
     "/wirkungsticker/analyse/was-ein-schulabschluss-noch-wert-ist-wenn-bildung-abgebaut-wird/": {
@@ -324581,6 +324669,38 @@
       "contentHash": "1bc28323a537b63b",
       "sectionId": "woek-page-5a970d3acef44a2a"
     },
+    "/wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/index.html",
+      "contentHash": "7c9d081e035da1dd",
+      "sectionId": "woek-page-d8d50e03194344f7"
+    },
+    "/wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/index.html",
+      "contentHash": "7c9d081e035da1dd",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/index.html",
+      "contentHash": "7c9d081e035da1dd",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-die-koalition-ohne-den-kanzler-weiterverhandelt-400db4/index.html",
+      "contentHash": "7c9d081e035da1dd",
+      "sectionId": "planet"
+    },
     "/wirkungsticker/analyse/wenn-die-mitte-nur-noch-verwaltet-verlieren-am-ende-alle-eff98a/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -324669,6 +324789,14 @@
       "contentHash": "fd69823b7e795d4d",
       "sectionId": "woek-page-73a0bc8ae3e345d5"
     },
+    "/wirkungsticker/analyse/wenn-ein-kriegspapier-europas-sicherheitsordnung-neu-sortieren-soll-756403/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-ein-kriegspapier-europas-sicherheitsordnung-neu-sortieren-soll-756403/index.html",
+      "contentHash": "987abd734a5c6aa9",
+      "sectionId": "woek-page-4765ce0ecb164cb3"
+    },
     "/wirkungsticker/analyse/wenn-ein-wahlsieg-noch-keine-veranderung-ist-8fc9dc/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -324716,6 +324844,46 @@
       "sourceFile": "wirkungsticker/analyse/wenn-energiepolitik-zur-vertrauensfrage-wird-5aa31e/index.html",
       "contentHash": "7a37e63ffe2e6849",
       "sectionId": "woek-page-fc8c6302d0c8a764"
+    },
+    "/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/index.html",
+      "contentHash": "5bbf527b0687dfe6",
+      "sectionId": "woek-page-39a66d0e56870f20"
+    },
+    "/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/index.html",
+      "contentHash": "5bbf527b0687dfe6",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/index.html",
+      "contentHash": "5bbf527b0687dfe6",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/index.html",
+      "contentHash": "5bbf527b0687dfe6",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/#werkmetadaten": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/index.html",
+      "contentHash": "5bbf527b0687dfe6",
+      "sectionId": "werkmetadaten"
     },
     "/wirkungsticker/analyse/wenn-jeder-zum-narzissten-wird-hilft-keine-diagnose-mehr-71a749/": {
       "documentType": "Referenz",
@@ -325189,6 +325357,14 @@
       "contentHash": "aaf39af283793a85",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/zwischen-deportation-und-zugehorigkeit-was-die-geschichte-der-russlanddeutschen-bis-heute-erkla-a380ff/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/zwischen-deportation-und-zugehorigkeit-was-die-geschichte-der-russlanddeutschen-bis-heute-erkla-a380ff/index.html",
+      "contentHash": "2e5c8b4749448ef4",
+      "sectionId": "woek-page-1eddf16d02168dc6"
+    },
     "/wirkungsticker/analyse/zwischen-gipfelsymbolik-und-regierungsrisiko-was-machtwechsel-sichtbar-macht-704eb0/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -325274,7 +325450,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/analysen/index.html",
-      "contentHash": "672cf63e0c0d08a8",
+      "contentHash": "f2efdaefe1b30077",
       "sectionId": "woek-page-720f8d43d23be330"
     },
     "/wirkungsticker/angriff-an-schule-in-frankreich-14-jahriger-soll-schulleiter-und-lehrerin-angeschossen-h-a48894/": {
@@ -325490,7 +325666,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/angriffe-und-explosionen-im-mittelmeer-seedrohnen-zerstoren-russisches-kriegsschiff-und--ad3307/index.html",
-      "contentHash": "8b7a72dfb029efcc",
+      "contentHash": "e167652894a47dc9",
       "sectionId": "woek-page-02b57fad0ab5c9c2"
     },
     "/wirkungsticker/angriffskrieg-drei-tote-und-stromausfalle-nach-russischen-angriffen-auf-die-ukraine-fd4f40/": {
@@ -332474,7 +332650,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "6ee8b6f1f3f9d1e0",
+      "contentHash": "7cd45d83d37e9e92",
       "sectionId": "woek-page-901baef9d8fe7ae8"
     },
     "/wirkungsticker/mehr/#news-app-title": {
@@ -332482,7 +332658,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "6ee8b6f1f3f9d1e0",
+      "contentHash": "7cd45d83d37e9e92",
       "sectionId": "news-app-title"
     },
     "/wirkungsticker/mehrere-explosionen-mindestens-acht-tote-bei-russischen-angriffen-auf-die-ukraine-c3546b/": {
@@ -333642,7 +333818,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/news/index.html",
-      "contentHash": "01c13d2058fdf08b",
+      "contentHash": "acdc0556fc54b7d1",
       "sectionId": "woek-page-7d87c87ddaa7be64"
     },
     "/wirkungsticker/newsblog-zur-landtagswahl-in-sachsen-anhalt-ministerprasident-schulze-cdu-raumt-niederla-0e1751/": {
