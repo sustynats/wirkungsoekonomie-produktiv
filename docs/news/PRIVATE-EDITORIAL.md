@@ -232,3 +232,13 @@ bis zu zwei Minuten auf deren reguläre Freigabe. Die private Vorschauprüfung
 kann die Spur länger als eine Minute halten. Nur der Sperrerwerb wird wiederholt;
 unklare Schreibantworten, Claims und Quittungen niemals. Nach Ablauf bleiben die
 Fassungen für einen späteren regulären Lauf erhalten, ohne fremde Sperren zu lösen.
+
+Die Produktionsnamenprüfung unterscheidet ausdrücklich geprüfte öffentliche
+Produkt-/Quellenreferenzen von internen Arbeitsnotizen. Die Nachgehört-Fassung
+`woek-personal-a5af43a9262df8f2` enthält Claude als Gegenstand von Anthropic-Studien.
+`reviewed-public-references.mjs` bindet nur diese drei Textstellen und die zwei
+Darstellungen der Originalquellen-URL an Route und unveränderten Inhalts-Hash.
+Andere Stellen, fremde Routen, fehlende oder veränderte Katalogdaten bleiben
+gesperrt. Alle Pfad-, Geheimnis-, Zertifikats- und Metadatenprüfungen lesen weiterhin
+den vollständigen Originaltext. Manuskript und persönliche Freigabe werden nicht
+geändert; neue Fassungen oder Referenzen benötigen eine eigene Prüfung.
