@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { textForProductionNameCheck } from './reviewed-public-references.mjs';
 
 const root = process.cwd();
 const artifactDir = path.join(root, "_site");
@@ -146,9 +147,11 @@ function scanTextFile(file) {
   const relative = toRepoRelative(file);
   scannedFiles.push(relative);
   assertNoStaticPersonCertificatePage(file);
+  const reviewedText = textForProductionNameCheck(root, relative, text);
 
   for (const { label, pattern } of blockedContentPatterns) {
-    if (pattern.test(text)) failures.push(`${relative}: contains ${label}`);
+    const checked = label === 'unreviewed production name' ? reviewedText : text;
+    if (pattern.test(checked)) failures.push(`${relative}: contains ${label}`);
   }
 
   if (/certificate|zertifikat/i.test(relative)) {
