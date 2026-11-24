@@ -1,8 +1,50 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-23T00:12:38.850Z",
+  "updated_at": "2026-11-24T00:31:40.432Z",
   "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
   "beitraege": [
+    {
+      "slug": "wenn-politische-forderungen-zum-machtinstrument-werden-e863ba",
+      "titel": "Wenn politische Forderungen zum Machtinstrument werden",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-24T00:31:40.432Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-forderungen-zum-machtinstrument-werden-e863ba/"
+    },
+    {
+      "slug": "zwischen-gipfelbildern-und-stromausfallen-was-bleibt-von-europas-einfluss-c22349",
+      "titel": "Zwischen Gipfelbildern und Stromausfällen: Was bleibt von Europas Einfluss?",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-24T00:31:33.017Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-gipfelbildern-und-stromausfallen-was-bleibt-von-europas-einfluss-c22349/"
+    },
+    {
+      "slug": "nachgehort-wenn-ein-konzern-zu-stark-auf-einen-menschen-zugeschnitten-ist-c2406d",
+      "titel": "Nachgehört: Wenn ein Konzern zu stark auf einen Menschen zugeschnitten ist",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-24T00:31:22.767Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-ein-konzern-zu-stark-auf-einen-menschen-zugeschnitten-ist-c2406d/"
+    },
+    {
+      "slug": "nachgehort-wenn-journalismus-selbst-zur-politischen-infrastruktur-wird-5ba46b",
+      "titel": "Nachgehört: Wenn Journalismus selbst zur politischen Infrastruktur wird",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-24T00:31:14.814Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-journalismus-selbst-zur-politischen-infrastruktur-wird-5ba46b/"
+    },
+    {
+      "slug": "emporung-erklart-noch-keine-politik-3dd9f5",
+      "titel": "Empörung erklärt noch keine Politik",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-24T00:31:05.509Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/emporung-erklart-noch-keine-politik-3dd9f5/"
+    },
+    {
+      "slug": "nachgehort-klimapolitik-wirtschaft-und-demokratie-was-aus-dem-gesprach-mit-maja-gopel-bleibt-4b0322",
+      "titel": "Nachgehört: Klimapolitik, Wirtschaft und Demokratie – was aus dem Gespräch mit Maja Göpel bleibt",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-24T00:30:54.292Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimapolitik-wirtschaft-und-demokratie-was-aus-dem-gesprach-mit-maja-gopel-bleibt-4b0322/"
+    },
     {
       "slug": "was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b",
       "titel": "Was der Angriff auf die Krim-Brücke verändert – und was nicht",
@@ -170,48 +212,6 @@
       "art": "watched",
       "veroeffentlicht": "2026-11-14T08:27:46.148Z",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/markus-lanz-wenn-politische-linien-sichtbar-werden-47ea6b/"
-    },
-    {
-      "slug": "frieden-ohne-sicherung-ware-nur-eine-pause-29daf2",
-      "titel": "Frieden ohne Sicherung wäre nur eine Pause",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-14T08:27:35.566Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/frieden-ohne-sicherung-ware-nur-eine-pause-29daf2/"
-    },
-    {
-      "slug": "wenn-der-haushalt-zum-stresstest-wird-4aca30",
-      "titel": "Wenn der Haushalt zum Stresstest wird",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-14T08:27:24.836Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-der-haushalt-zum-stresstest-wird-4aca30/"
-    },
-    {
-      "slug": "nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede",
-      "titel": "Nachgesehen: Wenn ein Waffenstillstand das Leben nicht sicher macht",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-12T20:47:35.772Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-wenn-ein-waffenstillstand-das-leben-nicht-sicher-macht-bc2ede/"
-    },
-    {
-      "slug": "nachgesehen-wenn-gute-nachrichten-die-harten-entscheidungen-nicht-kleiner-machen-3d48fd",
-      "titel": "Nachgesehen: Wenn gute Nachrichten die harten Entscheidungen nicht kleiner machen",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-12T20:47:28.639Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-wenn-gute-nachrichten-die-harten-entscheidungen-nicht-kleiner-machen-3d48fd/"
-    },
-    {
-      "slug": "nachgehort-wenn-lenkungssteuern-vor-allem-haushaltslocher-stopfen-757203",
-      "titel": "Nachgehört: Wenn Lenkungssteuern vor allem Haushaltslöcher stopfen",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-12T20:47:20.330Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-lenkungssteuern-vor-allem-haushaltslocher-stopfen-757203/"
-    },
-    {
-      "slug": "maischberger-zwischen-hoffnung-kriegsdruck-und-politischer-verantwortung-fa9293",
-      "titel": "maischberger: Zwischen Hoffnung, Kriegsdruck und politischer Verantwortung",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-12T00:09:13.327Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/maischberger-zwischen-hoffnung-kriegsdruck-und-politischer-verantwortung-fa9293/"
     }
   ]
 }
