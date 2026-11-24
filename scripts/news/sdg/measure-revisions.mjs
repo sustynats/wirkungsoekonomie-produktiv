@@ -8,26 +8,30 @@ const stages = Object.freeze({
   observations: new Set(['reported', 'observed']),
 });
 
-function json(value) {
+export function canonicalObservationJson(value) {
   if (value === null || typeof value === 'string' || typeof value === 'boolean' || Number.isFinite(value)) {
     return JSON.stringify(value);
   }
   if (Array.isArray(value) && Object.keys(value).length === value.length) {
-    return '[' + Array.from(value, json).join(',') + ']';
+    return '[' + Array.from(value, canonicalObservationJson).join(',') + ']';
   }
   if (value && Object.getPrototypeOf(value) === Object.prototype) {
-    return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + json(value[key])).join(',') + '}';
+    return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonicalObservationJson(value[key])).join(',') + '}';
   }
   throw new TypeError('Expected JSON source data');
 }
 
-const sha = value => createHash('sha256').update(json(value)).digest('hex');
+const sha = value => createHash('sha256').update(canonicalObservationJson(value)).digest('hex');
 
 function identifier(value) {
   if (typeof value !== 'string' || !value.length || value.length > 500 || value.trim() !== value || /\p{C}/u.test(value)) {
     throw new TypeError('Expected a stable source identifier');
   }
   return value;
+}
+
+export function measureId({ authority, reference }) {
+  return sha(['measure', identifier(authority), identifier(reference)]);
 }
 
 function date(value, label, allowCalendarDate = true) {
@@ -62,11 +66,11 @@ function normalize(record) {
   const stage = record.event.stage;
   if (!Object.hasOwn(stages, domain) || !stages[domain].has(stage)) throw new TypeError('Invalid event stage for its domain');
   const eventKey = [identifier(record.event.authority), identifier(record.event.reference), domain, stage];
-  const caseId = sha(['measure', ...caseKey]);
+  const caseId = measureId(record.case);
   const eventId = sha(['event', caseId, ...eventKey]);
   const eventAt = date(record.event_at, 'event date');
   const supersedes = record.supersedes === null ? null : digest(record.supersedes);
-  const value = json(record.value);
+  const value = canonicalObservationJson(record.value);
   const valueHash = sha([eventAt, JSON.parse(value)]);
   const revisionId = sha(['revision', eventId, supersedes, valueHash]);
 
