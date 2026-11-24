@@ -34,12 +34,7 @@
       "active": true
     }
   },
-  "outbox": [
-    {
-      "id": "855f265a2af576dd2d704a40",
-      "content": "✓ WÖk-Störung behoben\nPrivate Redaktionsverarbeitung\nPrüfung: 2026-11-24T04:57:21.971Z"
-    }
-  ],
+  "outbox": [],
   "dailyDate": "2026-11-23",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
