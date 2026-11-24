@@ -145,6 +145,32 @@ test('editorial CLI preserves the real journal paragraph while cleaning the same
   fs.rmSync(temporary, {recursive: true, force: true});
  }
 });
+
+test('editorial CLI detects tracking links independently in consecutive files', () => {
+ const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'woek-tracking-pages-'));
+ const command = fileURLToPath(new URL('../../scripts/quality/sanitize-public-editorial-residue.mjs', import.meta.url));
+ try {
+  for (const file of ['one.html', 'two.html']) fs.writeFileSync(path.join(temporary, file), '');
+  const [first, second] = fs.readdirSync(temporary);
+  const link = '<a href="https://example.org/?topic=demokratie&amp;utm_source=openai">Originalquelle</a>';
+  const cleanLink = '<a href="https://example.org/?topic=demokratie">Originalquelle</a>';
+  const paragraph = '<p>Der veröffentlichte Text bleibt erhalten.</p>'.repeat(4);
+  fs.writeFileSync(path.join(temporary, first), paragraph + link);
+  fs.writeFileSync(path.join(temporary, second), link + paragraph);
+  const scan = spawnSync(process.execPath, [command, '--check'], { cwd: temporary, encoding: 'utf8' });
+  assert.equal(scan.status, 1);
+  assert.ok(scan.stderr.includes(first));
+  assert.ok(scan.stderr.includes(second));
+  const clean = spawnSync(process.execPath, [command], { cwd: temporary, encoding: 'utf8' });
+  assert.equal(clean.status, 0, clean.stderr);
+  assert.equal(fs.readFileSync(path.join(temporary, first), 'utf8'), paragraph + cleanLink);
+  assert.equal(fs.readFileSync(path.join(temporary, second), 'utf8'), cleanLink + paragraph);
+  const verify = spawnSync(process.execPath, [command, '--check'], { cwd: temporary, encoding: 'utf8' });
+  assert.equal(verify.status, 0, verify.stderr);
+ } finally {
+  fs.rmSync(temporary, { recursive: true, force: true });
+ }
+});
 test('production notes never consume preceding sections or inline content',()=>{
  const before='<section id="evidence"><h2>Nachweis</h2><p>Wichtiger fachlicher Inhalt.</p><p>Mehr <strong>Evidenz</strong>.</p>';
  const after='<h3 id="formula">Formel</h3><p>Bleibt erhalten.</p></section>';
