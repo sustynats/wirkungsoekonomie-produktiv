@@ -56,6 +56,12 @@ export class EditionLedger {
         start_at TEXT NOT NULL,
         last_scheduled_at TEXT
       );
+      CREATE TABLE IF NOT EXISTS edition_deliveries (
+        edition_id TEXT PRIMARY KEY NOT NULL REFERENCES editions(id),
+        ledger_hash TEXT NOT NULL,
+        receipt TEXT NOT NULL,
+        receipt_hash TEXT NOT NULL
+      ) STRICT;
     `);
   }
 
@@ -192,6 +198,40 @@ export class EditionLedger {
 
   editionHash(id) {
     return this.db.prepare("SELECT hash FROM editions WHERE id = ?").get(id)?.hash ?? null;
+  }
+
+  readDelivery(id) {
+    const row = this.db.prepare("SELECT * FROM edition_deliveries WHERE edition_id = ?").get(id);
+    if (!row) return null;
+    if (row.ledger_hash !== this.editionHash(id) || sha(row.receipt) !== row.receipt_hash) {
+      throw new Error("SDG_EDITION_DELIVERY_CHANGED");
+    }
+    const receipt = JSON.parse(row.receipt);
+    if (receipt.edition_id !== id) throw new Error("SDG_EDITION_DELIVERY_CHANGED");
+    return receipt;
+  }
+
+  recordVerifiedDelivery(receipt, ledgerHash) {
+    const { edition_id: id, edition_sha256: editionHash, observed_at: observedAt,
+      deployment_job_completed_at: deployedAt } = receipt;
+    checkHash(ledgerHash);
+    checkHash(editionHash);
+    utc(observedAt);
+    utc(deployedAt);
+    return this.transaction(() => {
+      const edition = this.db.prepare("SELECT hash, sealed_at FROM editions WHERE id = ?").get(id);
+      if (!edition || edition.hash !== ledgerHash || deployedAt < edition.sealed_at || observedAt < deployedAt) {
+        throw new Error("SDG_EDITION_DELIVERY_BINDING_MISMATCH");
+      }
+      const existing = this.readDelivery(id);
+      if (existing) {
+        if (existing.edition_sha256 !== editionHash) throw new Error("SDG_EDITION_DELIVERY_BINDING_MISMATCH");
+        return { status: "already_confirmed", receipt: existing };
+      }
+      const body = JSON.stringify(receipt);
+      this.db.prepare("INSERT INTO edition_deliveries VALUES (?, ?, ?, ?)").run(id, ledgerHash, body, sha(body));
+      return { status: "confirmed", receipt };
+    });
   }
 
   readDossier(id) {

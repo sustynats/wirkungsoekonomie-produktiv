@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { writeRepositoryJson } from '../newsroom-store.mjs';
 import { loadSdgTickerPresentation, SDG_HASH } from './release-catalog.mjs';
 
-const repository = 'sustynats/wirkungsoekonomie-produktiv';
+export const SDG_PAGES_REPOSITORY = 'sustynats/wirkungsoekonomie-produktiv';
 const sourceHash = /^[a-f0-9]{40}$/;
 const runNumber = /^[1-9]\d{0,19}$/;
 export const SDG_PAGES_RELEASE_PATH = 'wirkungsticker/sdg/release.json';
@@ -38,7 +38,7 @@ export function writeSdgPagesRelease({ root, artifactRoot, sourceCommit, runId, 
   const manifest = {
     schema_version: 1,
     kind: 'sdg_pages_release',
-    repository,
+    repository: SDG_PAGES_REPOSITORY,
     source_commit: sourceCommit,
     run_id: runId,
     run_attempt: runAttempt,
@@ -55,13 +55,8 @@ export function writeSdgPagesRelease({ root, artifactRoot, sourceCommit, runId, 
   return manifest;
 }
 
-// The caller obtains native evidence through the authenticated production
-// repository. The public responses are separate first-party observations.
-export function verifySdgPagesDelivery({
-  expectedCommit, editionId, editionSha256, run, jobs, auditArtifact,
-  auditArchiveBytes, publicManifestBytes, publicEditionBytes, observedAt,
-}) {
-  if (run?.repository?.full_name !== repository || run.path !== '.github/workflows/deploy.yml' ||
+export function verifySdgCompletedPagesRun({ expectedCommit, run, jobs }) {
+  if (run?.repository?.full_name !== SDG_PAGES_REPOSITORY || run.path !== '.github/workflows/deploy.yml' ||
       run.head_branch !== 'main' || run.status !== 'completed' || !sourceHash.test(run.head_sha ?? '') ||
       !['push', 'workflow_dispatch'].includes(run.event) || (run.event === 'push' && run.head_sha !== expectedCommit) ||
       !runNumber.test(String(run.id)) || !runNumber.test(String(run.run_attempt)) ||
@@ -75,13 +70,18 @@ export function verifySdgPagesDelivery({
         job.status !== 'completed' || job.conclusion !== 'success')) {
     throw Error('SDG_PAGES_DELIVERY_NOT_SUCCESSFUL');
   }
+  return { build: build[0], deploy: deploy[0] };
+}
+
+export function inspectSdgPagesAudit({ expectedCommit, run, jobs, auditArtifact, auditArchiveBytes }) {
+  const { build, deploy } = verifySdgCompletedPagesRun({ expectedCommit, run, jobs });
   const auditTime = Date.parse(auditArtifact?.created_at);
   const archiveHash = sha256(auditArchiveBytes);
   if (auditArtifact?.name !== `sdg-pages-release-${expectedCommit}-${run.run_attempt}` || auditArtifact.expired !== false ||
       String(auditArtifact.workflow_run?.id) !== String(run.id) || auditArtifact.workflow_run?.head_sha !== run.head_sha ||
       auditArtifact.digest !== `sha256:${archiveHash}` ||
-      ![auditTime, Date.parse(build[0].started_at), Date.parse(build[0].completed_at)].every(Number.isFinite) ||
-      auditTime < Date.parse(build[0].started_at) || auditTime > Date.parse(build[0].completed_at)) {
+      ![auditTime, Date.parse(build.started_at), Date.parse(build.completed_at)].every(Number.isFinite) ||
+      auditTime < Date.parse(build.started_at) || auditTime > Date.parse(build.completed_at)) {
     throw Error('SDG_PAGES_AUDIT_ARTIFACT_MISMATCH');
   }
   const auditManifestBytes = execFileSync('python3', ['-c', `
@@ -93,28 +93,37 @@ with zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())) as archive:
     sys.stdout.buffer.write(archive.read(entries[0]))
 `, path.basename(SDG_PAGES_RELEASE_PATH)], { input: auditArchiveBytes, maxBuffer: 32 * 1024 ** 2 });
   const release = JSON.parse(auditManifestBytes);
-  if (!auditManifestBytes.equals(Buffer.from(publicManifestBytes)) ||
-      !sourceHash.test(expectedCommit ?? '') || release.source_commit !== expectedCommit ||
-      release.repository !== repository || release.kind !== 'sdg_pages_release' || release.schema_version !== 1 ||
+  if (!sourceHash.test(expectedCommit ?? '') || release.source_commit !== expectedCommit ||
+      release.repository !== SDG_PAGES_REPOSITORY || release.kind !== 'sdg_pages_release' || release.schema_version !== 1 ||
       !SDG_HASH.test(release.catalog_sha256 ?? '') || !Array.isArray(release.editions) ||
       release.run_id !== String(run.id) || release.run_attempt !== String(run.run_attempt)) {
     throw Error('SDG_PAGES_RELEASE_BINDING_MISMATCH');
   }
+  const deployedAt = Date.parse(deploy.completed_at);
+  if (!Number.isFinite(deployedAt) || deployedAt < Date.parse(build.completed_at)) {
+    throw Error('SDG_PAGES_OBSERVATION_TIME_INVALID');
+  }
+  return { manifestBytes: auditManifestBytes, release, archiveHash, deployedAt };
+}
+
+export function verifySdgPublicDelivery({
+  audit, editionId, editionSha256, publicManifestBytes, publicEditionBytes, observedAt,
+}) {
+  const { manifestBytes, release, archiveHash, deployedAt } = audit;
+  if (!manifestBytes.equals(Buffer.from(publicManifestBytes))) throw Error('SDG_PAGES_RELEASE_BINDING_MISMATCH');
   const matching = release.editions.filter(entry => entry.edition_id === editionId);
   if (matching.length !== 1 || !SDG_HASH.test(editionSha256 ?? '') || matching[0].edition_sha256 !== editionSha256 ||
       matching[0].html_sha256 !== sha256(publicEditionBytes)) {
     throw Error('SDG_PAGES_PUBLIC_EDITION_MISMATCH');
   }
-  const deployedAt = Date.parse(deploy[0].completed_at);
   const observed = Date.parse(observedAt);
-  if (![deployedAt, observed].every(Number.isFinite) || deployedAt < Date.parse(build[0].completed_at) ||
-      observed < deployedAt || new Date(observed).toISOString() !== observedAt) {
+  if (!Number.isFinite(observed) || observed < deployedAt || new Date(observed).toISOString() !== observedAt) {
     throw Error('SDG_PAGES_OBSERVATION_TIME_INVALID');
   }
   return {
     edition_id: editionId,
     edition_sha256: editionSha256,
-    source_commit: expectedCommit,
+    source_commit: release.source_commit,
     run_id: release.run_id,
     run_attempt: release.run_attempt,
     audit_artifact_sha256: archiveHash,
@@ -124,10 +133,15 @@ with zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())) as archive:
   };
 }
 
+// Native authenticated evidence and public first-party observations remain separate.
+export function verifySdgPagesDelivery(evidence) {
+  return verifySdgPublicDelivery({ ...evidence, audit: inspectSdgPagesAudit(evidence) });
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const root = process.cwd();
   const sourceCommit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-  if (process.env.GITHUB_REPOSITORY !== repository || process.env.RELEASE_COMMIT !== sourceCommit) {
+  if (process.env.GITHUB_REPOSITORY !== SDG_PAGES_REPOSITORY || process.env.RELEASE_COMMIT !== sourceCommit) {
     throw Error('SDG_PAGES_RELEASE_CHECKOUT_MISMATCH');
   }
   const release = writeSdgPagesRelease({

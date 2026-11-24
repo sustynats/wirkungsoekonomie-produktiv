@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -12,6 +12,7 @@ import { MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
 import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news/sdg/reviewed-measure-handoff.mjs';
 import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
 import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
+import { confirmSdgPagesDelivery } from '../../scripts/news/sdg/confirm-pages-delivery.mjs';
 import { SDG_PAGES_RELEASE_PATH, verifySdgPagesDelivery, writeSdgPagesRelease } from '../../scripts/news/sdg/pages-release.mjs';
 import { prepareScheduledSdgEditions } from '../../scripts/news/sdg/prepare-scheduled-editions.mjs';
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
@@ -564,13 +565,15 @@ test('closed review cutoff rejects a corrupt journal and does not seal an unmatc
   }
 }));
 
-test('SDG Pages release binds the finished artifact and verifies the same public bytes against its audit archive', () => withStore(async ({
+test('SDG Pages receipt verifies native evidence and resumes a lost ledger write without repeating observations', () => withStore(async ({
   target, measures, editions, reviews, perform,
 }) => {
   reviews.set(reviewId, bind(measures, target));
   await perform();
   const edition = editions.stage(window);
-  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-pages-release-'));
+  const scratch = mkdtempSync(path.join(tmpdir(), 'woek-sdg-pages-release-'));
+  const root = path.join(scratch, 'repository');
+  mkdirSync(root);
   try {
     const artifactRoot = path.join(root, '_site');
     const expectedCommit = '1'.repeat(40);
@@ -613,7 +616,7 @@ sys.stdout.buffer.write(data.getvalue())
       started_at: '2026-11-24T05:35:01Z', completed_at: '2026-11-24T05:36:00Z' };
     const jobs = { total_count: 3, jobs: [build, deploy, { name: 'notify-ticker', conclusion: 'failure' }] };
     const auditDigest = createHash('sha256').update(auditArchiveBytes).digest('hex');
-    const auditArtifact = { name: `sdg-pages-release-${expectedCommit}-2`, expired: false,
+    const auditArtifact = { id: 246, name: `sdg-pages-release-${expectedCommit}-2`, expired: false,
       workflow_run: { id: 135, head_sha: run.head_sha }, created_at: '2026-11-24T05:34:00Z',
       digest: `sha256:${auditDigest}` };
     const observedAt = '2026-11-24T05:40:00.000Z';
@@ -637,5 +640,64 @@ sys.stdout.buffer.write(data.getvalue())
       jobs: [build, { ...deploy, conclusion: 'failure' }] } }), /SDG_PAGES_DELIVERY_NOT_SUCCESSFUL/);
     assert.throws(() => verifySdgPagesDelivery({ ...evidence, observedAt: '2026-11-24T05:34:00.000Z' }),
       /SDG_PAGES_OBSERVATION_TIME_INVALID/);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+
+    const routes = new Map([
+      ['actions/runs/135/attempts/2', run],
+      ['actions/runs/135/attempts/2/jobs?per_page=100', jobs],
+      ['actions/runs/135/artifacts?per_page=100', { total_count: 1, artifacts: [auditArtifact] }],
+      ['actions/artifacts/246/zip', auditArchiveBytes],
+    ]);
+    const publicRoutes = new Map([
+      [SDG_PAGES_RELEASE_PATH, publicManifestBytes],
+      [`wirkungsticker/sdg/ausgabe/${edition.id}/`, publicEditionBytes],
+    ]);
+    const readOnce = responses => request => {
+      assert.ok(responses.has(request), `Unexpected or repeated observation ${request}`);
+      const body = responses.get(request);
+      responses.delete(request);
+      return Buffer.isBuffer(body) ? body : Buffer.from(JSON.stringify(body));
+    };
+    const database = path.join(scratch, 'editions.sqlite');
+    editions.db.prepare('VACUUM INTO ?').run(database);
+    let durable = new EditionLedger(database);
+    const evidenceDirectory = path.join(scratch, 'private-evidence');
+    const options = { root, editionId: edition.id, expectedCommit, runId: '135', runAttempt: '2', evidenceDirectory };
+    try {
+      await assert.rejects(confirmSdgPagesDelivery({ ...options, ledger: durable }, {
+        readNative: request => {
+          if (request.endsWith('/zip')) throw Error('Interrupted archive capture');
+          return readOnce(routes)(request);
+        },
+        readPublic: readOnce(publicRoutes), clock: () => observedAt,
+      }), /Interrupted archive capture/);
+      assert.deepEqual([...routes.keys()], ['actions/artifacts/246/zip']);
+      assert.equal(publicRoutes.size, 2);
+      durable.recordVerifiedDelivery = () => { throw Error('Interrupted before receipt commit'); };
+      await assert.rejects(confirmSdgPagesDelivery({ ...options, ledger: durable }, {
+        readNative: readOnce(routes), readPublic: readOnce(publicRoutes), clock: () => observedAt,
+      }), /Interrupted before receipt commit/);
+      assert.equal(durable.readDelivery(edition.id), null);
+      assert.equal(routes.size, 0);
+      assert.equal(publicRoutes.size, 0);
+
+      const dir = path.join(evidenceDirectory, `135-2-${expectedCommit}`);
+      unlinkSync(path.join(dir, 'public-manifest.json'));
+      durable.close();
+      durable = new EditionLedger(database);
+      const confirmed = await confirmSdgPagesDelivery({ ...options, ledger: durable }, {
+        readNative: readOnce(routes), readPublic: readOnce(publicRoutes), clock: () => assert.fail('Observation time changed'),
+      });
+      assert.equal(confirmed.status, 'confirmed');
+      assert.equal(confirmed.receipt.observed_at, observedAt);
+      assert.deepEqual(durable.readDelivery(edition.id), confirmed.receipt);
+      assert.equal(durable.read(edition.id).publication_at, null);
+      const retry = await confirmSdgPagesDelivery({ ...options, ledger: durable }, {
+        readNative: readOnce(routes), readPublic: readOnce(publicRoutes), clock: () => assert.fail('Observation time changed'),
+      });
+      assert.deepEqual(retry, { status: 'already_confirmed', receipt: confirmed.receipt });
+      assert.equal(durable.db.prepare('SELECT COUNT(*) AS count FROM edition_deliveries').get().count, 1);
+      durable.db.exec("UPDATE edition_deliveries SET receipt = '{}'");
+      assert.throws(() => durable.readDelivery(edition.id), /SDG_EDITION_DELIVERY_CHANGED/);
+    } finally { durable.close(); }
+  } finally { rmSync(scratch, { recursive: true, force: true }); }
 }));
