@@ -1,13 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { BridgeStore } from '../bridge/store.mjs';
 import { EditionLedger } from './editions.mjs';
+import { MeasureRevisions } from './measure-revisions.mjs';
+import { MeasureReviewJournal, recoverClosedMeasureReviews } from './measure-review-journal.mjs';
 import { readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
 import { registerSdgEdition } from './register-edition.mjs';
 
-// Run in the serialized release checkout, after the upstream review process
-// has completed the explicit cutoff. A clock time alone cannot certify it.
-export function prepareScheduledSdgEditions({ root, ledger, startAt, checkedThrough, sealedAt, expectedCatalogHash }) {
+// Run in the serialized release checkout with the private review journal.
+export function prepareScheduledSdgEditions({ root, ledger, journal, measures, startAt, checkedThrough, sealedAt, expectedCatalogHash }) {
   if (expectedCatalogHash !== null &&
       (typeof expectedCatalogHash !== 'string' || !SDG_HASH.test(expectedCatalogHash))) {
     throw Error('SDG_RELEASE_EXPECTED_CATALOG_REQUIRED');
@@ -20,7 +22,11 @@ export function prepareScheduledSdgEditions({ root, ledger, startAt, checkedThro
       throw Error('SDG_RELEASE_LEDGER_MISMATCH');
     }
   }
-  const due = ledger.stageDue({ startAt, checkedThrough, sealedAt });
+  const clock = typeof sealedAt === 'function' ? sealedAt : () => sealedAt;
+  const acceptedReviews = recoverClosedMeasureReviews({ checkedThrough, now: clock() }, {
+    journal, measures, editions: ledger,
+  });
+  const due = ledger.stageDue({ startAt, checkedThrough, sealedAt: clock(), acceptedReviews });
   const results = [];
   let catalogSha256 = current.sha256;
   for (const edition of due) {
@@ -37,17 +43,26 @@ export function prepareScheduledSdgEditions({ root, ledger, startAt, checkedThro
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const fields = ['edition-db', 'start-at', 'checked-through', 'expect-catalog'];
+  const fields = ['edition-db', 'bridge-db', 'measure-db', 'start-at', 'checked-through', 'expect-catalog'];
   const values = fields.map(name => process.argv.slice(2).find(arg => arg.startsWith(`--${name}=`))?.slice(name.length + 3));
   if (values.some(value => !value)) throw Error('SDG_SCHEDULE_DATABASE_START_CUTOFF_CATALOG_REQUIRED');
-  const [database, startAt, checkedThrough, baseline] = values;
-  if (!fs.existsSync(database) || !fs.statSync(database).isFile()) throw Error('SDG_SCHEDULE_EXISTING_DATABASE_REQUIRED');
+  const [editionDatabase, bridgeDatabase, measureDatabase, startAt, checkedThrough, baseline] = values;
+  if (![editionDatabase, bridgeDatabase, measureDatabase].every(file => fs.statSync(file, { throwIfNoEntry: false })?.isFile())) {
+    throw Error('SDG_SCHEDULE_EXISTING_DATABASES_REQUIRED');
+  }
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
-  const ledger = new EditionLedger(database);
+  const bridge = new BridgeStore(path.resolve(bridgeDatabase), { lane: 'import' });
   try {
-    console.log(JSON.stringify(prepareScheduledSdgEditions({
-      root, ledger, startAt, checkedThrough, sealedAt: new Date().toISOString(),
-      expectedCatalogHash: baseline === 'absent' ? null : baseline,
-    })));
-  } finally { ledger.close(); }
+    const journal = new MeasureReviewJournal(bridge);
+    const measures = new MeasureRevisions(measureDatabase);
+    try {
+      const ledger = new EditionLedger(editionDatabase);
+      try {
+        console.log(JSON.stringify(prepareScheduledSdgEditions({
+          root, ledger, journal, measures, startAt, checkedThrough, sealedAt: () => new Date().toISOString(),
+          expectedCatalogHash: baseline === 'absent' ? null : baseline,
+        })));
+      } finally { ledger.close(); }
+    } finally { measures.close(); }
+  } finally { bridge.close(); }
 }

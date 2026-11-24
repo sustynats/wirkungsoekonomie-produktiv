@@ -25,7 +25,7 @@ export async function stageReviewedFiles({ review, impactReview, bridgeDatabase,
     try {
       const editions = new EditionLedger(editionDatabase);
       try {
-        return await stageIndependentMeasureReview({ packet, receipt, now: new Date().toISOString() }, {
+        return await stageIndependentMeasureReview({ packet, receipt, now: () => new Date().toISOString() }, {
           measures, editions, journal: new MeasureReviewJournal(store),
           prepareRecord: (input, at) => {
             const registry = loadNewsRegistry(root);

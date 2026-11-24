@@ -425,16 +425,20 @@ test('automatic stream selector allows legacy writes only with the SDG marker ab
 }));
 
 test('scheduled editions resume a partial registration without replacing the reviewed package', () => withStore(async ({
-  target, measures, editions, reviews, perform,
+  target, measures, editions,
 }) => {
-  reviews.set(reviewId, bind(measures, target));
-  await perform();
   const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-scheduled-registration-'));
+  const bridge = new BridgeStore(path.join(root, 'bridge.sqlite'), { lane: 'import' });
   try {
+    const journal = new MeasureReviewJournal(bridge);
+    const { packet, receipt, record } = bind(measures, target);
+    await stageIndependentMeasureReview({ packet, receipt, now: acceptedAt }, {
+      measures, editions, journal, prepareRecord: () => ({ record }),
+    });
     const startAt = window.cutoff;
     const checkedThrough = '2026-11-24T11:00:00.000Z';
     const sealedAt = '2026-11-25T06:00:00.000Z';
-    const params = { root, ledger: editions, startAt, checkedThrough, sealedAt };
+    const params = { root, ledger: editions, journal, measures, startAt, checkedThrough, sealedAt };
     const [morning] = editions.stageDue(params);
     const first = registerSdgEdition({ root, ledger: editions, editionId: morning.id, expectedCatalogHash: null });
     assert.throws(() => prepareScheduledSdgEditions({ ...params, expectedCatalogHash: null }), /CATALOG_MOVED/);
@@ -462,5 +466,98 @@ test('scheduled editions resume a partial registration without replacing the rev
     assert.equal(routes.length, 3);
     assert.match(pages.get(`wirkungsticker/sdg/ausgabe/${morning.id}/index.html`), new RegExp(target.revisionId));
     assert.match(pages.get('wirkungsticker/sdg/ausgabe/2026-11-24-mittagslage/index.html'), /keine geprüften Einträge/);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally {
+    bridge.close();
+    rmSync(root, { recursive: true, force: true });
+  }
+}));
+
+test('closed review cutoff recovers an accepted handoff and admits a concurrent intake only to a later edition', () => withStore(async ({
+  target, measures, editions,
+}) => {
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-closed-review-'));
+  const bridgeDatabase = path.join(root, 'bridge.sqlite');
+  let bridge = new BridgeStore(bridgeDatabase, { lane: 'import' });
+  try {
+    const initial = bind(measures, target);
+    await assert.rejects(stageIndependentMeasureReview({ ...initial, now: acceptedAt }, {
+      measures, journal: new MeasureReviewJournal(bridge),
+      editions: { recordReady: () => { throw Error('Interrupted handoff after acceptance'); } },
+      prepareRecord: () => ({ record: initial.record }),
+    }), /Interrupted handoff/);
+    assert.equal(editions.readDossier(target.revisionId), null);
+
+    bridge.close();
+    bridge = new BridgeStore(bridgeDatabase, { lane: 'import' });
+    const journal = new MeasureReviewJournal(bridge);
+    const [later] = measures.recordBatch([{ ...event, case: { ...event.case, reference: 'another-test-programme' } }]);
+    const another = bind(measures, later);
+    let completeIntake;
+    let actualTime = '2026-11-24T04:50:00.000Z';
+    const pending = stageIndependentMeasureReview({ ...another, now: () => actualTime }, {
+      measures, editions, journal,
+      prepareRecord: () => new Promise(resolve => { completeIntake = resolve; }),
+    });
+
+    const params = { root, ledger: editions, journal, measures, startAt: window.cutoff };
+    const sealTime = '2026-11-24T05:30:01.000Z';
+    const clock = [now, sealTime];
+    const morning = prepareScheduledSdgEditions({
+      ...params, checkedThrough: window.cutoff, sealedAt: () => clock.shift(), expectedCatalogHash: null,
+    });
+    const revision = editions.readDossier(target.revisionId).dossier;
+    assert.equal(revision.review.accepted_at, acceptedAt);
+    assert.deepEqual(editions.read('2026-11-24-morgenlage').items.map(item => item.id), [target.revisionId]);
+    assert.equal(editions.read('2026-11-24-morgenlage').sealed_at, sealTime);
+    assert.equal(editions.readDossier(later.revisionId), null);
+    assert.equal(bridge.db.prepare('SELECT COUNT(*) AS count FROM sdg_measure_reviews').get().count, 1);
+
+    // A delayed request cannot allocate the old clock time after the barrier.
+    await assert.rejects(stageIndependentMeasureReview({ ...another, now: actualTime }, {
+      measures, editions, journal, prepareRecord: () => ({ record: another.record }),
+    }), /SDG_MEASURE_REVIEW_CUTOFF_CLOSED/);
+    actualTime = '2026-11-24T05:31:00.000Z';
+    completeIntake({ record: another.record });
+    assert.equal((await pending).item.readyAt, actualTime);
+    const lunch = prepareScheduledSdgEditions({
+      ...params, checkedThrough: '2026-11-24T11:00:00.000Z', sealedAt: '2026-11-24T11:05:00.000Z',
+      expectedCatalogHash: morning.catalog_sha256,
+    });
+    const publishedCandidates = readSdgReleaseCatalog(root).releases;
+    assert.equal(lunch.editions[0].edition_sha256, morning.editions[0].edition_sha256);
+    assert.deepEqual(publishedCandidates.map(entry => entry.manifest.items.map(item => item.revision_id)),
+      [[target.revisionId], [later.revisionId]]);
+    assert.ok(publishedCandidates.every(entry => entry.manifest.published_at === null));
+  } finally {
+    bridge.close();
+    rmSync(root, { recursive: true, force: true });
+  }
+}));
+
+test('closed review cutoff rejects a corrupt journal and does not seal an unmatched edition ledger', () => withStore(async ({
+  target, measures, editions,
+}) => {
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-closed-review-hold-'));
+  const bridge = new BridgeStore(path.join(root, 'bridge.sqlite'), { lane: 'import' });
+  try {
+    const journal = new MeasureReviewJournal(bridge);
+    const { packet, receipt, record } = bind(measures, target);
+    await stageIndependentMeasureReview({ packet, receipt, now: acceptedAt }, {
+      measures, editions, journal, prepareRecord: () => ({ record }),
+    });
+    editions.recordReady([{ id: 'unmatched', readyAt: acceptedAt, analysisHash: 'a'.repeat(64),
+      sourceHash: 'b'.repeat(64), dossier: { synthetic_fixture: true } }]);
+    const params = { root, ledger: editions, journal, measures, startAt: window.cutoff,
+      checkedThrough: window.cutoff, sealedAt: now, expectedCatalogHash: null };
+    assert.throws(() => prepareScheduledSdgEditions(params), /SDG_SCHEDULE_REVIEW_LEDGER_MISMATCH/);
+    assert.equal(editions.read('2026-11-24-morgenlage'), null);
+    assert.equal(readSdgReleaseCatalog(root).sha256, null);
+    bridge.db.exec("UPDATE sdg_measure_reviews SET body = '{}'");
+    assert.throws(() => prepareScheduledSdgEditions(params), /SDG_MEASURE_REVIEW_JOURNAL_CHANGED/);
+    assert.equal(editions.read('2026-11-24-morgenlage'), null);
+    assert.equal(readSdgReleaseCatalog(root).sha256, null);
+  } finally {
+    bridge.close();
+    rmSync(root, { recursive: true, force: true });
+  }
 }));

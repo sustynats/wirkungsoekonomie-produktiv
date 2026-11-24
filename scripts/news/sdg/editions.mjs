@@ -131,7 +131,7 @@ export class EditionLedger {
     return this.read(id);
   }
 
-  stageDue({ startAt, checkedThrough, sealedAt }) {
+  stageDue({ startAt, checkedThrough, sealedAt, acceptedReviews }) {
     utc(startAt);
     utc(checkedThrough);
     utc(sealedAt);
@@ -143,6 +143,13 @@ export class EditionLedger {
     const lastDate = berlinParts(new Date(checkedThrough)).isoDate;
 
     return this.transaction(() => {
+      if (acceptedReviews !== undefined) {
+        const rows = this.db.prepare("SELECT id, ready_at, dossier_hash FROM qualified WHERE ready_at <= ?").all(checkedThrough);
+        if (rows.length !== acceptedReviews.size || rows.some(row => {
+          const review = acceptedReviews.get(row.id);
+          return review?.readyAt !== row.ready_at || review?.dossierHash !== row.dossier_hash;
+        })) throw new Error("SDG_SCHEDULE_REVIEW_LEDGER_MISMATCH");
+      }
       this.db.prepare("INSERT INTO edition_schedule VALUES (1, ?, NULL) ON CONFLICT(id) DO NOTHING")
         .run(startAt);
       const schedule = this.db.prepare("SELECT * FROM edition_schedule WHERE id = 1").get();
