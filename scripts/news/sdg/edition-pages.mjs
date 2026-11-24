@@ -16,7 +16,8 @@ const domains = {
 const dateLabel = value => value && Number.isFinite(Date.parse(value)) ? formatCalendarDate.format(new Date(value)) : null;
 
 function loadCatalog({ releases }) {
-  return releases.map(({ manifest }) => {
+  return releases.map(({ manifest, sha256 }) => {
+    if (!SDG_HASH.test(sha256 ?? '')) throw Error('SDG_RELEASE_PACKAGE_MISMATCH');
     const rows = new Set();
     for (const item of manifest.items) {
       if (!SDG_HASH.test(item.revision_id ?? '') || rows.has(item.revision_id) ||
@@ -29,7 +30,7 @@ function loadCatalog({ releases }) {
       rows.add(item.revision_id);
       item.sources.forEach(source => safeUrl(source.url));
     }
-    return manifest;
+    return { ...manifest, sha256 };
   }).sort((left, right) => right.scheduled_at.localeCompare(left.scheduled_at));
 }
 
@@ -43,11 +44,12 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
   if (editions.length === 0) return [];
   const routes = [];
   const tracker = 'Global SDG Impact Tracker';
-  const page = (route, title, heading, description, body, base) => {
+  const page = (route, title, heading, description, body, base, editionHash) => {
     const canonical = `${site}/${route}`;
+    const editionBinding = editionHash ? ` data-sdg-edition-sha256="${esc(editionHash)}"` : '';
     write(path.join(root, route, 'index.html'), pageShell({
       title, description, canonical, base,
-      body: `<main id="main-content" data-search-content class="ticker-app-main"><header class="ticker-app-title"><h1>${esc(heading)}</h1></header>${body}</main>`,
+      body: `<main id="main-content" data-search-content class="ticker-app-main"${editionBinding}><header class="ticker-app-title"><h1>${esc(heading)}</h1></header>${body}</main>`,
       jsonLd: { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, url: canonical },
     }));
     routes.push(route);
@@ -74,7 +76,7 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
     page(`${ROUTE}ausgabe/${edition.edition_id}/`, `${title} | ${tracker}`, title,
       'Geprüfte Maßnahmen und Wirkungsbeobachtungen.',
       `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Prüfschluss ${esc(cutoff)} Uhr (Berlin)</p>${items || '<p>Für diese Ausgabe liegen keine geprüften Einträge vor.</p>'}`,
-      '../../../../');
+      '../../../../', edition.sha256);
   }
   page(ROUTE, tracker, tracker, 'Ausgaben mit geprüften Maßnahmen und Wirkungsbeobachtungen.',
     `<p><a href="/wirkungsticker/">Zum Wirkungsticker</a></p><ol class="ticker-lagen-liste">${editions.map(edition =>

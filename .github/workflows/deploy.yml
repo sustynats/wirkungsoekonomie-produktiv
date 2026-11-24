@@ -184,10 +184,22 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=4096
           GH_TOKEN: ${{ github.token }}
+      - name: Bind SDG edition pages to this release
+        id: sdg_release
+        env:
+          RELEASE_COMMIT: ${{ steps.release-source.outputs.commit }}
+        run: node scripts/news/sdg/pages-release.mjs
       - name: Check public artifact privacy
         run: npm run check:privacy && npm run check:privacy:deep
       - name: Check site size
         run: npm run check:size
+      - name: Retain the SDG release manifest for delivery verification
+        if: steps.sdg_release.outputs.active == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdg-pages-release-${{ steps.release-source.outputs.commit }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          path: _site/wirkungsticker/sdg/release.json
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

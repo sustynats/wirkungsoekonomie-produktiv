@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -11,6 +12,7 @@ import { MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
 import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news/sdg/reviewed-measure-handoff.mjs';
 import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
 import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
+import { SDG_PAGES_RELEASE_PATH, verifySdgPagesDelivery, writeSdgPagesRelease } from '../../scripts/news/sdg/pages-release.mjs';
 import { prepareScheduledSdgEditions } from '../../scripts/news/sdg/prepare-scheduled-editions.mjs';
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
 import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
@@ -560,4 +562,80 @@ test('closed review cutoff rejects a corrupt journal and does not seal an unmatc
     bridge.close();
     rmSync(root, { recursive: true, force: true });
   }
+}));
+
+test('SDG Pages release binds the finished artifact and verifies the same public bytes against its audit archive', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const edition = editions.stage(window);
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-pages-release-'));
+  try {
+    const artifactRoot = path.join(root, '_site');
+    const expectedCommit = '1'.repeat(40);
+    const releaseParams = { root, artifactRoot, sourceCommit: expectedCommit, runId: '135', runAttempt: '2' };
+    assert.equal(writeSdgPagesRelease(releaseParams), null);
+    const registered = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
+    const editionSha256 = registered.edition_sha256;
+    writeFileSync(path.join(root, 'data/news/sdg/ticker-mode.json'), JSON.stringify({
+      schema_version: 1, mode: 'sdg', anchor: { edition_id: edition.id, sha256: editionSha256 },
+    }));
+    buildSdgEditionPages({ root: artifactRoot, site: 'https://wirkungsoekonomie.de', pageShell: data => data.body,
+      catalog: readSdgReleaseCatalog(root), escapeHtml: String, write: (file, html) => {
+        mkdirSync(path.dirname(file), { recursive: true });
+        writeFileSync(file, html);
+      },
+    });
+    const editionFile = path.join(artifactRoot, 'wirkungsticker/sdg/ausgabe', edition.id, 'index.html');
+    const publicEditionBytes = readFileSync(editionFile);
+    writeFileSync(editionFile, '<main id="main-content">Falscher Katalogstand</main>');
+    assert.throws(() => writeSdgPagesRelease(releaseParams), /SDG_PAGES_EDITION_BINDING_MISMATCH/);
+    writeFileSync(editionFile, publicEditionBytes);
+    const release = writeSdgPagesRelease(releaseParams);
+    const publicManifestBytes = readFileSync(path.join(artifactRoot, SDG_PAGES_RELEASE_PATH));
+    assert.deepEqual(writeSdgPagesRelease(releaseParams), release);
+    assert.equal(release.editions[0].html_sha256, sha256(publicEditionBytes));
+
+    const auditArchiveBytes = execFileSync('python3', ['-c', `
+import io, sys, zipfile
+data = io.BytesIO()
+with zipfile.ZipFile(data, "w") as archive:
+    archive.writestr(sys.argv[1], sys.stdin.buffer.read())
+sys.stdout.buffer.write(data.getvalue())
+`, path.basename(SDG_PAGES_RELEASE_PATH)], { input: publicManifestBytes });
+    const run = { id: 135, run_attempt: 2, repository: { full_name: 'sustynats/wirkungsoekonomie-produktiv' },
+      head_branch: 'main', head_sha: '2'.repeat(40), path: '.github/workflows/deploy.yml',
+      event: 'workflow_dispatch', status: 'completed', conclusion: 'failure' };
+    const build = { name: 'build', run_id: 135, status: 'completed', conclusion: 'success',
+      started_at: '2026-11-24T05:31:00Z', completed_at: '2026-11-24T05:35:00Z' };
+    const deploy = { name: 'deploy', run_id: 135, status: 'completed', conclusion: 'success',
+      started_at: '2026-11-24T05:35:01Z', completed_at: '2026-11-24T05:36:00Z' };
+    const jobs = { total_count: 3, jobs: [build, deploy, { name: 'notify-ticker', conclusion: 'failure' }] };
+    const auditDigest = createHash('sha256').update(auditArchiveBytes).digest('hex');
+    const auditArtifact = { name: `sdg-pages-release-${expectedCommit}-2`, expired: false,
+      workflow_run: { id: 135, head_sha: run.head_sha }, created_at: '2026-11-24T05:34:00Z',
+      digest: `sha256:${auditDigest}` };
+    const observedAt = '2026-11-24T05:40:00.000Z';
+    const evidence = { expectedCommit, editionId: edition.id, editionSha256, run, jobs, auditArtifact,
+      auditArchiveBytes, publicManifestBytes, publicEditionBytes, observedAt };
+    const receipt = verifySdgPagesDelivery(evidence);
+    assert.equal(receipt.source_commit, expectedCommit);
+    assert.equal(receipt.edition_sha256, editionSha256);
+    assert.equal(receipt.deployment_job_completed_at, '2026-11-24T05:36:00.000Z');
+    assert.equal(receipt.observed_at, observedAt);
+    assert.throws(() => verifySdgPagesDelivery({ ...evidence, auditArchiveBytes: Buffer.from('modified') }),
+      /SDG_PAGES_AUDIT_ARTIFACT_MISMATCH/);
+    assert.throws(() => verifySdgPagesDelivery({ ...evidence, publicEditionBytes: Buffer.from('another release') }),
+      /SDG_PAGES_PUBLIC_EDITION_MISMATCH/);
+    assert.throws(() => verifySdgPagesDelivery({ ...evidence, publicManifestBytes: Buffer.from('{}') }),
+      /SDG_PAGES_RELEASE_BINDING_MISMATCH/);
+    assert.throws(() => verifySdgPagesDelivery({ ...evidence, run: { ...run, run_attempt: 3 } }),
+      /SDG_PAGES_AUDIT_ARTIFACT_MISMATCH/);
+    assert.throws(() => verifySdgPagesDelivery({ ...evidence, jobs: { ...jobs, total_count: 4 } }), /SDG_PAGES_RUN_MISMATCH/);
+    assert.throws(() => verifySdgPagesDelivery({ ...evidence, jobs: { total_count: 2,
+      jobs: [build, { ...deploy, conclusion: 'failure' }] } }), /SDG_PAGES_DELIVERY_NOT_SUCCESSFUL/);
+    assert.throws(() => verifySdgPagesDelivery({ ...evidence, observedAt: '2026-11-24T05:34:00.000Z' }),
+      /SDG_PAGES_OBSERVATION_TIME_INVALID/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 }));
