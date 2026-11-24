@@ -58,6 +58,13 @@ export async function handoffReviewedMeasure({ caseId, revisionId, reviewId, now
 }) {
   const stored = await readReview(reviewId);
   if (!stored) return { status: 'awaiting_review' };
+  const prepared = prepareReviewedMeasure({ caseId, revisionId, reviewId, now }, measures, stored);
+  const { dossier, ...item } = prepared;
+  editions.recordReady([prepared]);
+  return { status: 'staged_for_edition', item };
+}
+
+export function prepareReviewedMeasure({ caseId, revisionId, reviewId, now }, measures, stored) {
   const { record, packet, receipt, existing = null } = stored;
   const projection = measureReviewBinding(measures, { caseId, revisionId, record });
   if (sha(packet.sdg_measure ?? null) !== sha(projection.binding)) throw Error('SDG_MEASURE_REVIEW_BINDING_CHANGED');
@@ -80,12 +87,11 @@ export async function handoffReviewedMeasure({ caseId, revisionId, reviewId, now
     review: { id: reviewId, packet_hash: receipt.review_packet_hash,
       receipt_hash: sha(receipt), reviewed_at: receipt.reviewed_at, accepted_at: readyAt },
   };
-  const item = {
+  return {
     id: revisionId,
     analysisHash: sha(reviewed.impact_assessment),
     sourceHash: sha([projection.binding.evidence_sha256, projection.binding.record_sources_sha256]),
     readyAt,
+    dossier,
   };
-  editions.recordReady([{ ...item, dossier }]);
-  return { status: 'staged_for_edition', item };
 }

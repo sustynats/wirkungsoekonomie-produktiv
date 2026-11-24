@@ -1,8 +1,13 @@
 import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import test from 'node:test';
+import { BridgeStore } from '../../scripts/news/bridge/store.mjs';
 import { EditionLedger } from '../../scripts/news/sdg/editions.mjs';
 import { MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
 import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news/sdg/reviewed-measure-handoff.mjs';
+import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
 import { SEMANTIC_CHECKS } from '../../scripts/news/impact-publication.mjs';
 import { syntheticPotentialAssessment, syntheticScopeReview } from './fixtures/impact21.mjs';
@@ -139,4 +144,61 @@ test('a review entered after the verified cutoff stays pending for the following
   const later = editions.stage({ date: window.date, slot: 'mittagslage', cutoff: '2026-11-24T11:00:00.000Z',
     sealedAt: '2026-11-24T11:03:00.000Z' });
   assert.deepEqual(later.items.map(row => row.id), [target.revisionId]);
+}));
+
+test('the review journal resumes a lost private handoff after real SQLite reopen without accepting a second review', async () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'woek-review-journal-'));
+  const file = path.join(dir, 'bridge.sqlite');
+  const measures = new MeasureRevisions(':memory:');
+  const editions = new EditionLedger(':memory:');
+  let store = new BridgeStore(file, { lane: 'import' });
+  try {
+    const [target] = measures.recordBatch([event]);
+    const { packet, receipt, record } = bind(measures, target);
+    const incoming = { packet, receipt, now: acceptedAt };
+    await assert.rejects(stageIndependentMeasureReview(incoming, {
+      measures,
+      editions: { recordReady: () => { throw Error('Interrupted stage'); } },
+      journal: new MeasureReviewJournal(store),
+      prepareRecord: () => ({ record }),
+    }), /Interrupted stage/);
+    assert.equal(store.db.prepare('SELECT COUNT(*) AS count FROM sdg_measure_reviews').get().count, 1);
+    store.close();
+    store = new BridgeStore(file, { lane: 'import' });
+    const resumed = await stageIndependentMeasureReview({ ...incoming, now }, {
+      measures, editions, journal: new MeasureReviewJournal(store),
+      prepareRecord: () => assert.fail('A persisted acceptance must not be regenerated'),
+    });
+    assert.equal(resumed.item.readyAt, acceptedAt);
+    assert.equal(editions.stage(window).items[0].id, target.revisionId);
+    assert.equal(store.db.prepare('SELECT COUNT(*) AS count FROM sdg_measure_reviews').get().count, 1);
+    const id = editions.readDossier(target.revisionId).dossier.review.id;
+    store.db.prepare('UPDATE sdg_measure_reviews SET body = ? WHERE id = ?').run('{}', id);
+    assert.throws(() => new MeasureReviewJournal(store).read(id), /JOURNAL_CHANGED/);
+  } finally {
+    store.close();
+    measures.close();
+    editions.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the review journal cannot accept a failed native source-fidelity check', () => withStore(async ({
+  target, measures, editions,
+}) => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'woek-review-hold-'));
+  const store = new BridgeStore(path.join(dir, 'bridge.sqlite'), { lane: 'import' });
+  try {
+    const journal = new MeasureReviewJournal(store);
+    const { packet, receipt, record } = bind(measures, target);
+    receipt.review.checks.source_fidelity.status = 'fail';
+    await assert.rejects(stageIndependentMeasureReview({ packet, receipt, now }, {
+      measures, editions, journal, prepareRecord: () => ({ record }),
+    }), /EDITORIAL_IMPACT_REVIEW_FAILED/);
+    assert.equal(store.db.prepare('SELECT COUNT(*) AS count FROM sdg_measure_reviews').get().count, 0);
+    assert.deepEqual(editions.stage(window).items, []);
+  } finally {
+    store.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
 }));
