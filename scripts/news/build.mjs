@@ -3,7 +3,7 @@ import { readRepositoryJson } from './newsroom-store.mjs';
 import {renderShowIdentity} from './show-identity.mjs';
 import {renderEditorialAuthorship} from './editorial-authorship.mjs';
 import {appNavigation,buildAppPages} from './app-pages.mjs';
-import {RSS_CHANNELS, rssDiscoveryLinks, renderRssFeed} from './rss-channels.mjs';
+import {RSS_CHANNELS, rssDiscoveryLinks, sdgFeedDiscoveryLinks, renderRssFeed} from './rss-channels.mjs';
 import { impactMethodology } from './impact-methodology.mjs';
 import { impactCoverage, assertImpactCoverage } from './impact-coverage.mjs';
 import {loerrachObservationCorrection} from './observation-context.mjs';
@@ -453,7 +453,7 @@ function pageShell({ title, description, canonical, base, body, jsonLd, feedLink
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="manifest" href="${base}wirkungsticker/manifest.webmanifest">
   <link rel="apple-touch-icon" href="${base}assets/img/brand/apple-touch-icon.png">
-  ${feedLinks ? `${rssDiscoveryLinks()}
+  ${feedLinks ? `${sdgFeedDiscoveryLinks(canonical, { sdgActive })}${rssDiscoveryLinks()}
   <link rel="alternate" type="application/atom+xml" title="Wirkungsticker Atom" href="${SITE}/wirkungsticker/feed.atom">
   <link rel="alternate" type="application/feed+json" title="Wirkungsticker JSON Feed" href="${SITE}/wirkungsticker/feed.json">` : ""}
   <link rel="icon" href="${base}assets/img/brand/favicon.svg" type="image/svg+xml">
@@ -1117,7 +1117,7 @@ export function buildNewsSite() {
     jsonLd:{'@context':'https://schema.org','@type':'WebPage',name:'Methodik des Wirkungstickers',url:`${SITE}/wirkungsticker/methodik/`}}));
   const sourceRoutes = buildSourcePages(loadNewsRegistry(ROOT), readJson(path.join(ROOT, "data/news/state.json")), { pageShell, write, escapeHtml, root: ROOT, site: SITE, formatDate });
   const sdgRoutes = buildSdgEditionPages({ root: ROOT, site: SITE,
-    pageShell: data => pageShell({ ...data, sdgActive: Boolean(sdgTicker) }), write, escapeHtml, catalog: sdgTicker });
+    pageShell: data => pageShell({ ...data, sdgActive: Boolean(sdgTicker) }), write, escapeHtml, catalog: sdgTicker, includeFeeds: true });
   const editorialRoutes = editorialAnalyses.map((analysis) => `wirkungsticker/analyse/${analysis.slug}/`);
   updateSitemap(pageStories, publicationUpdatedAt, oldSlugs, [...sourceRoutes, ...editorialRoutes, ...appRoutes, ...sdgRoutes, 'wirkungsticker/methodik/']);
   console.log(`Wirkungsticker gebaut: ${stories.length} aktuelle Lagen und Einzelakten aus ${activeStories.length} Wirkungsakten; ${editorialAnalyses.length} WÖk-Analyse(n), ${grouping.cases.length} Lageakte(n), ${retiredStories.length} transparent archivierte Storys, RSS/Atom/JSON.`);

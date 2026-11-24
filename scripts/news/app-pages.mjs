@@ -1,5 +1,5 @@
 import path from 'node:path';
-import {RSS_CHANNELS} from './rss-channels.mjs';
+import {RSS_CHANNELS,SDG_RSS_CHANNEL} from './rss-channels.mjs';
 import fs from 'node:fs';
 import { themenVon } from './themen.mjs';
 import {createHash} from 'node:crypto';
@@ -120,7 +120,7 @@ export function buildAppPages({root,stories,analyses,storiesById,storyCard,edito
   const editions=recent.map(edition=>`<li><a href="${base}sdg/ausgabe/${esc(edition.edition_id)}/">${esc(sdgEditionTitle(edition))}</a> · ${edition.items.length} geprüft</li>`).join('');
   page('',`${SDG_TRACKER_TITLE} - Wirkungsticker`,SDG_TRACKER_DESCRIPTION,`
 <header class="ticker-app-title"><p class="hero-kicker">Wirkungsticker</p><h1>${esc(SDG_TRACKER_TITLE)}</h1><p>${esc(SDG_TRACKER_INTRO)}</p><a class="btn btn-primary" href="${base}sdg/">SDG-Ausgaben ansehen</a></header>
-<section class="section ticker-home-lagen"><h2>Jüngste Ausgaben</h2><ol class="ticker-lagen-liste">${editions}</ol><a href="${base}sdg/">Alle SDG-Ausgaben</a> · <a href="${base}news/">Nachrichtenarchiv</a></section>
+<section class="section ticker-home-lagen"><h2>Jüngste Ausgaben</h2><ol class="ticker-lagen-liste">${editions}</ol><a href="${base}sdg/">Alle SDG-Ausgaben</a> · <a href="${SDG_RSS_CHANNEL.path}">${esc(SDG_RSS_CHANNEL.label)}</a> · <a href="${base}news/">Nachrichtenarchiv</a></section>
 <section class="section ticker-home-explainer" id="methodik"><h2>Wie wir Veränderungen und Folgen einordnen</h2><p>${esc(SDG_TRACKER_EVIDENCE)}</p><a href="${base}methodik/">Methodik des Wirkungstickers</a></section>
 ${editorialSections}`);
  }else{

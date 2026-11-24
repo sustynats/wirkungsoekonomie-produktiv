@@ -198,6 +198,22 @@ Deployment an.
 Vor der produktiven Umschaltung müssen der normale Lauf bis zur öffentlichen
 Quittung und das passende Rückfallartefakt nachgewiesen sein.
 
+### Feeds für SDG-Ausgaben und Redaktion
+
+Der normale Seitenbau erzeugt aus demselben registrierten SDG-Katalog wie
+das Ausgabenarchiv die Feeds `/wirkungsticker/sdg/feed.xml` und
+`/wirkungsticker/sdg/feed.json`. Jede registrierte Ausgabe erscheint mit
+ihrem festen Permalink. Der Feedeintrag weist die Anzahl geprüfter Einträge
+aus, auch bei einer leeren Ausgabe. Der JSON-Feed führt Solltermin,
+Prüfschluss und Versiegelung als eigene Zeitfelder. Veröffentlichungszeit
+und allgemeine Feed-Aktualisierung werden aus diesen Daten nicht abgeleitet.
+Ohne registrierte Ausgaben erstellt der Seitenbau keine SDG-Feeds.
+
+Die aktive Startseite und das Ausgabenarchiv verweisen auf den neuen Feed.
+Feeds für die bisherigen Nachrichten und für die Redaktion behalten ihre
+Pfade und Datenquellen. SDG-Ausgaben fließen weder in diese Feeds noch in
+deren Discord- oder App-Push-Transport.
+
 ## Kostenregeln
 
 - **Oktober-Freigabe vom 01.10.2026:** Natalie hat die zuletzt vorgeschlagene interne

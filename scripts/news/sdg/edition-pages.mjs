@@ -3,6 +3,7 @@ import { safeUrl } from '../bridge/contract.mjs';
 import { LAGEN } from '../lage.mjs';
 import { readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
 import { SDG_TRACKER_EVIDENCE, SDG_TRACKER_TITLE } from './presentation.mjs';
+import { renderRssFeed, RSS_SITE, SDG_JSON_FEED_PATH, SDG_RSS_CHANNEL } from '../rss-channels.mjs';
 
 const ROUTE = 'wirkungsticker/sdg/';
 const slotTitles = { morgenlage: 'SDG-Morgenupdate', mittagslage: 'SDG-Mittagsupdate', abendlage: 'SDG-Abendupdate' };
@@ -41,7 +42,32 @@ export function sdgEditionTitle(edition) {
   return `${slotTitles[slot.slot]} · ${formatDate.format(new Date(edition.scheduled_at))}`;
 }
 
-export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml: esc, catalog }) {
+function writeEditionFeeds(root, editions, write) {
+  const items = editions.map(edition => {
+    const count = edition.items.length;
+    return {
+      url: `${RSS_SITE}/${ROUTE}ausgabe/${edition.edition_id}/`,
+      title: sdgEditionTitle(edition),
+      summary: count === 0 ? 'Für diese Ausgabe liegen keine geprüften Einträge vor.'
+        : count === 1 ? '1 geprüfter Eintrag in dieser Ausgabe.' : `${count} geprüfte Einträge in dieser Ausgabe.`,
+      _woek_edition: { scheduled_at: edition.scheduled_at, cutoff_at: edition.cutoff_at, sealed_at: edition.sealed_at,
+        checked_items: count },
+    };
+  });
+  write(path.join(root, SDG_RSS_CHANNEL.path.slice(1)), renderRssFeed(items, SDG_RSS_CHANNEL, { withBuildDate: false }));
+  write(path.join(root, SDG_JSON_FEED_PATH.slice(1)), JSON.stringify({
+    version: 'https://jsonfeed.org/version/1.1',
+    title: SDG_RSS_CHANNEL.title,
+    description: SDG_RSS_CHANNEL.description,
+    home_page_url: `${RSS_SITE}${SDG_RSS_CHANNEL.home}`,
+    feed_url: `${RSS_SITE}${SDG_JSON_FEED_PATH}`,
+    language: 'de-DE',
+    items: items.map(({ url, title, summary, _woek_edition }) =>
+      ({ id: url, url, title, content_text: summary, _woek_edition })),
+  }, null, 2));
+}
+
+export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml: esc, catalog, includeFeeds = false }) {
   const editions = loadCatalog(catalog ?? readSdgReleaseCatalog(root));
   if (editions.length === 0) return [];
   const routes = [];
@@ -82,7 +108,8 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
   }
   page(ROUTE, `SDG-Ausgaben | ${tracker}`, 'SDG-Ausgaben des Global SDG Impact Trackers',
     'Die Ausgaben des Wirkungstickers verfolgen Maßnahmen und belegte Veränderungen zu den UN-Nachhaltigkeitszielen.',
-    `<p>${esc(SDG_TRACKER_EVIDENCE)}</p><p><a href="/wirkungsticker/">Zum Wirkungsticker</a> · <a href="/wirkungsticker/methodik/">Zur Methodik</a></p><ol class="ticker-lagen-liste">${editions.map(edition =>
+    `<p>${esc(SDG_TRACKER_EVIDENCE)}</p><p><a href="/wirkungsticker/">Zum Wirkungsticker</a> · <a href="/wirkungsticker/methodik/">Zur Methodik</a></p>${includeFeeds ? `<p><a href="${SDG_RSS_CHANNEL.path}">${esc(SDG_RSS_CHANNEL.label)}</a> · <a href="${SDG_JSON_FEED_PATH}">JSON-Feed für SDG-Ausgaben</a></p>` : ''}<ol class="ticker-lagen-liste">${editions.map(edition =>
       `<li><a href="/${ROUTE}ausgabe/${edition.edition_id}/">${esc(sdgEditionTitle(edition))}</a> · ${edition.items.length} geprüft</li>`).join('')}</ol>`, '../../');
+  if (includeFeeds) writeEditionFeeds(root, editions, write);
   return routes;
 }
