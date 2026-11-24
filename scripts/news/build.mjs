@@ -1108,7 +1108,13 @@ export function buildNewsSite() {
         url: `${SITE}/wirkungsticker/lage/${lage.lage_id}/`, dateModified: lage.stand },
     }));
   }
-  write(path.join(TICKER_DIR, 'methodik/index.html'), pageShell({title:'Wie der Wirkungsticker Wirkungen bewertet', description:'Richtung, Tragweite, Eintrittsplausibilität und Evidenz: die sechs Faktoren und Schutzgrenzen des Wirkungstickers verständlich erklärt.', canonical:`${SITE}/wirkungsticker/methodik/`, base:'../../', body:impactMethodology({profilesReleased:Boolean(PUBLIC_IMPACT_PROFILE_VERSION)}), jsonLd:{'@context':'https://schema.org','@type':'WebPage',name:'Methodik des Wirkungstickers',url:`${SITE}/wirkungsticker/methodik/`}}));
+  const methodDescription = sdgTicker
+    ? 'Wie der Global SDG Impact Tracker Maßnahmen und ihre möglichen und beobachteten Folgen für Mensch, Planet und Demokratie einordnet.'
+    : 'Richtung, Tragweite, Eintrittsplausibilität und Evidenz: die sechs Faktoren und Schutzgrenzen des Wirkungstickers verständlich erklärt.';
+  write(path.join(TICKER_DIR, 'methodik/index.html'), pageShell({title:'Wie der Wirkungsticker Wirkungen bewertet', description:methodDescription,
+    canonical:`${SITE}/wirkungsticker/methodik/`, base:'../../', sdgActive:Boolean(sdgTicker),
+    body:impactMethodology({sdgActive:Boolean(sdgTicker)}),
+    jsonLd:{'@context':'https://schema.org','@type':'WebPage',name:'Methodik des Wirkungstickers',url:`${SITE}/wirkungsticker/methodik/`}}));
   const sourceRoutes = buildSourcePages(loadNewsRegistry(ROOT), readJson(path.join(ROOT, "data/news/state.json")), { pageShell, write, escapeHtml, root: ROOT, site: SITE, formatDate });
   const sdgRoutes = buildSdgEditionPages({ root: ROOT, site: SITE,
     pageShell: data => pageShell({ ...data, sdgActive: Boolean(sdgTicker) }), write, escapeHtml, catalog: sdgTicker });

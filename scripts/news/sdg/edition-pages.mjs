@@ -2,8 +2,10 @@ import path from 'node:path';
 import { safeUrl } from '../bridge/contract.mjs';
 import { LAGEN } from '../lage.mjs';
 import { readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
+import { SDG_TRACKER_EVIDENCE, SDG_TRACKER_TITLE } from './presentation.mjs';
 
 const ROUTE = 'wirkungsticker/sdg/';
+const slotTitles = { morgenlage: 'SDG-Morgenupdate', mittagslage: 'SDG-Mittagsupdate', abendlage: 'SDG-Abendupdate' };
 const dimensions = { human: 'Mensch', planet: 'Planet', democracy: 'Demokratie' };
 const formatDate = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', dateStyle: 'medium', timeStyle: 'short' });
 const formatCalendarDate = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', dateStyle: 'medium' });
@@ -36,14 +38,14 @@ function loadCatalog({ releases }) {
 
 export function sdgEditionTitle(edition) {
   const slot = LAGEN.find(item => edition.edition_id.endsWith(item.slot));
-  return `${slot.label} · ${formatDate.format(new Date(edition.scheduled_at))}`;
+  return `${slotTitles[slot.slot]} · ${formatDate.format(new Date(edition.scheduled_at))}`;
 }
 
 export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml: esc, catalog }) {
   const editions = loadCatalog(catalog ?? readSdgReleaseCatalog(root));
   if (editions.length === 0) return [];
   const routes = [];
-  const tracker = 'Global SDG Impact Tracker';
+  const tracker = SDG_TRACKER_TITLE;
   const page = (route, title, heading, description, body, base, editionHash) => {
     const canonical = `${site}/${route}`;
     const editionBinding = editionHash ? ` data-sdg-edition-sha256="${esc(editionHash)}"` : '';
@@ -74,12 +76,13 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
     const cutoff = formatDate.format(new Date(edition.cutoff_at));
     const title = sdgEditionTitle(edition);
     page(`${ROUTE}ausgabe/${edition.edition_id}/`, `${title} | ${tracker}`, title,
-      'Geprüfte Maßnahmen und Wirkungsbeobachtungen.',
+      'Geprüfte Beschlüsse, Programme und Umsetzungsstände zu den UN-Nachhaltigkeitszielen mit Quellen und Wirkungseinordnung.',
       `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Prüfschluss ${esc(cutoff)} Uhr (Berlin)</p>${items || '<p>Für diese Ausgabe liegen keine geprüften Einträge vor.</p>'}`,
       '../../../../', edition.sha256);
   }
-  page(ROUTE, tracker, tracker, 'Ausgaben mit geprüften Maßnahmen und Wirkungsbeobachtungen.',
-    `<p><a href="/wirkungsticker/">Zum Wirkungsticker</a></p><ol class="ticker-lagen-liste">${editions.map(edition =>
+  page(ROUTE, `SDG-Ausgaben | ${tracker}`, 'SDG-Ausgaben des Global SDG Impact Trackers',
+    'Die Ausgaben des Wirkungstickers verfolgen Maßnahmen und belegte Veränderungen zu den UN-Nachhaltigkeitszielen.',
+    `<p>${esc(SDG_TRACKER_EVIDENCE)}</p><p><a href="/wirkungsticker/">Zum Wirkungsticker</a> · <a href="/wirkungsticker/methodik/">Zur Methodik</a></p><ol class="ticker-lagen-liste">${editions.map(edition =>
       `<li><a href="/${ROUTE}ausgabe/${edition.edition_id}/">${esc(sdgEditionTitle(edition))}</a> · ${edition.items.length} geprüft</li>`).join('')}</ol>`, '../../');
   return routes;
 }

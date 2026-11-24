@@ -13,6 +13,8 @@ import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news
 import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
 import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
 import { confirmSdgPagesDelivery } from '../../scripts/news/sdg/confirm-pages-delivery.mjs';
+import { impactMethodology } from '../../scripts/news/impact-methodology.mjs';
+import { applySdgAppDescription, SDG_TRACKER_DESCRIPTION, SDG_TRACKER_EVIDENCE, SDG_TRACKER_INTRO } from '../../scripts/news/sdg/presentation.mjs';
 import { SDG_PAGES_RELEASE_PATH, verifySdgPagesDelivery, writeSdgPagesRelease } from '../../scripts/news/sdg/pages-release.mjs';
 import { prepareScheduledSdgEditions } from '../../scripts/news/sdg/prepare-scheduled-editions.mjs';
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
@@ -291,7 +293,9 @@ test('edition pages render only catalogued checked packages and retain all entri
     assert.equal(written.size, 2);
     assert.match(written.get(detailRoute + 'index.html'), new RegExp(`sdg-${target.revisionId}`));
     assert.equal([...written.get(detailRoute + 'index.html').matchAll(/<article id="sdg-/g)].length, 42);
-    assert.match(written.get(indexRoute + 'index.html'), /Global SDG Impact Tracker/);
+    assert.match(written.get(indexRoute + 'index.html'), /SDG-Ausgaben des Global SDG Impact Trackers/);
+    assert.match(written.get(detailRoute + 'index.html'), /SDG-Morgenupdate/);
+    assert.ok(written.get(indexRoute + 'index.html').includes(SDG_TRACKER_EVIDENCE));
     assert.match(written.get(detailRoute + 'index.html'), /Prüfschluss/);
     assert.match(written.get(detailRoute + 'index.html'), /Erfasst am/);
     assert.doesNotMatch(written.get(detailRoute + 'index.html'), /Veröffentlicht am/);
@@ -366,7 +370,8 @@ test('ticker presentation can switch and roll back while legacy news and editori
         storyCard: item => `<article>${item.title}</article>`,
         editorialCard: item => `<article>${item.title}</article>`,
         write: (filename, html) => pages.set(path.relative(root, filename), html),
-        pageShell: data => appNavigation(data.canonical, { sdgActive: data.sdgActive }) + data.body,
+        pageShell: data => `<meta name="description" content="${data.description}">`
+          + appNavigation(data.canonical, { sdgActive: data.sdgActive }) + data.body,
       });
       return pages;
     };
@@ -381,10 +386,32 @@ test('ticker presentation can switch and roll back while legacy news and editori
     assert.match(active.get(homepage), /Global SDG Impact Tracker/);
     assert.match(active.get(homepage), /\/wirkungsticker\/sdg\/ausgabe\/2026-11-24-morgenlage\//);
     assert.match(active.get(homepage), /SDG-Ausgaben/);
+    assert.ok(active.get(homepage).includes(`<meta name="description" content="${SDG_TRACKER_DESCRIPTION}">`));
+    assert.ok(active.get(homepage).includes(SDG_TRACKER_INTRO));
+    assert.ok(active.get(homepage).includes(SDG_TRACKER_EVIDENCE));
+    assert.match(active.get(homepage), /href="\/wirkungsticker\/methodik\/"/);
+    assert.match(impactMethodology({ sdgActive: true }), /Deutsche Nachhaltigkeitsstrategie/);
+    assert.match(impactMethodology({ sdgActive: true }), /href="\/verstehen\/sdgs-sdgplus\/"/);
+    assert.doesNotMatch(impactMethodology(), /id="sdg-rahmen"/);
     assert.doesNotMatch(active.get(homepage), /Ältere Meldung/);
     assert.match(active.get(archive), /Ältere Meldung/);
-    assert.match(active.get(archive), /Nachrichtenarchiv/);
+    assert.match(active.get(archive), /Nachrichtenarchiv \(RSS\)/);
+    assert.match(active.get('wirkungsticker/mehr/index.html'), /Nachrichtenarchiv \(RSS\)/);
     for (const item of analyses) assert.ok(active.get(homepage).includes(item.title));
+
+    const artifactRoot = path.join(root, 'artifact');
+    const manifest = readFileSync(new URL('../../wirkungsticker/manifest.webmanifest', import.meta.url), 'utf8');
+    const manifestPath = path.join(artifactRoot, 'wirkungsticker/manifest.webmanifest');
+    mkdirSync(path.dirname(manifestPath), { recursive: true });
+    writeFileSync(manifestPath, manifest);
+    applySdgAppDescription(artifactRoot);
+    const { description, categories, shortcuts, ...identity } = JSON.parse(readFileSync(manifestPath, 'utf8'));
+    const expectedIdentity = JSON.parse(manifest);
+    for (const key of ['description', 'categories', 'shortcuts']) delete expectedIdentity[key];
+    assert.deepEqual(identity, expectedIdentity);
+    assert.equal(description, SDG_TRACKER_DESCRIPTION);
+    assert.deepEqual(categories, ['education']);
+    assert.deepEqual(shortcuts.map(item => item.url), ['/wirkungsticker/sdg/', '/wirkungsticker/analysen/']);
     rmSync(config);
     assert.deepEqual(render(), initial);
     assert.equal(readSdgReleaseCatalog(root).sha256, release.catalog_sha256);
