@@ -1,7 +1,57 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-23T11:00:00.000Z",
+  "updated_at": "2026-11-24T11:00:00.000Z",
   "lagen": [
+    {
+      "lage_id": "2026-11-24-mittagslage",
+      "slot": "mittagslage",
+      "label": "Mittagslage",
+      "date": "2026-11-24",
+      "window_from": "2026-11-24T05:00:00.000Z",
+      "window_to": "2026-11-24T11:00:00.000Z",
+      "stand": "2026-11-24T11:00:00.000Z",
+      "headline": "Noch keine neue Nachricht seit 6 Uhr veröffentlicht.",
+      "counts": {
+        "total": 0,
+        "neu": 0,
+        "fortgeschrieben": 0
+      },
+      "entries": [],
+      "processing_status": {
+        "state": "processing_unknown",
+        "checked_at": "2026-11-22T22:25:58.023Z",
+        "note": "Zum Zeitpunkt der Zusammenstellung liegt kein aktueller Nachweis über den Abschluss der Nachrichtenverarbeitung vor. Diese Ausgabe zeigt bereits veröffentlichte Nachrichten; sie belegt nicht, dass es keine weiteren relevanten Nachrichten gibt."
+      },
+      "publication_recovery": {
+        "recovered_at": "2026-11-24T15:46:19.748Z",
+        "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
+      }
+    },
+    {
+      "lage_id": "2026-11-24-morgenlage",
+      "slot": "morgenlage",
+      "label": "Morgenlage",
+      "date": "2026-11-24",
+      "window_from": "2026-11-23T17:00:00.000Z",
+      "window_to": "2026-11-24T05:00:00.000Z",
+      "stand": "2026-11-24T05:00:00.000Z",
+      "headline": "Noch keine neue Nachricht seit gestern Abend veröffentlicht.",
+      "counts": {
+        "total": 0,
+        "neu": 0,
+        "fortgeschrieben": 0
+      },
+      "entries": [],
+      "processing_status": {
+        "state": "processing_unknown",
+        "checked_at": "2026-11-22T22:25:58.023Z",
+        "note": "Zum Zeitpunkt der Zusammenstellung liegt kein aktueller Nachweis über den Abschluss der Nachrichtenverarbeitung vor. Diese Ausgabe zeigt bereits veröffentlichte Nachrichten; sie belegt nicht, dass es keine weiteren relevanten Nachrichten gibt."
+      },
+      "publication_recovery": {
+        "recovered_at": "2026-11-24T15:46:19.748Z",
+        "note": "Diese Ausgabe wurde nachträglich aus bereits veröffentlichten Nachrichten zusammengestellt. Ihr Stand bezeichnet das Nachrichtenfenster, nicht den Zeitpunkt der Bereitstellung."
+      }
+    },
     {
       "lage_id": "2026-11-23-mittagslage",
       "slot": "mittagslage",
