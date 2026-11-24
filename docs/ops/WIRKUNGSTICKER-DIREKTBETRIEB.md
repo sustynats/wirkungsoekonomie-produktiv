@@ -149,6 +149,39 @@ Doppelläufe.
 6. **Build → Commit → Pages** wie bisher (`build.mjs`, `publish-git.mjs`, `deploy.yml`
    ticker-only), anschließend `news:health`.
 
+### Übergabe der SDG-Ausgaben an die bestehende Publikationsspur
+
+Bei kontrollierter SDG-Umschaltung nutzt derselbe Workflow die bestehende
+Import-Spur auf Oracle. Der vorhandene Taktgeber weckt den Workflow. Die
+aktuelle, gehashte Ausgabe im öffentlichen Katalog bindet dessen Anfrage an
+den privat vorbereiteten Bestand. Der Oracle-Dienst verwendet seinen eigenen
+Zeitpunkt sowie den privat konfigurierten Beginn der Berliner Ausgaben.
+Er schließt den Prüfbestand im vorhandenen Journal und überträgt registrierte
+öffentliche Pakete stückweise. Die drei privaten Datenbanken, Prüfidentitäten
+und Rohbelege bleiben auf Oracle.
+
+Der Oracle-Importdienst benötigt für diesen Pfad den geprüften Stand der
+SDG-Module und `WOEK_SDG_PUBLICATION_START_AT` als kanonischen UTC-Zeitpunkt
+einer Berliner Ausgabe. Unter seinem privaten Verzeichnis liegen
+`sdg/measures.sqlite`, `sdg/editions.sqlite` und `sdg/publication/` mit
+dem bereits abgesicherten Startkatalog. Die bestehenden Autorenfreigaben
+laufen im selben Workflow über ihre bisherigen Schritte.
+
+Der Workflow prüft Vollständigkeit, Paket-Hashes und erlaubte Felder, ehe
+er den Katalog erweitert. Bei einer unterbrochenen Übernahme baut er aus
+dem bereits eingecheckten Katalog. Nur der bestehende Git-Commit- und
+Pages-Pfad kann eine Ausgabe ausliefern. Ein ausschließlich automatisches
+SDG-Paket löst keine Nachricht über den bisherigen Push-Feed aus.
+Ein Auslieferungsfehler bleibt bis zur Prüfung des konkreten Pages-Versuchs
+offen. Beim nächsten regulären Lauf nimmt Oracle den tatsächlich sichtbaren
+Pages-Versuch aus dem veröffentlichten Manifest auf. Es gleicht ihn mit
+den nativen GitHub-Belegen sowie den unveränderten Ausgabebytes ab und speichert
+die erste bestätigte Quittung im Ausgabespeicher. Dafür braucht der Dienst
+eine geprüfte GitHub-CLI-Installation mit Leserechten für den Deploy-Beleg. Bei unklarem
+Versandstatus startet die Quittierung keinen neuen Deploy.
+Vor der produktiven Umschaltung müssen der normale Lauf bis zur öffentlichen
+Quittung und das passende Rückfallartefakt nachgewiesen sein.
+
 ## Kostenregeln
 
 - **Oktober-Freigabe vom 01.10.2026:** Natalie hat die zuletzt vorgeschlagene interne

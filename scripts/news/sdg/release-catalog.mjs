@@ -5,6 +5,7 @@ import { hash } from '../bridge/contract.mjs';
 import { berlinInstant, lageDefinition } from '../lage.mjs';
 
 export const SDG_HASH = /^[a-f0-9]{64}$/;
+export const SDG_TRANSFER_BYTES = 512 * 1024;
 const ID = /^\d{4}-\d{2}-\d{2}-(?:morgenlage|mittagslage|abendlage)$/;
 
 export function validateSdgEditionPackage(pack, id, digest) {
@@ -24,7 +25,7 @@ export function validateSdgEditionPackage(pack, id, digest) {
   return manifest;
 }
 
-export function readSdgReleaseCatalog(root) {
+export function readSdgCatalogIndex(root) {
   const storage = path.join(root, 'data/news/sdg');
   const filename = path.join(storage, 'release-catalog.json');
   const directory = path.join(storage, 'editions');
@@ -38,10 +39,18 @@ export function readSdgReleaseCatalog(root) {
       throw Error('SDG_RELEASE_CATALOG_INVALID');
     }
     ids.add(id);
-    const pack = JSON.parse(fs.readFileSync(path.join(directory, `sdg-edition-${sha256}.json`), 'utf8'));
-    return { edition_id: id, sha256, manifest: validateSdgEditionPackage(pack, id, sha256) };
+    return { edition_id: id, sha256 };
   });
   return { filename, directory, sha256: createHash('sha256').update(bytes).digest('hex'), releases };
+}
+
+export function readSdgReleaseCatalog(root) {
+  const catalog = readSdgCatalogIndex(root);
+  const releases = catalog.releases.map(({ edition_id: id, sha256 }) => {
+    const pack = JSON.parse(fs.readFileSync(path.join(catalog.directory, `sdg-edition-${sha256}.json`), 'utf8'));
+    return { edition_id: id, sha256, manifest: validateSdgEditionPackage(pack, id, sha256) };
+  });
+  return { ...catalog, releases };
 }
 
 export function loadSdgTickerPresentation(root) {

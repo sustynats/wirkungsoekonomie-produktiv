@@ -9,7 +9,7 @@ import {
   inspectSdgPagesAudit, SDG_PAGES_RELEASE_PATH, SDG_PAGES_REPOSITORY,
   verifySdgCompletedPagesRun, verifySdgPublicDelivery,
 } from './pages-release.mjs';
-import { loadSdgTickerPresentation } from './release-catalog.mjs';
+import { loadSdgTickerPresentation, readSdgReleaseCatalog } from './release-catalog.mjs';
 
 const numbered = /^[1-9]\d{0,19}$/;
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -19,6 +19,10 @@ function nativeRead(route) {
   try {
     return execFileSync('gh', ['api', '--method', 'GET', `repos/${SDG_PAGES_REPOSITORY}/${route}`], {
       timeout: 30_000, maxBuffer: 64 * 1024 ** 2, stdio: ['ignore', 'pipe', 'pipe'],
+      env: {
+        ...process.env,
+        GH_TOKEN: process.env.GH_TOKEN || process.env.WOEK_NEWS_GITHUB_RUN_READ_TOKEN || '',
+      },
     });
   } catch {
     throw Error('SDG_PAGES_NATIVE_READ_FAILED');
@@ -106,13 +110,13 @@ async function evidence(directory, name, capture, verify, { resumeMissing = fals
 }
 
 export async function confirmSdgPagesDelivery({
-  root, ledger, editionId, expectedCommit, runId, runAttempt, evidenceDirectory,
+  root, ledger, editionId, expectedCommit, runId, runAttempt, evidenceDirectory, checkedCatalog,
 }, { readNative = nativeRead, readPublic = publicRead, clock = () => new Date().toISOString() } = {}) {
   if (!/^[a-f0-9]{40}$/.test(expectedCommit ?? '') || typeof runId !== 'string' || !numbered.test(runId) ||
       typeof runAttempt !== 'string' || !numbered.test(runAttempt)) {
     throw Error('SDG_PAGES_EXPECTED_RUN_REQUIRED');
   }
-  const release = loadSdgTickerPresentation(root)?.releases.find(entry => entry.edition_id === editionId);
+  const release = (checkedCatalog ?? loadSdgTickerPresentation(root))?.releases.find(entry => entry.edition_id === editionId);
   if (!release) throw Error('SDG_PAGES_REGISTERED_EDITION_REQUIRED');
   const pack = packageSdgEdition(ledger, editionId);
   if (pack.sha256 !== release.sha256) throw Error('SDG_EDITION_DELIVERY_BINDING_MISMATCH');
@@ -188,6 +192,40 @@ export async function confirmSdgPagesDelivery({
       native_sha256: native.evidenceHash, manifest_sha256: publicManifest.evidenceHash, edition_sha256: observed.evidenceHash,
     },
   }, pack.manifest.ledger_sha256);
+}
+
+// Called by the normal writer on its next wake, using the bound catalog
+// already present in its checkout. A current public manifest identifies the
+// concrete run to verify, even if the dispatch response was lost.
+export async function reconcileSdgPagesDelivery({
+  root, ledger, committed, evidenceDirectory,
+}, { readNative = nativeRead, readPublic = publicRead, clock = () => new Date().toISOString() } = {}) {
+  const catalog = readSdgReleaseCatalog(root);
+  const last = catalog.releases.findIndex(entry =>
+    entry.edition_id === committed?.edition_id && entry.sha256 === committed?.sha256);
+  if (last < 0) throw Error('SDG_BRIDGE_CATALOG_PREFIX_MISMATCH');
+  const pending = catalog.releases.slice(0, last + 1).filter(entry => !ledger.readDelivery(entry.edition_id));
+  if (!pending.length) return { status: 'current' };
+
+  const directory = privateEvidenceRoot(root, evidenceDirectory);
+  const manifestBytes = await readPublic(SDG_PAGES_RELEASE_PATH);
+  save(fs.mkdtempSync(path.join(directory, 'discovery-')), 'manifest.json', manifestBytes);
+  const manifest = JSON.parse(manifestBytes);
+  if (manifest?.kind !== 'sdg_pages_release' || manifest.repository !== SDG_PAGES_REPOSITORY ||
+      manifest.schema_version !== 1 || !Array.isArray(manifest.editions)) {
+    throw Error('SDG_PAGES_RELEASE_BINDING_MISMATCH');
+  }
+  const target = pending.find(entry => manifest.editions.some(edition =>
+    edition.edition_id === entry.edition_id && edition.edition_sha256 === entry.sha256));
+  if (!target) return { status: 'awaiting_delivery' };
+  const confirmation = await confirmSdgPagesDelivery({
+    root, ledger, editionId: target.edition_id, expectedCommit: manifest.source_commit,
+    runId: manifest.run_id, runAttempt: manifest.run_attempt, evidenceDirectory, checkedCatalog: catalog,
+  }, {
+    readNative, clock,
+    readPublic: route => route === SDG_PAGES_RELEASE_PATH ? manifestBytes : readPublic(route),
+  });
+  return { status: confirmation.status, edition_id: target.edition_id };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

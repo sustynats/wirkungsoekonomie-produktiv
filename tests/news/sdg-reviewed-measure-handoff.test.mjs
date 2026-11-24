@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -12,7 +12,7 @@ import { MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
 import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news/sdg/reviewed-measure-handoff.mjs';
 import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
 import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
-import { confirmSdgPagesDelivery } from '../../scripts/news/sdg/confirm-pages-delivery.mjs';
+import { confirmSdgPagesDelivery, reconcileSdgPagesDelivery } from '../../scripts/news/sdg/confirm-pages-delivery.mjs';
 import { impactMethodology } from '../../scripts/news/impact-methodology.mjs';
 import { applySdgAppDescription, SDG_TRACKER_DESCRIPTION, SDG_TRACKER_EVIDENCE, SDG_TRACKER_INTRO } from '../../scripts/news/sdg/presentation.mjs';
 import { SDG_PAGES_RELEASE_PATH, verifySdgPagesDelivery, writeSdgPagesRelease } from '../../scripts/news/sdg/pages-release.mjs';
@@ -20,6 +20,8 @@ import { prepareScheduledSdgEditions } from '../../scripts/news/sdg/prepare-sche
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
 import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
 import { loadSdgTickerPresentation, readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
+import { importSdgBridgeEditions } from '../../scripts/news/sdg/import-bridge-editions.mjs';
+import { serveSdgEditions } from '../../scripts/news/sdg/bridge-editions.mjs';
 import { appNavigation, buildAppPages } from '../../scripts/news/app-pages.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
 import { SEMANTIC_CHECKS } from '../../scripts/news/impact-publication.mjs';
@@ -68,6 +70,158 @@ function bind(measures, target) {
   };
   return { record, packet, receipt, accepted_at: acceptedAt };
 }
+
+test('the normal ticker writer receives only checked public packages and resumes a broken Oracle transfer', async () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'woek-sdg-writer-'));
+  const storage = path.join(dir, 'sdg');
+  const oracleRoot = path.join(storage, 'publication');
+  const checkout = path.join(dir, 'checkout');
+  mkdirSync(storage, { mode: 0o700 });
+  mkdirSync(oracleRoot, { mode: 0o700 });
+  mkdirSync(checkout);
+  const bridge = new BridgeStore(path.join(dir, 'bridge.sqlite'), { lane: 'import' });
+  const measures = new MeasureRevisions(path.join(storage, 'measures.sqlite'));
+  const editions = new EditionLedger(path.join(storage, 'editions.sqlite'));
+  for (const filename of ['editions.sqlite', 'measures.sqlite']) chmodSync(path.join(storage, filename), 0o600);
+  try {
+    const journal = new MeasureReviewJournal(bridge);
+    const [first] = measures.recordBatch([event]);
+    const initial = bind(measures, first);
+    await stageIndependentMeasureReview({ packet: initial.packet, receipt: initial.receipt, now: acceptedAt }, {
+      measures, editions, journal, prepareRecord: () => ({ record: initial.record }),
+    });
+    const anchor = editions.stage(window);
+    const original = registerSdgEdition({ root: oracleRoot, ledger: editions, editionId: anchor.id, expectedCatalogHash: null });
+    const checked = registerSdgEdition({ root: checkout, ledger: editions, editionId: anchor.id, expectedCatalogHash: null });
+    assert.equal(original.catalog_sha256, checked.catalog_sha256);
+    const mode = path.join(checkout, 'data/news/sdg/ticker-mode.json');
+    writeFileSync(mode, JSON.stringify({ schema_version: 1, mode: 'sdg',
+      anchor: { edition_id: anchor.id, sha256: checked.edition_sha256 } }));
+
+    const [next] = measures.recordBatch([{ ...event,
+      case: { ...event.case, reference: 'fictional-programme-56' },
+      event: { ...event.event, reference: 'policy-25' },
+    }]);
+    const incoming = bind(measures, next);
+    // A larger checked projection spans multiple bridge frames.
+    incoming.record.source_summary = 'Synthetischer Prüftext. '.repeat(22_000);
+    incoming.record.analysis.source_summary = incoming.packet.analysis.source_summary = incoming.record.source_summary;
+    incoming.record.editorial_draft = 'PRIVATE-MANUSCRIPT-SENTINEL';
+    incoming.record.sources[0].article_excerpt = 'PRIVATE-EXCERPT-SENTINEL';
+    incoming.packet.sdg_measure = measureReviewBinding(measures, { ...next, record: incoming.record }).binding;
+    incoming.record.content_hash = incoming.receipt.review_packet_hash = sha256(JSON.stringify(incoming.packet));
+    await stageIndependentMeasureReview({ packet: incoming.packet, receipt: incoming.receipt, now: '2026-11-24T10:45:00.000Z' }, {
+      measures, editions, journal, prepareRecord: () => ({ record: incoming.record }),
+    });
+    const sdg = serveSdgEditions(dir, window.cutoff, bridge, { clock: () => '2026-11-24T11:05:00.000Z' });
+    await assert.rejects(importSdgBridgeEditions({ root: checkout, sdg: {
+      ...sdg, readPackage: (digest, offset) => {
+        if (offset > 0) throw Error('Interrupted transfer');
+        return sdg.readPackage(digest, offset);
+      },
+    } }), /Interrupted transfer/);
+    assert.equal(readSdgReleaseCatalog(checkout).sha256, checked.catalog_sha256);
+    const oracle = readSdgReleaseCatalog(oracleRoot);
+    assert.equal(oracle.releases.length, 2);
+    const latest = oracle.releases.at(-1);
+    assert.equal(latest.manifest.items[0].revision_id, next.revisionId);
+    assert.equal(sdg.readPackage(latest.sha256, 512 * 1024).offset, 512 * 1024);
+    assert.throws(() => sdg.readPackage('f'.repeat(64), 0), /SDG_BRIDGE_PACKAGE_NOT_REGISTERED/);
+    assert.throws(() => sdg.prepare({ edition_id: anchor.id, sha256: 'f'.repeat(64) }), /SDG_BRIDGE_CATALOG_PREFIX_MISMATCH/);
+    await assert.rejects(importSdgBridgeEditions({ root: checkout, sdg: {
+      ...sdg, readPackage: (...args) => ({ ...sdg.readPackage(...args), offset: 1 }),
+    } }), /SDG_BRIDGE_PACKAGE_TRANSFER_MISMATCH/);
+    assert.equal(readSdgReleaseCatalog(checkout).sha256, checked.catalog_sha256);
+
+    assert.deepEqual(await importSdgBridgeEditions({ root: checkout, sdg }), { changed: true, count: 1 });
+    const received = readSdgReleaseCatalog(checkout);
+    assert.deepEqual(received.releases, oracle.releases);
+    assert.equal(received.sha256, oracle.sha256);
+    assert.doesNotMatch(JSON.stringify(received.releases), /PRIVATE-|fixture-reviewer|fixture-writer/);
+    assert.deepEqual(await importSdgBridgeEditions({ root: checkout, sdg }), { changed: false, count: 0 });
+    assert.doesNotMatch(readFileSync(mode, 'utf8'), new RegExp(latest.sha256));
+  } finally {
+    bridge.close();
+    measures.close();
+    editions.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the next ticker wake acknowledges a bound live Pages run with no dispatch response', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const edition = editions.stage(window);
+  const dir = mkdtempSync(path.join(tmpdir(), 'woek-sdg-reconcile-'));
+  try {
+    const root = path.join(dir, 'private-catalog');
+    const evidenceDirectory = path.join(dir, 'private-evidence');
+    mkdirSync(root);
+    const registered = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
+    const committed = { edition_id: edition.id, sha256: registered.edition_sha256 };
+    const sourceCommit = '1'.repeat(40);
+    const siteBytes = Buffer.from(`<main id="main-content" data-sdg-edition-sha256="${committed.sha256}">SDG</main>`);
+    const manifest = {
+      schema_version: 1, kind: 'sdg_pages_release', repository: 'sustynats/wirkungsoekonomie-produktiv',
+      source_commit: sourceCommit, run_id: '901', run_attempt: '1', catalog_sha256: registered.catalog_sha256,
+      editions: [{ edition_id: edition.id, edition_sha256: committed.sha256, html_sha256: sha256(siteBytes) }],
+    };
+    const manifestBytes = Buffer.from(JSON.stringify(manifest));
+    const archive = execFileSync('python3', ['-c', `
+import io, sys, zipfile
+data = io.BytesIO()
+with zipfile.ZipFile(data, "w") as archive:
+    archive.writestr("release.json", sys.stdin.buffer.read())
+sys.stdout.buffer.write(data.getvalue())
+`], { input: manifestBytes });
+    const descriptor = { id: 902, name: `sdg-pages-release-${sourceCommit}-1`, expired: false,
+      workflow_run: { id: 901, head_sha: sourceCommit }, created_at: '2026-11-24T05:32:00Z',
+      digest: `sha256:${createHash('sha256').update(archive).digest('hex')}` };
+    const run = { id: 901, run_attempt: 1, repository: { full_name: manifest.repository },
+      head_branch: 'main', head_sha: sourceCommit, path: '.github/workflows/deploy.yml',
+      event: 'push', status: 'completed' };
+    const build = { name: 'build', run_id: 901, status: 'completed', conclusion: 'success',
+      started_at: '2026-11-24T05:31:00Z', completed_at: '2026-11-24T05:35:00Z' };
+    const deploy = { ...build, name: 'deploy', started_at: '2026-11-24T05:35:01Z', completed_at: '2026-11-24T05:36:00Z' };
+    const pending = { root, ledger: editions, committed, evidenceDirectory };
+    const noRead = () => assert.fail('Unexpected native or public read');
+    assert.deepEqual(await reconcileSdgPagesDelivery(pending, {
+      readPublic: route => {
+        assert.equal(route, SDG_PAGES_RELEASE_PATH);
+        return Buffer.from(JSON.stringify({ ...manifest, editions: [] }));
+      },
+      readNative: noRead,
+    }), { status: 'awaiting_delivery' });
+    const native = new Map([
+      ['actions/runs/901/attempts/1', Buffer.from(JSON.stringify(run))],
+      ['actions/runs/901/attempts/1/jobs?per_page=100', Buffer.from(JSON.stringify({ total_count: 2, jobs: [build, deploy] }))],
+      ['actions/runs/901/artifacts?per_page=100', Buffer.from(JSON.stringify({ total_count: 1, artifacts: [descriptor] }))],
+      ['actions/artifacts/902/zip', archive],
+    ]);
+    const published = new Map([
+      [SDG_PAGES_RELEASE_PATH, manifestBytes],
+      [`wirkungsticker/sdg/ausgabe/${edition.id}/`, siteBytes],
+    ]);
+    const once = rows => route => {
+      assert.ok(rows.has(route), `Unexpected or repeated request ${route}`);
+      const bytes = rows.get(route);
+      rows.delete(route);
+      return bytes;
+    };
+    const checked = await reconcileSdgPagesDelivery(pending, {
+      readNative: once(native), readPublic: once(published), clock: () => '2026-11-24T05:41:00.000Z',
+    });
+    assert.deepEqual(checked, { status: 'confirmed', edition_id: edition.id });
+    assert.equal(editions.readDelivery(edition.id).source_commit, sourceCommit);
+    assert.equal(native.size, 0);
+    assert.equal(published.size, 0);
+    assert.deepEqual(await reconcileSdgPagesDelivery(pending, {
+      readPublic: noRead, readNative: noRead,
+    }), { status: 'current' });
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+}));
 
 async function withStore(run) {
   const measures = new MeasureRevisions(':memory:');
