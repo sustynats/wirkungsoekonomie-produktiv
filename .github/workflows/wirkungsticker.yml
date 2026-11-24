@@ -128,6 +128,7 @@ jobs:
         if: steps.ticker_stream.outputs.legacy_news == 'false' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
         continue-on-error: true
         env:
+          GH_TOKEN: ${{ github.token }}
           WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
           WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
         run: node scripts/news/sdg/import-bridge-editions.mjs

@@ -177,10 +177,14 @@ Pages-Pfad kann eine Ausgabe ausliefern. Ein ausschließlich automatisches
 SDG-Paket löst keine Nachricht über den bisherigen Push-Feed aus.
 Ein Auslieferungsfehler bleibt bis zur Prüfung des konkreten Pages-Versuchs
 offen. Beim nächsten regulären Lauf nimmt Oracle den tatsächlich sichtbaren
-Pages-Versuch aus dem veröffentlichten Manifest auf. Es gleicht ihn mit
-den nativen GitHub-Belegen sowie den unveränderten Ausgabebytes ab und speichert
-die erste bestätigte Quittung im Ausgabespeicher. Dafür braucht der Dienst
-eine geprüfte GitHub-CLI-Installation mit Leserechten für den Deploy-Beleg.
+Pages-Versuch aus dem veröffentlichten Manifest auf. Oracle liest die
+öffentlichen nativen GitHub-Metadaten direkt. Der vorhandene Runner lädt
+das von Oracle identifizierte Action-ZIP mit seinem laufzeitgebundenen Token.
+Er sendet nur Archivbytes und die zugehörige Kennung an die Import-Spur.
+Oracle vergleicht den ZIP-Hash mit dem eigenen GitHub-Beleg sowie Manifest
+und Ausgabe mit deren öffentlichen Bytes. Erst dann speichert es die
+bestätigte Quittung. Beim Archivdownload bleiben Token und signierte URLs
+außerhalb der Import-Spur.
 
 Der automatische Git-Commit trägt den SHA-256 seines SDG-Katalogs. Nach einem
 Abbruch zwischen Git-Push und Pages-Aufruf kann der nächste reguläre Lauf den

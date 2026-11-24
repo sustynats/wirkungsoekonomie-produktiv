@@ -5,7 +5,7 @@ import { MeasureRevisions } from './measure-revisions.mjs';
 import { MeasureReviewJournal } from './measure-review-journal.mjs';
 import { prepareScheduledSdgEditions } from './prepare-scheduled-editions.mjs';
 import { readSdgCatalogIndex, readSdgReleaseCatalog, SDG_HASH, SDG_TRANSFER_BYTES } from './release-catalog.mjs';
-import { reconcileSdgPagesDelivery } from './confirm-pages-delivery.mjs';
+import { reconcileRunnerSdgPagesDelivery } from './confirm-pages-delivery.mjs';
 
 const privateFile = filename => {
   const stat = fs.lstatSync(filename, { throwIfNoEntry: false });
@@ -76,13 +76,13 @@ export function serveSdgEditions(directory, startAt, bridge, { clock = () => new
         return { sha256: digest, offset, total: stat.size, bytes: bytes.toString('base64') };
       } finally { fs.closeSync(fd); }
     },
-    async reconcile(committed) {
+    async reconcile(committed, archive) {
       privateFile(editionDb);
       const ledger = new EditionLedger(editionDb);
       try {
-        return await reconcileSdgPagesDelivery({
+        return await reconcileRunnerSdgPagesDelivery({
           root, ledger, committed, evidenceDirectory: path.join(privateRoot, 'receipts'),
-        });
+        }, archive);
       } finally { ledger.close(); }
     },
     reserveDispatch(committed, sourceCommit, owner) {

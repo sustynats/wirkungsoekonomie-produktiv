@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -5,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { bridgeSession } from '../bridge/remote.mjs';
 import { writeRepositoryJson } from '../newsroom-store.mjs';
 import { writeSdgEditionCandidate } from './package-edition.mjs';
+import { SDG_RUNNER_ARCHIVE_LIMIT } from './confirm-pages-delivery.mjs';
+import { SDG_PAGES_REPOSITORY } from './pages-release.mjs';
 import {
   loadSdgTickerPresentation, readSdgCatalogIndex, SDG_HASH, SDG_TRANSFER_BYTES, validateSdgEditionPackage,
 } from './release-catalog.mjs';
@@ -92,6 +96,35 @@ export async function importSdgBridgeEditions({ root, sdg }) {
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
+function downloadRunnerArchive(artifactId) {
+  if (!process.env.GH_TOKEN) throw Error('SDG_PAGES_RUNNER_ARCHIVE_UNAVAILABLE');
+  try {
+    return execFileSync('gh', ['api', '--hostname', 'github.com', '--method', 'GET',
+      `repos/${SDG_PAGES_REPOSITORY}/actions/artifacts/${artifactId}/zip`], {
+      timeout: 30_000, maxBuffer: SDG_RUNNER_ARCHIVE_LIMIT, stdio: ['ignore', 'pipe', 'pipe'],
+    });
+  } catch {
+    throw Error('SDG_PAGES_RUNNER_ARCHIVE_UNAVAILABLE');
+  }
+}
+
+export async function reconcileSdgReceiptFromRunner({ sdg, committed, downloadArchive = downloadRunnerArchive }) {
+  const result = await sdg.reconcile(committed);
+  if (result?.status !== 'archive_required') return result;
+  const { artifact_id, artifact_sha256, manifest_observation } = result;
+  if (typeof artifact_id !== 'string' || !/^[1-9]\d{0,19}$/.test(artifact_id) ||
+      typeof artifact_sha256 !== 'string' || !SDG_HASH.test(artifact_sha256) ||
+      typeof manifest_observation !== 'string' || !/^discovery-[a-zA-Z0-9]{6}$/.test(manifest_observation)) {
+    throw Error('SDG_PAGES_RUNNER_ARCHIVE_REQUEST_INVALID');
+  }
+  const bytes = Buffer.from(await downloadArchive(artifact_id));
+  if (!bytes.length || bytes.length > SDG_RUNNER_ARCHIVE_LIMIT ||
+      createHash('sha256').update(bytes).digest('hex') !== artifact_sha256) {
+    throw Error('SDG_PAGES_AUDIT_ARTIFACT_MISMATCH');
+  }
+  return sdg.reconcile(committed, { artifact_id, manifest_observation, archive_base64: bytes.toString('base64') });
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const { store, sdg } = bridgeSession();
   const run = `${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT || '1'}`;
@@ -101,7 +134,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const committed = loadSdgTickerPresentation(process.cwd())?.releases.at(-1);
     if (committed) {
       try {
-        const receipt = await sdg.reconcile({ edition_id: committed.edition_id, sha256: committed.sha256 });
+        const receipt = await reconcileSdgReceiptFromRunner({
+          sdg, committed: { edition_id: committed.edition_id, sha256: committed.sha256 },
+        });
         if (['confirmed', 'already_confirmed', 'awaiting_delivery', 'current'].includes(receipt?.status)) {
           console.log(`SDG publication receipt: ${receipt.status}.`);
         }

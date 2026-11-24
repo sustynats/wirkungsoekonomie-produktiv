@@ -14,6 +14,10 @@ import { loadSdgTickerPresentation, readSdgReleaseCatalog } from './release-cata
 const numbered = /^[1-9]\d{0,19}$/;
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const officialSite = 'https://wirkungsoekonomie.de/';
+const observationName = /^discovery-[a-zA-Z0-9]{6}$/;
+const metadataRoute = /^actions\/runs\/[1-9]\d{0,19}\/(?:attempts\/[1-9]\d{0,19}(?:\/jobs\?per_page=100)?|artifacts\?per_page=100)$/;
+export const SDG_RUNNER_ARCHIVE_LIMIT = 2 * 1024 * 1024;
+const metadataLimit = 8 * 1024 * 1024;
 
 function nativeRead(route) {
   try {
@@ -35,6 +39,33 @@ async function publicRead(route) {
   });
   if (response.status !== 200) throw Error('SDG_PAGES_PUBLIC_READ_FAILED');
   return Buffer.from(await response.arrayBuffer());
+}
+
+export async function readSdgPublicNativeMetadata(route, fetchImpl = fetch) {
+  if (typeof route !== 'string' || !metadataRoute.test(route)) throw Error('SDG_PAGES_NATIVE_ROUTE_INVALID');
+  const response = await fetchImpl(`https://api.github.com/repos/${SDG_PAGES_REPOSITORY}/${route}`, {
+    method: 'GET', redirect: 'error', signal: AbortSignal.timeout(15_000),
+    headers: { Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2026-03-10',
+      'User-Agent': 'woek-sdg-pages-verifier' },
+  });
+  if (response.status !== 200 || !response.body) throw Error('SDG_PAGES_NATIVE_READ_FAILED');
+  const chunks = [];
+  let size = 0;
+  for await (const part of response.body) {
+    size += part.length;
+    if (size > metadataLimit) throw Error('SDG_PAGES_NATIVE_METADATA_TOO_LARGE');
+    chunks.push(part);
+  }
+  return Buffer.concat(chunks, size);
+}
+
+class RunnerArchiveRequired extends Error {
+  constructor(artifact) {
+    super('SDG_PAGES_RUNNER_ARCHIVE_REQUIRED');
+    if (!/^sha256:[a-f0-9]{64}$/.test(artifact.digest || '')) throw Error('SDG_PAGES_AUDIT_ARTIFACT_MISMATCH');
+    this.artifactId = String(artifact.id);
+    this.digest = artifact.digest.slice(7);
+  }
 }
 
 function within(parent, child) {
@@ -111,7 +142,10 @@ async function evidence(directory, name, capture, verify, { resumeMissing = fals
 
 export async function confirmSdgPagesDelivery({
   root, ledger, editionId, expectedCommit, runId, runAttempt, evidenceDirectory, checkedCatalog,
-}, { readNative = nativeRead, readPublic = publicRead, clock = () => new Date().toISOString() } = {}) {
+}, {
+  readNative = nativeRead, readPublic = publicRead, clock = () => new Date().toISOString(),
+  readArchive = artifact => readNative(`actions/artifacts/${artifact.id}/zip`),
+} = {}) {
   if (!/^[a-f0-9]{40}$/.test(expectedCommit ?? '') || typeof runId !== 'string' || !numbered.test(runId) ||
       typeof runAttempt !== 'string' || !numbered.test(runAttempt)) {
     throw Error('SDG_PAGES_EXPECTED_RUN_REQUIRED');
@@ -162,7 +196,11 @@ export async function confirmSdgPagesDelivery({
     verifySdgCompletedPagesRun({ expectedCommit, run, jobs: getJson(folder, 'jobs.json') });
     await captureNative(folder, 'artifacts.json', `${runRoute}/artifacts?per_page=100`);
     const artifact = findArtifact(getJson(folder, 'artifacts.json'));
-    await captureNative(folder, 'audit.zip', `actions/artifacts/${artifact.id}/zip`);
+    if (!fs.existsSync(path.join(folder, 'audit.zip'))) {
+      const bytes = Buffer.from(await readArchive(artifact));
+      if (artifact.digest !== `sha256:${sha256(bytes)}`) throw Error('SDG_PAGES_AUDIT_ARTIFACT_MISMATCH');
+      save(folder, 'audit.zip', bytes);
+    }
   }, folder => inspectSdgPagesAudit({
     expectedCommit, run: checkRun(getJson(folder, 'run.json')), jobs: getJson(folder, 'jobs.json'),
     auditArtifact: findArtifact(getJson(folder, 'artifacts.json')), auditArchiveBytes: read(folder, 'audit.zip'),
@@ -198,8 +236,8 @@ export async function confirmSdgPagesDelivery({
 // already present in its checkout. A current public manifest identifies the
 // concrete run to verify, even if the dispatch response was lost.
 export async function reconcileSdgPagesDelivery({
-  root, ledger, committed, evidenceDirectory,
-}, { readNative = nativeRead, readPublic = publicRead, clock = () => new Date().toISOString() } = {}) {
+  root, ledger, committed, evidenceDirectory, manifestObservation,
+}, { readNative = nativeRead, readArchive, readPublic = publicRead, clock = () => new Date().toISOString() } = {}) {
   const catalog = readSdgReleaseCatalog(root);
   const last = catalog.releases.findIndex(entry =>
     entry.edition_id === committed?.edition_id && entry.sha256 === committed?.sha256);
@@ -208,8 +246,21 @@ export async function reconcileSdgPagesDelivery({
   if (!pending.length) return { status: 'current' };
 
   const directory = privateEvidenceRoot(root, evidenceDirectory);
-  const manifestBytes = await readPublic(SDG_PAGES_RELEASE_PATH);
-  save(fs.mkdtempSync(path.join(directory, 'discovery-')), 'manifest.json', manifestBytes);
+  let observation, manifestBytes;
+  if (manifestObservation !== undefined) {
+    if (typeof manifestObservation !== 'string' || !observationName.test(manifestObservation)) {
+      throw Error('SDG_PAGES_OBSERVATION_INVALID');
+    }
+    observation = path.join(directory, manifestObservation);
+    if (fs.realpathSync(observation) !== observation || (fs.statSync(observation).mode & 0o077)) {
+      throw Error('SDG_PAGES_EVIDENCE_NOT_PRIVATE');
+    }
+    manifestBytes = fs.readFileSync(path.join(observation, 'manifest.json'));
+  } else {
+    manifestBytes = await readPublic(SDG_PAGES_RELEASE_PATH);
+    observation = fs.mkdtempSync(path.join(directory, 'discovery-'));
+    save(observation, 'manifest.json', manifestBytes);
+  }
   const manifest = JSON.parse(manifestBytes);
   if (manifest?.kind !== 'sdg_pages_release' || manifest.repository !== SDG_PAGES_REPOSITORY ||
       manifest.schema_version !== 1 || !Array.isArray(manifest.editions)) {
@@ -218,14 +269,48 @@ export async function reconcileSdgPagesDelivery({
   const target = pending.find(entry => manifest.editions.some(edition =>
     edition.edition_id === entry.edition_id && edition.edition_sha256 === entry.sha256));
   if (!target) return { status: 'awaiting_delivery' };
-  const confirmation = await confirmSdgPagesDelivery({
-    root, ledger, editionId: target.edition_id, expectedCommit: manifest.source_commit,
-    runId: manifest.run_id, runAttempt: manifest.run_attempt, evidenceDirectory, checkedCatalog: catalog,
-  }, {
-    readNative, clock,
-    readPublic: route => route === SDG_PAGES_RELEASE_PATH ? manifestBytes : readPublic(route),
+  try {
+    const confirmation = await confirmSdgPagesDelivery({
+      root, ledger, editionId: target.edition_id, expectedCommit: manifest.source_commit,
+      runId: manifest.run_id, runAttempt: manifest.run_attempt, evidenceDirectory, checkedCatalog: catalog,
+    }, {
+      readNative, readArchive, clock,
+      readPublic: route => route === SDG_PAGES_RELEASE_PATH ? manifestBytes : readPublic(route),
+    });
+    return { status: confirmation.status, edition_id: target.edition_id };
+  } catch (error) {
+    if (!(error instanceof RunnerArchiveRequired)) throw error;
+    return { status: 'archive_required', artifact_id: error.artifactId, artifact_sha256: error.digest,
+      manifest_observation: path.basename(observation) };
+  }
+}
+
+// Oracle reads the native JSON and checks the downloaded ZIP against its
+// digest. No Actions credential or signed archive URL crosses the bridge.
+export async function reconcileRunnerSdgPagesDelivery(options, upload, {
+  readNative = readSdgPublicNativeMetadata, readPublic, clock,
+} = {}) {
+  let bytes;
+  if (upload !== undefined) {
+    if (typeof upload?.artifact_id !== 'string' || !numbered.test(upload.artifact_id) ||
+        typeof upload.manifest_observation !== 'string' || !observationName.test(upload.manifest_observation) ||
+        typeof upload.archive_base64 !== 'string' ||
+        upload.archive_base64.length > Math.ceil(SDG_RUNNER_ARCHIVE_LIMIT / 3) * 4) {
+      throw Error('SDG_PAGES_RUNNER_ARCHIVE_INVALID');
+    }
+    bytes = Buffer.from(upload.archive_base64, 'base64');
+    if (!bytes.length || bytes.length > SDG_RUNNER_ARCHIVE_LIMIT || bytes.toString('base64') !== upload.archive_base64) {
+      throw Error('SDG_PAGES_RUNNER_ARCHIVE_INVALID');
+    }
+  }
+  return reconcileSdgPagesDelivery({ ...options, manifestObservation: upload?.manifest_observation }, {
+    readNative, readPublic, clock,
+    readArchive(artifact) {
+      if (!bytes) throw new RunnerArchiveRequired(artifact);
+      if (upload.artifact_id !== String(artifact.id)) throw Error('SDG_PAGES_RUNNER_ARCHIVE_INVALID');
+      return bytes;
+    },
   });
-  return { status: confirmation.status, edition_id: target.edition_id };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
