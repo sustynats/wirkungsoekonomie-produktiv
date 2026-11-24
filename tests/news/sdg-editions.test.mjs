@@ -35,3 +35,49 @@ test('all 1,000 prepared revisions and their dossiers survive reopening the edit
     rmSync(directory, { recursive: true, force: true });
   }
 });
+
+test('scheduled editions catch up in Berlin order across the clock change and retain pending records', () => {
+  const directory = mkdtempSync(path.join(tmpdir(), 'woek-sdg-scheduled-'));
+  const file = path.join(directory, 'editions.sqlite');
+  const startAt = '2026-10-24T16:00:00.000Z';
+  const checkedThrough = '2026-10-25T11:00:00.000Z';
+  const sealedAt = '2026-10-26T06:15:00.000Z';
+  const ready = (id, readyAt) => ({ id, readyAt, analysisHash: 'a'.repeat(64),
+    sourceHash: 'b'.repeat(64), dossier: { synthetic_fixture: id } });
+  let store = new EditionLedger(file);
+  try {
+    store.recordReady([
+      ready('older-backlog', '2026-10-18T06:00:00.000Z'),
+      ready('before-morning', '2026-10-25T04:59:59.999Z'),
+      ready('after-morning', '2026-10-25T05:00:00.001Z'),
+      ready('will-be-evening', '2026-10-25T16:59:59.999Z'),
+    ]);
+    assert.throws(() => store.stageDue({ startAt, checkedThrough, sealedAt: startAt }), /CHECK_AFTER_SEALING/);
+    const initial = store.stageDue({ startAt, checkedThrough, sealedAt });
+    assert.deepEqual(initial.map(row => row.id), ['2026-10-24-abendlage', '2026-10-25-morgenlage', '2026-10-25-mittagslage']);
+    assert.equal(store.read(initial[0].id).scheduled_at, startAt);
+    assert.equal(store.read(initial[1].id).scheduled_at, '2026-10-25T05:00:00.000Z');
+    assert.deepEqual(initial.map(({ id }) => store.read(id).items.map(item => item.id)),
+      [['older-backlog'], ['before-morning'], ['after-morning']]);
+    assert.equal(store.read('2026-10-25-abendlage'), null);
+
+    store.close();
+    store = new EditionLedger(file);
+    assert.deepEqual(store.stageDue({ startAt, checkedThrough, sealedAt: '2026-10-27T10:00:00.000Z' }), initial);
+    assert.throws(() => store.stageDue({ startAt: checkedThrough, checkedThrough, sealedAt }), /SCHEDULE_START_CHANGED/);
+    assert.throws(() => store.stageDue({ startAt, checkedThrough: startAt, sealedAt }), /CHECK_BEHIND_CURSOR/);
+    store.recordReady([ready('recovered-handoff', '2026-10-25T04:58:00.000Z')]);
+    const resumed = store.stageDue({ startAt, checkedThrough: '2026-10-26T05:00:00.000Z', sealedAt });
+    assert.deepEqual(resumed.slice(0, 3), initial);
+    const evening = store.read('2026-10-25-abendlage');
+    assert.equal(evening.scheduled_at, '2026-10-25T17:00:00.000Z');
+    assert.equal(evening.sealed_at, sealedAt);
+    assert.deepEqual(evening.items.map(item => item.id), ['recovered-handoff', 'will-be-evening']);
+    assert.equal(evening.publication_at, null);
+    assert.deepEqual(store.read('2026-10-26-morgenlage').items, []);
+    assert.equal(store.read('2026-10-26-mittagslage'), null);
+  } finally {
+    store.close();
+    rmSync(directory, { recursive: true, force: true });
+  }
+});

@@ -11,6 +11,7 @@ import { MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
 import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news/sdg/reviewed-measure-handoff.mjs';
 import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
 import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
+import { prepareScheduledSdgEditions } from '../../scripts/news/sdg/prepare-scheduled-editions.mjs';
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
 import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
 import { loadSdgTickerPresentation, readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
@@ -420,5 +421,46 @@ test('automatic stream selector allows legacy writes only with the SDG marker ab
     assert.equal(invalid.status, 1);
     assert.match(invalid.stderr, /SDG_TICKER_RELEASE_ANCHOR_REQUIRED/);
     assert.equal(readFileSync(output, 'utf8'), '');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+}));
+
+test('scheduled editions resume a partial registration without replacing the reviewed package', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-scheduled-registration-'));
+  try {
+    const startAt = window.cutoff;
+    const checkedThrough = '2026-11-24T11:00:00.000Z';
+    const sealedAt = '2026-11-25T06:00:00.000Z';
+    const params = { root, ledger: editions, startAt, checkedThrough, sealedAt };
+    const [morning] = editions.stageDue(params);
+    const first = registerSdgEdition({ root, ledger: editions, editionId: morning.id, expectedCatalogHash: null });
+    assert.throws(() => prepareScheduledSdgEditions({ ...params, expectedCatalogHash: null }), /CATALOG_MOVED/);
+    const wrongLedger = new EditionLedger(':memory:');
+    try {
+      assert.throws(() => prepareScheduledSdgEditions({
+        ...params, ledger: wrongLedger, expectedCatalogHash: first.catalog_sha256,
+      }), /SDG_RELEASE_LEDGER_MISMATCH/);
+      assert.equal(wrongLedger.read(morning.id), null);
+    } finally { wrongLedger.close(); }
+    const result = prepareScheduledSdgEditions({ ...params, expectedCatalogHash: first.catalog_sha256 });
+    assert.deepEqual(result.editions.map(entry => [entry.edition_id, entry.status]), [
+      ['2026-11-24-morgenlage', 'already_registered'], ['2026-11-24-mittagslage', 'registered_for_website_build'],
+    ]);
+    const catalog = readSdgReleaseCatalog(root);
+    assert.equal(catalog.releases[0].sha256, first.edition_sha256);
+    assert.deepEqual(catalog.releases.map(entry => entry.manifest.items.length), [1, 0]);
+    assert.ok(catalog.releases.every(entry => entry.manifest.published_at === null));
+    const resumed = prepareScheduledSdgEditions({ ...params, expectedCatalogHash: result.catalog_sha256 });
+    assert.equal(resumed.catalog_sha256, result.catalog_sha256);
+    assert.ok(resumed.editions.every(entry => entry.status === 'already_registered' && entry.paths.length === 0));
+    const pages = new Map();
+    const routes = buildSdgEditionPages({ root, site: 'https://example.org', pageShell: data => data.body,
+      write: (filename, html) => pages.set(path.relative(root, filename), html), escapeHtml: String });
+    assert.equal(routes.length, 3);
+    assert.match(pages.get(`wirkungsticker/sdg/ausgabe/${morning.id}/index.html`), new RegExp(target.revisionId));
+    assert.match(pages.get('wirkungsticker/sdg/ausgabe/2026-11-24-mittagslage/index.html'), /keine geprüften Einträge/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 }));

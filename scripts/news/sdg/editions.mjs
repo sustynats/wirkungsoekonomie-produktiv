@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
-import { berlinInstant, lageDefinition, lageId } from "../lage.mjs";
+import { berlinInstant, LAGEN, lageDefinition, lageId } from "../lage.mjs";
+import { berlinParts } from "../lib.mjs";
 
 const sha = (value) => createHash("sha256").update(value).digest("hex");
 
@@ -49,6 +50,11 @@ export class EditionLedger {
       CREATE TABLE IF NOT EXISTS edition_items (
         edition_id TEXT NOT NULL REFERENCES editions(id),
         item_id TEXT PRIMARY KEY NOT NULL REFERENCES qualified(id)
+      );
+      CREATE TABLE IF NOT EXISTS edition_schedule (
+        id INTEGER PRIMARY KEY CHECK (id = 1),
+        start_at TEXT NOT NULL,
+        last_scheduled_at TEXT
       );
     `);
   }
@@ -102,24 +108,67 @@ export class EditionLedger {
     utc(cutoff);
     utc(sealedAt);
     if (cutoff > sealedAt) throw new Error("Cutoff is after sealing");
+    return this.transaction(() => this.#stageWindow({ id, scheduledAt, cutoff, sealedAt }));
+  }
+
+  #stageWindow({ id, scheduledAt, cutoff, sealedAt }) {
+    const current = this.read(id);
+    if (current) {
+      if (current.cutoff !== cutoff) throw new Error("Edition is already sealed at another cutoff");
+      return current;
+    }
+    const items = this.db.prepare(`
+      SELECT q.id, q.analysis_hash, q.source_hash, q.ready_at, q.dossier_hash
+      FROM qualified q LEFT JOIN edition_items i ON q.id = i.item_id
+      WHERE q.ready_at <= ? AND i.item_id IS NULL
+      ORDER BY q.ready_at, q.id
+    `).all(cutoff);
+    const hash = sha(JSON.stringify({ id, scheduledAt, cutoff, sealedAt, items }));
+    this.db.prepare("INSERT INTO editions VALUES (?, ?, ?, ?, ?, 'staged', NULL)")
+      .run(id, scheduledAt, cutoff, sealedAt, hash);
+    const link = this.db.prepare("INSERT INTO edition_items VALUES (?, ?)");
+    for (const item of items) link.run(id, item.id);
+    return this.read(id);
+  }
+
+  stageDue({ startAt, checkedThrough, sealedAt }) {
+    utc(startAt);
+    utc(checkedThrough);
+    utc(sealedAt);
+    const start = berlinParts(new Date(startAt));
+    if (!LAGEN.some(({ hour }) => berlinInstant(start.isoDate, hour) === startAt)) {
+      throw new Error("SDG_SCHEDULE_START_MUST_BE_A_BERLIN_EDITION");
+    }
+    if (checkedThrough > sealedAt) throw new Error("SDG_SCHEDULE_CHECK_AFTER_SEALING");
+    const lastDate = berlinParts(new Date(checkedThrough)).isoDate;
+
     return this.transaction(() => {
-      const current = this.read(id);
-      if (current) {
-        if (current.cutoff !== cutoff) throw new Error("Edition is already sealed at another cutoff");
-        return current;
+      this.db.prepare("INSERT INTO edition_schedule VALUES (1, ?, NULL) ON CONFLICT(id) DO NOTHING")
+        .run(startAt);
+      const schedule = this.db.prepare("SELECT * FROM edition_schedule WHERE id = 1").get();
+      if (schedule.start_at !== startAt) throw new Error("SDG_SCHEDULE_START_CHANGED");
+      let latest = schedule.last_scheduled_at;
+      if (latest !== null && checkedThrough < latest) throw new Error("SDG_SCHEDULE_CHECK_BEHIND_CURSOR");
+      const firstDate = berlinParts(new Date(latest ?? startAt)).isoDate;
+      // Advance civil dates in UTC, then resolve each slot in Berlin.
+      for (const day = new Date(firstDate + "T12:00:00Z");
+        day.toISOString().slice(0, 10) <= lastDate;
+        day.setUTCDate(day.getUTCDate() + 1)) {
+        const date = day.toISOString().slice(0, 10);
+        for (const { slot, hour } of LAGEN) {
+          const scheduledAt = berlinInstant(date, hour);
+          if (scheduledAt < startAt || scheduledAt > checkedThrough ||
+              (latest !== null && scheduledAt <= latest)) continue;
+          this.#stageWindow({ id: lageId(date, slot), scheduledAt, cutoff: scheduledAt, sealedAt });
+          latest = scheduledAt;
+        }
       }
-      const items = this.db.prepare(`
-        SELECT q.id, q.analysis_hash, q.source_hash, q.ready_at, q.dossier_hash
-        FROM qualified q LEFT JOIN edition_items i ON q.id = i.item_id
-        WHERE q.ready_at <= ? AND i.item_id IS NULL
-        ORDER BY q.ready_at, q.id
-      `).all(cutoff);
-      const hash = sha(JSON.stringify({ id, scheduledAt, cutoff, sealedAt, items }));
-      this.db.prepare("INSERT INTO editions VALUES (?, ?, ?, ?, ?, 'staged', NULL)")
-        .run(id, scheduledAt, cutoff, sealedAt, hash);
-      const link = this.db.prepare("INSERT INTO edition_items VALUES (?, ?)");
-      for (const item of items) link.run(id, item.id);
-      return this.read(id);
+      if (latest !== schedule.last_scheduled_at) {
+        this.db.prepare("UPDATE edition_schedule SET last_scheduled_at = ? WHERE id = 1").run(latest);
+      }
+      return this.db.prepare(`
+        SELECT id, hash FROM editions WHERE scheduled_at >= ? AND scheduled_at <= ? ORDER BY scheduled_at
+      `).all(startAt, latest);
     });
   }
 
@@ -132,6 +181,10 @@ export class EditionLedger {
       WHERE i.edition_id = ? ORDER BY q.ready_at, q.id
     `).all(id);
     return { ...edition, items };
+  }
+
+  editionHash(id) {
+    return this.db.prepare("SELECT hash FROM editions WHERE id = ?").get(id)?.hash ?? null;
   }
 
   readDossier(id) {
