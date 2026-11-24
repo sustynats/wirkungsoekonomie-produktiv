@@ -3,7 +3,7 @@ import { readRepositoryJson } from './newsroom-store.mjs';
 import {renderShowIdentity} from './show-identity.mjs';
 import {renderEditorialAuthorship} from './editorial-authorship.mjs';
 import {appNavigation,buildAppPages} from './app-pages.mjs';
-import {RSS_CHANNELS, rssDiscoveryLinks, sdgFeedDiscoveryLinks, renderRssFeed} from './rss-channels.mjs';
+import {RSS_CHANNELS, rssDiscoveryLinks, sdgFeedDiscoveryLinks, renderRssFeed, tickerNewsRssChannel} from './rss-channels.mjs';
 import { impactMethodology } from './impact-methodology.mjs';
 import { impactCoverage, assertImpactCoverage } from './impact-coverage.mjs';
 import {loerrachObservationCorrection} from './observation-context.mjs';
@@ -453,7 +453,7 @@ function pageShell({ title, description, canonical, base, body, jsonLd, feedLink
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="manifest" href="${base}wirkungsticker/manifest.webmanifest">
   <link rel="apple-touch-icon" href="${base}assets/img/brand/apple-touch-icon.png">
-  ${feedLinks ? `${sdgFeedDiscoveryLinks(canonical, { sdgActive })}${rssDiscoveryLinks()}
+  ${feedLinks ? `${sdgFeedDiscoveryLinks(canonical, { sdgActive })}${rssDiscoveryLinks([tickerNewsRssChannel(sdgActive), RSS_CHANNELS.analyses])}
   <link rel="alternate" type="application/atom+xml" title="Wirkungsticker Atom" href="${SITE}/wirkungsticker/feed.atom">
   <link rel="alternate" type="application/feed+json" title="Wirkungsticker JSON Feed" href="${SITE}/wirkungsticker/feed.json">` : ""}
   <link rel="icon" href="${base}assets/img/brand/favicon.svg" type="image/svg+xml">
@@ -890,10 +890,10 @@ function feedXml(items, updatedAt, atom = false) {
   return renderRssFeed(items, RSS_CHANNELS.news);
 }
 
-export function tickerRssFeeds(stories, analyses) {
+export function tickerRssFeeds(stories, analyses, { sdgActive = false } = {}) {
   // Receive the existing public selection; never read draft/job stores here.
   return {
-    news: renderRssFeed(combinedFeedItems(stories.filter(item => item.published && item.analysis && item.listed !== false), []), RSS_CHANNELS.news),
+    news: renderRssFeed(combinedFeedItems(stories.filter(item => item.published && item.analysis && item.listed !== false), []), tickerNewsRssChannel(sdgActive)),
     analyses: renderRssFeed(combinedFeedItems([], analyses.filter(item => item.status === "published")), RSS_CHANNELS.analyses),
   };
 }
@@ -1065,7 +1065,7 @@ export function buildNewsSite() {
   }
   for (const story of retiredStories) write(path.join(TICKER_DIR, story.slug, "index.html"), retiredStoryPage(story));
   const feedItems = combinedFeedItems(stories, editorialAnalyses);
-  const rssFeeds = tickerRssFeeds(stories, editorialAnalyses);
+  const rssFeeds = tickerRssFeeds(stories, editorialAnalyses, { sdgActive: Boolean(sdgTicker) });
   write(path.join(TICKER_DIR, "feed.xml"), rssFeeds.news);
   write(path.join(TICKER_DIR, "analyse/feed.xml"), rssFeeds.analyses);
   write(path.join(TICKER_DIR, "feed.atom"), feedXml(feedItems, publicationUpdatedAt, true));
@@ -1115,7 +1115,7 @@ export function buildNewsSite() {
     canonical:`${SITE}/wirkungsticker/methodik/`, base:'../../', sdgActive:Boolean(sdgTicker),
     body:impactMethodology({sdgActive:Boolean(sdgTicker)}),
     jsonLd:{'@context':'https://schema.org','@type':'WebPage',name:'Methodik des Wirkungstickers',url:`${SITE}/wirkungsticker/methodik/`}}));
-  const sourceRoutes = buildSourcePages(loadNewsRegistry(ROOT), readJson(path.join(ROOT, "data/news/state.json")), { pageShell, write, escapeHtml, root: ROOT, site: SITE, formatDate });
+  const sourceRoutes = buildSourcePages(loadNewsRegistry(ROOT), readJson(path.join(ROOT, "data/news/state.json")), { pageShell, write, escapeHtml, root: ROOT, site: SITE, formatDate, sdgActive: Boolean(sdgTicker) });
   const sdgRoutes = buildSdgEditionPages({ root: ROOT, site: SITE,
     pageShell: data => pageShell({ ...data, sdgActive: Boolean(sdgTicker) }), write, escapeHtml, catalog: sdgTicker, includeFeeds: true });
   const editorialRoutes = editorialAnalyses.map((analysis) => `wirkungsticker/analyse/${analysis.slug}/`);

@@ -68,11 +68,14 @@ export function canonicalRoute(url) {
   }
 }
 
-function typeForRoute(url) {
+function typeForRoute(url, title) {
   if (/^\/begriffe\//.test(url)) return "Begriff";
   if (/^\/(?:werkzeuge|erleben|anwendungen)\//.test(url)) return "Werkzeug";
   if (/^\/wirkungsfelder\//.test(url)) return "Wirkungsfeld";
   if (/^\/(?:blog|journal)\//.test(url)) return "Journalbeitrag";
+  if (url.startsWith("/wirkungsticker/sdg/ausgabe/")) return "SDG-Ausgabe";
+  if (url === "/wirkungsticker/sdg/") return "SDG-Archiv";
+  if (url === "/wirkungsticker/" && title?.startsWith("Global SDG Impact Tracker")) return "SDG-Tracker";
   if (/^\/wirkungsticker\//.test(url)) return "Meldung";
   if (/^\/quellenarchiv\//.test(url)) return "Quelle";
   if (/^\/(?:bibliothek|dokumente|downloads)\//.test(url)) return "Publikation";
@@ -93,7 +96,7 @@ function taxonomy(route, primary = {}) {
   const url = route.url;
   const area = route.area || "start";
   const roleMatch = url.match(/^\/fuer\/([^/]+)\/?/);
-  const type = typeForRoute(url);
+  const type = typeForRoute(url, route.title);
   const priority = area === "wirkungsticker"
     ? Math.min(Number(primary.priority || 10), 20)
     : Math.max(Number(primary.priority || 0), type === "Begriff" ? 70 : type === "Methode & Referenz" ? 60 : 30);

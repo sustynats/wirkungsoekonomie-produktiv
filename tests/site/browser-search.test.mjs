@@ -83,6 +83,29 @@ test("source-mode browser search remains buildable before an artifact route mani
   }
 });
 
+test("SDG routes have search labels separate from historical news", () => {
+  const root = buildFixture();
+  try {
+    const file = path.join(root, "assets/data/public-routes.json");
+    const routeManifest = JSON.parse(fs.readFileSync(file, "utf8"));
+    const newRoutes = [
+      ["/wirkungsticker/", "Global SDG Impact Tracker - Wirkungsticker", "SDG-Tracker"],
+      ["/wirkungsticker/sdg/", "SDG-Ausgaben", "SDG-Archiv"],
+      ["/wirkungsticker/sdg/ausgabe/2026-11-24-morgenlage/", "SDG-Morgenupdate", "SDG-Ausgabe"],
+    ];
+    routeManifest.routes.push(...newRoutes.map(([url, title]) =>
+      ({ url, title, area: "wirkungsticker", file: url.slice(1) + "index.html" })));
+    routeManifest.counts.routes = routeManifest.routes.length;
+    fs.writeFileSync(file, JSON.stringify(routeManifest));
+    buildBrowserSearchIndex(root);
+    const labels = new Map(readBuiltSearchEntries(root).map(entry => [entry.url, entry.type]));
+    for (const [url, , type] of newRoutes) assert.equal(labels.get(url), type);
+    assert.equal(labels.get("/wirkungsticker/meldung/"), "Meldung");
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("the shared loader fetches versioned gzip shards and never falls back to the full index", async () => {
   const originalFetch = globalThis.fetch;
   const entries = [{ title: "Kern", url: "/kern/" }];

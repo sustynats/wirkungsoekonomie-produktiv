@@ -4,9 +4,9 @@ import { writeRepositoryJson } from '../newsroom-store.mjs';
 
 export const SDG_TRACKER_TITLE = 'Global SDG Impact Tracker';
 export const SDG_TRACKER_DESCRIPTION =
-  'Der Wirkungsticker verfolgt weltweit Maßnahmen zu den UN-Nachhaltigkeitszielen und ordnet ihre Folgen für Mensch, Planet und Demokratie ein.';
+  'Der Wirkungsticker dokumentiert weltweit Maßnahmen, Fortschritte und Rückschritte zu den Nachhaltigkeitszielen und ordnet ihre Folgen für Mensch, Planet und Demokratie ein.';
 export const SDG_TRACKER_INTRO =
-  'Der Wirkungsticker verfolgt weltweit Gesetze, Programme und Projekte zu den Nachhaltigkeitszielen der Vereinten Nationen. Die Ausgaben zeigen, was beschlossen, finanziert oder umgesetzt wurde und welche Veränderungen belegt sind.';
+  'Der Wirkungsticker verfolgt weltweit, was sich bei der Umsetzung der UN-Nachhaltigkeitsziele verändert. Die Ausgaben dokumentieren Beschlüsse, Finanzierung und Umsetzung von Gesetzen, Programmen und Projekten. Sie zeigen belegte Fortschritte und Rückschritte und benennen offene Fragen.';
 export const SDG_TRACKER_EVIDENCE =
   'Die Einordnung unterscheidet beobachtete Veränderungen, mögliche Folgen und offene Fragen für Mensch, Planet und Demokratie.';
 

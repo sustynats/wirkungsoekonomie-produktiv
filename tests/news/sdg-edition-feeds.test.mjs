@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { hash } from '../../scripts/news/bridge/contract.mjs';
 import { berlinInstant } from '../../scripts/news/lage.mjs';
 import { regeneratablePublicationPath } from '../../scripts/news/publish-git.mjs';
@@ -21,6 +22,17 @@ function fixture(t) {
     write: (file, content) => files.set(path.relative(root, file), content), escapeHtml,
   });
   return { root, render, files };
+}
+
+function renderFeedDirectory(root) {
+  for (const file of ['assets/data/navigation.json', 'templates/footer.html']) {
+    const destination = path.join(root, file);
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.copyFileSync(new URL('../../' + file, import.meta.url), destination);
+  }
+  const script = fileURLToPath(new URL('../../scripts/feeds/build-feeds-page.mjs', import.meta.url));
+  execFileSync(process.execPath, [script], { cwd: root });
+  return fs.readFileSync(path.join(root, 'feeds/index.html'), 'utf8');
 }
 
 test('the feed projection preserves empty and nonempty registered windows without a top-N filter or invented dates', t => {
@@ -76,12 +88,24 @@ print(json.dumps({
   assert.equal(files.size, 128);
   assert.equal(render().length, routes.length);
   assert.equal(files.get(SDG_RSS_CHANNEL.path.slice(1)), rss);
+  const registeredDirectory = renderFeedDirectory(root);
+  assert.ok(registeredDirectory.includes(SDG_RSS_CHANNEL.path));
+  assert.match(registeredDirectory, /Wirkungsticker - News/);
+  fs.writeFileSync(path.join(store, 'ticker-mode.json'), JSON.stringify({
+    schema_version: 1, mode: 'sdg', anchor: releases[1],
+  }));
+  const activeDirectory = renderFeedDirectory(root);
+  assert.match(activeDirectory, /Wirkungsticker - Nachrichtenarchiv/);
+  for (const { path: feedPath } of [...Object.values(RSS_CHANNELS), SDG_RSS_CHANNEL]) {
+    assert.ok(activeDirectory.includes(feedPath));
+  }
 });
 
 test('an empty catalogue adds no feeds and the original discovery and rebase scopes stay distinct', t => {
-  const { files, render } = fixture(t);
+  const { root, files, render } = fixture(t);
   assert.deepEqual(render(), []);
   assert.equal(files.size, 0);
+  assert.ok(!renderFeedDirectory(root).includes(SDG_RSS_CHANNEL.path));
   assert.ok(!rssDiscoveryLinks().includes(SDG_RSS_CHANNEL.path));
   assert.ok(rssDiscoveryLinks().includes(RSS_CHANNELS.analyses.path));
   assert.ok(rssDiscoveryLinks([SDG_RSS_CHANNEL]).includes(SDG_RSS_CHANNEL.path));

@@ -168,6 +168,7 @@ jobs:
           npm run polls:test
           npm run polls:build
           npm run news:build
+          node scripts/feeds/build-feeds-page.mjs
           # Shared publication gates compare institute prose with its current
           # source snapshot, not with HTML left over from an earlier full build.
           node scripts/site/build-institut-projects.mjs

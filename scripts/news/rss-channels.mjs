@@ -24,6 +24,15 @@ export const SDG_RSS_CHANNEL = Object.freeze({
   home: "/wirkungsticker/sdg/",
 });
 export const SDG_JSON_FEED_PATH = "/wirkungsticker/sdg/feed.json";
+const NEWS_ARCHIVE_RSS_CHANNEL = Object.freeze({
+  ...RSS_CHANNELS.news,
+  title: "Wirkungsticker - Nachrichtenarchiv",
+  description: "Archiv der bisher veröffentlichten allgemeinen Meldungen. SDG-Ausgaben und redaktionelle Beiträge haben eigene Feeds.",
+});
+
+export function tickerNewsRssChannel(sdgActive = false) {
+  return sdgActive ? NEWS_ARCHIVE_RSS_CHANNEL : RSS_CHANNELS.news;
+}
 
 const xml = value => String(value ?? "").replace(/[&<>"']/g, char =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" }[char]));
