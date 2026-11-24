@@ -1,11 +1,95 @@
 {
-  "_woek_revision": "20260912-news-freshness:2026-11-23T00:12:38.850Z",
+  "_woek_revision": "20260912-news-freshness:2026-11-24T00:31:40.432Z",
   "version": "https://jsonfeed.org/version/1.1",
   "title": "Wirkungsticker",
   "home_page_url": "https://wirkungsoekonomie.de/wirkungsticker/",
   "feed_url": "https://wirkungsoekonomie.de/wirkungsticker/feed.json",
   "language": "de",
   "items": [
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-forderungen-zum-machtinstrument-werden-e863ba/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-forderungen-zum-machtinstrument-werden-e863ba/",
+      "title": "Nachgehört: Wenn politische Forderungen zum Machtinstrument werden",
+      "summary": "Nachgehört: RONZHEIMER. über Söder, Merz, Steuerentlastungen und Sicherheitsgarantien für die Ukraine",
+      "date_published": "2026-11-24T00:31:40.432Z",
+      "date_modified": "2026-11-24T00:31:40.432Z",
+      "_woek_released_at": "2026-11-24T00:31:40.432Z",
+      "_woek_original_episode_date": "2026-11-23",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-gipfelbildern-und-stromausfallen-was-bleibt-von-europas-einfluss-c22349/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-gipfelbildern-und-stromausfallen-was-bleibt-von-europas-einfluss-c22349/",
+      "title": "Nachgesehen: Zwischen Gipfelbildern und Stromausfällen: Was bleibt von Europas Einfluss?",
+      "summary": "„Caren Miosga“ diskutiert Krieg, Diplomatie und die Frage, ob europäische Geschlossenheit mehr ist als ein politisches Signal.",
+      "date_published": "2026-11-24T00:31:33.017Z",
+      "date_modified": "2026-11-24T00:31:33.017Z",
+      "_woek_released_at": "2026-11-24T00:31:33.017Z",
+      "_woek_original_episode_date": "2026-11-22",
+      "tags": [
+        "Nachgesehen"
+      ],
+      "_woek_type": "Nachgesehen"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-ein-konzern-zu-stark-auf-einen-menschen-zugeschnitten-ist-c2406d/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-ein-konzern-zu-stark-auf-einen-menschen-zugeschnitten-ist-c2406d/",
+      "title": "Nachgehört: Wenn ein Konzern zu stark auf einen Menschen zugeschnitten ist",
+      "summary": "Der Podcast ordnet den Nvidia-Skandal als Spionagefall, Führungsproblem und geopolitisches Risiko ein. Belastbar ist davon nur ein Teil.",
+      "date_published": "2026-11-24T00:31:22.767Z",
+      "date_modified": "2026-11-24T00:31:22.767Z",
+      "_woek_released_at": "2026-11-24T00:31:22.767Z",
+      "_woek_original_episode_date": "2026-11-13",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-journalismus-selbst-zur-politischen-infrastruktur-wird-5ba46b/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-journalismus-selbst-zur-politischen-infrastruktur-wird-5ba46b/",
+      "title": "Nachgehört: Wenn Journalismus selbst zur politischen Infrastruktur wird",
+      "summary": "Paul Ronzheimer spricht über Medienmacht, politische Deutung und den Krieg in der Ukraine. Entscheidend ist nicht nur, was ein Journalist sagt, sondern welche Zustände seine Arbeit mit verändert.",
+      "date_published": "2026-11-24T00:31:14.814Z",
+      "date_modified": "2026-11-24T00:31:14.814Z",
+      "_woek_released_at": "2026-11-24T00:31:14.814Z",
+      "_woek_original_episode_date": "2026-11-14",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/emporung-erklart-noch-keine-politik-3dd9f5/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/emporung-erklart-noch-keine-politik-3dd9f5/",
+      "title": "Nachgehört: Empörung erklärt noch keine Politik",
+      "summary": "Jürgen Kaube spricht bei RONZHEIMER. über politische Gereiztheit, Reformstau und die Verantwortung der Medien. Die Folge ist stark, wenn sie Komplexität sichtbar macht – und offen, wo aus Beobachtung bereits eine Erklärung werden soll.",
+      "date_published": "2026-11-24T00:31:05.509Z",
+      "date_modified": "2026-11-24T00:31:05.509Z",
+      "_woek_released_at": "2026-11-24T00:31:05.509Z",
+      "_woek_original_episode_date": "2026-11-15",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimapolitik-wirtschaft-und-demokratie-was-aus-dem-gesprach-mit-maja-gopel-bleibt-4b0322/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimapolitik-wirtschaft-und-demokratie-was-aus-dem-gesprach-mit-maja-gopel-bleibt-4b0322/",
+      "title": "Nachgehört: Klimapolitik, Wirtschaft und Demokratie – was aus dem Gespräch mit Maja Göpel bleibt",
+      "summary": "Paul Ronzheimer spricht mit Maja Göpel über Klimaschutz, Industrie, Energieabhängigkeit und den Umgang mit der AfD.",
+      "date_published": "2026-11-24T00:30:54.292Z",
+      "date_modified": "2026-11-24T00:30:54.292Z",
+      "_woek_released_at": "2026-11-24T00:30:54.292Z",
+      "_woek_original_episode_date": "2026-11-12",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
     {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-der-angriff-auf-die-krim-brucke-verandert-und-was-nicht-7dda1b/",
