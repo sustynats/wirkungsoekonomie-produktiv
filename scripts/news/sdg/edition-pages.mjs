@@ -1,11 +1,9 @@
-import fs from 'node:fs';
 import path from 'node:path';
-import { hash, safeUrl } from '../bridge/contract.mjs';
+import { safeUrl } from '../bridge/contract.mjs';
 import { LAGEN } from '../lage.mjs';
+import { readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
 
 const ROUTE = 'wirkungsticker/sdg/';
-const HASH = /^[a-f0-9]{64}$/;
-const ID = /^\d{4}-\d{2}-\d{2}-(?:morgenlage|mittagslage|abendlage)$/;
 const dimensions = { human: 'Mensch', planet: 'Planet', democracy: 'Demokratie' };
 const formatDate = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', dateStyle: 'medium', timeStyle: 'short' });
 const formatCalendarDate = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', dateStyle: 'medium' });
@@ -18,28 +16,11 @@ const domains = {
 const dateLabel = value => value && Number.isFinite(Date.parse(value)) ? formatCalendarDate.format(new Date(value)) : null;
 
 function loadCatalog(root) {
-  const storage = path.join(root, 'data/news/sdg');
-  const filename = path.join(storage, 'release-catalog.json');
-  if (!fs.existsSync(filename)) return null;
-  const catalog = JSON.parse(fs.readFileSync(filename, 'utf8'));
-  if (catalog.schema_version !== 1 || !Array.isArray(catalog.releases)) throw Error('SDG_RELEASE_CATALOG_INVALID');
-  const ids = new Set();
-  return catalog.releases.map(({ edition_id: id, sha256 }) => {
-    if (typeof id !== 'string' || !ID.test(id) || ids.has(id) || typeof sha256 !== 'string' || !HASH.test(sha256)) {
-      throw Error('SDG_RELEASE_CATALOG_INVALID');
-    }
-    ids.add(id);
-    const pack = JSON.parse(fs.readFileSync(path.join(storage, 'editions', `sdg-edition-${sha256}.json`), 'utf8'));
-    const manifest = pack.manifest;
-    if (pack.sha256 !== sha256 || !manifest || hash(manifest) !== sha256 || manifest.edition_id !== id ||
-        manifest.schema_version !== 1 || manifest.kind !== 'sdg_edition_candidate' ||
-        manifest.published_at !== null || !Array.isArray(manifest.items) ||
-        ![manifest.scheduled_at, manifest.cutoff_at].every(value => Number.isFinite(Date.parse(value)))) {
-      throw Error('SDG_RELEASE_PACKAGE_MISMATCH');
-    }
+  const { releases } = readSdgReleaseCatalog(root);
+  return releases.map(({ manifest }) => {
     const rows = new Set();
     for (const item of manifest.items) {
-      if (!HASH.test(item.revision_id ?? '') || rows.has(item.revision_id) ||
+      if (!SDG_HASH.test(item.revision_id ?? '') || rows.has(item.revision_id) ||
           typeof item.title !== 'string' || typeof item.summary !== 'string' || !item.title.trim() || !item.summary.trim() ||
           !Array.isArray(item.sources) || !item.sources.length ||
           !Object.hasOwn(domains, item.domain) || !Object.hasOwn(domains[item.domain][1], item.stage) ||
@@ -55,7 +36,7 @@ function loadCatalog(root) {
 
 export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml: esc }) {
   const editions = loadCatalog(root);
-  if (editions === null || editions.length === 0) return [];
+  if (editions.length === 0) return [];
   const routes = [];
   const tracker = 'Global SDG Impact Tracker';
   const titleFor = edition => {

@@ -10,6 +10,8 @@ import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news
 import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
 import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
+import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
+import { readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
 import { SEMANTIC_CHECKS } from '../../scripts/news/impact-publication.mjs';
 import { syntheticPotentialAssessment, syntheticScopeReview } from './fixtures/impact21.mjs';
@@ -292,5 +294,41 @@ test('edition pages render only catalogued checked packages and retain all entri
     written.clear();
     assert.throws(render, /SDG_RELEASE_PACKAGE_MISMATCH/);
     assert.equal(written.size, 0);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+}));
+
+test('release catalog registration is append-only and survives an uncertain prior acknowledgment', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const firstEdition = editions.stage(window);
+  const secondEdition = editions.stage({ date: window.date, slot: 'mittagslage',
+    cutoff: '2026-11-24T11:00:00.000Z', sealedAt: '2026-11-24T11:03:00.000Z' });
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-catalog-'));
+  try {
+    const apply = (id, expectedCatalogHash, ledger = editions) =>
+      registerSdgEdition({ root, ledger, editionId: id, expectedCatalogHash });
+    const first = apply(firstEdition.id, null);
+    assert.equal(first.status, 'registered_for_website_build');
+    assert.equal(first.previous_catalog_sha256, null);
+    assert.equal(first.paths.length, 2);
+    const oldBytes = readFileSync(path.join(root, first.paths[0]), 'utf8');
+    const repeated = apply(firstEdition.id, null);
+    assert.equal(repeated.status, 'already_registered');
+    assert.equal(repeated.catalog_sha256, first.catalog_sha256);
+    assert.deepEqual(repeated.paths, []);
+    assert.throws(() => apply(secondEdition.id, null), /SDG_RELEASE_CATALOG_MOVED/);
+    assert.equal(readSdgReleaseCatalog(root).releases.length, 1);
+    const second = apply(secondEdition.id, first.catalog_sha256);
+    assert.equal(second.previous_catalog_sha256, first.catalog_sha256);
+    assert.deepEqual(readSdgReleaseCatalog(root).releases.map(row => row.edition_id), [firstEdition.id, secondEdition.id]);
+    assert.equal(readFileSync(path.join(root, first.paths[0]), 'utf8'), oldBytes);
+    const conflictingLedger = new EditionLedger(':memory:');
+    try {
+      conflictingLedger.stage(window);
+      assert.throws(() => apply(firstEdition.id, second.catalog_sha256, conflictingLedger), /EDITION_IMMUTABLE/);
+    } finally { conflictingLedger.close(); }
+    assert.equal(readSdgReleaseCatalog(root).sha256, second.catalog_sha256);
   } finally { rmSync(root, { recursive: true, force: true }); }
 }));
