@@ -4993,7 +4993,7 @@
       "workflow": "redaktionsworker.yml",
       "head": "6e0335bb03a619bf85a333768e8b3e787b7224e9",
       "at": "2026-11-24T23:41:51.276Z",
-      "status": "reserved"
+      "status": "dispatched"
     }
   ]
 }
