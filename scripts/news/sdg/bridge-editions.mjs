@@ -4,7 +4,7 @@ import { EditionLedger } from './editions.mjs';
 import { MeasureRevisions } from './measure-revisions.mjs';
 import { MeasureReviewJournal } from './measure-review-journal.mjs';
 import { prepareScheduledSdgEditions } from './prepare-scheduled-editions.mjs';
-import { readSdgCatalogIndex, SDG_HASH, SDG_TRANSFER_BYTES } from './release-catalog.mjs';
+import { readSdgCatalogIndex, readSdgReleaseCatalog, SDG_HASH, SDG_TRANSFER_BYTES } from './release-catalog.mjs';
 import { reconcileSdgPagesDelivery } from './confirm-pages-delivery.mjs';
 
 const privateFile = filename => {
@@ -83,6 +83,19 @@ export function serveSdgEditions(directory, startAt, bridge, { clock = () => new
         return await reconcileSdgPagesDelivery({
           root, ledger, committed, evidenceDirectory: path.join(privateRoot, 'receipts'),
         });
+      } finally { ledger.close(); }
+    },
+    reserveDispatch(committed, sourceCommit, owner) {
+      const catalog = readSdgReleaseCatalog(root);
+      const tail = catalog.releases.at(-1);
+      if (!tail || catalog.sha256 !== committed?.catalog_sha256 || tail.edition_id !== committed.edition_id ||
+          tail.sha256 !== committed.sha256) throw Error('SDG_PAGES_DISPATCH_BINDING_REQUIRED');
+      privateFile(editionDb);
+      const ledger = new EditionLedger(editionDb);
+      try {
+        if (ledger.editionHash(tail.edition_id) !== tail.manifest.ledger_sha256) throw Error('SDG_RELEASE_LEDGER_MISMATCH');
+        return ledger.reservePagesDispatch({ editionId: tail.edition_id, editionHash: tail.sha256,
+          catalogHash: catalog.sha256, sourceCommit, runOwner: owner, reservedAt: clock() });
       } finally { ledger.close(); }
     },
   };

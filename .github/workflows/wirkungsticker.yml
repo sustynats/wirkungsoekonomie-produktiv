@@ -125,7 +125,7 @@ jobs:
         run: node scripts/news/sdg/select-automatic-stream.mjs
       - name: Receive checked SDG editions from the private Oracle journal
         id: sdg_editions
-        if: steps.ticker_stream.outputs.legacy_news == 'false' && inputs.dry_run != true
+        if: steps.ticker_stream.outputs.legacy_news == 'false' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
         continue-on-error: true
         env:
           WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
@@ -292,7 +292,7 @@ jobs:
         run: node scripts/news/release-data.mjs persist --out="$RUNNER_TEMP/ticker-release-data"
       - name: Commit one atomic update
         id: commit
-        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && (steps.ticker_stream.outputs.legacy_news == 'true' || steps.approved.outputs.changed == 'true' || steps.polls.outputs.changed == 'true' || (steps.sdg_editions.outcome == 'success' && steps.sdg_editions.outputs.changed == 'true'))
         env:
           SLOT_NAME: ${{ steps.slot.outputs.slot }}
           GH_TOKEN: ${{ github.token }}
@@ -325,7 +325,14 @@ jobs:
           # nach einem fruehen Treffer per SIGPIPE beenden und false melden.
           STAGED_FILES="$(git diff --cached --name-only)"
           if grep -qE '^(news/|wirkungsticker/|data/news/sdg/release-catalog\.json$)' <<< "$STAGED_FILES"; then PUBLIC_FILES=true; fi
-          git commit -m "[wirkungsticker] ${SLOT_NAME} $(date -u +%Y-%m-%dT%H:%MZ)"
+          commit_message="[wirkungsticker] ${SLOT_NAME} $(date -u +%Y-%m-%dT%H:%MZ)"
+          if [[ "$SDG_EDITIONS_RECEIVED" == "true" ]]; then
+            WOEK_SDG_PAGES_CATALOG_SHA256="$(git show :data/news/sdg/release-catalog.json | sha256sum | cut -d ' ' -f 1)"
+            export WOEK_SDG_PAGES_CATALOG_SHA256
+            git commit -m "$commit_message" -m "WOEK-SDG-Catalog: $WOEK_SDG_PAGES_CATALOG_SHA256"
+          else
+            git commit -m "$commit_message"
+          fi
           node scripts/news/publish-git.mjs
           RELEASE_COMMIT="$(git rev-parse HEAD)"
           [[ "$RELEASE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Invalid published commit." >&2; exit 1; }
@@ -335,15 +342,21 @@ jobs:
             echo "public_files=$PUBLIC_FILES"
           } >> "$GITHUB_OUTPUT"
       - name: Publish the committed ticker automatically
-        if: steps.commit.outputs.changed == 'true' && (steps.outcome.outputs.public_changed == 'true' || steps.polls.outputs.changed == 'true' || steps.approved.outputs.changed == 'true' || steps.commit.outputs.public_files == 'true')
+        if: steps.commit.outputs.changed == 'true' && (steps.ticker_stream.outputs.legacy_news == 'true' || steps.approved.outputs.changed == 'true' || steps.polls.outputs.changed == 'true') && (steps.outcome.outputs.public_changed == 'true' || steps.polls.outputs.changed == 'true' || steps.approved.outputs.changed == 'true' || steps.commit.outputs.public_files == 'true')
         env:
           GH_TOKEN: ${{ github.token }}
           TICKER_COMMIT: ${{ steps.commit.outputs.commit }}
-          SKIP_TICKER_NOTIFY: ${{ steps.ticker_stream.outputs.legacy_news == 'false' && steps.approved.outputs.changed != 'true' }}
         run: |
           set -euo pipefail
           [[ "$TICKER_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Missing exact published commit; refusing an unbound release." >&2; exit 1; }
-          gh workflow run deploy.yml --ref main -f ticker_only=true -f "ticker_commit=$TICKER_COMMIT" -f "skip_ticker_notify=$SKIP_TICKER_NOTIFY"
+          gh workflow run deploy.yml --ref main -f ticker_only=true -f "ticker_commit=$TICKER_COMMIT"
+      - name: Deliver the bound automatic SDG commit through Pages
+        if: steps.ticker_stream.outputs.legacy_news == 'false' && inputs.dry_run != true && steps.approved.outputs.changed != 'true' && steps.polls.outputs.changed != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+        run: node scripts/news/sdg/dispatch-pages.mjs
       - name: Verify ticker run health
         if: always() && steps.ticker_stream.outputs.legacy_news == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
         run: npm run news:health -- --started-after="$WOEK_NEWS_EXPECTED_AFTER"

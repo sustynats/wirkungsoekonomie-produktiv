@@ -62,6 +62,14 @@ export class EditionLedger {
         receipt TEXT NOT NULL,
         receipt_hash TEXT NOT NULL
       ) STRICT;
+      CREATE TABLE IF NOT EXISTS sdg_pages_dispatches (
+        edition_id TEXT PRIMARY KEY NOT NULL REFERENCES editions(id),
+        edition_sha256 TEXT NOT NULL,
+        catalog_sha256 TEXT NOT NULL,
+        source_commit TEXT NOT NULL,
+        run_owner TEXT NOT NULL,
+        reserved_at TEXT NOT NULL
+      ) STRICT;
     `);
   }
 
@@ -198,6 +206,35 @@ export class EditionLedger {
 
   editionHash(id) {
     return this.db.prepare("SELECT hash FROM editions WHERE id = ?").get(id)?.hash ?? null;
+  }
+
+  reservePagesDispatch({ editionId, editionHash, catalogHash, sourceCommit, runOwner, reservedAt }) {
+    checkHash(editionHash);
+    checkHash(catalogHash);
+    utc(reservedAt);
+    if (typeof sourceCommit !== 'string' || !/^[a-f0-9]{40}$/.test(sourceCommit) ||
+        typeof runOwner !== 'string' || !/^\d{1,20}:\d{1,5}$/.test(runOwner)) {
+      throw Error('SDG_PAGES_DISPATCH_BINDING_REQUIRED');
+    }
+    return this.transaction(() => {
+      const edition = this.read(editionId);
+      if (!edition || reservedAt < edition.sealed_at) throw Error('SDG_PAGES_STAGED_EDITION_REQUIRED');
+      const existing = this.readDelivery(editionId);
+      if (existing) {
+        if (existing.edition_sha256 !== editionHash) throw Error('SDG_EDITION_DELIVERY_BINDING_MISMATCH');
+        return { status: 'already_confirmed' };
+      }
+      const unresolved = this.db.prepare(`
+        SELECT p.edition_id FROM sdg_pages_dispatches p
+        LEFT JOIN edition_deliveries d ON p.edition_id = d.edition_id
+        WHERE d.edition_id IS NULL LIMIT 1
+      `).get();
+      // Existing reservations remain authoritative after a lost response.
+      if (unresolved) return { status: 'dispatch_held' };
+      this.db.prepare('INSERT INTO sdg_pages_dispatches VALUES (?, ?, ?, ?, ?, ?)')
+        .run(editionId, editionHash, catalogHash, sourceCommit, runOwner, reservedAt);
+      return { status: 'reserved' };
+    });
   }
 
   readDelivery(id) {

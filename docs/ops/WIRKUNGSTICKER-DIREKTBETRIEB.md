@@ -165,7 +165,10 @@ SDG-Module und `WOEK_SDG_PUBLICATION_START_AT` als kanonischen UTC-Zeitpunkt
 einer Berliner Ausgabe. Unter seinem privaten Verzeichnis liegen
 `sdg/measures.sqlite`, `sdg/editions.sqlite` und `sdg/publication/` mit
 dem bereits abgesicherten Startkatalog. Die bestehenden Autorenfreigaben
-laufen im selben Workflow über ihre bisherigen Schritte.
+laufen im selben Workflow über ihre bisherigen Schritte. Ist in einem Lauf
+eine neue Autorenfassung zur Veröffentlichung übernommen worden, gibt sie den
+Commit und den Pages-Aufruf vor. Ausstehende SDG-Pakete bleiben für den
+nächsten automatischen Lauf verfügbar.
 
 Der Workflow prüft Vollständigkeit, Paket-Hashes und erlaubte Felder, ehe
 er den Katalog erweitert. Bei einer unterbrochenen Übernahme baut er aus
@@ -177,8 +180,17 @@ offen. Beim nächsten regulären Lauf nimmt Oracle den tatsächlich sichtbaren
 Pages-Versuch aus dem veröffentlichten Manifest auf. Es gleicht ihn mit
 den nativen GitHub-Belegen sowie den unveränderten Ausgabebytes ab und speichert
 die erste bestätigte Quittung im Ausgabespeicher. Dafür braucht der Dienst
-eine geprüfte GitHub-CLI-Installation mit Leserechten für den Deploy-Beleg. Bei unklarem
-Versandstatus startet die Quittierung keinen neuen Deploy.
+eine geprüfte GitHub-CLI-Installation mit Leserechten für den Deploy-Beleg.
+
+Der automatische Git-Commit trägt den SHA-256 seines SDG-Katalogs. Nach einem
+Abbruch zwischen Git-Push und Pages-Aufruf kann der nächste reguläre Lauf den
+Versand fortsetzen, solange genau dieser Commit die Spitze von `main` ist.
+Oracle reserviert den Versand für die gebundene Ausgabe vor dem ersten
+Aufruf. Bei verlorener Antwort hält die Reservierung weitere automatische
+Aufrufe an, bis eine echte Quittung vorliegt. Eine inzwischen weitergezogene
+Hauptlinie hält einen veralteten automatischen Aufruf vor Build oder
+Deployment an.
+
 Vor der produktiven Umschaltung müssen der normale Lauf bis zur öffentlichen
 Quittung und das passende Rückfallartefakt nachgewiesen sein.
 

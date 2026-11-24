@@ -43,6 +43,11 @@ on:
         required: false
         default: ""
         type: string
+      sdg_catalog_sha256:
+        description: Checked catalog digest for the automatic SDG sender
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -67,11 +72,15 @@ jobs:
         env:
           TICKER_COMMIT: ${{ inputs.ticker_commit }}
           TICKER_ONLY: ${{ inputs.ticker_only }}
+          SDG_CATALOG_SHA256: ${{ inputs.sdg_catalog_sha256 }}
         shell: bash
         run: |
           set -euo pipefail
           if [[ -n "$TICKER_COMMIT" ]]; then
             [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$TICKER_ONLY" == "true" && "$TICKER_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "An exact commit override is only allowed for a ticker-only dispatch." >&2; exit 1; }
+          fi
+          if [[ -n "$SDG_CATALOG_SHA256" ]]; then
+            [[ "$SDG_CATALOG_SHA256" =~ ^[0-9a-f]{64}$ && -n "$TICKER_COMMIT" && "$TICKER_COMMIT" == "$GITHUB_SHA" ]] || { echo "Automatic SDG dispatch no longer matches main." >&2; exit 1; }
           fi
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,13 +93,18 @@ jobs:
         id: release-source
         env:
           EXPECTED_COMMIT: ${{ inputs.ticker_commit || github.sha }}
+          SDG_CATALOG_SHA256: ${{ inputs.sdg_catalog_sha256 }}
         shell: bash
         run: |
           set -euo pipefail
           RELEASE_COMMIT="$(git rev-parse HEAD)"
           [[ "$RELEASE_COMMIT" =~ ^[0-9a-f]{40}$ && "$RELEASE_COMMIT" == "$EXPECTED_COMMIT" ]] || { echo "Checkout does not match the requested release commit." >&2; exit 1; }
+          if [[ -n "$SDG_CATALOG_SHA256" ]]; then
+            actual="$(git show HEAD:data/news/sdg/release-catalog.json | sha256sum | cut -d ' ' -f 1)"
+            [[ "$actual" == "$SDG_CATALOG_SHA256" ]] || { echo "SDG catalog does not match the requested release." >&2; exit 1; }
+          fi
           echo "commit=$RELEASE_COMMIT" >> "$GITHUB_OUTPUT"
-          printf '### Verified release source\n\nSource commit: `%s`\n\nTrigger commit: `%s`\n' "$RELEASE_COMMIT" "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+          printf '### Verified release source\n\nSource commit: %s\n\nTrigger commit: %s\n' "\`$RELEASE_COMMIT\`" "\`$GITHUB_SHA\`" >> "$GITHUB_STEP_SUMMARY"
       - name: Select release path
         id: release-mode
         env:
@@ -625,6 +639,16 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Refuse a stale automatic SDG deployment
+        if: inputs.sdg_catalog_sha256 != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_COMMIT: ${{ needs.build.outputs.release_commit }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(gh api --method GET "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+          [[ "$RELEASE_COMMIT" =~ ^[0-9a-f]{40}$ && "$RELEASE_COMMIT" == "$current" ]] || { echo "Main moved while preparing the automatic SDG release." >&2; exit 1; }
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5

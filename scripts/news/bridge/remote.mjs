@@ -111,6 +111,7 @@ export function bridgeSession(env = process.env, { fetchImpl = fetch,
     prepare: cursor => request('sdg.prepare', [cursor]),
     readPackage: (digest, offset) => request('sdg.readPackage', [digest, offset]),
     reconcile: cursor => request('sdg.reconcile', [cursor]),
+    reserveDispatch: (cursor, sourceCommit) => request('sdg.reserveDispatch', [cursor, sourceCommit]),
   };
   return { store, transport, sdg, status: () => request('bridge.status'), monitor: () => request('bridge.monitor') };
 }
