@@ -38,12 +38,7 @@
       "active": true
     }
   },
-  "outbox": [
-    {
-      "id": "97469581a172493be80c4049",
-      "content": "⚠ WÖk-Betriebsstörung\nKanonischer Lagenbestand: Im kanonischen Bestand fehlen fällige Ausgaben: 2026-11-24-morgenlage. Öffentliche Auslieferung ungeprüft.\nSeit: 2026-11-24T05:06:01.082Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
-    }
-  ],
+  "outbox": [],
   "dailyDate": "2026-11-23",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
