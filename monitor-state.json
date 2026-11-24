@@ -32,13 +32,14 @@
     "delivery-wirkungsticker.yml": {
       "firstSeen": "2026-11-24T00:56:16.438Z",
       "active": true
-    },
-    "lage": {
-      "firstSeen": "2026-11-24T05:06:01.082Z",
-      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "5d8c75a28c1a2d13ab358c14",
+      "content": "✓ WÖk-Störung behoben\nKanonischer Lagenbestand\nPrüfung: 2026-11-24T15:51:00.011Z"
+    }
+  ],
   "dailyDate": "2026-11-24",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4189,7 +4190,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-24T15:45:39.229Z",
+    "checked_at": "2026-11-24T15:51:00.011Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
