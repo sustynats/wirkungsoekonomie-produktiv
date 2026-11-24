@@ -28,6 +28,7 @@ import {
 import { loadNewsRegistry } from "./registry.mjs";
 import { buildSourcePages } from "./source-pages.mjs";
 import { buildSdgEditionPages } from "./sdg/edition-pages.mjs";
+import { loadSdgTickerPresentation } from "./sdg/release-catalog.mjs";
 import { canonicalizeUrl } from "./lib.mjs";
 import { relatedStories } from "./living-files.mjs";
 import { formatReferenceFramework } from "./reference-frameworks.mjs";
@@ -409,7 +410,7 @@ function mixedCards(stories, analyses, storiesById) {
     : storyCard(item.value, index)).join("\n");
 }
 
-function pageShell({ title, description, canonical, base, body, jsonLd, feedLinks = true, extraScript = "", robots = "", titleImage = null, publicUpdatedAt = "", ogType = "website" }) {
+function pageShell({ title, description, canonical, base, body, jsonLd, feedLinks = true, extraScript = "", robots = "", titleImage = null, publicUpdatedAt = "", ogType = "website", sdgActive = false }) {
   const { header, footer } = renderLayout(base);
   // The shared card describes this page, never a parent story or a stale raster
   // overlay. The existing on-page illustrations remain unchanged.
@@ -462,7 +463,7 @@ function pageShell({ title, description, canonical, base, body, jsonLd, feedLink
 </head>
 <body class="ticker-app-shell">
 ${header}
-${appNavigation(canonical)}
+${appNavigation(canonical, { sdgActive })}
 ${renderIconSprite()}
 ${body}
 ${footer.replace("</footer>", `<nav class="footer-nav-links" aria-label="Wirkungsticker-Transparenz"><a href="${base}wirkungsticker/quellen/">Quellen &amp; Auswahlkriterien</a></nav></footer>`)}
@@ -992,6 +993,7 @@ function updateSitemap(stories, updatedAt, oldSlugs, extraRoutes = []) {
 }
 
 export function buildNewsSite() {
+  const sdgTicker = loadSdgTickerPresentation(ROOT);
   const data = readJson(STORIES_FILE);
   // Pure release projection until the next regular locked worker persists it.
   // A changed/ambiguous edition blocks delivery instead of publishing twice.
@@ -1042,7 +1044,7 @@ export function buildNewsSite() {
   // Startseite, der Seitenbau erzeugt je Lage eine Seite. Fehlt die Ablage,
   // entsteht kein Abschnitt und keine Seite, und der Bau laeuft weiter.
   const lagenStore = fs.existsSync(LAGEN_FILE) ? readJson(LAGEN_FILE) : { lagen: [] };
-  const appRoutes = buildAppPages({root:ROOT,stories,analyses:editorialAnalyses,storiesById,storyCard,editorialCard,pageShell,write,updatedAt:publicationUpdatedAt,lagen: lagenStore.lagen || [], appTools:indexPage([],publicationUpdatedAt).match(/<section class="section news-app-tools"[\s\S]*?<\/section>/)?.[0]||""});
+  const appRoutes = buildAppPages({root:ROOT,stories,analyses:editorialAnalyses,storiesById,storyCard,editorialCard,pageShell,write,updatedAt:publicationUpdatedAt,lagen: lagenStore.lagen || [], sdgTicker, appTools:indexPage([],publicationUpdatedAt).match(/<section class="section news-app-tools"[\s\S]*?<\/section>/)?.[0]||""});
   for (const story of pageStories) {
     const representativeIndex = stories.findIndex((item) => item.story_id === (story.case_file?.representative_id || story.story_id));
     const sameCaseIds = new Set(story.case_file?.members.map((member) => member.story_id) || []);
@@ -1108,7 +1110,8 @@ export function buildNewsSite() {
   }
   write(path.join(TICKER_DIR, 'methodik/index.html'), pageShell({title:'Wie der Wirkungsticker Wirkungen bewertet', description:'Richtung, Tragweite, Eintrittsplausibilität und Evidenz: die sechs Faktoren und Schutzgrenzen des Wirkungstickers verständlich erklärt.', canonical:`${SITE}/wirkungsticker/methodik/`, base:'../../', body:impactMethodology({profilesReleased:Boolean(PUBLIC_IMPACT_PROFILE_VERSION)}), jsonLd:{'@context':'https://schema.org','@type':'WebPage',name:'Methodik des Wirkungstickers',url:`${SITE}/wirkungsticker/methodik/`}}));
   const sourceRoutes = buildSourcePages(loadNewsRegistry(ROOT), readJson(path.join(ROOT, "data/news/state.json")), { pageShell, write, escapeHtml, root: ROOT, site: SITE, formatDate });
-  const sdgRoutes = buildSdgEditionPages({ root: ROOT, site: SITE, pageShell, write, escapeHtml });
+  const sdgRoutes = buildSdgEditionPages({ root: ROOT, site: SITE,
+    pageShell: data => pageShell({ ...data, sdgActive: Boolean(sdgTicker) }), write, escapeHtml, catalog: sdgTicker });
   const editorialRoutes = editorialAnalyses.map((analysis) => `wirkungsticker/analyse/${analysis.slug}/`);
   updateSitemap(pageStories, publicationUpdatedAt, oldSlugs, [...sourceRoutes, ...editorialRoutes, ...appRoutes, ...sdgRoutes, 'wirkungsticker/methodik/']);
   console.log(`Wirkungsticker gebaut: ${stories.length} aktuelle Lagen und Einzelakten aus ${activeStories.length} Wirkungsakten; ${editorialAnalyses.length} WÖk-Analyse(n), ${grouping.cases.length} Lageakte(n), ${retiredStories.length} transparent archivierte Storys, RSS/Atom/JSON.`);

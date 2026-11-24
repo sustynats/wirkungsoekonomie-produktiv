@@ -11,7 +11,8 @@ import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scrip
 import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
 import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
-import { readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
+import { loadSdgTickerPresentation, readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
+import { appNavigation, buildAppPages } from '../../scripts/news/app-pages.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
 import { SEMANTIC_CHECKS } from '../../scripts/news/impact-publication.mjs';
 import { syntheticPotentialAssessment, syntheticScopeReview } from './fixtures/impact21.mjs';
@@ -330,5 +331,56 @@ test('release catalog registration is append-only and survives an uncertain prio
       assert.throws(() => apply(firstEdition.id, second.catalog_sha256, conflictingLedger), /EDITION_IMMUTABLE/);
     } finally { conflictingLedger.close(); }
     assert.equal(readSdgReleaseCatalog(root).sha256, second.catalog_sha256);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+}));
+
+test('ticker presentation can switch and roll back while legacy news and editorial browse routes stay intact', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const edition = editions.stage(window);
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-ticker-mode-'));
+  try {
+    const release = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
+    const config = path.join(root, 'data/news/sdg/ticker-mode.json');
+    const useMode = sha256 => writeFileSync(config, JSON.stringify({
+      schema_version: 1, mode: 'sdg', anchor: { edition_id: edition.id, sha256 },
+    }));
+    const stories = [{ story_id: 'legacy', title: 'Ältere Meldung', slug: 'aeltere-meldung', published_at: now }];
+    const analyses = [
+      { analysis_id: 'analysis-test', title: 'Geprüfte Analyse', slug: 'gepruefte-analyse', published_at: now },
+      { analysis_id: 'podcast-test', subtype: 'listened', title: 'Eigenständiger Podcastbeitrag', slug: 'podcastbeitrag', published_at: now },
+      { analysis_id: 'book-test', format: 'book_and_impact', title: 'Eigenständige Buchbesprechung', slug: 'buchbesprechung', published_at: now },
+    ];
+    const render = () => {
+      const sdgTicker = loadSdgTickerPresentation(root);
+      const pages = new Map();
+      buildAppPages({ root, stories, analyses, storiesById: new Map(), updatedAt: now, sdgTicker,
+        storyCard: item => `<article>${item.title}</article>`,
+        editorialCard: item => `<article>${item.title}</article>`,
+        write: (filename, html) => pages.set(path.relative(root, filename), html),
+        pageShell: data => appNavigation(data.canonical, { sdgActive: data.sdgActive }) + data.body,
+      });
+      return pages;
+    };
+    const homepage = 'wirkungsticker/index.html';
+    const archive = 'wirkungsticker/news/index.html';
+    const initial = render();
+    assert.match(initial.get(homepage), /Aktuelle Meldungen/);
+    useMode('f'.repeat(64));
+    assert.throws(render, /SDG_TICKER_RELEASE_ANCHOR_REQUIRED/);
+    useMode(release.edition_sha256);
+    const active = render();
+    assert.match(active.get(homepage), /Global SDG Impact Tracker/);
+    assert.match(active.get(homepage), /\/wirkungsticker\/sdg\/ausgabe\/2026-11-24-morgenlage\//);
+    assert.match(active.get(homepage), /SDG-Ausgaben/);
+    assert.doesNotMatch(active.get(homepage), /Ältere Meldung/);
+    assert.match(active.get(archive), /Ältere Meldung/);
+    assert.match(active.get(archive), /Nachrichtenarchiv/);
+    for (const item of analyses) assert.ok(active.get(homepage).includes(item.title));
+    rmSync(config);
+    assert.deepEqual(render(), initial);
+    assert.equal(readSdgReleaseCatalog(root).sha256, release.catalog_sha256);
   } finally { rmSync(root, { recursive: true, force: true }); }
 }));

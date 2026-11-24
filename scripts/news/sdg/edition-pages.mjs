@@ -15,8 +15,7 @@ const domains = {
 };
 const dateLabel = value => value && Number.isFinite(Date.parse(value)) ? formatCalendarDate.format(new Date(value)) : null;
 
-function loadCatalog(root) {
-  const { releases } = readSdgReleaseCatalog(root);
+function loadCatalog({ releases }) {
   return releases.map(({ manifest }) => {
     const rows = new Set();
     for (const item of manifest.items) {
@@ -34,15 +33,16 @@ function loadCatalog(root) {
   }).sort((left, right) => right.scheduled_at.localeCompare(left.scheduled_at));
 }
 
-export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml: esc }) {
-  const editions = loadCatalog(root);
+export function sdgEditionTitle(edition) {
+  const slot = LAGEN.find(item => edition.edition_id.endsWith(item.slot));
+  return `${slot.label} · ${formatDate.format(new Date(edition.scheduled_at))}`;
+}
+
+export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml: esc, catalog }) {
+  const editions = loadCatalog(catalog ?? readSdgReleaseCatalog(root));
   if (editions.length === 0) return [];
   const routes = [];
   const tracker = 'Global SDG Impact Tracker';
-  const titleFor = edition => {
-    const slot = LAGEN.find(item => edition.edition_id.endsWith(item.slot));
-    return `${slot.label} · ${formatDate.format(new Date(edition.scheduled_at))}`;
-  };
   const page = (route, title, heading, description, body, base) => {
     const canonical = `${site}/${route}`;
     write(path.join(root, route, 'index.html'), pageShell({
@@ -70,13 +70,14 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
 </article>`;
     }).join('\n');
     const cutoff = formatDate.format(new Date(edition.cutoff_at));
-    page(`${ROUTE}ausgabe/${edition.edition_id}/`, `${titleFor(edition)} | ${tracker}`, titleFor(edition),
+    const title = sdgEditionTitle(edition);
+    page(`${ROUTE}ausgabe/${edition.edition_id}/`, `${title} | ${tracker}`, title,
       'Geprüfte Maßnahmen und Wirkungsbeobachtungen.',
       `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Prüfschluss ${esc(cutoff)} Uhr (Berlin)</p>${items || '<p>Für diese Ausgabe liegen keine geprüften Einträge vor.</p>'}`,
       '../../../../');
   }
   page(ROUTE, tracker, tracker, 'Ausgaben mit geprüften Maßnahmen und Wirkungsbeobachtungen.',
     `<p><a href="/wirkungsticker/">Zum Wirkungsticker</a></p><ol class="ticker-lagen-liste">${editions.map(edition =>
-      `<li><a href="/${ROUTE}ausgabe/${edition.edition_id}/">${esc(titleFor(edition))}</a> · ${edition.items.length} geprüft</li>`).join('')}</ol>`, '../../');
+      `<li><a href="/${ROUTE}ausgabe/${edition.edition_id}/">${esc(sdgEditionTitle(edition))}</a> · ${edition.items.length} geprüft</li>`).join('')}</ol>`, '../../');
   return routes;
 }

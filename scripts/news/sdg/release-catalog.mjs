@@ -43,3 +43,15 @@ export function readSdgReleaseCatalog(root) {
   });
   return { filename, directory, sha256: createHash('sha256').update(bytes).digest('hex'), releases };
 }
+
+export function loadSdgTickerPresentation(root) {
+  const filename = path.join(root, 'data/news/sdg/ticker-mode.json');
+  if (!fs.existsSync(filename)) return null;
+  const config = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  if (config?.schema_version !== 1 || config.mode !== 'sdg') throw Error('SDG_TICKER_MODE_INVALID');
+  const catalog = readSdgReleaseCatalog(root);
+  const anchor = catalog.releases.find(entry =>
+    entry.edition_id === config.anchor?.edition_id && entry.sha256 === config.anchor?.sha256);
+  if (!anchor || !anchor.manifest.items.length) throw Error('SDG_TICKER_RELEASE_ANCHOR_REQUIRED');
+  return catalog;
+}
