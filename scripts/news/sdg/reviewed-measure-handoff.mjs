@@ -3,6 +3,18 @@ import { finalizeReviewedImpact } from '../reviewed-impact.mjs';
 
 const sha = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
+function reviewSourceRecordsHash(record) {
+  return sha({
+    sources: record.sources,
+    impact_sources: record.impact_sources ?? [],
+    source_snapshot: record.source_snapshot ?? [],
+  });
+}
+
+export function reviewedMeasureSourcesHash(record, evidence) {
+  return sha([sha(evidence), reviewSourceRecordsHash(record)]);
+}
+
 function evidenceKey(source) {
   return JSON.stringify([source.registry_id, source.reference, source.snapshot_sha256]);
 }
@@ -39,11 +51,7 @@ export function measureReviewBinding(measures, { caseId, revisionId, record }) {
       revision_id: revisionId,
       revision_sha256: sha(eventRevision),
       evidence_sha256: sha(evidence),
-      record_sources_sha256: sha({
-        sources: record.sources,
-        impact_sources: record.impact_sources ?? [],
-        source_snapshot: record.source_snapshot ?? [],
-      }),
+      record_sources_sha256: reviewSourceRecordsHash(record),
     },
     evidence,
     discovered_at: entry.discovered_at,
@@ -81,6 +89,7 @@ export function prepareReviewedMeasure({ caseId, revisionId, reviewId, now }, me
   const readyAt = new Date(acceptedAt).toISOString();
   const reviewed = finalizeReviewedImpact(record, packet, receipt, existing, readyAt);
   const dossier = {
+    case_id: caseId,
     revision: projection.eventRevision,
     evidence: projection.evidence,
     record: { ...reviewed, published: false, published_at: null },
@@ -90,7 +99,7 @@ export function prepareReviewedMeasure({ caseId, revisionId, reviewId, now }, me
   return {
     id: revisionId,
     analysisHash: sha(reviewed.impact_assessment),
-    sourceHash: sha([projection.binding.evidence_sha256, projection.binding.record_sources_sha256]),
+    sourceHash: reviewedMeasureSourcesHash(record, projection.evidence),
     readyAt,
     dossier,
   };

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -8,6 +8,8 @@ import { EditionLedger } from '../../scripts/news/sdg/editions.mjs';
 import { MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
 import { handoffReviewedMeasure, measureReviewBinding } from '../../scripts/news/sdg/reviewed-measure-handoff.mjs';
 import { MeasureReviewJournal, stageIndependentMeasureReview } from '../../scripts/news/sdg/measure-review-journal.mjs';
+import { packageSdgEdition, writeSdgEditionCandidate } from '../../scripts/news/sdg/package-edition.mjs';
+import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
 import { SEMANTIC_CHECKS } from '../../scripts/news/impact-publication.mjs';
 import { syntheticPotentialAssessment, syntheticScopeReview } from './fixtures/impact21.mjs';
@@ -31,9 +33,10 @@ function bind(measures, target) {
   const assessment = syntheticPotentialAssessment();
   const packet = { story_id: 'synthetic-story', title: 'Synthetischer Prüfgegenstand',
     expected_content_hash: 'previous-content', expected_analysis_hash: 'previous-analysis',
-    analysis: { impact_assessment: assessment } };
+    analysis: { impact_assessment: assessment, source_summary: 'Die Testfassung beginnt mit einem fiktiven Beschluss.' } };
   const record = {
     story_id: packet.story_id, title: packet.title, analysis: structuredClone(packet.analysis),
+    source_summary: packet.analysis.source_summary,
     impact_assessment: structuredClone(assessment),
     sources: [{ source_id: 'official', title: 'Synthetischer Beleg', url: source.url, sdg_evidence: {
       registry_id: source.registry_id, reference: source.reference, snapshot_sha256: source.snapshot_sha256,
@@ -201,4 +204,93 @@ test('the review journal cannot accept a failed native source-fidelity check', (
     store.close();
     rmSync(dir, { recursive: true, force: true });
   }
+}));
+
+test('edition packaging emits only checked public fields and writes identical bytes on restart', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  const stored = bind(measures, target);
+  stored.record.editorial_draft = 'PRIVATE-MANUSCRIPT-SENTINEL';
+  stored.record.sources[0].article_excerpt = 'PRIVATE-SOURCE-EXCERPT-SENTINEL';
+  stored.packet.sdg_measure = measureReviewBinding(measures, { ...target, record: stored.record }).binding;
+  stored.record.content_hash = stored.receipt.review_packet_hash = sha256(JSON.stringify(stored.packet));
+  reviews.set(reviewId, stored);
+  await perform();
+  const edition = editions.stage(window);
+  const pack = packageSdgEdition(editions, edition.id);
+  const [item] = pack.manifest.items;
+  assert.equal(pack.manifest.published_at, null);
+  assert.equal(item.case_id, target.caseId);
+  assert.equal(item.revision_id, target.revisionId);
+  assert.equal(item.sources[0].url, source.url);
+  assert.deepEqual(Object.keys(item.impact), ['human', 'planet', 'democracy']);
+  assert.doesNotMatch(JSON.stringify(pack), /PRIVATE-|fixture-writer|sdg_evidence|source_snapshot/);
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-candidate-'));
+  try {
+    const output = writeSdgEditionCandidate(root, pack);
+    assert.deepEqual(JSON.parse(readFileSync(output, 'utf8')), pack);
+    assert.equal(writeSdgEditionCandidate(root, packageSdgEdition(editions, edition.id)), output);
+    writeFileSync(output, 'Changed');
+    assert.throws(() => writeSdgEditionCandidate(root, pack), { code: 'EEXIST' });
+  } finally { rmSync(root, { recursive: true, force: true }); }
+}));
+
+test('edition packaging stops when manifest or stored dossier bytes differ', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const edition = editions.stage(window);
+  editions.db.prepare("UPDATE editions SET hash = ? WHERE id = ?").run('c'.repeat(64), edition.id);
+  assert.throws(() => packageSdgEdition(editions, edition.id), /SDG_EDITION_MANIFEST_CHANGED/);
+  editions.db.prepare("UPDATE editions SET hash = ? WHERE id = ?").run(edition.hash, edition.id);
+  editions.db.prepare("UPDATE qualified SET dossier = '{}' WHERE id = ?").run(target.revisionId);
+  assert.throws(() => packageSdgEdition(editions, edition.id), /Reviewed dossier content changed/);
+}));
+
+test('edition pages render only catalogued checked packages and retain all entries', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const edition = editions.stage(window);
+  const initial = packageSdgEdition(editions, edition.id);
+  const manifest = { ...initial.manifest, items: [
+    ...initial.manifest.items,
+    ...Array.from({ length: 41 }, (_, index) => ({ ...initial.manifest.items[0],
+      revision_id: sha256(`page-fixture-${index}`), title: `Fiktive Fassung ${index + 1}` })),
+  ] };
+  const pack = { manifest, sha256: sha256(JSON.stringify(manifest)) };
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-pages-'));
+  try {
+    const storage = path.join(root, 'data/news/sdg');
+    const candidate = writeSdgEditionCandidate(path.join(storage, 'editions'), pack);
+    const written = new Map();
+    const render = () => buildSdgEditionPages({ root, site: 'https://example.org',
+      write: (filename, text) => written.set(path.relative(root, filename), text),
+      pageShell: data => data.body,
+      escapeHtml: value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;'),
+    });
+    assert.deepEqual(render(), []);
+    assert.equal(written.size, 0);
+    writeFileSync(path.join(storage, 'release-catalog.json'), JSON.stringify({
+      schema_version: 1, releases: [{ edition_id: edition.id, sha256: pack.sha256 }],
+    }));
+    const [detailRoute, indexRoute] = render();
+    assert.equal(indexRoute, 'wirkungsticker/sdg/');
+    assert.equal(detailRoute, `wirkungsticker/sdg/ausgabe/${edition.id}/`);
+    assert.equal(written.size, 2);
+    assert.match(written.get(detailRoute + 'index.html'), new RegExp(`sdg-${target.revisionId}`));
+    assert.equal([...written.get(detailRoute + 'index.html').matchAll(/<article id="sdg-/g)].length, 42);
+    assert.match(written.get(indexRoute + 'index.html'), /Global SDG Impact Tracker/);
+    assert.match(written.get(detailRoute + 'index.html'), /Prüfschluss/);
+    assert.match(written.get(detailRoute + 'index.html'), /Erfasst am/);
+    assert.doesNotMatch(written.get(detailRoute + 'index.html'), /Veröffentlicht am/);
+    const corrupt = structuredClone(pack);
+    corrupt.manifest.items[0].title = 'Veränderter Text';
+    writeFileSync(candidate, JSON.stringify(corrupt));
+    written.clear();
+    assert.throws(render, /SDG_RELEASE_PACKAGE_MISMATCH/);
+    assert.equal(written.size, 0);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 }));

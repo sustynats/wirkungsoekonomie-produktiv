@@ -21,8 +21,9 @@ function checkHash(value) {
 // This module stores already-reviewed items from an explicit caller. It does
 // not determine what passed review and has no publisher or provider.
 export class EditionLedger {
-  constructor(database) {
-    this.db = new DatabaseSync(database);
+  constructor(database, { readOnly = false } = {}) {
+    this.db = new DatabaseSync(database, { readOnly });
+    if (readOnly) return;
     this.db.exec(`
       PRAGMA foreign_keys = ON;
       PRAGMA busy_timeout = 5000;
