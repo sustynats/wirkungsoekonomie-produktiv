@@ -4990,7 +4990,7 @@
       "workflow": "redaktionsworker.yml",
       "head": "f78f9c5d8c5b862db4fd57c3419732f46909cfa4",
       "at": "2026-11-24T22:57:51.071Z",
-      "status": "reserved"
+      "status": "dispatched"
     }
   ]
 }
