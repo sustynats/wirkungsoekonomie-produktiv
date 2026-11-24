@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { BridgeStore } from '../../scripts/news/bridge/store.mjs';
 import { EditionLedger } from '../../scripts/news/sdg/editions.mjs';
 import { MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
@@ -382,5 +384,41 @@ test('ticker presentation can switch and roll back while legacy news and editori
     rmSync(config);
     assert.deepEqual(render(), initial);
     assert.equal(readSdgReleaseCatalog(root).sha256, release.catalog_sha256);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+}));
+
+test('automatic stream selector allows legacy writes only with the SDG marker absent', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  reviews.set(reviewId, bind(measures, target));
+  await perform();
+  const edition = editions.stage(window);
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-automatic-stream-'));
+  try {
+    const config = path.join(root, 'data/news/sdg/ticker-mode.json');
+    const output = path.join(root, 'workflow-output');
+    const command = fileURLToPath(new URL('../../scripts/news/sdg/select-automatic-stream.mjs', import.meta.url));
+    const select = () => {
+      writeFileSync(output, '');
+      return spawnSync(process.execPath, [command], {
+        cwd: root, encoding: 'utf8', env: { ...process.env, GITHUB_OUTPUT: output },
+      });
+    };
+    assert.equal(select().status, 0);
+    assert.equal(readFileSync(output, 'utf8'), 'legacy_news=true\n');
+
+    const release = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
+    const setMode = sha256 => writeFileSync(config, JSON.stringify({
+      schema_version: 1, mode: 'sdg', anchor: { edition_id: edition.id, sha256 },
+    }));
+    setMode(release.edition_sha256);
+    assert.equal(select().status, 0);
+    assert.equal(readFileSync(output, 'utf8'), 'legacy_news=false\n');
+
+    setMode('f'.repeat(64));
+    const invalid = select();
+    assert.equal(invalid.status, 1);
+    assert.match(invalid.stderr, /SDG_TICKER_RELEASE_ANCHOR_REQUIRED/);
+    assert.equal(readFileSync(output, 'utf8'), '');
   } finally { rmSync(root, { recursive: true, force: true }); }
 }));

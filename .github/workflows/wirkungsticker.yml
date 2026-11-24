@@ -119,6 +119,10 @@ jobs:
           WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
           WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
         run: node scripts/news/import-approved-editorials.mjs --finalize
+      - name: Select automatic ticker stream
+        id: ticker_stream
+        if: steps.slot.outputs.should_run == 'true'
+        run: node scripts/news/sdg/select-automatic-stream.mjs
       - name: Queue potential reassessments for the newest online stories
         # Fester Bestandteil jedes Laufs (seit 16.09.): die jüngsten Online-Meldungen
         # ohne vollständiges freigegebenes Profil bleiben eingereiht, bis die Neufassung
@@ -128,11 +132,11 @@ jobs:
           REASSESS_LIMIT: ${{ inputs.reassess_limit || vars.WOEK_NEWS_REASSESS_LIMIT || '30' }}
         run: node scripts/news/queue-reassessment.mjs --limit="$REASSESS_LIMIT"
       - name: Validate the existing archive encryption key before paid work
-        if: steps.slot.outputs.should_run == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
+        if: steps.ticker_stream.outputs.legacy_news == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
         run: node scripts/news/sealed-raw-output.mjs --check-key
       - name: Verify interrupted paid work before another provider request
         id: paid_preflight
-        if: steps.slot.outputs.should_run == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
+        if: steps.ticker_stream.outputs.legacy_news == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/news/retained-failed-paid-work.mjs --preflight
@@ -321,7 +325,7 @@ jobs:
           [[ "$TICKER_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Missing exact published commit; refusing an unbound release." >&2; exit 1; }
           gh workflow run deploy.yml --ref main -f ticker_only=true -f "ticker_commit=$TICKER_COMMIT"
       - name: Verify ticker run health
-        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
+        if: always() && steps.ticker_stream.outputs.legacy_news == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
         run: npm run news:health -- --started-after="$WOEK_NEWS_EXPECTED_AFTER"
       - name: Seal paid originals for private recovery
         id: sealed_raw
