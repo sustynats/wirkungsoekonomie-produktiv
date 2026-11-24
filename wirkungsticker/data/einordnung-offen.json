@@ -1,8 +1,15 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-24T00:31:40.432Z",
+  "updated_at": "2026-11-24T20:01:15.511Z",
   "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
   "beitraege": [
+    {
+      "slug": "nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c",
+      "titel": "Nachgehört: Klimaschutz zwischen Protest, Versorgungssicherheit und politischer Macht",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-24T20:01:15.511Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c/"
+    },
     {
       "slug": "wenn-politische-forderungen-zum-machtinstrument-werden-e863ba",
       "titel": "Wenn politische Forderungen zum Machtinstrument werden",
@@ -205,13 +212,6 @@
       "art": "listened",
       "veroeffentlicht": "2026-11-14T08:27:56.635Z",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421/"
-    },
-    {
-      "slug": "markus-lanz-wenn-politische-linien-sichtbar-werden-47ea6b",
-      "titel": "Markus Lanz: Wenn politische Linien sichtbar werden",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-14T08:27:46.148Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/markus-lanz-wenn-politische-linien-sichtbar-werden-47ea6b/"
     }
   ]
 }

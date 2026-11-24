@@ -319930,7 +319930,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "b7ad46b88a6f3f06",
+      "contentHash": "7933080e5f74ad0a",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#lagen-titel": {
@@ -319938,7 +319938,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "b7ad46b88a6f3f06",
+      "contentHash": "7933080e5f74ad0a",
       "sectionId": "lagen-titel"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -322628,6 +322628,14 @@
       "sourceFile": "wirkungsticker/analyse/nachgehort-klimapolitik-wirtschaft-und-demokratie-was-aus-dem-gesprach-mit-maja-gopel-bleibt-4b0322/index.html",
       "contentHash": "0181de7d4c9f0a39",
       "sectionId": "woek-page-a9159a079586c32a"
+    },
+    "/wirkungsticker/analyse/nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c/index.html",
+      "contentHash": "b957e5974c3f4736",
+      "sectionId": "woek-page-44f372c4fb5c5071"
     },
     "/wirkungsticker/analyse/nachgehort-lanz-und-precht-uber-antisemitismus-israelkritik-und-politische-instrumentalisierung-6e29b0/": {
       "documentType": "Referenz",
@@ -325546,7 +325554,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/analysen/index.html",
-      "contentHash": "c6bdbaec0c3e8aa3",
+      "contentHash": "b6109ab66112a11b",
       "sectionId": "woek-page-720f8d43d23be330"
     },
     "/wirkungsticker/angriff-an-schule-in-frankreich-14-jahriger-soll-schulleiter-und-lehrerin-angeschossen-h-a48894/": {
@@ -332778,7 +332786,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "2cdde5b44b8aaae1",
+      "contentHash": "bec28e865b0fc7a4",
       "sectionId": "woek-page-901baef9d8fe7ae8"
     },
     "/wirkungsticker/mehr/#news-app-title": {
@@ -332786,7 +332794,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "2cdde5b44b8aaae1",
+      "contentHash": "bec28e865b0fc7a4",
       "sectionId": "news-app-title"
     },
     "/wirkungsticker/mehrere-explosionen-mindestens-acht-tote-bei-russischen-angriffen-auf-die-ukraine-c3546b/": {
@@ -333946,7 +333954,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/news/index.html",
-      "contentHash": "15f075608b0ce5ce",
+      "contentHash": "bbe2b818bdbe3fc9",
       "sectionId": "woek-page-7d87c87ddaa7be64"
     },
     "/wirkungsticker/newsblog-zur-landtagswahl-in-sachsen-anhalt-ministerprasident-schulze-cdu-raumt-niederla-0e1751/": {
