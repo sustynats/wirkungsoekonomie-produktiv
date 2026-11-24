@@ -1,11 +1,25 @@
 {
-  "_woek_revision": "20260912-news-freshness:2026-11-24T00:31:40.432Z",
+  "_woek_revision": "20260912-news-freshness:2026-11-24T20:01:15.511Z",
   "version": "https://jsonfeed.org/version/1.1",
   "title": "Wirkungsticker",
   "home_page_url": "https://wirkungsoekonomie.de/wirkungsticker/",
   "feed_url": "https://wirkungsoekonomie.de/wirkungsticker/feed.json",
   "language": "de",
   "items": [
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c/",
+      "title": "Nachgehört: Klimaschutz zwischen Protest, Versorgungssicherheit und politischer Macht",
+      "summary": "Luisa Neubauer spricht mit Paul Ronzheimer über die Grenzen des Klimaaktivismus, fossile Abhängigkeiten, Arbeitsplätze und die politische Verantwortung Deutschlands.",
+      "date_published": "2026-11-24T20:01:15.511Z",
+      "date_modified": "2026-11-24T20:01:15.511Z",
+      "_woek_released_at": "2026-11-24T20:01:15.511Z",
+      "_woek_original_episode_date": "2026-11-24",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
     {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-forderungen-zum-machtinstrument-werden-e863ba/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-forderungen-zum-machtinstrument-werden-e863ba/",
