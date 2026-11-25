@@ -5001,6 +5001,13 @@
       "head": "f38f2352459e487adebf740067be674ad64f7558",
       "at": "2026-11-25T00:42:02.355Z",
       "status": "dispatched"
+    },
+    {
+      "key": "e6293466be3afa8a5e2324a450bf136acc93732e22e4cf803e96b5700a89d525",
+      "workflow": "redaktionsworker.yml",
+      "head": "ed60d26d03715f14fcd614e6314e2bf67442b96d",
+      "at": "2026-11-25T01:27:31.958Z",
+      "status": "reserved"
     }
   ]
 }
