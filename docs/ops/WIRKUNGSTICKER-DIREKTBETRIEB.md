@@ -210,6 +210,22 @@ Die Quittung bindet ausschließlich die Ausgabe ihres konkreten Pages-Laufs.
 Die nun aktive Hauptseite und der automatische SDG-Lauf sind nach der
 Umschaltung gesondert zu prüfen.
 
+Für die Erstausgabe im serialisierten Release-Checkout das aus dem
+privaten Ledger registrierte Paket mit seiner bestätigten Ausgabe-ID
+und dem dort ermittelten Manifest-Hash übernehmen.
+
+```sh
+node scripts/news/sdg/import-bridge-editions.mjs \
+  --first-package="$SDG_PACKAGE_FILE" --edition-id="$SDG_EDITION_ID" \
+  --sha256="$SDG_EDITION_SHA256"
+```
+
+Der Import prüft den öffentlichen Paketvertrag und verlangt mindestens
+einen geprüften Eintrag. Er schreibt ausschließlich Paket und Katalog,
+solange die Modusdatei fehlt. Die fachliche Prüfung bleibt an den
+vorherigen, privaten Freigabepfad gebunden. GitHub Pages liefert die
+registrierte Ausgabe über das bestehende Archiv aus.
+
 ### Referenzrahmen der Maßnahmen
 
 Wenn die unabhängige Prüfung Referenzrahmen enthält, übernimmt Paketversion

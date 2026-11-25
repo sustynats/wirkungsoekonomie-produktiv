@@ -20,7 +20,7 @@ import { prepareScheduledSdgEditions } from '../../scripts/news/sdg/prepare-sche
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
 import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
 import { loadSdgTickerPresentation, readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
-import { importSdgBridgeEditions } from '../../scripts/news/sdg/import-bridge-editions.mjs';
+import { importFirstSdgPackage, importSdgBridgeEditions } from '../../scripts/news/sdg/import-bridge-editions.mjs';
 import { serveSdgEditions } from '../../scripts/news/sdg/bridge-editions.mjs';
 import { appNavigation, buildAppPages } from '../../scripts/news/app-pages.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
@@ -92,11 +92,27 @@ test('the normal ticker writer receives only checked public packages and resumes
     });
     const anchor = editions.stage(window);
     const original = registerSdgEdition({ root: oracleRoot, ledger: editions, editionId: anchor.id, expectedCatalogHash: null });
-    const checked = registerSdgEdition({ root: checkout, ledger: editions, editionId: anchor.id, expectedCatalogHash: null });
-    assert.equal(original.catalog_sha256, checked.catalog_sha256);
+    const packageFile = path.join(oracleRoot, original.paths[0]);
+    const initialPackage = { root: checkout, packageFile, editionId: anchor.id, expectedSha256: original.edition_sha256 };
+    const malformed = path.join(dir, 'unexpected-wrapper.json');
+    writeFileSync(malformed, JSON.stringify({ ...JSON.parse(readFileSync(packageFile, 'utf8')), draft: 'PRIVATE' }));
+    assert.throws(() => importFirstSdgPackage({ ...initialPackage, packageFile: malformed }), /SDG_BRIDGE_PUBLIC_PROJECTION_REQUIRED/);
+    assert.throws(() => importFirstSdgPackage({ ...initialPackage, expectedSha256: 'f'.repeat(64) }), /SDG_RELEASE_PACKAGE_MISMATCH/);
+    assert.equal(readSdgReleaseCatalog(checkout).sha256, null);
+    const importer = fileURLToPath(new URL('../../scripts/news/sdg/import-bridge-editions.mjs', import.meta.url));
+    const output = execFileSync(process.execPath, [importer, `--first-package=${packageFile}`,
+      `--edition-id=${anchor.id}`, `--sha256=${original.edition_sha256}`],
+    { cwd: checkout, encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: 'false' } });
+    assert.equal(JSON.parse(output).status, 'registered_for_website_build');
+    assert.equal(importFirstSdgPackage(initialPackage).status, 'already_registered');
+    assert.equal(loadSdgTickerPresentation(checkout), null);
+    const checked = readSdgReleaseCatalog(checkout);
+    assert.equal(original.catalog_sha256, checked.sha256);
+    assert.ok(readFileSync(path.join(checkout, original.paths[0])).equals(readFileSync(packageFile)));
     const mode = path.join(checkout, 'data/news/sdg/ticker-mode.json');
     writeFileSync(mode, JSON.stringify({ schema_version: 1, mode: 'sdg',
-      anchor: { edition_id: anchor.id, sha256: checked.edition_sha256 } }));
+      anchor: { edition_id: anchor.id, sha256: original.edition_sha256 } }));
+    assert.throws(() => importFirstSdgPackage(initialPackage), /SDG_FIRST_PACKAGE_MODE_ALREADY_SET/);
 
     const [next] = measures.recordBatch([{ ...event,
       case: { ...event.case, reference: 'fictional-programme-56' },
@@ -122,13 +138,13 @@ test('the normal ticker writer receives only checked public packages and resumes
         return sdg.readPackage(digest, offset);
       },
     } }), /Interrupted transfer/);
-    assert.equal(readSdgReleaseCatalog(checkout).sha256, checked.catalog_sha256);
+    assert.equal(readSdgReleaseCatalog(checkout).sha256, checked.sha256);
     const oracle = readSdgReleaseCatalog(oracleRoot);
     assert.equal(oracle.releases.length, 2);
     const latest = oracle.releases.at(-1);
     assert.equal(latest.manifest.items[0].revision_id, next.revisionId);
     assert.equal(oracle.releases[0].manifest.schema_version, 1);
-    assert.equal(oracle.releases[0].sha256, checked.edition_sha256);
+    assert.equal(oracle.releases[0].sha256, original.edition_sha256);
     assert.equal(latest.manifest.schema_version, 2);
     assert.deepEqual(latest.manifest.items[0].reference_frameworks, incoming.packet.analysis.reference_frameworks);
     assert.equal(sdg.readPackage(latest.sha256, 512 * 1024).offset, 512 * 1024);
@@ -137,7 +153,7 @@ test('the normal ticker writer receives only checked public packages and resumes
     await assert.rejects(importSdgBridgeEditions({ root: checkout, sdg: {
       ...sdg, readPackage: (...args) => ({ ...sdg.readPackage(...args), offset: 1 }),
     } }), /SDG_BRIDGE_PACKAGE_TRANSFER_MISMATCH/);
-    assert.equal(readSdgReleaseCatalog(checkout).sha256, checked.catalog_sha256);
+    assert.equal(readSdgReleaseCatalog(checkout).sha256, checked.sha256);
 
     assert.deepEqual(await importSdgBridgeEditions({ root: checkout, sdg }), { changed: true, count: 1 });
     const received = readSdgReleaseCatalog(checkout);

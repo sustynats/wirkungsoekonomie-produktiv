@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseArgs } from 'node:util';
 import { bridgeSession } from '../bridge/remote.mjs';
 import { writeRepositoryJson } from '../newsroom-store.mjs';
 import { writeSdgEditionCandidate } from './package-edition.mjs';
@@ -64,6 +65,43 @@ async function transferPackage(sdg, entry, file) {
     }
   } finally { fs.closeSync(fd); }
   requirePublicProjection(JSON.parse(fs.readFileSync(file, 'utf8')), entry);
+}
+
+// The initial, already reviewed package can be staged before ticker-mode.json.
+// The normal Pages build still owns publication and the verified receipt.
+export function importFirstSdgPackage({ root, packageFile, editionId: id, expectedSha256 }) {
+  if (typeof id !== 'string' || !editionId.test(id) || typeof expectedSha256 !== 'string' ||
+      !SDG_HASH.test(expectedSha256) || typeof packageFile !== 'string' || !packageFile) {
+    throw Error('SDG_FIRST_PACKAGE_BINDING_REQUIRED');
+  }
+  if (fs.existsSync(path.join(root, 'data/news/sdg/ticker-mode.json'))) throw Error('SDG_FIRST_PACKAGE_MODE_ALREADY_SET');
+  const catalog = readSdgCatalogIndex(root);
+  const [registered] = catalog.releases;
+  if (registered && (catalog.releases.length !== 1 || registered.edition_id !== id || registered.sha256 !== expectedSha256)) {
+    throw Error('SDG_FIRST_PACKAGE_CATALOG_ALREADY_SET');
+  }
+  const filename = registered ? path.join(catalog.directory, `sdg-edition-${expectedSha256}.json`) : packageFile;
+  let pack;
+  try {
+    const fd = fs.openSync(filename, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW | fs.constants.O_NONBLOCK);
+    try {
+      const stat = fs.fstatSync(fd);
+      if (!stat.isFile() || stat.size <= 0 || stat.size >= gitFileCeiling) throw Error('SDG_FIRST_PACKAGE_SIZE_INVALID');
+      const bytes = Buffer.alloc(stat.size);
+      if (fs.readSync(fd, bytes, 0, bytes.length, 0) !== bytes.length || fs.fstatSync(fd).size !== stat.size) {
+        throw Error('SDG_FIRST_PACKAGE_SIZE_INVALID');
+      }
+      pack = JSON.parse(bytes);
+    } finally { fs.closeSync(fd); }
+  } catch { throw Error('SDG_FIRST_PACKAGE_UNREADABLE'); }
+  const entry = { edition_id: id, sha256: expectedSha256 };
+  requirePublicProjection(pack, entry);
+  if (!pack.manifest.items.length) throw Error('SDG_FIRST_PACKAGE_EMPTY');
+  if (registered) return { status: 'already_registered', edition_id: id, edition_sha256: expectedSha256 };
+  if (readSdgCatalogIndex(root).sha256 !== catalog.sha256) throw Error('SDG_RELEASE_CATALOG_MOVED');
+  writeSdgEditionCandidate(catalog.directory, pack);
+  writeRepositoryJson(catalog.filename, { schema_version: 1, releases: [entry] });
+  return { status: 'registered_for_website_build', edition_id: id, edition_sha256: expectedSha256 };
 }
 
 export async function importSdgBridgeEditions({ root, sdg }) {
@@ -129,6 +167,20 @@ export async function reconcileSdgReceiptFromRunner({ sdg, committed, downloadAr
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  if (process.argv.length > 2) {
+    if (process.env.GITHUB_ACTIONS === 'true') throw Error('SDG_FIRST_PACKAGE_LOCAL_CHECKOUT_REQUIRED');
+    const { values } = parseArgs({ options: {
+      'first-package': { type: 'string' }, 'edition-id': { type: 'string' }, sha256: { type: 'string' },
+    } });
+    console.log(JSON.stringify(importFirstSdgPackage({
+      root: process.cwd(), packageFile: values['first-package'], editionId: values['edition-id'], expectedSha256: values.sha256,
+    })));
+  } else {
+    await runBridgeImport();
+  }
+}
+
+async function runBridgeImport() {
   const { store, sdg } = bridgeSession();
   const run = `${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT || '1'}`;
   await store.acquire(new Date().toISOString(), 'combined', { manualRunId: run });
