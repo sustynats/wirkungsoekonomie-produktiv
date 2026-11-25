@@ -5005,7 +5005,7 @@
       "workflow": "redaktionsworker.yml",
       "head": "f38f2352459e487adebf740067be674ad64f7558",
       "at": "2026-11-25T00:42:02.355Z",
-      "status": "reserved"
+      "status": "dispatched"
     }
   ]
 }
