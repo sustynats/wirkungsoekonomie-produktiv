@@ -32,13 +32,14 @@
     "delivery-wirkungsticker.yml": {
       "firstSeen": "2026-11-24T20:42:20.654Z",
       "active": true
-    },
-    "editorial-status": {
-      "firstSeen": "2026-11-25T03:20:47.022Z",
-      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "36cc0d948290f34e5eb8cdbe",
+      "content": "✓ WÖk-Störung behoben\nPrivate Redaktionsverarbeitung\nPrüfung: 2026-11-25T03:35:51.169Z"
+    }
+  ],
   "dailyDate": "2026-11-24",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4189,7 +4190,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-25T03:26:23.382Z",
+    "checked_at": "2026-11-25T03:35:51.169Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
