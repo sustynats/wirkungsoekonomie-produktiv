@@ -35,6 +35,74 @@ function renderFeedDirectory(root) {
   return fs.readFileSync(path.join(root, 'feeds/index.html'), 'utf8');
 }
 
+test('registered SDG editions build stable case chronologies and retain original versions', t => {
+  const { root, files, render } = fixture(t);
+  const store = path.join(root, 'data/news/sdg');
+  const caseId = '1'.repeat(64);
+  const unrelatedCase = '2'.repeat(64);
+  const earlierRevision = 'a'.repeat(64);
+  const correctedRevision = 'b'.repeat(64);
+  const caseEvent = '3'.repeat(64);
+  const rows = [
+    ['2026-11-22', [{
+      title: 'Ursprünglicher Beschluss', revision_id: earlierRevision, event_id: caseEvent, event_at: '2026-11-21',
+    }, {
+      title: 'Unabhängige Maßnahme', case_id: unrelatedCase, revision_id: 'd'.repeat(64),
+      event_id: caseEvent, supersedes: earlierRevision, event_at: '2026-11-20',
+    }]],
+    ['2026-11-23', [{
+      title: 'Umsetzung begonnen', revision_id: 'c'.repeat(64), event_id: '4'.repeat(64), event_at: '2026-11-22',
+      domain: 'implementation', stage: 'started',
+    }]],
+    ['2026-11-24', [{
+      title: 'Korrigierter Beschluss', revision_id: correctedRevision, event_id: caseEvent,
+      supersedes: earlierRevision, event_at: '2026-11-21',
+    }, {
+      title: 'Prüfbericht ohne Ereignisdatum', revision_id: 'e'.repeat(64), event_id: '5'.repeat(64),
+      event_at: null, domain: 'observations', stage: 'reported',
+    }]],
+  ];
+  const releases = rows.map(([date, items]) => {
+    const id = `${date}-morgenlage`;
+    const scheduledAt = berlinInstant(date, 6);
+    const manifest = {
+      schema_version: 1, kind: 'sdg_edition_candidate', edition_id: id, ledger_sha256: '0'.repeat(64),
+      scheduled_at: scheduledAt, cutoff_at: scheduledAt, sealed_at: scheduledAt, published_at: null,
+      items: items.map(item => ({
+        case_id: caseId, domain: 'legal', stage: 'adopted', summary: 'Quellengebundener Testeintrag.',
+        discovered_at: scheduledAt, sources: [{
+          url: `https://example.org/source/${item.revision_id}`, title: 'Originalquelle', source_published_at: date,
+        }],
+        impact: { human: { label: 'Beobachtung' }, planet: { label: 'Offen' }, democracy: { label: 'Offen' } },
+        ...item,
+      })),
+    };
+    const pack = { manifest, sha256: hash(manifest) };
+    writeSdgEditionCandidate(path.join(store, 'editions'), pack);
+    return { edition_id: id, sha256: pack.sha256 };
+  });
+  const catalogFile = path.join(store, 'release-catalog.json');
+  const catalog = JSON.stringify({ schema_version: 1, releases: releases.toReversed() });
+  fs.writeFileSync(catalogFile, catalog);
+  const routes = render();
+  const caseRoute = `wirkungsticker/sdg/massnahme/${caseId}/`;
+  const otherRoute = `wirkungsticker/sdg/massnahme/${unrelatedCase}/`;
+  assert.ok(routes.includes(caseRoute) && routes.includes(otherRoute));
+  assert.equal(regeneratablePublicationPath(caseRoute + 'index.html'), true);
+  const chronology = files.get(caseRoute + 'index.html');
+  const headings = [...chronology.matchAll(/<h2>([^<]+)<\/h2>/g)].map(([, heading]) => heading);
+  assert.deepEqual(headings, ['Ursprünglicher Beschluss', 'Korrigierter Beschluss', 'Umsetzung begonnen', 'Prüfbericht ohne Ereignisdatum']);
+  assert.ok(chronology.includes(`href="#sdg-${earlierRevision}">Frühere Fassung`));
+  assert.ok(chronology.includes(`/wirkungsticker/sdg/ausgabe/2026-11-24-morgenlage/#sdg-${correctedRevision}`));
+  assert.ok(chronology.includes(`https://example.org/source/${earlierRevision}`));
+  assert.ok(chronology.includes('<dt>Umsetzung</dt><dd>begonnen</dd>'));
+  assert.ok(chronology.includes('<dt>Ereignisdatum</dt><dd>Offen</dd>'));
+  assert.ok(!files.get(otherRoute + 'index.html').includes('Frühere Fassung'));
+  assert.ok(files.get('wirkungsticker/sdg/ausgabe/2026-11-22-morgenlage/index.html').includes(`/${caseRoute}#sdg-${earlierRevision}`));
+  assert.ok(!files.get(SDG_JSON_FEED_PATH.slice(1)).includes(caseRoute));
+  assert.equal(fs.readFileSync(catalogFile, 'utf8'), catalog);
+});
+
 test('the feed projection preserves empty and nonempty registered windows without a top-N filter or invented dates', t => {
   const { root, files, render } = fixture(t);
   const store = path.join(root, 'data/news/sdg');

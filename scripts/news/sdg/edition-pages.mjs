@@ -6,6 +6,7 @@ import { SDG_TRACKER_EVIDENCE, SDG_TRACKER_TITLE } from './presentation.mjs';
 import { renderRssFeed, RSS_SITE, SDG_JSON_FEED_PATH, SDG_RSS_CHANNEL } from '../rss-channels.mjs';
 
 const ROUTE = 'wirkungsticker/sdg/';
+const MEASURE_ROUTE = `${ROUTE}massnahme/`;
 const slotTitles = { morgenlage: 'SDG-Morgenupdate', mittagslage: 'SDG-Mittagsupdate', abendlage: 'SDG-Abendupdate' };
 const dimensions = { human: 'Mensch', planet: 'Planet', democracy: 'Demokratie' };
 const formatDate = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', dateStyle: 'medium', timeStyle: 'short' });
@@ -67,6 +68,30 @@ function writeEditionFeeds(root, editions, write) {
   }, null, 2));
 }
 
+function renderItem(item, link, esc) {
+  const [domain, statuses] = domains[item.domain];
+  const eventDate = dateLabel(item.event_at);
+  const discoveryDate = dateLabel(item.discovered_at);
+  const sources = item.sources.map(source => {
+    const originalDate = dateLabel(source.source_published_at);
+    return `<li><a href="${esc(safeUrl(source.url))}">${esc(source.title || source.publisher || new URL(source.url).hostname)}</a>${originalDate ? ` · Original vom ${esc(originalDate)}` : ''}</li>`;
+  }).join('');
+  return `
+<article id="sdg-${esc(item.revision_id)}" class="news-story-section">
+  <h2>${esc(item.title)}</h2>
+  <p>${esc(item.summary)}</p>
+  <dl><dt>${domain}</dt><dd>${statuses[item.stage]}</dd><dt>Ereignisdatum</dt><dd>${eventDate ? esc(eventDate) : 'Offen'}</dd>${discoveryDate ? `<dt>Erfasst am</dt><dd>${esc(discoveryDate)}</dd>` : ''}</dl>
+  <dl>${Object.entries(dimensions).map(([key, label]) => `<dt>${label}</dt><dd>${esc(item.impact[key].label)}</dd>`).join('')}</dl>
+  <h3>Quellen</h3><ul>${sources}</ul>
+  ${link}
+</article>`;
+}
+
+function eventTime(value) {
+  const time = Date.parse(value ?? '');
+  return Number.isFinite(time) ? time : Number.POSITIVE_INFINITY;
+}
+
 export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml: esc, catalog, includeFeeds = false }) {
   const editions = loadCatalog(catalog ?? readSdgReleaseCatalog(root));
   if (editions.length === 0) return [];
@@ -82,29 +107,39 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
     }));
     routes.push(route);
   };
+  const cases = new Map();
   for (const edition of editions) {
+    const editionRoute = `${ROUTE}ausgabe/${edition.edition_id}/`;
     const items = edition.items.map(item => {
-      const [domain, labels] = domains[item.domain];
-      const eventDate = dateLabel(item.event_at);
-      const discoveryDate = dateLabel(item.discovered_at);
-      return `
-<article id="sdg-${esc(item.revision_id)}" class="news-story-section">
-  <h2>${esc(item.title)}</h2>
-  <p>${esc(item.summary)}</p>
-  <dl><dt>${domain}</dt><dd>${labels[item.stage]}</dd>${eventDate ? `<dt>Ereignisdatum</dt><dd>${esc(eventDate)}</dd>` : ''}${discoveryDate ? `<dt>Erfasst am</dt><dd>${esc(discoveryDate)}</dd>` : ''}</dl>
-  <dl>${Object.entries(dimensions).map(([key, label]) => `<dt>${label}</dt><dd>${esc(item.impact[key].label)}</dd>`).join('')}</dl>
-  <h3>Quellen</h3><ul>${item.sources.map(source => {
-    const originalDate = dateLabel(source.source_published_at);
-    return `<li><a href="${esc(safeUrl(source.url))}">${esc(source.title || source.publisher || new URL(source.url).hostname)}</a>${originalDate ? ` · Original vom ${esc(originalDate)}` : ''}</li>`;
-  }).join('')}</ul>
-</article>`;
+      if (typeof item.case_id !== 'string' || !SDG_HASH.test(item.case_id)) return renderItem(item, '', esc);
+      if (!cases.has(item.case_id)) cases.set(item.case_id, []);
+      cases.get(item.case_id).push({ item, edition, editionRoute });
+      const link = `<p><a href="/${MEASURE_ROUTE}${item.case_id}/#sdg-${item.revision_id}">Maßnahmenakte ansehen</a></p>`;
+      return renderItem(item, link, esc);
     }).join('\n');
     const cutoff = formatDate.format(new Date(edition.cutoff_at));
     const title = sdgEditionTitle(edition);
-    page(`${ROUTE}ausgabe/${edition.edition_id}/`, `${title} | ${tracker}`, title,
+    page(editionRoute, `${title} | ${tracker}`, title,
       'Geprüfte Beschlüsse, Programme und Umsetzungsstände zu den UN-Nachhaltigkeitszielen mit Quellen und Wirkungseinordnung.',
       `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Prüfschluss ${esc(cutoff)} Uhr (Berlin)</p>${items || '<p>Für diese Ausgabe liegen keine geprüften Einträge vor.</p>'}`,
       '../../../../', edition.sha256);
+  }
+  for (const [caseId, versions] of cases) {
+    const latest = versions[0].item;
+    const byRevision = new Map(versions.map(version => [version.item.revision_id, version.item]));
+    if (byRevision.size !== versions.length) throw Error('SDG_RELEASE_DUPLICATE_CASE_REVISION');
+    const chronological = versions.toSorted((left, right) =>
+      eventTime(left.item.event_at) - eventTime(right.item.event_at)
+      || left.edition.scheduled_at.localeCompare(right.edition.scheduled_at));
+    const history = chronological.map(({ item, edition, editionRoute }) => {
+      const previous = byRevision.get(item.supersedes);
+      const correction = previous && item.event_id && previous.revision_id !== item.revision_id && previous.event_id === item.event_id
+        ? ` · <a href="#sdg-${previous.revision_id}">Frühere Fassung</a>` : '';
+      const link = `<p>In Ausgabe <a href="/${editionRoute}#sdg-${item.revision_id}">${esc(sdgEditionTitle(edition))}</a>${correction}</p>`;
+      return renderItem(item, link, esc);
+    }).join('\n');
+    page(`${MEASURE_ROUTE}${caseId}/`, `${latest.title} – Maßnahmenakte | ${tracker}`, latest.title,
+      latest.summary, `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Die Chronologie folgt dem Ereignisdatum. Einträge mit offenem Datum stehen am Ende.</p><section aria-label="Chronologie der Maßnahme">${history}</section>`, '../../../../');
   }
   page(ROUTE, `SDG-Ausgaben | ${tracker}`, 'SDG-Ausgaben des Global SDG Impact Trackers',
     'Die Ausgaben des Wirkungstickers verfolgen Maßnahmen und belegte Veränderungen zu den UN-Nachhaltigkeitszielen.',

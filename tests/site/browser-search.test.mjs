@@ -92,6 +92,7 @@ test("SDG and editorial routes have search labels separate from historical news"
       ["/wirkungsticker/", "Global SDG Impact Tracker - Wirkungsticker", "SDG-Tracker"],
       ["/wirkungsticker/sdg/", "SDG-Ausgaben", "SDG-Archiv"],
       ["/wirkungsticker/sdg/ausgabe/2026-11-24-morgenlage/", "SDG-Morgenupdate", "SDG-Ausgabe"],
+      [`/wirkungsticker/sdg/massnahme/${"a".repeat(64)}/`, "Beispielmaßnahme", "Maßnahmenakte"],
     ];
     routeManifest.routes.push(...newRoutes.map(([url, title]) =>
       ({ url, title, area: "wirkungsticker", file: url.slice(1) + "index.html" })));

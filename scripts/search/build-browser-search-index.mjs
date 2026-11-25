@@ -75,6 +75,7 @@ function typeForRoute(url, title) {
   if (/^\/wirkungsfelder\//.test(url)) return "Wirkungsfeld";
   if (/^\/(?:blog|journal)\//.test(url)) return "Journalbeitrag";
   if (url.startsWith("/wirkungsticker/sdg/ausgabe/")) return "SDG-Ausgabe";
+  if (/^\/wirkungsticker\/sdg\/massnahme\/[a-f0-9]{64}\/$/.test(url)) return "Maßnahmenakte";
   if (url === "/wirkungsticker/sdg/") return "SDG-Archiv";
   if (url === "/wirkungsticker/" && title?.startsWith("Global SDG Impact Tracker")) return "SDG-Tracker";
   if (/^\/wirkungsticker\//.test(url)) return "Meldung";
