@@ -103,6 +103,56 @@ test('registered SDG editions build stable case chronologies and retain original
   assert.equal(fs.readFileSync(catalogFile, 'utf8'), catalog);
 });
 
+test('an entry is marked as late only when its event precedes the previous Berlin slot', t => {
+  const { root, files, render } = fixture(t);
+  const store = path.join(root, 'data/news/sdg');
+  const caseId = '1'.repeat(64);
+  const editionId = '2026-10-25-morgenlage';
+  const scheduledAt = berlinInstant('2026-10-25', 6);
+  const previousSlotAt = berlinInstant('2026-10-24', 18);
+  const rows = [
+    ['a', '2026-10-23', '23.10.2026'],
+    ['b', '2026-10-24T15:59:59.000Z', '24.10.2026'],
+    ['c', previousSlotAt, null],
+    ['d', '2026-10-24', null],
+    ['e', null, null],
+  ];
+  assert.equal(scheduledAt, '2026-10-25T05:00:00.000Z');
+  assert.equal(previousSlotAt, '2026-10-24T16:00:00.000Z');
+  const manifest = {
+    schema_version: 1, kind: 'sdg_edition_candidate', edition_id: editionId, ledger_sha256: '0'.repeat(64),
+    scheduled_at: scheduledAt, cutoff_at: scheduledAt, sealed_at: '2026-10-25T05:12:00.000Z', published_at: null,
+    items: rows.map(([id, event_at]) => ({
+      case_id: caseId, revision_id: id.repeat(64), event_at, discovered_at: '2026-10-24T23:30:00.000Z',
+      title: `Vorgang ${id}`, domain: 'legal', stage: 'adopted', summary: 'Quellengebundener Testeintrag.',
+      sources: [{ url: 'https://example.org/legal-source', source_published_at: '2026-10-17' }],
+      impact: { human: { label: 'Beobachtung' }, planet: { label: 'Offen' }, democracy: { label: 'Offen' } },
+    })),
+  };
+  const pack = { manifest, sha256: hash(manifest) };
+  writeSdgEditionCandidate(path.join(store, 'editions'), pack);
+  fs.writeFileSync(path.join(store, 'release-catalog.json'), JSON.stringify({ schema_version: 1, releases: [
+    { edition_id: editionId, sha256: pack.sha256 },
+  ] }));
+  render();
+
+  for (const route of [`ausgabe/${editionId}/`, `massnahme/${caseId}/`]) {
+    const html = files.get(`wirkungsticker/sdg/${route}index.html`);
+    for (const [id, eventAt, lateDate] of rows) {
+      const article = html.split(`<article id="sdg-${id.repeat(64)}"`)[1].split('</article>')[0];
+      const marker = article.match(/Nachgereicht - Ereignis vom ([\d.]+)/)?.[1] ?? null;
+      assert.equal(marker, lateDate);
+      assert.match(article, /Original vom 17\.10\.2026/);
+      assert.match(article, /<dt>Erfasst am<\/dt><dd>25\.10\.2026<\/dd>/);
+      if (!eventAt) assert.match(article, /<dt>Ereignisdatum<\/dt><dd>Offen<\/dd>/);
+    }
+  }
+  const feedItem = JSON.parse(files.get(SDG_JSON_FEED_PATH.slice(1))).items[0];
+  assert.equal(feedItem._woek_edition.scheduled_at, scheduledAt);
+  assert.equal(feedItem._woek_edition.sealed_at, manifest.sealed_at);
+  assert.equal('date_published' in feedItem, false);
+});
+
 test('the feed projection preserves empty and nonempty registered windows without a top-N filter or invented dates', t => {
   const { root, files, render } = fixture(t);
   const store = path.join(root, 'data/news/sdg');

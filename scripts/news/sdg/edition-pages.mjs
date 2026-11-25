@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { safeUrl } from '../bridge/contract.mjs';
-import { LAGEN } from '../lage.mjs';
+import { LAGEN, lageWindow } from '../lage.mjs';
+import { berlinParts } from '../lib.mjs';
 import { readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
 import { SDG_TRACKER_EVIDENCE, SDG_TRACKER_TITLE } from './presentation.mjs';
 import { renderRssFeed, RSS_SITE, SDG_JSON_FEED_PATH, SDG_RSS_CHANNEL } from '../rss-channels.mjs';
@@ -18,6 +19,20 @@ const domains = {
   observations: ['Beobachtung', { reported: 'gemeldet', observed: 'beobachtet' }],
 };
 const dateLabel = value => value && Number.isFinite(Date.parse(value)) ? formatCalendarDate.format(new Date(value)) : null;
+const calendarDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+function lateEventDate(eventAt, previousSlotAt) {
+  const timestamp = Date.parse(eventAt ?? '');
+  if (!previousSlotAt || !Number.isFinite(timestamp)) return null;
+  const calendarOnly = calendarDatePattern.test(eventAt);
+  if (new Date(timestamp).toISOString() !== (calendarOnly ? `${eventAt}T00:00:00.000Z` : eventAt)) return null;
+  // Compare to the prior scheduled Berlin slot even if it never ran. A civil
+  // date on the cutoff day gives no hour, and the slot gives no delivery time.
+  const earlier = calendarOnly
+    ? eventAt < berlinParts(new Date(previousSlotAt)).isoDate
+    : timestamp < Date.parse(previousSlotAt);
+  return earlier ? dateLabel(eventAt) : null;
+}
 
 function loadCatalog({ releases }) {
   return releases.map(({ manifest, sha256 }) => {
@@ -68,7 +83,7 @@ function writeEditionFeeds(root, editions, write) {
   }, null, 2));
 }
 
-function renderItem(item, link, esc) {
+function renderItem(item, link, lateDate, esc) {
   const [domain, statuses] = domains[item.domain];
   const eventDate = dateLabel(item.event_at);
   const discoveryDate = dateLabel(item.discovered_at);
@@ -79,6 +94,7 @@ function renderItem(item, link, esc) {
   return `
 <article id="sdg-${esc(item.revision_id)}" class="news-story-section">
   <h2>${esc(item.title)}</h2>
+  ${lateDate ? `<p class="news-method-note">Nachgereicht - Ereignis vom ${esc(lateDate)}</p>` : ''}
   <p>${esc(item.summary)}</p>
   <dl><dt>${domain}</dt><dd>${statuses[item.stage]}</dd><dt>Ereignisdatum</dt><dd>${eventDate ? esc(eventDate) : 'Offen'}</dd>${discoveryDate ? `<dt>Erfasst am</dt><dd>${esc(discoveryDate)}</dd>` : ''}</dl>
   <dl>${Object.entries(dimensions).map(([key, label]) => `<dt>${label}</dt><dd>${esc(item.impact[key].label)}</dd>`).join('')}</dl>
@@ -110,12 +126,14 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
   const cases = new Map();
   for (const edition of editions) {
     const editionRoute = `${ROUTE}ausgabe/${edition.edition_id}/`;
+    const previousSlotAt = lageWindow(edition.edition_id.slice(11), edition.scheduled_at)?.from;
     const items = edition.items.map(item => {
-      if (typeof item.case_id !== 'string' || !SDG_HASH.test(item.case_id)) return renderItem(item, '', esc);
+      const lateDate = lateEventDate(item.event_at, previousSlotAt);
+      if (typeof item.case_id !== 'string' || !SDG_HASH.test(item.case_id)) return renderItem(item, '', lateDate, esc);
       if (!cases.has(item.case_id)) cases.set(item.case_id, []);
-      cases.get(item.case_id).push({ item, edition, editionRoute });
+      cases.get(item.case_id).push({ item, edition, editionRoute, lateDate });
       const link = `<p><a href="/${MEASURE_ROUTE}${item.case_id}/#sdg-${item.revision_id}">Maßnahmenakte ansehen</a></p>`;
-      return renderItem(item, link, esc);
+      return renderItem(item, link, lateDate, esc);
     }).join('\n');
     const cutoff = formatDate.format(new Date(edition.cutoff_at));
     const title = sdgEditionTitle(edition);
@@ -131,12 +149,12 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
     const chronological = versions.toSorted((left, right) =>
       eventTime(left.item.event_at) - eventTime(right.item.event_at)
       || left.edition.scheduled_at.localeCompare(right.edition.scheduled_at));
-    const history = chronological.map(({ item, edition, editionRoute }) => {
+    const history = chronological.map(({ item, edition, editionRoute, lateDate }) => {
       const previous = byRevision.get(item.supersedes);
       const correction = previous && item.event_id && previous.revision_id !== item.revision_id && previous.event_id === item.event_id
         ? ` · <a href="#sdg-${previous.revision_id}">Frühere Fassung</a>` : '';
       const link = `<p>In Ausgabe <a href="/${editionRoute}#sdg-${item.revision_id}">${esc(sdgEditionTitle(edition))}</a>${correction}</p>`;
-      return renderItem(item, link, esc);
+      return renderItem(item, link, lateDate, esc);
     }).join('\n');
     page(`${MEASURE_ROUTE}${caseId}/`, `${latest.title} – Maßnahmenakte | ${tracker}`, latest.title,
       latest.summary, `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Die Chronologie folgt dem Ereignisdatum. Einträge mit offenem Datum stehen am Ende.</p><section aria-label="Chronologie der Maßnahme">${history}</section>`, '../../../../');
