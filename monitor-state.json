@@ -36,13 +36,14 @@
     "delivery-deploy.yml": {
       "firstSeen": "2026-11-25T16:21:03.277Z",
       "active": true
-    },
-    "lage": {
-      "firstSeen": "2026-11-25T17:05:50.234Z",
-      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "d360dfa675fa43d5ffe1d60e",
+      "content": "✓ WÖk-Störung behoben\nKanonischer Lagenbestand\nPrüfung: 2026-11-25T23:06:02.267Z"
+    }
+  ],
   "dailyDate": "2026-11-25",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4193,7 +4194,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-25T22:58:23.149Z",
+    "checked_at": "2026-11-25T23:06:02.267Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
