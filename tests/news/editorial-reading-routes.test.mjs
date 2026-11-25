@@ -66,6 +66,12 @@ test('the reading partition retains every reading and keeps the other public for
       manifest: { edition_id: '2026-11-24-morgenlage', scheduled_at: '2026-11-24T05:00:00Z', items: [] },
     }] } });
     assert.match(readPage(''), /<h1>Global SDG Impact Tracker<\/h1>/);
+    assert.match(readPage(''), /wie Nachhaltigkeitsmaßnahmen umgesetzt werden/);
+    const editorialNav = readPage('').match(/<nav aria-labelledby="ticker-redaktion-title">([\s\S]*?)<\/nav>/)?.[1];
+    assert.ok(editorialNav);
+    for (const type of ['analysis', 'listened', 'watched', 'read', 'book']) {
+      assert.ok(editorialNav.includes(`/wirkungsticker/analysen/?typ=${type}"`));
+    }
     assert.match(readPage(''), /<h2>Nachgelesen<\/h2><a href="\/wirkungsticker\/analysen\/\?typ=read">/);
     assert.doesNotMatch(readPage(''), /Fiktive Meldung/);
     assert.match(readPage('news'), /Fiktive Meldung/);

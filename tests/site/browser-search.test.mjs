@@ -83,7 +83,7 @@ test("source-mode browser search remains buildable before an artifact route mani
   }
 });
 
-test("SDG routes have search labels separate from historical news", () => {
+test("SDG and editorial routes have search labels separate from historical news", () => {
   const root = buildFixture();
   try {
     const file = path.join(root, "assets/data/public-routes.json");
@@ -95,12 +95,38 @@ test("SDG routes have search labels separate from historical news", () => {
     ];
     routeManifest.routes.push(...newRoutes.map(([url, title]) =>
       ({ url, title, area: "wirkungsticker", file: url.slice(1) + "index.html" })));
+    const editorialCases = [
+      ["kommentar", ["Meinung & Analyse"], "Meinung & Analyse"],
+      ["podcast", ["Nachgehört"], "Nachgehört"],
+      ["interview", ["Nachgesehen"], "Nachgesehen"],
+      ["bericht", ["Nachgelesen"], "Nachgelesen"],
+      ["buch", ["Buch & Wirkung"], "Buch & Wirkung"],
+      ["nicht-passend", ["Nachgehört"], "Meldung"],
+      ["mehrdeutig", ["Nachgesehen", "Nachgelesen"], "Meldung"],
+      ["unbekannt", ["Unbekannt"], "Meldung"],
+    ];
+    for (const [slug, formats] of editorialCases) {
+      const url = `/wirkungsticker/analyse/${slug}/`;
+      const output = path.join(root, url.slice(1), "index.html");
+      fs.mkdirSync(path.dirname(output), { recursive: true });
+      const metadataUrl = slug === "nicht-passend" ? "/wirkungsticker/analyse/anderer-beitrag/" : url;
+      fs.writeFileSync(output, formats.map(articleSection =>
+        `<script type="application/ld+json">${JSON.stringify({ "@type": "Article", url: metadataUrl, articleSection })}</script>`).join(""));
+      routeManifest.routes.push({ url, title: slug, area: "wirkungsticker", file: url.slice(1) + "index.html" });
+    }
     routeManifest.counts.routes = routeManifest.routes.length;
     fs.writeFileSync(file, JSON.stringify(routeManifest));
-    buildBrowserSearchIndex(root);
-    const labels = new Map(readBuiltSearchEntries(root).map(entry => [entry.url, entry.type]));
-    for (const [url, , type] of newRoutes) assert.equal(labels.get(url), type);
-    assert.equal(labels.get("/wirkungsticker/meldung/"), "Meldung");
+    const manifest = buildBrowserSearchIndex(root);
+    const entries = new Map(readBuiltSearchEntries(root).map(entry => [entry.url, entry]));
+    for (const [url, , type] of newRoutes) assert.equal(entries.get(url).type, type);
+    assert.equal(entries.get("/wirkungsticker/meldung/").type, "Meldung");
+    for (const [slug, , format] of editorialCases) {
+      const entry = entries.get(`/wirkungsticker/analyse/${slug}/`);
+      assert.equal(entry.format, format, slug);
+      assert.equal(entry.type, format === "Meldung" ? "Meldung" : "Redaktion", slug);
+    }
+    const suggestions = JSON.parse(fs.readFileSync(path.join(root, "assets/search", manifest.suggestions.json), "utf8"));
+    assert.ok(suggestions.every(entry => !entry.url.startsWith("/wirkungsticker/analyse/")));
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

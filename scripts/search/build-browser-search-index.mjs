@@ -9,6 +9,7 @@ const DESCRIPTION_LIMIT = 320;
 const BODY_LIMIT = 480;
 const ARRAY_LIMIT = 14;
 const SUGGESTION_LIMIT_BYTES = 180_000;
+const EDITORIAL_FORMATS = new Set(["Meinung & Analyse", "Nachgehört", "Nachgesehen", "Nachgelesen", "Buch & Wirkung"]);
 
 const AREA_LABELS = {
   start: "Start & Orientierung",
@@ -92,18 +93,34 @@ function labelFromSlug(value) {
     .replace(/\b\w/g, (letter) => letter.toLocaleUpperCase("de-DE"));
 }
 
-function taxonomy(route, primary = {}) {
+function publishedEditorialFormat(html, url) {
+  const labels = new Set();
+  for (const [, body] of html.matchAll(/<script\b[^>]*\btype=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    let article;
+    try {
+      article = JSON.parse(body);
+    } catch {
+      continue;
+    }
+    if (article?.["@type"] !== "Article" || canonicalRoute(article.url) !== url) continue;
+    labels.add(article.articleSection);
+  }
+  const [label] = labels;
+  return labels.size === 1 && EDITORIAL_FORMATS.has(label) ? label : "";
+}
+
+function taxonomy(route, primary, editorialFormat) {
   const url = route.url;
   const area = route.area || "start";
   const roleMatch = url.match(/^\/fuer\/([^/]+)\/?/);
-  const type = typeForRoute(url, route.title);
+  const type = editorialFormat ? "Redaktion" : typeForRoute(url, route.title);
   const priority = area === "wirkungsticker"
     ? Math.min(Number(primary.priority || 10), 20)
     : Math.max(Number(primary.priority || 0), type === "Begriff" ? 70 : type === "Methode & Referenz" ? 60 : 30);
   return {
     section: AREA_LABELS[area] || labelFromSlug(area),
     type,
-    format: type,
+    format: editorialFormat || type,
     raum: AREA_LABELS[area] || labelFromSlug(area),
     typ: type,
     rolle: roleMatch ? [labelFromSlug(roleMatch[1])] : [],
@@ -127,9 +144,7 @@ function textFromHtml(html) {
     .replace(/<[^>]+>/g, " "), BODY_LIMIT);
 }
 
-function syntheticEntry(root, route) {
-  const file = path.join(root, route.file);
-  const html = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+function syntheticEntry(route, html) {
   const description = clean(html.match(/<meta\b[^>]*\bname=["']description["'][^>]*\bcontent=["']([^"']*)["'][^>]*>/i)?.[1], DESCRIPTION_LIMIT);
   return {
     id: `public-route-${hash(route.url)}`,
@@ -148,14 +163,21 @@ function syntheticEntry(root, route) {
 }
 
 function compactGroup(root, route, entries) {
-  const primary = entries.length ? selectPrimaryEntry(entries) : syntheticEntry(root, route);
+  const isEditorialDetail = /^\/wirkungsticker\/analyse\/[^/]+\/$/.test(route.url);
+  let html = "";
+  if (isEditorialDetail || !entries.length) {
+    const file = path.join(root, route.file);
+    html = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+  }
+  const primary = entries.length ? selectPrimaryEntry(entries) : syntheticEntry(route, html);
   const sections = entries.filter((entry) => entry !== primary);
   const sectionTitles = sections.map((entry) => entry.title);
   const body = clean(
     [primary.body, ...sectionTitles, ...sections.map((entry) => entry.description)].filter(Boolean).join(" "),
     BODY_LIMIT,
   );
-  const routeTaxonomy = taxonomy(route, primary);
+  const editorialFormat = isEditorialDetail ? publishedEditorialFormat(html, route.url) : "";
+  const routeTaxonomy = taxonomy(route, primary, editorialFormat);
   const tags = unique(entries.flatMap((entry) => entry.tags || primary.tags || []));
 
   return {
@@ -214,7 +236,7 @@ function writeDataFile(directory, prefix, entries) {
 
 function buildSuggestions(entries) {
   const candidates = entries
-    .filter((entry) => !["Meldung", "Quelle"].includes(entry.typ) && !/:\s*Seite\s+\d+/i.test(entry.title))
+    .filter((entry) => !["Meldung", "Redaktion", "Quelle"].includes(entry.typ) && !/:\s*Seite\s+\d+/i.test(entry.title))
     .sort((left, right) => Number(right.priority || 0) - Number(left.priority || 0) || left.title.localeCompare(right.title, "de"));
   const suggestions = [];
   for (const entry of candidates) {
@@ -318,7 +340,7 @@ export function buildBrowserSearchIndex(root, { pruneFullIndex = false } = {}) {
     core,
     archives: archiveFiles,
     suggestions,
-    taxonomy: { fields: ["raum", "typ", "thema", "rolle"], source: "public route URL" },
+    taxonomy: { fields: ["raum", "typ", "thema", "rolle", "format"], source: "public routes and article metadata" },
   };
   fs.writeFileSync(path.join(directory, "browser-index-manifest.json"), `${JSON.stringify(manifest)}\n`);
   const keep = new Set([core.json, core.gzip, suggestions.json, suggestions.gzip]);
