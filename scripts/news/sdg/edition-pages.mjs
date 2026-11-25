@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { safeUrl } from '../bridge/contract.mjs';
+import { impactTimeLabel, MAGNITUDE } from '../impact-assessment.mjs';
 import { LAGEN, lageWindow } from '../lage.mjs';
 import { berlinParts } from '../lib.mjs';
 import { readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
@@ -91,13 +92,23 @@ function renderItem(item, link, lateDate, esc) {
     const originalDate = dateLabel(source.source_published_at);
     return `<li><a href="${esc(safeUrl(source.url))}">${esc(source.title || source.publisher || new URL(source.url).hostname)}</a>${originalDate ? ` · Original vom ${esc(originalDate)}` : ''}</li>`;
   }).join('');
+  const impact = Object.entries(dimensions).map(([key, label]) => {
+    const part = item.impact[key];
+    const details = [];
+    if (part.temporal_status) details.push(impactTimeLabel(part.temporal_status));
+    if (Number.isInteger(part.magnitude) && MAGNITUDE[part.magnitude]) {
+      details.push(`Tragweite ${MAGNITUDE[part.magnitude]}`);
+    }
+    if (part.evidence_label) details.push(`Evidenz ${part.evidence_label}`);
+    return `<dt>${label}</dt><dd>${esc([part.label, ...details].join(' · '))}</dd>`;
+  }).join('');
   return `
 <article id="sdg-${esc(item.revision_id)}" class="news-story-section">
   <h2>${esc(item.title)}</h2>
   ${lateDate ? `<p class="news-method-note">Nachgereicht - Ereignis vom ${esc(lateDate)}</p>` : ''}
   <p>${esc(item.summary)}</p>
   <dl><dt>${domain}</dt><dd>${statuses[item.stage]}</dd><dt>Ereignisdatum</dt><dd>${eventDate ? esc(eventDate) : 'Offen'}</dd>${discoveryDate ? `<dt>Erfasst am</dt><dd>${esc(discoveryDate)}</dd>` : ''}</dl>
-  <dl>${Object.entries(dimensions).map(([key, label]) => `<dt>${label}</dt><dd>${esc(item.impact[key].label)}</dd>`).join('')}</dl>
+  <h3>Wirkungsökonomische Analyse (MPD)</h3><dl>${impact}</dl>
   <h3>Quellen</h3><ul>${sources}</ul>
   ${link}
 </article>`;

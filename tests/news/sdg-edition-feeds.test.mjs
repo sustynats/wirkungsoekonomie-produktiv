@@ -73,7 +73,11 @@ test('registered SDG editions build stable case chronologies and retain original
         discovered_at: scheduledAt, sources: [{
           url: `https://example.org/source/${item.revision_id}`, title: 'Originalquelle', source_published_at: date,
         }],
-        impact: { human: { label: 'Beobachtung' }, planet: { label: 'Offen' }, democracy: { label: 'Offen' } },
+        impact: {
+          human: { label: '+ Potenzial', magnitude: 2, temporal_status: 'ex_ante', evidence_label: 'mittel' },
+          planet: { label: '? Richtung offen', magnitude: null, temporal_status: 'ongoing', evidence_label: 'nicht bewertbar' },
+          democracy: { label: 'Offen' },
+        },
         ...item,
       })),
     };
@@ -98,7 +102,14 @@ test('registered SDG editions build stable case chronologies and retain original
   assert.ok(chronology.includes('<dt>Umsetzung</dt><dd>begonnen</dd>'));
   assert.ok(chronology.includes('<dt>Ereignisdatum</dt><dd>Offen</dd>'));
   assert.ok(!files.get(otherRoute + 'index.html').includes('Frühere Fassung'));
-  assert.ok(files.get('wirkungsticker/sdg/ausgabe/2026-11-22-morgenlage/index.html').includes(`/${caseRoute}#sdg-${earlierRevision}`));
+  const originalEdition = files.get('wirkungsticker/sdg/ausgabe/2026-11-22-morgenlage/index.html');
+  assert.ok(originalEdition.includes(`/${caseRoute}#sdg-${earlierRevision}`));
+  for (const page of [originalEdition, chronology]) {
+    assert.ok(page.includes('Wirkungsökonomische Analyse (MPD)'));
+    assert.ok(page.includes('<dt>Mensch</dt><dd>+ Potenzial · Ex ante · Tragweite begrenzt · Evidenz mittel</dd>'));
+    assert.ok(page.includes('<dt>Planet</dt><dd>? Richtung offen · Laufende Prüfung · Evidenz nicht bewertbar</dd>'));
+    assert.ok(page.includes('<dt>Demokratie</dt><dd>Offen</dd>'));
+  }
   assert.ok(!files.get(SDG_JSON_FEED_PATH.slice(1)).includes(caseRoute));
   assert.equal(fs.readFileSync(catalogFile, 'utf8'), catalog);
 });
