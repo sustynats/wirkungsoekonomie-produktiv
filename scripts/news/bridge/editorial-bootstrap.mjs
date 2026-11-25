@@ -6,7 +6,7 @@ import {bridgePath} from './contract.mjs';
 export async function ensureEditorialContracts(transport, contracts) {
   const result = [];
   for (const contract of contracts) {
-    if (!['3.0', '4.0'].includes(contract.schema_version)) throw Error('EDITORIAL_CONTRACT_VERSION_INVALID');
+    if (!['3.0', '4.0', '5.0'].includes(contract.schema_version)) throw Error('EDITORIAL_CONTRACT_VERSION_INVALID');
     const file = bridgePath('98_CONFIG', `editorial-request-contract-${contract.schema_version[0]}.json`);
     const existing = await transport.metadata(file);
     if (existing) {

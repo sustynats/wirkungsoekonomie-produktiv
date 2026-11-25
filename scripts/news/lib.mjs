@@ -423,8 +423,8 @@ export async function fetchPublicArticle(item, source, policy = {}, fetchImpl = 
   const access = sourceAccess(source, "article");
   if (!access.allowed) throw new Error(access.reason);
   const allowedHosts = new Set([
-    new URL(source.feed_url).hostname.toLowerCase(),
     new URL(source.url).hostname.toLowerCase(),
+    ...(source.feed_url ? [new URL(source.feed_url).hostname.toLowerCase()] : []),
     ...(source.allowed_redirect_hosts || []).map((host) => host.toLowerCase()),
   ]);
   let current = item.url;
@@ -447,6 +447,10 @@ export async function fetchPublicArticle(item, source, policy = {}, fetchImpl = 
       return {redirect_url:new URL(location, current).href};
     }
     if (!response.ok) throw new Error(`ARTICLE_HTTP_${response.status}`);
+    if (policy.fingerprint_original === true && (response.status !== 200 || response.headers.has("content-range"))) {
+      await response.body?.cancel();
+      throw new Error("ARTICLE_ORIGINAL_INCOMPLETE");
+    }
     const contentType = response.headers.get("content-type") || "";
     if (policy.allow_public_pdf === true && /^application\/pdf\b/i.test(contentType)) {
       // Public research PDFs have their own explicit allowance. Keep HTML/feed
@@ -457,10 +461,18 @@ export async function fetchPublicArticle(item, source, policy = {}, fetchImpl = 
       const bytes = await readLimitedBody(response, Math.min(configuredLimit, 8000000), { binary: true });
       if (bytes.subarray(0,5).toString() !== '%PDF-') throw Error('ARTICLE_PDF_INVALID');
       const body = execFileSync('pdftotext', ['-layout', '-', '-'], { input: bytes, timeout: 12000, maxBuffer: 4000000, encoding: 'utf8' });
-      return { body, final_url: current, content_type: 'text/plain', extracted_from: 'public_pdf' };
+      return { body, final_url: current, content_type: 'text/plain', extracted_from: 'public_pdf',
+        ...(policy.fingerprint_original === true ? { original_sha256: createHash("sha256").update(bytes).digest("hex") } : {}) };
     }
     if (contentType && !/\b(?:text\/html|application\/xhtml\+xml|text\/plain)\b/i.test(contentType)) throw new Error("ARTICLE_CONTENT_TYPE_INVALID");
-    const body = await readLimitedBody(response, Number(policy.max_article_bytes || 2000000));
+    const limit = Number(policy.max_article_bytes || 2000000);
+    if (policy.fingerprint_original === true) {
+      const bytes = await readLimitedBody(response, limit, { binary: true });
+      const body = new TextDecoder().decode(bytes);
+      assertPublicArticle(body);
+      return { body, final_url: current, original_sha256: createHash("sha256").update(bytes).digest("hex") };
+    }
+    const body = await readLimitedBody(response, limit);
     assertPublicArticle(body);
     return { body, final_url: current };
     }, {timeoutMs:Number(policy.request_timeout_ms || 18000), code:'ARTICLE_REQUEST_TIMEOUT'});

@@ -1,6 +1,9 @@
-import {bridgePath,hash,parsePacket,JOB_ID} from './contract.mjs';
+import {bridgePath,hash,parsePacket,JOB_ID,safeUrl} from './contract.mjs';
 import {prepareCorrection,finishCorrection,CORRECTION_LIMIT} from './corrections.mjs';
 import {EDITORIAL_VISUAL_RULE} from '../editorial-diagrams.mjs';
+import {assertFinalPersonalSection} from '../editorial-approved-revisions.mjs';
+import {validateEditorialDocument} from '../editorial-document.mjs';
+import {assertReadingEvidence,readingEvidenceKey} from './editorial-reading-evidence.mjs';
 
 export const EDITORIAL_REQUEST_CONTRACT={schema_version:'3.0',workflow:'single_final_approval',
   instructions:[
@@ -43,6 +46,47 @@ export const EDITORIAL_REQUEST_CONTRACT_V4={...EDITORIAL_REQUEST_CONTRACT,schema
  'Ein redaktioneller HOLD betrifft diesen Auftrag. Danach weitere zulässige Jobs desselben Shards innerhalb des Laufbudgets prüfen. Fehlender Connector-/Dateiexport, Safety- oder Zugriffsfreigaben sind dagegen keine redaktionellen HOLDs: sofort stoppen, keine gesperrte Datei erneut senden oder über einen anderen Weg übertragen.'
  ]};
 
+const readingOutputSchema = structuredClone(EDITORIAL_REQUEST_CONTRACT_V4.output_schema);
+const readingPreview = readingOutputSchema.properties.preview;
+readingPreview.properties.format = { const: 'read' };
+readingPreview.required.push('source_document');
+readingPreview.properties.source_document = {
+  type: 'object', additionalProperties: false,
+  required: ['title', 'original_url', 'content_sha256', 'reading_status'],
+  properties: {
+    title: { type: 'string', minLength: 1, maxLength: 250 },
+    original_url: { type: 'string', pattern: '^https://' },
+    content_sha256: { type: 'string', pattern: '^[a-f0-9]{64}$' },
+    reading_status: { enum: ['full_text', 'excerpt'] },
+  },
+};
+export const EDITORIAL_READING_CONTRACT_PATH = bridgePath('98_CONFIG', 'editorial-request-contract-5.json');
+export const EDITORIAL_REQUEST_CONTRACT_V5 = {
+  ...EDITORIAL_REQUEST_CONTRACT_V4,
+  schema_version: '5.0',
+  output_schema: readingOutputSchema,
+  instructions: [...EDITORIAL_REQUEST_CONTRACT_V4.instructions,
+    'Nachgelesen: Nutze das Originaldokument aus request.document_url und den mitgelieferten Auszug. Übernimm URL, SHA-256 und Lesestand aus origin.reading_evidence in preview.source_document und nimm das Originaldokument in preview.sources auf. Nutze HOLD bei fehlender Grundlage. Behaupte bei einem Auszug keine Volllektüre. Kein Sendungsfeld. Die letzte redaktionelle Hauptsektion lautet Meine Einordnung. Der private Manuskriptentwurf ist keine reguläre Nachricht und kein numerischer MPD-Fachpass.',
+  ],
+};
+
+export function editorialRequestContract(packet) {
+  if (packet.request?.kind !== 'read') return EDITORIAL_REQUEST_CONTRACT_V4;
+  if (packet.contract_path !== EDITORIAL_READING_CONTRACT_PATH) throw Error('EDITORIAL_READING_CONTRACT_REQUIRED');
+  safeUrl(packet.request.document_url);
+  return EDITORIAL_REQUEST_CONTRACT_V5;
+}
+
+export function validateReadingBinding(preview, request) {
+  if (request.kind !== 'read') return;
+  if (preview.source_media) throw Error('EDITORIAL_DOCUMENT_IS_NOT_EPISODE');
+  validateEditorialDocument(preview.source_document, preview.sources);
+  if (safeUrl(preview.source_document.original_url) !== safeUrl(request.document_url)) {
+    throw Error('EDITORIAL_DOCUMENT_REQUEST_CHANGED');
+  }
+  assertFinalPersonalSection(preview.markdown);
+}
+
 export async function importEditorialPreviews({store,transport,approval,now=()=>new Date().toISOString()}){
  const jobs=store.db.prepare("SELECT body FROM jobs WHERE json_extract(body,'$.input.job_type')='editorial_request' AND json_extract(body,'$.accepted') IS NULL AND json_extract(body,'$.ack') IS NULL AND json_extract(body,'$.status') NOT IN ('quarantined','archive_failed')").all().map(row=>JSON.parse(row.body));
  if(!jobs.length)return {staged:0};
@@ -55,7 +99,8 @@ export async function importEditorialPreviews({store,transport,approval,now=()=>
   if(!names.has(job.input.job_id+'.output.json'))continue;
   const raw=await transport.read(bridgePath('20_OUTPUT_READY',job.input.job_id+'.output.json'));
   const envelope=parsePacket(raw,{type:'object'});
-  const output=parsePacket(raw,envelope.disposition==='hold'?EDITORIAL_HOLD_SCHEMA:EDITORIAL_REQUEST_CONTRACT.output_schema);
+  const contract=editorialRequestContract(job.input);
+  const output=parsePacket(raw,envelope.disposition==='hold'?EDITORIAL_HOLD_SCHEMA:contract.output_schema);
   if(output.job_id!==job.input.job_id||output.input_hash!==job.input.input_hash)throw Error('EDITORIAL_PREVIEW_INPUT_CHANGED');
   if(Date.parse(output.processed_at)<Date.parse(job.input.created_at)||Date.parse(output.processed_at)>Date.parse(now())+300000)throw Error('EDITORIAL_OUTPUT_TIME_INVALID');
   if(output.disposition==='hold'){
@@ -64,6 +109,10 @@ export async function importEditorialPreviews({store,transport,approval,now=()=>
    job.status='accepted';job.accepted_at=now();delete job.last_error;store.put(job);held++;continue;
   }
   if(output.preview.format!==job.input.request.kind)throw Error('EDITORIAL_PREVIEW_INPUT_CHANGED');
+  validateReadingBinding(output.preview,job.input.request);
+  if(job.input.request.kind==='read'){
+   assertReadingEvidence(job.input,output.preview.source_document,await store.observation(readingEvidenceKey(job.input)));
+  }
   const requested=job.input.request.links||[];
   if(requested.length&&!output.preview.sources.some(s=>requested.includes(s.url)))throw Error('EDITORIAL_PREVIEW_EVENT_UNBOUND');
   output.preview.author_notes=job.input.request.author_notes||'';
@@ -85,6 +134,7 @@ export async function importEditorialPreviews({store,transport,approval,now=()=>
    if(error.retryable === true)throw error;
    const code=/^[A-Z_]+$/.test(error.message)?error.message:'EDITORIAL_OUTPUT_INVALID';failed.push({job_id:job.input.job_id,code});
    job.last_error={error_code:code,stage:'editorial_preview',failed_at:now(),retryable:false};
+   if(job.input.request.kind==='read'){store.put(job);continue;}
    if((job.corrections?.length||0)<CORRECTION_LIMIT){try{await prepareCorrection({store,transport},job,job.last_error,now());}catch{store.put(job);}}
    else{job.status='quarantined';store.put(job);}
   }

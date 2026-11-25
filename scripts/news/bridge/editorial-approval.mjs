@@ -5,22 +5,30 @@ import { renderEditorialMarkdown } from '../editorial-markdown.mjs';
 import {validateApprovedNews,publicNewsEdition} from './approved-news.mjs';
 import {storyPage,editorialAnalysisPage} from '../build.mjs';
 import {validateEditorialRevisionPreview,publicEditorialRevision,reviseEditorial,assertFinalPersonalSection} from '../editorial-approved-revisions.mjs';
+import {validateEditorialDocument} from '../editorial-document.mjs';
 
 const fail=(code,status=400)=>{throw Object.assign(Error(code),{status});};
 const actor=id=>/^\d{15,22}$/.test(id||'');
 export function editorialPreviewHash(preview){
   return hash({title:preview.title,subtitle:preview.subtitle||'',markdown:preview.markdown,
     sources:preview.sources,visual:preview.visual||null,format:preview.format,author_notes:preview.author_notes||'',source_media:preview.source_media||null,news_record:preview.news_record||null,
-    ...(preview.editorial_revision?{editorial_revision:preview.editorial_revision}:{})});
+    ...(preview.editorial_revision?{editorial_revision:preview.editorial_revision}:{}),
+    ...(preview.format==='read'&&preview.source_document?{source_document:preview.source_document}:{})});
 }
 export function validateEditorialPreview(value){
-  if(!value||!['news','opinion_analysis','book_review','listened','watched'].includes(value.format)
+  if(!value||!['news','opinion_analysis','book_review','listened','watched','read'].includes(value.format)
     ||typeof value.title!=='string'||value.title.length<5||value.title.length>250
     ||typeof value.markdown!=='string'||value.markdown.length<100||value.markdown.length>100000
     ||!Array.isArray(value.sources)||!value.sources.length||value.sources.length>40)fail('EDITORIAL_PREVIEW_INVALID');
   for(const s of value.sources){safeUrl(s.url);if(!s.title||!s.publisher)fail('EDITORIAL_PREVIEW_SOURCE_INVALID');}
   if(value.format==='news'){validateApprovedNews(value.news_record);if(value.title!==value.news_record.title||value.markdown!==value.news_record.source_summary)fail('EDITORIAL_NEWS_PREVIEW_CHANGED');}
   if(['listened','watched'].includes(value.format)){const m=value.source_media;if(!m?.show||!m.episode_title||!m.original_release_date)fail('EDITORIAL_ORIGINAL_REQUIRED');safeUrl(m.original_url);}
+  if(value.format==='read'){
+    if(value.source_media)fail('EDITORIAL_DOCUMENT_IS_NOT_EPISODE');
+    const document=value.editorial_revision?value.editorial_revision.base?.source_document:value.source_document;
+    validateEditorialDocument(document,value.sources);
+    if(value.editorial_revision&&value.source_document&&hash(document)!==hash(value.source_document))fail('EDITORIAL_DOCUMENT_REVISION_CHANGED');
+  }
   if(value.visual){
     const v=value.visual;
     if(!/^https:\/\/wirkungsoekonomie\.de\//.test(v.url||'')||!v.alt||!v.credit
@@ -73,7 +81,7 @@ export class EditorialApproval {
     if(!JOB_ID.test(job?.input?.job_id||'')||!actor(job.intake?.owner))fail('EDITORIAL_JOB_OWNER_REQUIRED');
     if(preview.editorial_revision&&hash(preview.editorial_revision.target)!==hash(job.intake?.revision_target||null))fail('EDITORIAL_REVISION_TARGET_UNTRUSTED');
     validateEditorialPreview(preview);
-    if(preview.format!=='news'&&/\/editorial-request-contract-[34]\.json$/.test(job.input.contract_path||''))assertFinalPersonalSection(preview.markdown,{footnotes:preview.editorial_revision?.base?.self_authored_work});
+    if(preview.format!=='news'&&/\/editorial-request-contract-[345]\.json$/.test(job.input.contract_path||''))assertFinalPersonalSection(preview.markdown,{footnotes:preview.editorial_revision?.base?.self_authored_work});
     this.db.exec('BEGIN IMMEDIATE');
     try{
       const id=job.input.job_id,old=this.get(id),preview_hash=editorialPreviewHash(preview);

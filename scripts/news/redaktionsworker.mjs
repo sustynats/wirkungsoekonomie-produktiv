@@ -23,6 +23,8 @@ import { supplementTarget, supplementContext, supersededBySupplement, withSupple
 import { EINORDNUNG_NOTIZ } from './einordnung.mjs';
 import { prepareApiJob, validateApiOutput } from './bridge/api-processor.mjs';
 import { editorialKnowledge } from './bridge/editorial-knowledge.mjs';
+import { assertReadingEvidence, collectReadingEvidence, readingEvidenceKey } from './bridge/editorial-reading-evidence.mjs';
+import { loadNewsRegistry } from './registry.mjs';
 import { OPENAI_RESPONSES_URL, finalOutputText, decodeUsage, newsModel } from './openai-transport.mjs';
 import { extractJsonObject, extractArticleText, readLimitedBody } from './lib.mjs';
 import { withRequestDeadline } from './request-deadline.mjs';
@@ -474,11 +476,15 @@ export function normalizeEditorialPreview(preview, { links = [], attachments = [
 
 // Dasselbe Schlusssektions-Gate wie beim Import in die Redaktionsapp. Ein
 // lokales „gültig“ darf nicht erst nach der Übergabe in correction_pending enden.
-export function validateEditorialDelivery(output, packet, at) {
+export function validateEditorialDelivery(output, packet, at, readingReceipt) {
   const validated = validateApiOutput(output, packet, at);
-  const requested = (packet.original_input || packet).request?.links || [];
+  const input = packet.original_input || packet;
+  const requested = input.request?.links || [];
   if (validated.preview && requested.length
     && !validated.preview.sources.some(source => requested.includes(source.url))) throw Error('EDITORIAL_PREVIEW_EVENT_UNBOUND');
+  if (validated.preview && input.request?.kind === 'read') {
+    assertReadingEvidence(input, validated.preview.source_document, readingReceipt);
+  }
   if (validated.preview?.format !== 'news' && validated.preview
     && /\/editorial-request-contract-[34]\.json$/.test(packet.contract_path || '')) {
     assertFinalPersonalSection(validated.preview.markdown, { footnotes: validated.preview.editorial_revision?.base?.self_authored_work });
@@ -505,7 +511,9 @@ export async function recoverCachedEditorialOutputs(session, rows, at) {
       if (!output.preview) continue;
       normalizeEditorialPreview(output.preview, { links: job.input.request?.links || [], attachments: job.input.request?.attachments || [], repairs });
       if (!repairs.length) continue;
-      const validated = validateEditorialDelivery(output, job.input, at);
+      const receipt = job.input.request?.kind === 'read'
+        ? await session.store.observation(readingEvidenceKey(job.input)) : undefined;
+      const validated = validateEditorialDelivery(output, job.input, at, receipt);
       await session.transport.writeAtomic(outputPath, validated);
       if (hash(JSON.parse(await session.transport.read(outputPath))) !== hash(validated)) throw Error('EDITORIAL_DELIVERY_READBACK_FAILED');
       await session.store.observe(`github-editorial-recovery:${id}`, { job_id: id, at, original_output_hash: correction.original_output_hash,
@@ -564,7 +572,9 @@ export async function recoverUnsentEditorialAnswers(session, rows, at) {
           'markdown:Quellenüberschrift kanonisiert',
         ].includes(repair))) continue;
         if (job.input.request?.research_repair && !(record.web_searches > 0)) continue;
-        const validated = validateEditorialDelivery(output, job.input, at);
+        const receipt = job.input.request?.kind === 'read'
+          ? await session.store.observation(readingEvidenceKey(job.input)) : undefined;
+        const validated = validateEditorialDelivery(output, job.input, at, receipt);
         const latest = await session.store.get(id);
         if (!latest || latest.status !== 'queued' || latest.input.input_hash !== job.input.input_hash || latest.ack || latest.accepted
           || await session.transport.metadata(outputPath)
@@ -686,7 +696,7 @@ export async function processEditorialRequest(session, row, { knowledge, root = 
   // Begründung) ist ein Ergebnis und wird nicht wiederholt.
   // 16.09.: drei Aufträge standen auf 'attempt_exhausted, delivered: false',
   // einer davon seit dem 13.09.; Natalie hat sie nie zur Freigabe gesehen.
-  const contractFixed = Boolean(attempt) && attempt.status !== 'output_delivered' && attempt.version !== WORKER_VERSION
+  const contractFixed = job.input.request?.kind !== 'read' && Boolean(attempt) && attempt.status !== 'output_delivered' && attempt.version !== WORKER_VERSION
     && attempt.retried_for_version !== WORKER_VERSION;
   if (attempt?.provider_called && !contractFixed) return { job_id: id, status: 'attempt_exhausted', delivered: attempt.status === 'output_delivered', attempt_status: attempt.status, attempted_at: attempt.at || null };
   const outputPath = bridgePath('20_OUTPUT_READY', `${id}.output.json`);
@@ -722,8 +732,16 @@ export async function processEditorialRequest(session, row, { knowledge, root = 
   const blockedLinks = new Set((packet.request?.research_repair?.source_errors || [])
     .filter(source => /^(SOURCE_DISABLED|ROBOTS_DISALLOWED|RSL_STATUS_OPEN|RSL_DENIED|PAYWALL|LOGIN_REQUIRED)$/.test(source.error_code))
     .map(source => source.url));
-  const sourceExcerpts = excerpts ? await collectSourceExcerpts((supplementedPacket.request?.links || []).filter(url => !blockedLinks.has(url)), fetchImpl) : [];
-  const promptPacket = sourceExcerpts.length ? { ...supplementedPacket, origin: { ...(supplementedPacket.origin || {}), source_excerpts: sourceExcerpts } } : supplementedPacket;
+  const readingRequest = packet.request?.kind === 'read';
+  if (readingRequest && (!excerpts || blockedLinks.has(packet.request.document_url))) throw Error('EDITORIAL_DOCUMENT_SOURCE_UNAVAILABLE');
+  const reading = readingRequest ? await collectReadingEvidence(packet, loadNewsRegistry(root), { fetchImpl }) : null;
+  const sourceExcerpts = reading ? [{ url: reading.receipt.original_url, excerpt: reading.excerpt }]
+    : excerpts ? await collectSourceExcerpts((supplementedPacket.request?.links || []).filter(url => !blockedLinks.has(url)), fetchImpl) : [];
+  const promptPacket = sourceExcerpts.length ? { ...supplementedPacket, origin: {
+    ...(supplementedPacket.origin || {}), source_excerpts: sourceExcerpts,
+    ...(reading ? { reading_evidence: { original_url: reading.receipt.original_url,
+      content_sha256: reading.receipt.content_sha256, reading_status: reading.receipt.reading_status } } : {}),
+  } } : supplementedPacket;
   const { bilder, uebersprungen: anhaengeUebersprungen } = process.env.WOEK_EDITORIAL_ATTACHMENT_IMAGES === 'false'
     ? { bilder: [], uebersprungen: [] } : await collectAttachmentImages(session, packet.request?.attachments);
   const webResearch = env.WOEK_EDITORIAL_WEB_SEARCH !== 'false';
@@ -738,6 +756,12 @@ export async function processEditorialRequest(session, row, { knowledge, root = 
     try { await session.transport.move(sourcePath, claimPath); }
     catch { return { job_id: id, status: 'claim_unknown' }; }
     await session.store.observe(`github-claim:${name}`, { job_id: id, actor: WORKER_ACTOR, packet_hash: hash(packet), state: 'claimed', at: now() });
+  }
+  if (reading) {
+    const key = readingEvidenceKey(packet);
+    const saved = await session.store.observation(key);
+    if (saved && hash(saved) !== hash(reading.receipt)) throw Error('EDITORIAL_DOCUMENT_CHANGED_BEFORE_DRAFT');
+    if (!saved) await session.store.observe(key, reading.receipt);
   }
   const startedAttempt = { job_id: id, actor: WORKER_ACTOR, version: WORKER_VERSION, provider_called: true, status: 'started', at: now(), request_key: request.key, requested_model: selectedModel, ...(contractFixed ? { retried_after_contract_fix: true, retried_for_version: WORKER_VERSION } : {}) };
   await writeAttemptCheckpoint(session.store, `github-attempt:${id}`, startedAttempt, attempt);
@@ -769,16 +793,17 @@ export async function processEditorialRequest(session, row, { knowledge, root = 
   }
   const previewRepairs = [];
   let validated = null, lastIssues = [], repairCalls = 0, cost = result.cost || 0, usage = result.usage, webSearches = result.web_searches ?? 0, failedAnswerRecovery = {};
-  for (let pass = 0; pass <= (repairPass ? 1 : 0); pass += 1) {
+  const allowedRepairs = repairPass && !readingRequest ? 1 : 0;
+  for (let pass = 0; pass <= allowedRepairs; pass += 1) {
     normalizeEditorialHold(output, previewRepairs);
     if (output.preview && job.intake?.revision_target) bindeKorrekturfassung(output.preview, job.intake, previewRepairs);
     if (output.preview) normalizeEditorialPreview(output.preview, { links: packet.request?.links || [], attachments: packet.request?.attachments || [], repairs: previewRepairs });
     try {
       if (researchRequired && output.hold?.code === 'SOURCE_VERIFICATION_REQUIRED' && webSearches === 0) throw Error('EDITORIAL_RESEARCH_NOT_PERFORMED');
-      validated = validateEditorialDelivery(output, packet, now()); break;
+      validated = validateEditorialDelivery(output, packet, now(), reading?.receipt); break;
     }
     catch (error) { lastIssues = [String(error.message), ...(error.issues || [])]; }
-    if (pass >= (repairPass ? 1 : 0) || lastIssues.includes('EDITORIAL_RESEARCH_NOT_PERFORMED')) break;
+    if (pass >= allowedRepairs || lastIssues.includes('EDITORIAL_RESEARCH_NOT_PERFORMED')) break;
     let retry;
     try { retry = await draft(editorialRepairRequest(request, output, lastIssues, previewRepairs), { model: selectedModel, webSearch: false }); }
     catch (error) {

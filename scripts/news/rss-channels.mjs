@@ -11,7 +11,7 @@ export const RSS_CHANNELS = Object.freeze({
   analyses: Object.freeze({
     title: "Wirkungsticker - Analysen und Nachbesprechungen",
     label: "Analysen per RSS abonnieren",
-    description: "Persönlich kuratierte Beiträge von Natalie Weber: Meinung & Analyse, Nachgehört, Nachgesehen und Buch & Wirkung.",
+    description: "Persönlich kuratierte Beiträge von Natalie Weber: Meinung & Analyse, Nachgehört, Nachgesehen, Nachgelesen und Buch & Wirkung.",
     path: "/wirkungsticker/analyse/feed.xml",
     home: "/wirkungsticker/analysen/",
   }),
