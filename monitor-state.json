@@ -36,6 +36,10 @@
     "lage": {
       "firstSeen": "2026-11-25T05:06:05.396Z",
       "active": true
+    },
+    "editorial-status": {
+      "firstSeen": "2026-11-25T11:35:39.815Z",
+      "active": false
     }
   },
   "outbox": [],
@@ -4189,7 +4193,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-25T11:28:52.423Z",
+    "checked_at": "2026-11-25T11:35:39.815Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
