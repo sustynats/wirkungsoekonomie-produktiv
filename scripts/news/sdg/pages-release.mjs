@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeRepositoryJson } from '../newsroom-store.mjs';
-import { loadSdgTickerPresentation, SDG_HASH } from './release-catalog.mjs';
+import { loadSdgTickerPresentation, readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
 
 export const SDG_PAGES_REPOSITORY = 'sustynats/wirkungsoekonomie-produktiv';
 const sourceHash = /^[a-f0-9]{40}$/;
@@ -16,9 +16,10 @@ function sha256(bytes) {
 }
 
 export function writeSdgPagesRelease({ root, artifactRoot, sourceCommit, runId, runAttempt }) {
-  const catalog = loadSdgTickerPresentation(root);
+  // Registered edition pages are rendered even before the tracker homepage switches.
+  const catalog = loadSdgTickerPresentation(root) ?? readSdgReleaseCatalog(root);
   const file = path.join(artifactRoot, SDG_PAGES_RELEASE_PATH);
-  if (!catalog) {
+  if (!catalog.releases.length) {
     if (fs.existsSync(file)) throw Error('SDG_PAGES_RELEASE_STALE');
     return null;
   }

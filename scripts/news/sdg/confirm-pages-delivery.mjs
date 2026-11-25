@@ -150,7 +150,8 @@ export async function confirmSdgPagesDelivery({
       typeof runAttempt !== 'string' || !numbered.test(runAttempt)) {
     throw Error('SDG_PAGES_EXPECTED_RUN_REQUIRED');
   }
-  const release = (checkedCatalog ?? loadSdgTickerPresentation(root))?.releases.find(entry => entry.edition_id === editionId);
+  const catalog = checkedCatalog ?? loadSdgTickerPresentation(root) ?? readSdgReleaseCatalog(root);
+  const release = catalog.releases.find(entry => entry.edition_id === editionId);
   if (!release) throw Error('SDG_PAGES_REGISTERED_EDITION_REQUIRED');
   const pack = packageSdgEdition(ledger, editionId);
   if (pack.sha256 !== release.sha256) throw Error('SDG_EDITION_DELIVERY_BINDING_MISMATCH');

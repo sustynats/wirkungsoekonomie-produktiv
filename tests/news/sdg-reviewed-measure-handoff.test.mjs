@@ -746,7 +746,7 @@ test('closed review cutoff rejects a corrupt journal and does not seal an unmatc
   }
 }));
 
-test('SDG Pages receipt verifies native evidence and resumes a lost ledger write without repeating observations', () => withStore(async ({
+test('SDG Pages receipt works before the homepage cutover and resumes a lost ledger write', () => withStore(async ({
   target, measures, editions, reviews, perform,
 }) => {
   reviews.set(reviewId, bind(measures, target));
@@ -760,11 +760,17 @@ test('SDG Pages receipt verifies native evidence and resumes a lost ledger write
     const expectedCommit = '1'.repeat(40);
     const releaseParams = { root, artifactRoot, sourceCommit: expectedCommit, runId: '135', runAttempt: '2' };
     assert.equal(writeSdgPagesRelease(releaseParams), null);
+    await assert.rejects(confirmSdgPagesDelivery({
+      root, ledger: editions, editionId: edition.id, expectedCommit, runId: '135', runAttempt: '2',
+      evidenceDirectory: path.join(scratch, 'private-evidence'),
+    }, {
+      readNative: () => assert.fail('Unregistered edition requested native evidence'),
+      readPublic: () => assert.fail('Unregistered edition requested public evidence'),
+    }), /SDG_PAGES_REGISTERED_EDITION_REQUIRED/);
     const registered = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
     const editionSha256 = registered.edition_sha256;
-    writeFileSync(path.join(root, 'data/news/sdg/ticker-mode.json'), JSON.stringify({
-      schema_version: 1, mode: 'sdg', anchor: { edition_id: edition.id, sha256: editionSha256 },
-    }));
+    const modeFile = path.join(root, 'data/news/sdg/ticker-mode.json');
+    assert.equal(loadSdgTickerPresentation(root), null);
     buildSdgEditionPages({ root: artifactRoot, site: 'https://wirkungsoekonomie.de', pageShell: data => data.body,
       catalog: readSdgReleaseCatalog(root), escapeHtml: String, write: (file, html) => {
         mkdirSync(path.dirname(file), { recursive: true });
@@ -777,6 +783,7 @@ test('SDG Pages receipt verifies native evidence and resumes a lost ledger write
     assert.throws(() => writeSdgPagesRelease(releaseParams), /SDG_PAGES_EDITION_BINDING_MISMATCH/);
     writeFileSync(editionFile, publicEditionBytes);
     const release = writeSdgPagesRelease(releaseParams);
+    assert.equal(release.catalog_sha256, registered.catalog_sha256);
     const publicManifestBytes = readFileSync(path.join(artifactRoot, SDG_PAGES_RELEASE_PATH));
     assert.deepEqual(writeSdgPagesRelease(releaseParams), release);
     assert.equal(release.editions[0].html_sha256, sha256(publicEditionBytes));
@@ -872,6 +879,15 @@ sys.stdout.buffer.write(data.getvalue())
       assert.equal(confirmed.receipt.observed_at, observedAt);
       assert.deepEqual(durable.readDelivery(edition.id), confirmed.receipt);
       assert.equal(durable.read(edition.id).publication_at, null);
+      assert.equal(loadSdgTickerPresentation(root), null);
+      writeFileSync(modeFile, JSON.stringify({
+        schema_version: 1, mode: 'sdg', anchor: { edition_id: edition.id, sha256: '0'.repeat(64) },
+      }));
+      assert.throws(() => writeSdgPagesRelease(releaseParams), /SDG_TICKER_RELEASE_ANCHOR_REQUIRED/);
+      writeFileSync(modeFile, JSON.stringify({
+        schema_version: 1, mode: 'sdg', anchor: { edition_id: edition.id, sha256: editionSha256 },
+      }));
+      assert.deepEqual(writeSdgPagesRelease(releaseParams), release);
       const retry = await confirmSdgPagesDelivery({ ...options, ledger: durable }, {
         readNative: readOnce(routes), readPublic: readOnce(publicRoutes), clock: () => assert.fail('Observation time changed'),
       });

@@ -196,7 +196,15 @@ Hauptlinie hält einen veralteten automatischen Aufruf vor Build oder
 Deployment an.
 
 Vor der produktiven Umschaltung müssen der normale Lauf bis zur öffentlichen
-Quittung und das passende Rückfallartefakt nachgewiesen sein.
+Quittung und das passende Rückfallartefakt nachgewiesen sein. Eine fachlich
+geprüfte und für die Veröffentlichung registrierte Erstausgabe kann bereits
+über das bestehende Ausgabenarchiv ausgeliefert und quittiert werden. Der
+normale Pages-Build bindet dafür dieselben Ausgabe- und Artefaktbytes auch
+ohne `ticker-mode.json`. Die Hauptseite und der Modus des automatischen
+Workflows bleiben bis zur gesonderten Umschaltung im bisherigen Betrieb.
+Die Quittung bindet ausschließlich die Ausgabe ihres konkreten Pages-Laufs.
+Die nun aktive Hauptseite und der automatische SDG-Lauf sind nach der
+Umschaltung gesondert zu prüfen.
 
 ### Feeds für SDG-Ausgaben und Redaktion
 
