@@ -319930,7 +319930,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "7933080e5f74ad0a",
+      "contentHash": "2f630e4c143600f4",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#lagen-titel": {
@@ -319938,7 +319938,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "7933080e5f74ad0a",
+      "contentHash": "2f630e4c143600f4",
       "sectionId": "lagen-titel"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -332492,6 +332492,22 @@
       "sourceFile": "wirkungsticker/lage/2026-11-24-morgenlage/index.html",
       "contentHash": "67d726a54ce5c16b",
       "sectionId": "woek-page-4aaec31053042154"
+    },
+    "/wirkungsticker/lage/2026-11-25-mittagslage/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/lage/2026-11-25-mittagslage/index.html",
+      "contentHash": "b4a9f1b10bffcdc4",
+      "sectionId": "woek-page-9c5ecfd4d1654e48"
+    },
+    "/wirkungsticker/lage/2026-11-25-morgenlage/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/lage/2026-11-25-morgenlage/index.html",
+      "contentHash": "bdaed362d632c856",
+      "sectionId": "woek-page-ce0c72d05341d097"
     },
     "/wirkungsticker/landkreis-oberhavel-polizeieinsatz-in-velten-gefahrenlage-abgewendet-4b4f92/": {
       "documentType": "Referenz",
