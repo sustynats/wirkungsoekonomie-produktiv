@@ -15,7 +15,7 @@
     },
     "delivery-workflows": {
       "firstSeen": "2026-10-26T18:06:05.846Z",
-      "active": false
+      "active": true
     },
     "images": {
       "firstSeen": "2026-11-22T21:06:04.924Z",
@@ -38,7 +38,12 @@
       "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "2ef8640aeb5debb8272b72fd",
+      "content": "⚠ WÖk-Betriebsstörung\nAuslieferungsläufe: Der Zustand der Import- und Veröffentlichungsläufe ist nicht prüfbar.\nSeit: 2026-10-26T18:06:05.846Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
+    }
+  ],
   "dailyDate": "2026-11-25",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4189,7 +4194,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-25T14:59:34.077Z",
+    "checked_at": "2026-11-25T15:06:11.404Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
