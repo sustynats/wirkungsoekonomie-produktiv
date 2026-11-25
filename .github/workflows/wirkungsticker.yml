@@ -378,6 +378,11 @@ jobs:
         run: |
           echo "::error::Redaktionelle Auftragsuebergabe, Freigabequittung oder archivierte Wiederaufnahme fehlgeschlagen. Nachrichten und bezahlte Antworten bleiben gesichert; der Gesamtprozess ist nicht gesund."
           exit 1
+      - name: Report a failed SDG edition import
+        if: always() && steps.sdg_editions.outcome == 'failure'
+        run: |
+          echo "::error title=SDG_EDITION_IMPORT_FAILED::Die Übernahme der SDG-Ausgaben ist fehlgeschlagen."
+          exit 1
       - name: Preserve failed-run work and usage for recovery
         # A job timeout is cancelled, not failure(). Preserve completed paid
         # work in that case as well; never rerun a provider to reconstruct it.

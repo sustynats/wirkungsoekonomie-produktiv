@@ -172,7 +172,8 @@ nächsten automatischen Lauf verfügbar.
 
 Der Workflow prüft Vollständigkeit, Paket-Hashes und erlaubte Felder, ehe
 er den Katalog erweitert. Bei einer unterbrochenen Übernahme baut er aus
-dem bereits eingecheckten Katalog. Nur der bestehende Git-Commit- und
+dem bereits eingecheckten Katalog. Der Workflow meldet einen fehlgeschlagenen
+SDG-Import nach dem redaktionellen Zustellschritt als eigenen Fehler. Nur der bestehende Git-Commit- und
 Pages-Pfad kann eine Ausgabe ausliefern. Ein ausschließlich automatisches
 SDG-Paket löst keine Nachricht über den bisherigen Push-Feed aus.
 Ein Auslieferungsfehler bleibt bis zur Prüfung des konkreten Pages-Versuchs

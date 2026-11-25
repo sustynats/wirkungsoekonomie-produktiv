@@ -119,3 +119,22 @@ test('the existing Pages workflow rejects a stale automatic source before buildi
   assert.equal(reachDeploy(moved), 1);
   assert.equal(reachDeploy(commit), 0);
 });
+
+test('the existing ticker reports a failed SDG import after the independent delivery steps', () => {
+  const yaml = fs.readFileSync(new URL('../../.github/workflows/wirkungsticker.yml', import.meta.url), 'utf8');
+  const locate = name => yaml.indexOf(`- name: ${name}`);
+  const intake = locate('Receive checked SDG editions from the private Oracle journal');
+  const restore = locate('Restore the committed SDG catalog after an interrupted intake');
+  const commit = locate('Commit one atomic update');
+  const publish = locate('Publish the committed ticker automatically');
+  const health = locate('Report a failed SDG edition import');
+  assert.ok(0 <= intake && intake < restore && restore < commit && commit < publish && publish < health);
+  assert.match(yaml.slice(intake, restore), /continue-on-error: true/);
+  assert.match(yaml.slice(restore, restore + 550), /steps\.sdg_editions\.outcome == 'failure'/);
+  const report = yaml.slice(health).split('\n      - name:')[0];
+  assert.match(report, /if: always\(\) && steps\.sdg_editions\.outcome == 'failure'/);
+  const script = report.split('run: |\n')[1];
+  const result = spawnSync('bash', ['-c', script], { encoding: 'utf8' });
+  assert.equal(result.status, 1);
+  assert.match(result.stdout, /::error title=SDG_EDITION_IMPORT_FAILED::/);
+});
