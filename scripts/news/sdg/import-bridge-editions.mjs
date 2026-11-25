@@ -35,10 +35,13 @@ function publicFields(value, keys) {
 
 function requirePublicProjection(pack, entry) {
   const manifest = validateSdgEditionPackage(pack, entry.edition_id, entry.sha256);
+  const hasReferences = manifest.schema_version === 2;
+  const keys = hasReferences ? `${itemKeys} reference_frameworks` : itemKeys;
   if (!exactKeys(pack, 'manifest sha256') || !exactKeys(manifest,
     'schema_version kind edition_id ledger_sha256 scheduled_at cutoff_at sealed_at published_at items') ||
-    manifest.items.some(item => !exactKeys(item, itemKeys) ||
-      !Object.entries(item).every(([key, value]) => key === 'sources' || key === 'impact' || publicScalar(value)) ||
+    manifest.items.some(item => !exactKeys(item, keys) ||
+      !Object.entries(item).every(([key, value]) =>
+        ['sources', 'impact', 'reference_frameworks'].includes(key) || publicScalar(value)) ||
       !Array.isArray(item.sources) || !item.sources.every(source => publicFields(source, sourceKeys)) ||
       !exactKeys(item.impact, 'human planet democracy') ||
       !Object.values(item.impact).every(impact => publicFields(impact, impactKeys)))) {

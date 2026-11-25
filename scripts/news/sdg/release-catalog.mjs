@@ -8,6 +8,10 @@ export const SDG_HASH = /^[a-f0-9]{64}$/;
 export const SDG_TRANSFER_BYTES = 512 * 1024;
 const ID = /^\d{4}-\d{2}-\d{2}-(?:morgenlage|mittagslage|abendlage)$/;
 
+export function isSdgReferenceList(value) {
+  return Array.isArray(value) && value.every(reference => typeof reference === 'string' && reference.trim());
+}
+
 export function validateSdgEditionPackage(pack, id, digest) {
   if (typeof id !== 'string' || !ID.test(id) || typeof digest !== 'string' || !SDG_HASH.test(digest)) {
     throw Error('SDG_RELEASE_CATALOG_INVALID');
@@ -15,8 +19,10 @@ export function validateSdgEditionPackage(pack, id, digest) {
   const manifest = pack?.manifest;
   const scheduled = berlinInstant(id.slice(0, 10), lageDefinition(id.slice(11)).hour);
   if (pack?.sha256 !== digest || !manifest || hash(manifest) !== digest || manifest.edition_id !== id ||
-      manifest.schema_version !== 1 || manifest.kind !== 'sdg_edition_candidate' ||
+      ![1, 2].includes(manifest.schema_version) || manifest.kind !== 'sdg_edition_candidate' ||
       !SDG_HASH.test(manifest.ledger_sha256 || '') || manifest.published_at !== null || !Array.isArray(manifest.items) ||
+      manifest.items.some(item => !item || typeof item !== 'object' || (manifest.schema_version === 2
+        ? !isSdgReferenceList(item.reference_frameworks) : Object.hasOwn(item, 'reference_frameworks'))) ||
       !scheduled || scheduled !== manifest.scheduled_at ||
       ![manifest.cutoff_at, manifest.sealed_at].every(value => Number.isFinite(Date.parse(value))) ||
       Date.parse(manifest.cutoff_at) > Date.parse(manifest.sealed_at)) {

@@ -106,6 +106,8 @@ test('the normal ticker writer receives only checked public packages and resumes
     // A larger checked projection spans multiple bridge frames.
     incoming.record.source_summary = 'Synthetischer Prüftext. '.repeat(22_000);
     incoming.record.analysis.source_summary = incoming.packet.analysis.source_summary = incoming.record.source_summary;
+    incoming.packet.analysis.reference_frameworks = ['UN SDG 3.8', 'Deutsche Nachhaltigkeitsstrategie'];
+    incoming.record.analysis.reference_frameworks = ['PRIVATE-UNREVIEWED-REFERENCE'];
     incoming.record.editorial_draft = 'PRIVATE-MANUSCRIPT-SENTINEL';
     incoming.record.sources[0].article_excerpt = 'PRIVATE-EXCERPT-SENTINEL';
     incoming.packet.sdg_measure = measureReviewBinding(measures, { ...next, record: incoming.record }).binding;
@@ -125,6 +127,10 @@ test('the normal ticker writer receives only checked public packages and resumes
     assert.equal(oracle.releases.length, 2);
     const latest = oracle.releases.at(-1);
     assert.equal(latest.manifest.items[0].revision_id, next.revisionId);
+    assert.equal(oracle.releases[0].manifest.schema_version, 1);
+    assert.equal(oracle.releases[0].sha256, checked.edition_sha256);
+    assert.equal(latest.manifest.schema_version, 2);
+    assert.deepEqual(latest.manifest.items[0].reference_frameworks, incoming.packet.analysis.reference_frameworks);
     assert.equal(sdg.readPackage(latest.sha256, 512 * 1024).offset, 512 * 1024);
     assert.throws(() => sdg.readPackage('f'.repeat(64), 0), /SDG_BRIDGE_PACKAGE_NOT_REGISTERED/);
     assert.throws(() => sdg.prepare({ edition_id: anchor.id, sha256: 'f'.repeat(64) }), /SDG_BRIDGE_CATALOG_PREFIX_MISMATCH/);

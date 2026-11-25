@@ -206,6 +206,14 @@ Die Quittung bindet ausschließlich die Ausgabe ihres konkreten Pages-Laufs.
 Die nun aktive Hauptseite und der automatische SDG-Lauf sind nach der
 Umschaltung gesondert zu prüfen.
 
+### Referenzrahmen der Maßnahmen
+
+Wenn die unabhängige Prüfung Referenzrahmen enthält, übernimmt Paketversion
+2 ausschließlich die Einträge aus der fassungsgebundenen Prüffassung.
+Ausgabe und Maßnahmenakte zeigen diese Angaben neben der MPD-Analyse.
+Bereits registrierte Pakete der Version 1 behalten ihre ursprünglichen
+Bytes und werden weiter gelesen.
+
 ### Feeds für SDG-Ausgaben und Redaktion
 
 Der normale Seitenbau erzeugt aus demselben registrierten SDG-Katalog wie

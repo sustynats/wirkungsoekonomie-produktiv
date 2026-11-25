@@ -57,6 +57,7 @@ test('registered SDG editions build stable case chronologies and retain original
     ['2026-11-24', [{
       title: 'Korrigierter Beschluss', revision_id: correctedRevision, event_id: caseEvent,
       supersedes: earlierRevision, event_at: '2026-11-21',
+      reference_frameworks: ['UN SDG 3.8', 'Deutsche Nachhaltigkeitsstrategie'],
     }, {
       title: 'Prüfbericht ohne Ereignisdatum', revision_id: 'e'.repeat(64), event_id: '5'.repeat(64),
       event_at: null, domain: 'observations', stage: 'reported',
@@ -65,8 +66,9 @@ test('registered SDG editions build stable case chronologies and retain original
   const releases = rows.map(([date, items]) => {
     const id = `${date}-morgenlage`;
     const scheduledAt = berlinInstant(date, 6);
+    const hasReferences = date === '2026-11-24';
     const manifest = {
-      schema_version: 1, kind: 'sdg_edition_candidate', edition_id: id, ledger_sha256: '0'.repeat(64),
+      schema_version: hasReferences ? 2 : 1, kind: 'sdg_edition_candidate', edition_id: id, ledger_sha256: '0'.repeat(64),
       scheduled_at: scheduledAt, cutoff_at: scheduledAt, sealed_at: scheduledAt, published_at: null,
       items: items.map(item => ({
         case_id: caseId, domain: 'legal', stage: 'adopted', summary: 'Quellengebundener Testeintrag.',
@@ -78,6 +80,7 @@ test('registered SDG editions build stable case chronologies and retain original
           planet: { label: '? Richtung offen', magnitude: null, temporal_status: 'ongoing', evidence_label: 'nicht bewertbar' },
           democracy: { label: 'Offen' },
         },
+        ...(hasReferences ? { reference_frameworks: [] } : {}),
         ...item,
       })),
     };
@@ -104,6 +107,12 @@ test('registered SDG editions build stable case chronologies and retain original
   assert.ok(!files.get(otherRoute + 'index.html').includes('Frühere Fassung'));
   const originalEdition = files.get('wirkungsticker/sdg/ausgabe/2026-11-22-morgenlage/index.html');
   assert.ok(originalEdition.includes(`/${caseRoute}#sdg-${earlierRevision}`));
+  assert.doesNotMatch(originalEdition, /<h3>Referenzrahmen<\/h3>/);
+  const revisedEdition = files.get('wirkungsticker/sdg/ausgabe/2026-11-24-morgenlage/index.html');
+  for (const page of [revisedEdition, chronology]) {
+    assert.equal(page.match(/<h3>Referenzrahmen<\/h3>/g)?.length, 1);
+    assert.ok(page.includes('<li>UN SDG 3.8</li><li>Deutsche Nachhaltigkeitsstrategie</li>'));
+  }
   for (const page of [originalEdition, chronology]) {
     assert.ok(page.includes('Wirkungsökonomische Analyse (MPD)'));
     assert.ok(page.includes('<dt>Mensch</dt><dd>+ Potenzial · Ex ante · Tragweite begrenzt · Evidenz mittel</dd>'));

@@ -3,6 +3,7 @@ import { safeUrl } from '../bridge/contract.mjs';
 import { impactTimeLabel, MAGNITUDE } from '../impact-assessment.mjs';
 import { LAGEN, lageWindow } from '../lage.mjs';
 import { berlinParts } from '../lib.mjs';
+import { formatReferenceFramework } from '../reference-frameworks.mjs';
 import { readSdgReleaseCatalog, SDG_HASH } from './release-catalog.mjs';
 import { SDG_TRACKER_EVIDENCE, SDG_TRACKER_TITLE } from './presentation.mjs';
 import { renderRssFeed, RSS_SITE, SDG_JSON_FEED_PATH, SDG_RSS_CHANNEL } from '../rss-channels.mjs';
@@ -92,6 +93,7 @@ function renderItem(item, link, lateDate, esc) {
     const originalDate = dateLabel(source.source_published_at);
     return `<li><a href="${esc(safeUrl(source.url))}">${esc(source.title || source.publisher || new URL(source.url).hostname)}</a>${originalDate ? ` · Original vom ${esc(originalDate)}` : ''}</li>`;
   }).join('');
+  const references = (item.reference_frameworks ?? []).map(reference => `<li>${esc(formatReferenceFramework(reference))}</li>`).join('');
   const impact = Object.entries(dimensions).map(([key, label]) => {
     const part = item.impact[key];
     const details = [];
@@ -108,6 +110,7 @@ function renderItem(item, link, lateDate, esc) {
   ${lateDate ? `<p class="news-method-note">Nachgereicht - Ereignis vom ${esc(lateDate)}</p>` : ''}
   <p>${esc(item.summary)}</p>
   <dl><dt>${domain}</dt><dd>${statuses[item.stage]}</dd><dt>Ereignisdatum</dt><dd>${eventDate ? esc(eventDate) : 'Offen'}</dd>${discoveryDate ? `<dt>Erfasst am</dt><dd>${esc(discoveryDate)}</dd>` : ''}</dl>
+  ${references ? `<h3>Referenzrahmen</h3><ul>${references}</ul>` : ''}
   <h3>Wirkungsökonomische Analyse (MPD)</h3><dl>${impact}</dl>
   <h3>Quellen</h3><ul>${sources}</ul>
   ${link}

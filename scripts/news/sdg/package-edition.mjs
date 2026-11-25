@@ -47,6 +47,7 @@ function projectEditionItem(ledger, entry) {
     title: dossier.record.title,
     summary: dossier.record.source_summary,
     sources,
+    ...(dossier.reviewed_reference_frameworks ? { reference_frameworks: dossier.reviewed_reference_frameworks } : {}),
     impact: Object.fromEntries(IMPACT_KEYS.map(key => {
       const part = presentation.dimensions[key];
       return [key, { direction: part.direction, magnitude: part.magnitude, label: part.label,
@@ -62,8 +63,10 @@ export function packageSdgEdition(ledger, editionId) {
   if (edition.hash !== hash({ id, scheduledAt, cutoff, sealedAt, items })) {
     throw Error('SDG_EDITION_MANIFEST_CHANGED');
   }
+  const projected = items.map(entry => projectEditionItem(ledger, entry));
+  const hasReferences = projected.some(item => Object.hasOwn(item, 'reference_frameworks'));
   const manifest = {
-    schema_version: 1,
+    schema_version: hasReferences ? 2 : 1,
     kind: 'sdg_edition_candidate',
     edition_id: id,
     ledger_sha256: edition.hash,
@@ -71,7 +74,7 @@ export function packageSdgEdition(ledger, editionId) {
     cutoff_at: cutoff,
     sealed_at: sealedAt,
     published_at: null,
-    items: items.map(entry => projectEditionItem(ledger, entry)),
+    items: hasReferences ? projected.map(item => ({ reference_frameworks: [], ...item })) : projected,
   };
   return { manifest, sha256: hash(manifest) };
 }

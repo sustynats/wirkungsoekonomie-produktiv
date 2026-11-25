@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { finalizeReviewedImpact } from '../reviewed-impact.mjs';
+import { isSdgReferenceList } from './release-catalog.mjs';
 
 const sha = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
@@ -88,11 +89,15 @@ export function prepareReviewedMeasure({ caseId, revisionId, reviewId, now }, me
   }
   const readyAt = new Date(acceptedAt).toISOString();
   const reviewed = finalizeReviewedImpact(record, packet, receipt, existing, readyAt);
+  // The same packet hash binds the reference text and the approved assessment.
+  const references = packet.analysis.reference_frameworks ?? [];
+  if (!isSdgReferenceList(references)) throw Error('SDG_MEASURE_REFERENCE_FRAMEWORK_INVALID');
   const dossier = {
     case_id: caseId,
     revision: projection.eventRevision,
     evidence: projection.evidence,
     record: { ...reviewed, published: false, published_at: null },
+    ...(references.length ? { reviewed_reference_frameworks: [...references] } : {}),
     review: { id: reviewId, packet_hash: receipt.review_packet_hash,
       receipt_hash: sha(receipt), reviewed_at: receipt.reviewed_at, accepted_at: readyAt },
   };
