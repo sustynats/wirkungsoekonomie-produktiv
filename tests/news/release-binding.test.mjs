@@ -60,6 +60,7 @@ function runStep(t, source, name, values = {}) {
       TEST_CHANGED: "true", TEST_PUSH_SUCCEEDS: "true", TEST_SIZE_GUARD_FAIL: "false", TEST_RESTORE_FAIL: "false", SLOT_NAME: "Fixture",
       TEST_STAGED_FILES: "data/news/stories.json wirkungsticker/lage/2026-09-20-morgenlage/index.html",
       TICKER_COMMIT: pushedCommit, TICKER_ONLY: "true", EXPECTED_COMMIT: oldCommit,
+      SDG_EDITIONS_RECEIVED: "false", SDG_CATALOG_SHA256: "",
       ...values,
     },
   });

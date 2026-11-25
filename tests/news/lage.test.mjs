@@ -231,10 +231,21 @@ test('eine Lage ohne neue Meldung wird ausgeliefert', async () => {
   const commit = yaml.slice(yaml.indexOf('name: Commit one atomic update'), yaml.indexOf('name: Publish the committed ticker automatically'));
   assert.match(commit, /STAGED_FILES="\$\(git diff --cached --name-only\)"/,
     'der Commit-Schritt liest die vollständige Dateiliste ohne frühes Pipe-Ende');
-  assert.match(commit, /grep -qE '\^\(news\/\|wirkungsticker\/\)' <<< "\$STAGED_FILES"/,
-    'der Commit-Schritt meldet, ob sich ausgelieferte Seiten geändert haben');
-  assert.match(commit, /PUBLIC_FILES=true/, 'gemessen wird vor dem Commit');
-  assert.match(commit, /echo "public_files=\$PUBLIC_FILES" >> "\$GITHUB_OUTPUT"/, 'gemeldet erst nach der erfolgreichen Veröffentlichung');
+  const [measurement, publicPathPattern] =
+    commit.match(/if grep -qE '([^'\n]+)' <<< "\$STAGED_FILES"; then PUBLIC_FILES=true; fi/) ?? [];
+  assert.ok(measurement, 'der Commit-Schritt meldet, ob sich ausgelieferte Seiten geändert haben');
+  const publicPath = new RegExp(publicPathPattern);
+  assert.match('wirkungsticker/lage/2026-09-20-morgenlage/index.html', publicPath);
+  assert.match('news/index.html', publicPath);
+  assert.match('data/news/sdg/release-catalog.json', publicPath);
+  assert.doesNotMatch('data/news/state.json', publicPath);
+  assert.doesNotMatch('data/news/sdg/release-catalog.json.tmp', publicPath);
+  const commitAt = commit.indexOf('git commit -m');
+  assert.ok(commitAt > commit.indexOf(measurement), 'gemessen wird vor dem Commit');
+  const [outputGroup] = commit.match(/\{\n\s*echo "commit=\$RELEASE_COMMIT"\n\s*echo "changed=true"\n\s*echo "public_files=\$PUBLIC_FILES"\n\s*\} >> "\$GITHUB_OUTPUT"/) ?? [];
+  assert.ok(outputGroup, 'Commit und Indikator für geänderte Seiten werden gemeinsam gemeldet');
+  const pushAt = commit.indexOf('node scripts/news/publish-git.mjs');
+  assert.ok(pushAt > commitAt && commit.indexOf(outputGroup) > pushAt, 'gemeldet erst nach dem erfolgreichen Push');
   const publish = yaml.slice(yaml.indexOf('name: Publish the committed ticker automatically'));
   const bedingung = publish.slice(0, publish.indexOf('\n        env:'));
   assert.match(bedingung, /steps\.commit\.outputs\.public_files == 'true'/,

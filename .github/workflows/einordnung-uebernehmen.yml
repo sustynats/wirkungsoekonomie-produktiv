@@ -50,6 +50,7 @@ jobs:
             scripts/news/bridge/remote.mjs
             scripts/news/bridge/research-source-schema.mjs
             scripts/news/editorial-approved-revisions.mjs
+            scripts/news/editorial-document.mjs
             scripts/news/editorial-layout.mjs
             scripts/news/editorial-markdown.mjs
             scripts/news/editorial-diagrams.mjs

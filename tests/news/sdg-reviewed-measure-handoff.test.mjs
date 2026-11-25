@@ -441,12 +441,20 @@ test('edition pages render only catalogued checked packages and retain all entri
     writeFileSync(path.join(storage, 'release-catalog.json'), JSON.stringify({
       schema_version: 1, releases: [{ edition_id: edition.id, sha256: pack.sha256 }],
     }));
-    const [detailRoute, indexRoute] = render();
-    assert.equal(indexRoute, 'wirkungsticker/sdg/');
-    assert.equal(detailRoute, `wirkungsticker/sdg/ausgabe/${edition.id}/`);
-    assert.equal(written.size, 2);
-    assert.match(written.get(detailRoute + 'index.html'), new RegExp(`sdg-${target.revisionId}`));
-    assert.equal([...written.get(detailRoute + 'index.html').matchAll(/<article id="sdg-/g)].length, 42);
+    const detailRoute = `wirkungsticker/sdg/ausgabe/${edition.id}/`;
+    const caseRoute = `wirkungsticker/sdg/massnahme/${target.caseId}/`;
+    const indexRoute = 'wirkungsticker/sdg/';
+    assert.deepEqual(render(), [detailRoute, caseRoute, indexRoute]);
+    assert.equal(written.size, 3);
+    const detail = written.get(detailRoute + 'index.html');
+    const measure = written.get(caseRoute + 'index.html');
+    assert.match(detail, new RegExp(`sdg-${target.revisionId}`));
+    assert.ok(detail.includes(`href="/${caseRoute}#sdg-${target.revisionId}"`));
+    assert.ok(measure.includes(`href="/${detailRoute}#sdg-${target.revisionId}"`));
+    for (const html of [detail, measure]) {
+      assert.equal([...html.matchAll(/<article id="sdg-/g)].length, 42);
+      for (const item of manifest.items) assert.ok(html.includes(`id="sdg-${item.revision_id}"`));
+    }
     assert.match(written.get(indexRoute + 'index.html'), /SDG-Ausgaben des Global SDG Impact Trackers/);
     assert.match(written.get(detailRoute + 'index.html'), /SDG-Morgenupdate/);
     assert.ok(written.get(indexRoute + 'index.html').includes(SDG_TRACKER_EVIDENCE));
@@ -647,8 +655,13 @@ test('scheduled editions resume a partial registration without replacing the rev
     const pages = new Map();
     const routes = buildSdgEditionPages({ root, site: 'https://example.org', pageShell: data => data.body,
       write: (filename, html) => pages.set(path.relative(root, filename), html), escapeHtml: String });
-    assert.equal(routes.length, 3);
-    assert.match(pages.get(`wirkungsticker/sdg/ausgabe/${morning.id}/index.html`), new RegExp(target.revisionId));
+    const morningRoute = `wirkungsticker/sdg/ausgabe/${morning.id}/`;
+    const caseRoute = `wirkungsticker/sdg/massnahme/${target.caseId}/`;
+    assert.deepEqual(routes, [
+      'wirkungsticker/sdg/ausgabe/2026-11-24-mittagslage/', morningRoute, caseRoute, 'wirkungsticker/sdg/',
+    ]);
+    assert.ok(pages.get(morningRoute + 'index.html').includes(`href="/${caseRoute}#sdg-${target.revisionId}"`));
+    assert.ok(pages.get(caseRoute + 'index.html').includes(`href="/${morningRoute}#sdg-${target.revisionId}"`));
     assert.match(pages.get('wirkungsticker/sdg/ausgabe/2026-11-24-mittagslage/index.html'), /keine geprüften Einträge/);
   } finally {
     bridge.close();

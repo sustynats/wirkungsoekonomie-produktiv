@@ -74,7 +74,8 @@ test('die App bindet den Knopf an dieselbe Bedingung und sendet den Auftragstext
   assert.match(app, /if\(supplementable\(request\)\)/);
   assert.match(app, /supplementBrief\(supplement\.job_id,\$\('brief'\)\.value\)/);
   // Gesperrte Eingabefelder liefert FormData nicht mit: die Art kommt aus dem fortgeschriebenen Auftrag.
-  assert.match(app, /kind:supplement\?\.kind\|\|new FormData/);
+  assert.match(app, /function currentKind\(\)\{return supplement\?\.kind\|\|new FormData\(\$\('request-form'\)\)\.get\('kind'\);\}/);
+  assert.match(app, /function packet\(\)\{\s*const kind=currentKind\(\);\s*return \{client_id:[^\n]+,kind,\.\.\.\(kind==='read'\?/);
   assert.match(app, /supplement-cancel/);
   const html = fs.readFileSync(new URL('../../admin/redaktion/index.html', import.meta.url), 'utf8');
   for (const id of ['supplement-note', 'supplement-title', 'supplement-cancel']) assert.ok(html.includes(`id="${id}"`), id);
