@@ -267,23 +267,36 @@ export async function reconcileSdgPagesDelivery({
       manifest.schema_version !== 1 || !Array.isArray(manifest.editions)) {
     throw Error('SDG_PAGES_RELEASE_BINDING_MISMATCH');
   }
-  const target = pending.find(entry => manifest.editions.some(edition =>
+  const targets = pending.filter(entry => manifest.editions.some(edition =>
     edition.edition_id === entry.edition_id && edition.edition_sha256 === entry.sha256));
-  if (!target) return { status: 'awaiting_delivery' };
+  if (!targets.length) return { status: 'awaiting_delivery' };
+  const confirmed = [];
+  let status = 'already_confirmed';
+  // Leave time for the bridge to answer before its request timeout. Each
+  // verified edition is checkpointed, so the next wake resumes any remainder.
+  const stopAfter = performance.now() + 90_000;
   try {
-    const confirmation = await confirmSdgPagesDelivery({
-      root, ledger, editionId: target.edition_id, expectedCommit: manifest.source_commit,
-      runId: manifest.run_id, runAttempt: manifest.run_attempt, evidenceDirectory, checkedCatalog: catalog,
-    }, {
-      readNative, readArchive, clock,
-      readPublic: route => route === SDG_PAGES_RELEASE_PATH ? manifestBytes : readPublic(route),
-    });
-    return { status: confirmation.status, edition_id: target.edition_id };
+    for (const target of targets) {
+      const confirmation = await confirmSdgPagesDelivery({
+        root, ledger, editionId: target.edition_id, expectedCommit: manifest.source_commit,
+        runId: manifest.run_id, runAttempt: manifest.run_attempt, evidenceDirectory, checkedCatalog: catalog,
+      }, {
+        readNative, readArchive, clock,
+        readPublic: route => route === SDG_PAGES_RELEASE_PATH ? manifestBytes : readPublic(route),
+      });
+      confirmed.push(target.edition_id);
+      if (confirmation.status === 'confirmed') status = 'confirmed';
+      if (performance.now() >= stopAfter) break;
+    }
   } catch (error) {
     if (!(error instanceof RunnerArchiveRequired)) throw error;
     return { status: 'archive_required', artifact_id: error.artifactId, artifact_sha256: error.digest,
       manifest_observation: path.basename(observation) };
   }
+  return {
+    status, edition_id: confirmed[0],
+    ...(targets.length > 1 ? { edition_ids: confirmed, remaining_matching_editions: targets.length - confirmed.length } : {}),
+  };
 }
 
 // Oracle reads the native JSON and checks the downloaded ZIP against its

@@ -154,25 +154,31 @@ test('the normal ticker writer receives only checked public packages and resumes
   }
 });
 
-test('the next ticker wake acknowledges a bound live Pages run with no dispatch response', () => withStore(async ({
+test('one ticker wake acknowledges all matching editions from a bound Pages run with no dispatch response', () => withStore(async ({
   target, measures, editions, reviews, perform,
 }) => {
   reviews.set(reviewId, bind(measures, target));
   await perform();
   const edition = editions.stage(window);
+  const midday = editions.stage({ ...window, slot: 'mittagslage', cutoff: '2026-11-24T11:00:00.000Z',
+    sealedAt: '2026-11-24T11:01:00.000Z' });
   const dir = mkdtempSync(path.join(tmpdir(), 'woek-sdg-reconcile-'));
   try {
     const root = path.join(dir, 'private-catalog');
     const evidenceDirectory = path.join(dir, 'private-evidence');
     mkdirSync(root);
-    const registered = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
-    const committed = { edition_id: edition.id, sha256: registered.edition_sha256 };
+    const morning = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
+    const registered = registerSdgEdition({ root, ledger: editions, editionId: midday.id, expectedCatalogHash: morning.catalog_sha256 });
+    const committed = { edition_id: midday.id, sha256: registered.edition_sha256 };
     const sourceCommit = '1'.repeat(40);
-    const siteBytes = Buffer.from(`<main id="main-content" data-sdg-edition-sha256="${committed.sha256}">SDG</main>`);
+    const publishedEditions = [edition.id, midday.id].map((id, index) => {
+      const sha = index === 0 ? morning.edition_sha256 : registered.edition_sha256;
+      return { id, sha, bytes: Buffer.from(`<main id="main-content" data-sdg-edition-sha256="${sha}"><h1>${id}</h1></main>`) };
+    });
     const manifest = {
       schema_version: 1, kind: 'sdg_pages_release', repository: 'sustynats/wirkungsoekonomie-produktiv',
       source_commit: sourceCommit, run_id: '901', run_attempt: '1', catalog_sha256: registered.catalog_sha256,
-      editions: [{ edition_id: edition.id, edition_sha256: committed.sha256, html_sha256: sha256(siteBytes) }],
+      editions: publishedEditions.map(({ id, sha, bytes }) => ({ edition_id: id, edition_sha256: sha, html_sha256: sha256(bytes) })),
     };
     const manifestBytes = Buffer.from(JSON.stringify(manifest));
     const archive = execFileSync('python3', ['-c', `
@@ -183,14 +189,14 @@ with zipfile.ZipFile(data, "w") as archive:
 sys.stdout.buffer.write(data.getvalue())
 `], { input: manifestBytes });
     const descriptor = { id: 902, name: `sdg-pages-release-${sourceCommit}-1`, expired: false,
-      workflow_run: { id: 901, head_sha: sourceCommit }, created_at: '2026-11-24T05:32:00Z',
+      workflow_run: { id: 901, head_sha: sourceCommit }, created_at: '2026-11-24T11:32:00Z',
       digest: `sha256:${createHash('sha256').update(archive).digest('hex')}` };
     const run = { id: 901, run_attempt: 1, repository: { full_name: manifest.repository },
       head_branch: 'main', head_sha: sourceCommit, path: '.github/workflows/deploy.yml',
       event: 'push', status: 'completed' };
     const build = { name: 'build', run_id: 901, status: 'completed', conclusion: 'success',
-      started_at: '2026-11-24T05:31:00Z', completed_at: '2026-11-24T05:35:00Z' };
-    const deploy = { ...build, name: 'deploy', started_at: '2026-11-24T05:35:01Z', completed_at: '2026-11-24T05:36:00Z' };
+      started_at: '2026-11-24T11:31:00Z', completed_at: '2026-11-24T11:35:00Z' };
+    const deploy = { ...build, name: 'deploy', started_at: '2026-11-24T11:35:01Z', completed_at: '2026-11-24T11:36:00Z' };
     const pending = { root, ledger: editions, committed, evidenceDirectory };
     const noRead = () => assert.fail('Unexpected native or public read');
     assert.deepEqual(await reconcileSdgPagesDelivery(pending, {
@@ -208,7 +214,7 @@ sys.stdout.buffer.write(data.getvalue())
     ]);
     const published = new Map([
       [SDG_PAGES_RELEASE_PATH, manifestBytes],
-      [`wirkungsticker/sdg/ausgabe/${edition.id}/`, siteBytes],
+      ...publishedEditions.map(({ id, bytes }) => [`wirkungsticker/sdg/ausgabe/${id}/`, bytes]),
     ]);
     const once = rows => route => {
       assert.ok(rows.has(route), `Unexpected or repeated request ${route}`);
@@ -217,10 +223,16 @@ sys.stdout.buffer.write(data.getvalue())
       return bytes;
     };
     const checked = await reconcileSdgPagesDelivery(pending, {
-      readNative: once(native), readPublic: once(published), clock: () => '2026-11-24T05:41:00.000Z',
+      readNative: once(native), readPublic: once(published), clock: () => '2026-11-24T11:41:00.000Z',
     });
-    assert.deepEqual(checked, { status: 'confirmed', edition_id: edition.id });
-    assert.equal(editions.readDelivery(edition.id).source_commit, sourceCommit);
+    assert.deepEqual(checked, { status: 'confirmed', edition_id: edition.id,
+      edition_ids: [edition.id, midday.id], remaining_matching_editions: 0 });
+    for (const { id, sha } of publishedEditions) {
+      const receipt = editions.readDelivery(id);
+      assert.equal(receipt.source_commit, sourceCommit);
+      assert.equal(receipt.edition_sha256, sha);
+      assert.equal(receipt.deployment_job_completed_at, '2026-11-24T11:36:00.000Z');
+    }
     assert.equal(native.size, 0);
     assert.equal(published.size, 0);
     assert.deepEqual(await reconcileSdgPagesDelivery(pending, {

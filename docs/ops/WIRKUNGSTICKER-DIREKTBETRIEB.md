@@ -184,7 +184,11 @@ Er sendet nur Archivbytes und die zugehörige Kennung an die Import-Spur.
 Oracle vergleicht den ZIP-Hash mit dem eigenen GitHub-Beleg sowie Manifest
 und Ausgabe mit deren öffentlichen Bytes. Erst dann speichert es die
 bestätigte Quittung. Beim Archivdownload bleiben Token und signierte URLs
-außerhalb der Import-Spur.
+außerhalb der Import-Spur. Wenn ein Pages-Lauf mehrere noch unquittierte
+Ausgaben enthält, prüft Oracle ihre HTML-Bytes getrennt. Die Ausgaben
+teilen sich den geprüften Laufbeleg und die protokollierte Abschlusszeit.
+Bereits bestätigte Quittungen bleiben erhalten, wenn ein Folgelauf den
+Rest übernehmen muss.
 
 Der automatische Git-Commit trägt den SHA-256 seines SDG-Katalogs. Nach einem
 Abbruch zwischen Git-Push und Pages-Aufruf kann der nächste reguläre Lauf den
