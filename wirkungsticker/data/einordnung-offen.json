@@ -1,8 +1,29 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-24T20:01:15.511Z",
+  "updated_at": "2026-11-26T13:25:47.204Z",
   "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
   "beitraege": [
+    {
+      "slug": "nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc",
+      "titel": "Nachgehört: Karl-Theodor zu Guttenberg über Trumps Machtverlust, Kriege und die Grenzen politischer Kontrolle",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:25:47.204Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc/"
+    },
+    {
+      "slug": "nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2",
+      "titel": "Nachgehört: Was Andreas W. Herb an deutscher Politik kritisiert – und was davon trägt",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:25:38.920Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2/"
+    },
+    {
+      "slug": "wenn-politische-nahe-zum-politischen-signal-wird-3bb1da",
+      "titel": "Wenn politische Nähe zum politischen Signal wird",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-26T13:25:28.725Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/"
+    },
     {
       "slug": "nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c",
       "titel": "Nachgehört: Klimaschutz zwischen Protest, Versorgungssicherheit und politischer Macht",
@@ -191,27 +212,6 @@
       "art": "listened",
       "veroeffentlicht": "2026-11-18T05:42:15.098Z",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ki-ist-keine-naturgewalt-aber-sie-verandert-wer-wissen-arbeit-und-entscheidungen-steuert-a0931c/"
-    },
-    {
-      "slug": "wenn-junge-menschen-nicht-mehr-zuhoren-sondern-nicht-mehr-gehort-werden-d44d17",
-      "titel": "Wenn junge Menschen nicht mehr zuhören, sondern nicht mehr gehört werden",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-17T10:43:57.278Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-junge-menschen-nicht-mehr-zuhoren-sondern-nicht-mehr-gehort-werden-d44d17/"
-    },
-    {
-      "slug": "nachgesehen-was-an-ki-unzuverlassig-ist-und-warum-das-eine-machtfrage-wird-3ee53a",
-      "titel": "Nachgesehen: Was an KI unzuverlässig ist – und warum das eine Machtfrage wird",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-17T10:43:48.965Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-was-an-ki-unzuverlassig-ist-und-warum-das-eine-machtfrage-wird-3ee53a/"
-    },
-    {
-      "slug": "nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421",
-      "titel": "Nachgehört: Wer das Amt besetzt – und was die Wahl über Demokratie verrät",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-14T08:27:56.635Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421/"
     }
   ]
 }
