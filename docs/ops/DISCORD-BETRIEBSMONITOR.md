@@ -18,7 +18,7 @@ Taktgeber-Deduplizierung bleibt bestehen.
 - HTTP-Status plus erwarteter Seiteninhalt bzw. JSON-Vertrag; begrenzter Timeout
   und ein unmittelbarer technischer Wiederholungsversuch.
 - Ein Ausfall wird nach zwei Beobachtungen im Abstand von mindestens fünf Minuten
-  gemeldet. Ein einmaliger kurzer Verbindungsfehler erzeugt keine Direktnachricht.
+  gemeldet. Ein einmaliger kurzer Verbindungsfehler erzeugt keine Meldung.
 - Seit über 45 Minuten kein abgeschlossener Nachrichtenlauf: sofortige Meldung.
 - Echte KI-Anbieterfehler, materiell gestörte Quellenabdeckung, Budget-/
   Wechselkurssperre und eine seit über 45 Minuten im Live-Feed fehlende, bereits
@@ -69,11 +69,15 @@ bleibt ein gesonderter, vom Vercel-Kostengate gesperrter Release.
 
 ## Private Zustellung und Zustand
 
-Repository-Secrets `WOEK_MONITOR_DISCORD_BOT_TOKEN` und
-`WOEK_MONITOR_DISCORD_USER_ID` konfigurieren den vorhandenen WÖk-Discord-Bot und
-den ausdrücklich angegebenen Empfänger. Kein öffentlicher Kanal, kein Webhook-
-Fallback. Weder Token noch Nutzer-ID werden ins Repository oder in Logs geschrieben.
-Die Discord-DM-API entspricht dem bestehenden Benachrichtigungsweg der Apps.
+Die Störungsmeldungen, Entwarnungen und Tagesberichte des Betriebsmonitors
+gehen über den vorhandenen WÖk-Discord-Bot in einen privaten Serverkanal.
+`WOEK_MONITOR_DISCORD_BOT_TOKEN` und `WOEK_MONITOR_DISCORD_CHANNEL`
+sind Repository-Secrets. Das zweite enthält die Server- und Kanal-ID im
+Format `Server-ID/Kanal-ID`. Der Monitor prüft vor der Zustellung die
+Zuordnung zum Server und dass die Rolle `@everyone` den Kanal nicht sehen
+kann. Bei fehlendem oder unpassendem Ziel bleibt die Outbox erhalten.
+Die Direktnachrichten anderer Anwendungen und der Terminverwaltung laufen
+über ihre jeweiligen bestehenden Zustellwege.
 
 `codex/ops-monitor-state:monitor-state.json` enthält nur aggregierte Betriebs-
 zustände, Tagesdatum und ausstehende Nachrichten ohne private Nutzerinformationen.

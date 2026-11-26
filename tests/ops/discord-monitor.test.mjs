@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { advanceState, monitorRepository, berlinParts, evaluateChecks, summarizeNews, dailyReport, probe, sendDiscord, publicationFlow, lageCheck, selbsttestCheck, readEditorialMonitorStatus, writeEditorialMonitorStatus } from '../../scripts/ops/discord-monitor.mjs';
+import { advanceState, monitorRepository, berlinParts, evaluateChecks, summarizeNews, dailyReport, probe, sendDiscord, openPrivateDiscordDelivery, publicationFlow, lageCheck, selbsttestCheck, readEditorialMonitorStatus, writeEditorialMonitorStatus } from '../../scripts/ops/discord-monitor.mjs';
 
 const now = '2026-09-04T06:00:00Z';
 const fixture = () => ({ report: { status: 'ok', operational_status: 'ok', completed_at: now, source_failures: 0, monthly_budget_usd: 18.9, budget_policy: { status: 'ok', fx: { rate_date: '2026-09-03', rate_usd_per_eur: 1.16 } }, source_health: [], queue: { status: 'clear', total: 0, capacity: 0, technical: 0, editorial: 0 }, source_funnel: [] }, usage: { runs: [] }, stories: [], liveFeed: { items: [] }, probes: [] });
@@ -542,22 +542,82 @@ test('DM sends only to explicit recipient, with stable nonce and no public menti
   assert.deepEqual(calls[1].body.allowed_mentions, { parse: [] });
 });
 
+const monitorGuild = '123456789012345670';
+const monitorChannel = '123456789012345671';
+const monitorDestination = `${monitorGuild}/${monitorChannel}`;
+const privateMonitorChannel = {
+  id: monitorChannel,
+  guild_id: monitorGuild,
+  type: 0,
+  permission_overwrites: [{ id: monitorGuild, type: 0, deny: '1024', allow: '0' }],
+};
+
+test('operational alerts use only the verified private channel with stable nonces and no mentions', async () => {
+  const calls = [];
+  const fetchImpl = async (url, options) => {
+    calls.push({ url, method: options.method || 'GET', body: options.body && JSON.parse(options.body) });
+    return Response.json(options.method === 'POST'
+      ? { id: '123456789012345672', channel_id: monitorChannel }
+      : privateMonitorChannel);
+  };
+  const send = await openPrivateDiscordDelivery({ token: 'test', target: monitorDestination, fetchImpl });
+  await send({ id: 'nonce', content: 'Störung' });
+  await send({ id: 'recovery', content: 'Behoben' });
+  const url = `https://discord.com/api/v10/channels/${monitorChannel}`;
+  assert.deepEqual(calls.map(call => [call.method, call.url]), [
+    ['GET', url], ['POST', `${url}/messages`], ['POST', `${url}/messages`],
+  ]);
+  assert.deepEqual(calls[1].body, {
+    content: 'Störung', nonce: 'nonce', enforce_nonce: true, allowed_mentions: { parse: [] },
+  });
+});
+
+test('missing, inaccessible, mismatched and public destinations cannot send an alert', async () => {
+  const cases = [
+    [null, () => assert.fail('missing target must not request Discord'), /CONFIGURATION_MISSING/],
+    [monitorDestination, () => new Response('', { status: 403 }), /CHANNEL_HTTP_403/],
+    [monitorDestination, () => Response.json({ ...privateMonitorChannel, guild_id: monitorChannel }), /MISMATCH/],
+    [monitorDestination, () => Response.json({ ...privateMonitorChannel, type: 1 }), /MISMATCH/],
+    [monitorDestination, () => Response.json({ ...privateMonitorChannel, permission_overwrites: [] }), /NOT_PRIVATE/],
+    [monitorDestination, () => Response.json({
+      ...privateMonitorChannel,
+      permission_overwrites: [{ id: monitorGuild, type: 0, deny: '1024', allow: '1024' }],
+    }), /NOT_PRIVATE/],
+  ];
+  for (const [target, respond, error] of cases) {
+    const fetchImpl = async (url, options) => {
+      assert.equal(url, `https://discord.com/api/v10/channels/${monitorChannel}`);
+      assert.equal(options.method || 'GET', 'GET');
+      return respond();
+    };
+    await assert.rejects(openPrivateDiscordDelivery({ token: 'test', target, fetchImpl }), error);
+  }
+});
+
+test('an acknowledgement from another channel does not complete the alert', async () => {
+  const fetchImpl = async (_url, options) => Response.json(options.method === 'POST'
+    ? { id: '123456789012345672', channel_id: monitorGuild }
+    : privateMonitorChannel);
+  const send = await openPrivateDiscordDelivery({ token: 'test', target: monitorDestination, fetchImpl });
+  await assert.rejects(send({ id: 'nonce', content: 'Störung' }), /CHANNEL_RECEIPT_MISMATCH/);
+});
+
 test('long daily reports keep their final budget and warnings, with stable per-part retry identities', async () => {
   const calls = [];
   let failSecond = true;
   const fetchImpl = async (url, options) => {
-    if (!url.endsWith('/messages')) return Response.json({ id: '123456789012345678' });
+    if (!url.endsWith('/messages')) return Response.json(privateMonitorChannel);
     const body = JSON.parse(options.body);
     calls.push(body);
     if (calls.length === 2 && failSecond) { failSecond = false; return new Response('', { status: 503 }); }
-    return Response.json({ id: '123456789012345680' });
+    return Response.json({ id: '123456789012345680', channel_id: monitorChannel });
   };
   const event = { id: '123456789012345678901234',
     content: `${'x'.repeat(1949)}🌍\n${'Kosten und Quellen\n'.repeat(120)}Limit €50.00\n⚠ Offene Störung\nhttps://wirkungsoekonomie.de/wirkungsticker/` };
-  const options = { token: 'test', recipient: '123456789012345679', fetchImpl };
-  await assert.rejects(sendDiscord(event, options), /MONITOR_DM_SEND_HTTP_503/);
+  const send = await openPrivateDiscordDelivery({ token: 'test', target: monitorDestination, fetchImpl });
+  await assert.rejects(send(event), /MONITOR_DISCORD_CHANNEL_SEND_HTTP_503/);
   const firstAttempt = calls.splice(0);
-  await sendDiscord(event, options);
+  await send(event);
   assert.equal(calls.map(call => call.content).join(''), event.content, 'no silent truncation');
   assert.equal(calls[0].nonce, event.id, 'the existing first-part identity stays stable');
   assert.equal(calls[0].nonce, firstAttempt[0].nonce);
