@@ -33,16 +33,17 @@
       "firstSeen": "2026-11-26T13:58:58.087Z",
       "active": true
     },
-    "delivery-deploy.yml": {
-      "firstSeen": "2026-11-26T16:02:06.974Z",
-      "active": true
-    },
     "lage": {
       "firstSeen": "2026-11-26T17:01:31.511Z",
       "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "86df6fd8806fb0c87969f278",
+      "content": "✓ WÖk-Störung behoben\nWebsite-Auslieferung\nPrüfung: 2026-11-26T17:35:58.204Z"
+    }
+  ],
   "dailyDate": "2026-11-26",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4193,7 +4194,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-26T17:30:03.830Z",
+    "checked_at": "2026-11-26T17:35:58.204Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
