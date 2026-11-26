@@ -231,6 +231,30 @@ solange die Modusdatei fehlt. Die fachliche Prüfung bleibt an den
 vorherigen, privaten Freigabepfad gebunden. GitHub Pages liefert die
 registrierte Ausgabe über das bestehende Archiv aus.
 
+### Gebundene amtliche Datenaufnahmen übernehmen
+
+Der DNS-Adapter kann bereits gesicherte amtliche CSV-Beobachtungen für die
+Zeitreihe 1.1.a/b aus einem geprüften SQLite-Archiv in die private
+Maßnahmendatenbank übernehmen. Der Betreiber bindet die ausgewählten
+Aufnahmen vor dem Aufruf an ein privates Manifest. Das Manifest enthält
+`schema_version` (1), `source_database_sha256` und eine Liste
+`receipts` mit `snapshot_id`, `content_sha256`, `proof_sha256`
+und `expected_rows` je Aufnahme.
+
+```sh
+node scripts/news/sdg/ingest-dns-captures.mjs \
+  --manifest="$SDG_CAPTURE_MANIFEST" --manifest-sha256="$SDG_CAPTURE_MANIFEST_SHA256" \
+  --capture-db="$SDG_CAPTURE_DATABASE" --measure-db="$SDG_MEASURES_DATABASE"
+```
+
+Den erwarteten Manifest-Hash aus der geprüften Betreiberkonfiguration
+übergeben. Der Befehl liest die gebundenen Archivbytes, verarbeitet fällige
+Aufnahmen in Erfassungsreihenfolge und schreibt neue Beobachtungsfassungen
+und Belegverknüpfungen. Bei Wiederholung bleibt bereits Übernommenes erhalten.
+Quellenfreigabe, laufende Erfassung und fachliche Prüfung erfolgen in ihren
+jeweiligen Betriebsabläufen. Der Befehl ist noch nicht an den Taktgeber
+angeschlossen.
+
 ### Referenzrahmen der Maßnahmen
 
 Wenn die unabhängige Prüfung Referenzrahmen enthält, übernimmt Paketversion

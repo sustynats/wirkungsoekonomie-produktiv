@@ -49,21 +49,26 @@ function priorVersion(ledger, timelines, series, year, nextValue, snapshot, obse
     ? current.supersedes : current.revision_id;
 }
 
-// The caller supplies the receipt already verified by source intake. This
-// adapter consumes its bounded capture; it neither discovers nor publishes.
-export function importDnsObservationSnapshot({ sourceDatabase, receipt, measures }) {
-  if (![receipt.snapshot_id, receipt.content_sha256, receipt.proof_sha256].every(isHash) ||
+export function readDnsSnapshotReceipt(source, receipt) {
+  if (!receipt || ![receipt.snapshot_id, receipt.content_sha256, receipt.proof_sha256].every(isHash) ||
       !Number.isInteger(receipt.expected_rows) || receipt.expected_rows < 1) {
     throw Error('SDG_DNS_SNAPSHOT_RECEIPT_REQUIRED');
   }
+  const snapshot = source.prepare('SELECT * FROM snapshots WHERE id = ?').get(receipt.snapshot_id);
+  if (!snapshot || snapshot.source !== SOURCE || snapshot.url !== URL ||
+      snapshot.content_hash !== receipt.content_sha256 || snapshot.proof_hash !== receipt.proof_sha256 ||
+      hash([SOURCE, snapshot.url, snapshot.captured_at, snapshot.content_hash, snapshot.proof_hash]) !== snapshot.id) {
+    throw Error('SDG_DNS_SNAPSHOT_RECEIPT_MISMATCH');
+  }
+  return snapshot;
+}
+
+// The caller supplies the receipt already verified by source intake. This
+// adapter consumes its bounded capture; it neither discovers nor publishes.
+export function importDnsObservationSnapshot({ sourceDatabase, receipt, measures }) {
   const source = new DatabaseSync(sourceDatabase, { readOnly: true });
   try {
-    const snapshot = source.prepare('SELECT * FROM snapshots WHERE id = ?').get(receipt.snapshot_id);
-    if (!snapshot || snapshot.source !== SOURCE || snapshot.url !== URL ||
-        snapshot.content_hash !== receipt.content_sha256 || snapshot.proof_hash !== receipt.proof_sha256 ||
-        hash([SOURCE, snapshot.url, snapshot.captured_at, snapshot.content_hash, snapshot.proof_hash]) !== snapshot.id) {
-      throw Error('SDG_DNS_SNAPSHOT_RECEIPT_MISMATCH');
-    }
+    const snapshot = readDnsSnapshotReceipt(source, receipt);
     const observedAt = new Date(snapshot.captured_at).toISOString();
     const rows = source.prepare(`
       SELECT o.id, o.source, o.source_key, o.payload
