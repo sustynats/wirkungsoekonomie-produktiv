@@ -187,7 +187,9 @@ ${[locale.sdg, locale.plus, locale.statusLabel, locale.notes].map(name => `<th s
 
 function fileLinks(input, lang) {
   const l = input.locale[lang];
-  const listItems = input.downloads.filter(file => file.language === lang && file.kind !== 'guide').map(file => link(file.url, file.title));
+  const apiLinks = new Set(['guide', 'matrix-csv', 'matrix-json', 'reference-json']);
+  const listItems = input.downloads.filter(file => file.language === lang && !apiLinks.has(file.kind))
+    .map(file => link(file.url, file.title));
   return list([
     ...listItems,
     link(dataRoot + 'matrix-v1.csv', l.matrix + ' (CSV)'),
