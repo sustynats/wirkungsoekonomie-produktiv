@@ -29,16 +29,17 @@
       "firstSeen": "2026-11-22T23:20:51.984Z",
       "active": true
     },
-    "delivery-wirkungsticker.yml": {
-      "firstSeen": "2026-11-24T20:42:20.654Z",
-      "active": true
-    },
     "lage": {
       "firstSeen": "2026-11-26T05:06:05.105Z",
       "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "b1ea1704c2483f57c6448a4a",
+      "content": "✓ WÖk-Störung behoben\nNachrichtenimport\nPrüfung: 2026-11-26T13:36:14.973Z"
+    }
+  ],
   "dailyDate": "2026-11-26",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4189,7 +4190,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-26T13:20:56.029Z",
+    "checked_at": "2026-11-26T13:36:14.973Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
