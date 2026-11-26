@@ -60,7 +60,7 @@ const endpointDefinitions = [
     method: "GET",
     lifecycle: "stable",
     audience: ["internal", "partners"],
-    description: "SDG/SDG+-Referenzrahmen als maschinenlesbarer Snapshot.",
+    description: "Kompatibilitäts-Snapshot für SDG/SDG+. Die öffentliche SDG+-Referenz v1.0 steht unter /api/v1/sdg-plus/reference-v1.json und die Zuordnungsmatrix unter /api/v1/sdg-plus/matrix-v1.json.",
   },
   {
     id: "wirkungsradar",

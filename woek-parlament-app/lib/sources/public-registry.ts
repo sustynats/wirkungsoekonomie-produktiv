@@ -1,3 +1,4 @@
+import { sdgPlusTargetReference } from "@/lib/normative/reference-registry";
 import { supabaseRest } from "@/lib/database/supabase-admin";
 import { parliamentaryCases, type CaseSource } from "@/data/cases";
 import { politicalSourceCatalog } from "@/lib/commitments/source-catalog";
@@ -1189,7 +1190,24 @@ function foundationalReferenceSources(): StaticPublicSource[] {
       versionLabel: "v0.4",
       sourceHash: null,
       temporalClass: "CURRENT_REFERENCE",
-      abstract: "Transparente WÖk-Erweiterung der SDGs für demokratische, mediale, rechtsstaatliche und digitale Voraussetzungen. SDG+ ist keine offizielle UN-Kategorie.",
+      abstract: "Frühere Darstellung von SDG+ für Fallakten mit diesem Referenzstand.",
+      usages: []
+    },
+    {
+      id: "foundation-sdg-plus-target-reference",
+      slug: "sdg-plus-zielreferenz",
+      title: "SDG+ in der Wirkungsökonomie",
+      institution: "Natalie Weber",
+      category: "WOEK_METHOD_REFERENCE",
+      role: "NORMATIVE_REFERENCE",
+      documentType: "Versionierte Zielreferenz",
+      canonicalUrl: sdgPlusTargetReference.currentReferenceUrl,
+      documentDate: sdgPlusTargetReference.date,
+      retrievedAt: sdgPlusTargetReference.date,
+      versionLabel: `v${sdgPlusTargetReference.version}`,
+      sourceHash: null,
+      temporalClass: "CURRENT_REFERENCE",
+      abstract: "Neun SDG+-Ziele, ihre Beziehungen zu den UN-Zielen und Materialien für Workshops.",
       usages: []
     },
     {
