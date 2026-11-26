@@ -79,7 +79,9 @@ const server = http.createServer(async (req, res) => {
       const startAt = process.env.WOEK_SDG_PUBLICATION_START_AT;
       if (lane !== 'import' || (op !== 'sdg.reconcile' && !startAt)) throw Error('SDG_BRIDGE_PUBLICATION_INACTIVE');
       const { serveSdgEditions } = await import('../sdg/bridge-editions.mjs');
-      const sdg = serveSdgEditions(directory, startAt, store);
+      const sdg = serveSdgEditions(directory, startAt, store, {
+        dnsManifestSha256: process.env.WOEK_SDG_DNS_CAPTURE_MANIFEST_SHA256,
+      });
       if (op === 'sdg.reconcile' && (args.length < 1 || args.length > 2)) throw Error('SDG_PAGES_RECEIPT_BINDING_REQUIRED');
       if (op === 'sdg.reserveDispatch') {
         if (args.length !== 2) throw Error('SDG_PAGES_DISPATCH_BINDING_REQUIRED');

@@ -1,12 +1,15 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import test from 'node:test';
 import { importDnsObservationSnapshot } from '../../scripts/news/sdg/dns-indicator-intake.mjs';
 import { ingestDnsCaptures } from '../../scripts/news/sdg/ingest-dns-captures.mjs';
+import { serveSdgEditions } from '../../scripts/news/sdg/bridge-editions.mjs';
+import { EditionLedger } from '../../scripts/news/sdg/editions.mjs';
+import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
 import { canonicalObservationJson, MeasureRevisions } from '../../scripts/news/sdg/measure-revisions.mjs';
 
 const source = 'dns_1_1_ab';
@@ -135,4 +138,44 @@ test('scheduled intake rejects unpinned capture bytes and malformed receipt batc
   sourceDb.exec("UPDATE snapshots SET proof_hash = 'altered'");
   assert.throws(() => run(original), /CAPTURE_BINDING_REQUIRED/);
   assert.equal(existsSync(pinned.measureDatabase), false);
+}));
+
+test('the existing Oracle schedule imports pinned captures before the first edition is due', () => fixture(({ root, file, write }) => {
+  const privateRoot = path.join(root, 'sdg');
+  const intake = path.join(privateRoot, 'intake', 'dns');
+  const publication = path.join(privateRoot, 'publication');
+  mkdirSync(intake, { recursive: true, mode: 0o700 });
+  mkdirSync(publication, { mode: 0o700 });
+
+  const editionDb = path.join(privateRoot, 'editions.sqlite');
+  writeFileSync(editionDb, '', { mode: 0o600 });
+  const editions = new EditionLedger(editionDb);
+  const edition = editions.stage({ date: '2026-11-22', slot: 'morgenlage',
+    cutoff: '2026-11-22T05:00:00.000Z', sealedAt: '2026-11-22T05:01:00.000Z' });
+  const registered = registerSdgEdition({ root: publication, ledger: editions, editionId: edition.id,
+    expectedCatalogHash: null });
+  const cursor = { edition_id: edition.id, sha256: registered.edition_sha256 };
+  const receipt = write({ marker: 'b', at: '2026-11-22T08:00:00Z', value: '18.0' });
+  const pinned = scheduledBatch(root, file, [receipt]);
+  writeFileSync(path.join(intake, 'manifest.json'), readFileSync(pinned.manifest), { mode: 0o600 });
+  writeFileSync(path.join(intake, 'capture.sqlite'), readFileSync(file), { mode: 0o600 });
+
+  const start = '2026-11-22T11:00:00.000Z';
+  const clock = () => '2026-11-22T09:00:00.000Z';
+  const measureDb = path.join(privateRoot, 'measures.sqlite');
+  try {
+    assert.deepEqual(serveSdgEditions(root, start, null, { clock }).prepare(cursor), []);
+    assert.equal(existsSync(measureDb), false);
+    const sdg = serveSdgEditions(root, start, null, { clock, dnsManifestSha256: pinned.manifestSha256 });
+    assert.deepEqual(sdg.prepare(cursor), []);
+    assert.deepEqual(sdg.prepare(cursor), []);
+    const ledger = new MeasureRevisions(measureDb);
+    try {
+      const { id } = ledger.db.prepare('SELECT id FROM measures').get();
+      const [record, duplicate] = ledger.timeline(id);
+      assert.equal(record.value.reported_value, '18.0');
+      assert.equal(duplicate, undefined);
+      assert.equal(editions.read('2026-11-22-mittagslage'), null);
+    } finally { ledger.close(); }
+  } finally { editions.close(); }
 }));

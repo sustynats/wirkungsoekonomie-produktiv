@@ -251,9 +251,13 @@ Den erwarteten Manifest-Hash aus der geprüften Betreiberkonfiguration
 übergeben. Der Befehl liest die gebundenen Archivbytes, verarbeitet fällige
 Aufnahmen in Erfassungsreihenfolge und schreibt neue Beobachtungsfassungen
 und Belegverknüpfungen. Bei Wiederholung bleibt bereits Übernommenes erhalten.
-Quellenfreigabe, laufende Erfassung und fachliche Prüfung erfolgen in ihren
-jeweiligen Betriebsabläufen. Der Befehl ist noch nicht an den Taktgeber
-angeschlossen.
+Im bestehenden Oracle-Importdienst aktiviert die ausdrücklich gesetzte
+Variable `WOEK_SDG_DNS_CAPTURE_MANIFEST_SHA256` die Übernahme bei den
+regulären SDG-Importläufen. Dafür liegen die geprüften privaten Dateien
+unter `sdg/intake/dns/manifest.json` und `sdg/intake/dns/capture.sqlite`.
+Ein fehlerhafter Stand wird protokolliert. Bereits fachlich geprüfte
+Maßnahmen bleiben zur Ausgabe verfügbar. Quellenfreigabe, laufende Erfassung
+und fachliche Prüfung erfolgen in ihren jeweiligen Betriebsabläufen.
 
 ### Referenzrahmen der Maßnahmen
 

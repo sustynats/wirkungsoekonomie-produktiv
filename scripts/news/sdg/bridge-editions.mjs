@@ -4,6 +4,7 @@ import { EditionLedger } from './editions.mjs';
 import { MeasureRevisions } from './measure-revisions.mjs';
 import { MeasureReviewJournal } from './measure-review-journal.mjs';
 import { prepareScheduledSdgEditions } from './prepare-scheduled-editions.mjs';
+import { ingestDnsCaptures } from './ingest-dns-captures.mjs';
 import { readSdgCatalogIndex, readSdgReleaseCatalog, SDG_HASH, SDG_TRANSFER_BYTES } from './release-catalog.mjs';
 import { reconcileRunnerSdgPagesDelivery } from './confirm-pages-delivery.mjs';
 
@@ -15,7 +16,9 @@ const privateFile = filename => {
 
 // Only the public projection crosses the existing authenticated import lane.
 // Journal rows, snapshots, drafts, review identities and databases stay here.
-export function serveSdgEditions(directory, startAt, bridge, { clock = () => new Date().toISOString() } = {}) {
+export function serveSdgEditions(directory, startAt, bridge, {
+  clock = () => new Date().toISOString(), dnsManifestSha256,
+} = {}) {
   const privateRoot = path.join(directory, 'sdg');
   const root = path.join(privateRoot, 'publication');
   const editionDb = path.join(privateRoot, 'editions.sqlite');
@@ -45,6 +48,19 @@ export function serveSdgEditions(directory, startAt, bridge, { clock = () => new
       // Use the Oracle clock and the configured start, never timestamps from
       // the HTTP caller. The existing journal serializes accepted reviews.
       const checkedThrough = clock();
+      if (dnsManifestSha256) {
+        const intake = path.join(privateRoot, 'intake', 'dns');
+        try {
+          ingestDnsCaptures({
+            manifest: path.join(intake, 'manifest.json'), manifestSha256: dnsManifestSha256,
+            sourceDatabase: path.join(intake, 'capture.sqlite'), measureDatabase: measureDb,
+            clock: () => new Date(checkedThrough),
+          });
+        } catch {
+          // Unavailable source input must not hold back already reviewed items.
+          console.warn('SDG_DNS_CAPTURE_INTAKE_PENDING');
+        }
+      }
       if (checkedThrough >= startAt) {
         privateFile(editionDb);
         privateFile(measureDb);
