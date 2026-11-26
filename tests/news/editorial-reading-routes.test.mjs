@@ -5,8 +5,10 @@ import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { gunzipSync } from 'node:zlib';
 import { findSearchIds } from '../../assets/js/ticker-search.js';
-import { buildAppPages } from '../../scripts/news/app-pages.mjs';
+import { appNavigation, buildAppPages } from '../../scripts/news/app-pages.mjs';
+import { retiredStoryPage } from '../../scripts/news/build.mjs';
 import { RSS_CHANNELS } from '../../scripts/news/rss-channels.mjs';
+import { buildSourcePages } from '../../scripts/news/source-pages.mjs';
 
 test('the reading partition retains every reading and keeps the other public formats separate', async () => {
   const root = mkdtempSync(join(tmpdir(), 'woek-reading-app-'));
@@ -28,7 +30,7 @@ test('the reading partition retains every reading and keeps the other public for
       root, stories: news, analyses: publicAnalyses, storiesById: new Map(),
       storyCard: () => '<article data-news-card>Fiktive Meldung</article>',
       editorialCard: () => '<article data-news-card>Fiktiver Redaktionsbeitrag</article>',
-      pageShell: ({ body }) => body, write, updatedAt: publishedAt,
+      pageShell: ({ canonical, sdgActive, body }) => appNavigation(canonical, { sdgActive }) + body, write, updatedAt: publishedAt,
     };
     buildAppPages(pageInputs);
     const manifest = json('manifest.json.gz');
@@ -58,6 +60,8 @@ test('the reading partition retains every reading and keeps the other public for
     assert.match(readPage(''), /<h2>Nachgelesen<\/h2><a href="\/wirkungsticker\/analysen\/\?typ=read">/);
     assert.match(readPage('analysen'), /<option value="read">Nachgelesen<\/option>/);
     assert.match(readPage('suche'), /<option value="read">Nachgelesen<\/option>/);
+    assert.match(readPage(''), /class="ticker-app-search" href="\/wirkungsticker\/suche\/"/);
+    assert.doesNotMatch(readPage('suche'), /bereich=SDG-Tracker/);
     assert.match(readPage('mehr'), /href="\/wirkungsticker\/analysen\/\?typ=read">Nachgelesen</);
     assert.doesNotMatch(readPage('news'), /<option value="read">/);
     assert.match(RSS_CHANNELS.analyses.description, /Nachgelesen/);
@@ -75,8 +79,41 @@ test('the reading partition retains every reading and keeps the other public for
     assert.match(readPage(''), /<h2>Nachgelesen<\/h2><a href="\/wirkungsticker\/analysen\/\?typ=read">/);
     assert.doesNotMatch(readPage(''), /Fiktive Meldung/);
     assert.match(readPage('news'), /Fiktive Meldung/);
+    assert.match(readPage(''), /class="ticker-app-search" href="\/suche\.html\?bereich=SDG-Tracker"/);
+    assert.match(readPage('suche'), /<h1>Suche in Nachrichtenarchiv und Redaktion<\/h1>/);
+    assert.match(readPage('mehr'), /href="\/wirkungsticker\/suche\/">Nachrichtenarchiv und Redaktion durchsuchen/);
     assert.deepEqual(json('manifest.json.gz'), manifest);
   } finally {
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('archived article and source permalinks use tracker navigation after the switch', () => {
+  const story = { slug: 'archiv-meldung', title: 'Frühere Meldung', analysis: { summary: 'Unveränderte Kurzfassung' }, sources: [] };
+  const legacy = retiredStoryPage(story);
+  const switched = retiredStoryPage(story, { sdgActive: true });
+  assert.match(legacy, /href="\/wirkungsticker\/news\//);
+  assert.match(switched, /href="\/wirkungsticker\/sdg\//);
+  assert.match(switched, /rel="canonical" href="https:\/\/wirkungsoekonomie\.de\/wirkungsticker\/archiv-meldung\/"/);
+  const main = html => html.match(/<main\b[\s\S]+?<\/main>/)?.[0];
+  assert.ok(main(legacy));
+  assert.equal(main(switched), main(legacy));
+
+  const registry = { updated_at: '2026-11-24T12:00:00Z', sources: [{
+    source_id: 'fixture', name: 'Beispielquelle', url: 'https://example.org', role: 'C',
+    enabled: false, access: { status: 'public' },
+  }] };
+  const pages = new Map();
+  buildSourcePages(registry, {}, {
+    root: '/virtual', site: 'https://wirkungsoekonomie.de', sdgActive: true,
+    write: (file, html) => pages.set(file, html), escapeHtml: String, formatDate: String,
+    pageShell: ({ canonical, sdgActive, body }) => appNavigation(canonical, { sdgActive }) + body,
+  });
+  assert.deepEqual([...pages.keys()], [
+    '/virtual/wirkungsticker/quellen/index.html', '/virtual/wirkungsticker/quellen/fixture/index.html',
+  ]);
+  for (const html of pages.values()) {
+    assert.match(html, /href="\/wirkungsticker\/sdg\//);
+    assert.match(html, /class="ticker-app-search" href="\/suche\.html\?bereich=SDG-Tracker"/);
   }
 });

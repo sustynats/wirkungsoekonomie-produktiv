@@ -157,21 +157,30 @@ export function buildSdgEditionPages({ root, site, pageShell, write, escapeHtml:
       '../../../../', edition.sha256);
   }
   for (const [caseId, versions] of cases) {
-    const latest = versions[0].item;
     const byRevision = new Map(versions.map(version => [version.item.revision_id, version.item]));
     if (byRevision.size !== versions.length) throw Error('SDG_RELEASE_DUPLICATE_CASE_REVISION');
+    const previousVersion = item => {
+      const previous = byRevision.get(item.supersedes);
+      return previous && item.event_id && previous.revision_id !== item.revision_id && previous.event_id === item.event_id
+        ? previous : null;
+    };
+    const superseded = new Set(versions.map(({ item }) => previousVersion(item)?.revision_id));
+    const [latest] = versions.filter(({ item }) => !superseded.has(item.revision_id))
+      .toSorted((left, right) => right.edition.scheduled_at.localeCompare(left.edition.scheduled_at)
+        || String(right.item.discovered_at ?? '').localeCompare(String(left.item.discovered_at ?? '')));
+    if (!latest) throw Error('SDG_RELEASE_CASE_HEAD_MISSING');
     const chronological = versions.toSorted((left, right) =>
       eventTime(left.item.event_at) - eventTime(right.item.event_at)
       || left.edition.scheduled_at.localeCompare(right.edition.scheduled_at));
     const history = chronological.map(({ item, edition, editionRoute, lateDate }) => {
-      const previous = byRevision.get(item.supersedes);
-      const correction = previous && item.event_id && previous.revision_id !== item.revision_id && previous.event_id === item.event_id
-        ? ` · <a href="#sdg-${previous.revision_id}">Frühere Fassung</a>` : '';
+      const previous = previousVersion(item);
+      const correction = previous ? ` · <a href="#sdg-${previous.revision_id}">Frühere Fassung</a>` : '';
       const link = `<p>In Ausgabe <a href="/${editionRoute}#sdg-${item.revision_id}">${esc(sdgEditionTitle(edition))}</a>${correction}</p>`;
       return renderItem(item, link, lateDate, esc);
     }).join('\n');
-    page(`${MEASURE_ROUTE}${caseId}/`, `${latest.title} – Maßnahmenakte | ${tracker}`, latest.title,
-      latest.summary, `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Die Chronologie folgt dem Ereignisdatum. Einträge mit offenem Datum stehen am Ende.</p><section aria-label="Chronologie der Maßnahme">${history}</section>`, '../../../../');
+    const { title, summary } = latest.item;
+    page(`${MEASURE_ROUTE}${caseId}/`, `${title} – Maßnahmenakte | ${tracker}`, title,
+      summary, `<p><a href="/${ROUTE}">Alle SDG-Ausgaben</a></p><p>Die Chronologie folgt dem Ereignisdatum. Einträge mit offenem Datum stehen am Ende.</p><section aria-label="Chronologie der Maßnahme">${history}</section>`, '../../../../');
   }
   page(ROUTE, `SDG-Ausgaben | ${tracker}`, 'SDG-Ausgaben des Global SDG Impact Trackers',
     'Die Ausgaben des Wirkungstickers verfolgen Maßnahmen und belegte Veränderungen zu den UN-Nachhaltigkeitszielen.',

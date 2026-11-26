@@ -71,6 +71,11 @@ test('Nachgelesen takes the owner-approved exact edition into the existing reade
     assert.match(html, /Lesestand: Auszug/);
     assert.match(html, /href="https:\/\/example.org\/reading-source"[^>]+>Originaldokument öffnen/);
     assert.match(html, /"articleSection":"Nachgelesen"/);
+    const switched = editorialAnalysisPage(edition, undefined, { sdgActive: true });
+    assert.match(switched, /href="\/wirkungsticker\/sdg\//);
+    const main = value => value.match(/<main\b[\s\S]+?<\/main>/)?.[0];
+    assert.ok(main(html));
+    assert.equal(main(switched), main(html));
     const item = { ...edition, status: 'published', teaser: 'Fiktiver Vorspann', updated_at: at };
     const feeds = tickerRssFeeds([], [item]);
     assert.match(feeds.analyses, /Nachgelesen: Fiktiver Beitrag/);

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { runInNewContext } from "node:vm";
 import { gzipSync } from "node:zlib";
 import { buildBrowserSearchIndex, readBuiltSearchEntries } from "../../scripts/search/build-browser-search-index.mjs";
 import { loadBrowserSearchIndex, loadSearchSuggestions } from "../../assets/js/search-index-loader.js";
@@ -31,6 +32,37 @@ function buildFixture() {
   fs.writeFileSync(path.join(root, "assets/js/search.js"), "const CURATED_QUERY_ROUTES = {}; const RECOMMENDED_QUERY_ENTRYPOINTS = {};");
   return root;
 }
+
+test("the SDG search link scopes the existing search to edition and measure routes", () => {
+  const page = fs.readFileSync(new URL("../../suche.html", import.meta.url), "utf8");
+  assert.match(page, /<option value="SDG-Tracker">SDG-Maßnahmen und Ausgaben<\/option>/);
+  const original = fs.readFileSync(new URL("../../assets/js/search.js", import.meta.url), "utf8");
+  // Run the actual URL parsing and filter with a minimal DOM. Stop before
+  // listeners are bound or search data is requested.
+  const source = original.replace("\n  bindEvents();\n", "\n  globalThis.matchesScope = passesFilters;\n  return;\n");
+  assert.notEqual(source, original);
+  class Input {}
+  class Select {
+    dataset = { searchFilter: "section" };
+    value = "";
+  }
+  const section = new Select();
+  const context = {
+    URLSearchParams, HTMLInputElement: Input, HTMLSelectElement: Select, HTMLDetailsElement: class {},
+    document: {
+      documentElement: { lang: "de" }, currentScript: { src: "https://wirkungsoekonomie.de/assets/js/search.js" },
+      querySelector: selector => selector === "#site-search-input" ? new Input() : {},
+      querySelectorAll: selector => selector === "[data-search-filter]" ? [section] : [],
+    },
+    window: { location: { search: "?bereich=SDG-Tracker" } },
+  };
+  runInNewContext(source, context);
+  assert.equal(section.value, "SDG-Tracker");
+  assert.equal(context.matchesScope({ url: "/wirkungsticker/sdg/ausgabe/test/" }), true);
+  assert.equal(context.matchesScope({ url: "/wirkungsticker/sdg/massnahme/test/" }), true);
+  assert.equal(context.matchesScope({ url: "/wirkungsticker/fruehere-meldung/" }), false);
+  assert.equal(context.matchesScope({ url: "/wirkungsticker/analyse/fiktiver-beitrag/", type: "Redaktion" }), false);
+});
 
 test("the browser build covers the route manifest, shards archives and removes redirects", () => {
   const root = buildFixture();

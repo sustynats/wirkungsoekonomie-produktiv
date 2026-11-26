@@ -33,6 +33,7 @@
     { id: "akademie", label: i18n("Akademie", "Academy"), max: 3 },
     { id: "downloads", label: "Downloads", max: 3 },
     { id: "journal", label: "Journal", max: 3 },
+    { id: "sdg", label: "Global SDG Impact Tracker", max: 5 },
     { id: "redaktion", label: i18n("Wirkungsticker-Redaktion", "Wirkungsticker editorials"), max: 5 },
     { id: "beispiele", label: i18n("Beispiele & Fallstudien", "Examples & case studies"), max: 3 },
     { id: "weitere", label: i18n("Weitere Treffer", "More results"), max: 4 },
@@ -354,6 +355,7 @@
 
   function classifyEntry(entry) {
     if (String(entry.url || "").startsWith("/wirkungslexikon/")) return "wirkungslexikon";
+    if (String(entry.url || "").startsWith("/wirkungsticker/sdg/")) return "sdg";
     if (entry.type === "Redaktion" && String(entry.url || "").startsWith("/wirkungsticker/analyse/")) {
       return "redaktion";
     }
@@ -611,6 +613,7 @@
         if (selected === "Begriff") return classifyEntry(entry) === "begriffe";
         if (selected === "Werkzeug") return classifyEntry(entry) === "werkzeuge" || url.startsWith("/werkzeuge/");
         if (selected === "Wirkungsfeld") return classifyEntry(entry) === "wirkungsfelder";
+        if (selected === "SDG-Tracker") return classifyEntry(entry) === "sdg";
         if (selected === "Dokument") return classifyEntry(entry) === "downloads" || classifyEntry(entry) === "methoden" || format.includes("paper") || format.includes("download");
         if (selected === "Demo") return url.startsWith("/erleben") || tags.includes("demo") || format.includes("demo");
         if (selected === "Einwand") return classifyEntry(entry) === "fragen" || url.startsWith("/einwaende") || url.startsWith("/fragen");

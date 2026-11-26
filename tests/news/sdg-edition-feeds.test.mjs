@@ -41,6 +41,7 @@ test('registered SDG editions build stable case chronologies and retain original
   const caseId = '1'.repeat(64);
   const unrelatedCase = '2'.repeat(64);
   const earlierRevision = 'a'.repeat(64);
+  const intermediateRevision = 'f'.repeat(64);
   const correctedRevision = 'b'.repeat(64);
   const caseEvent = '3'.repeat(64);
   const rows = [
@@ -55,8 +56,11 @@ test('registered SDG editions build stable case chronologies and retain original
       domain: 'implementation', stage: 'started',
     }]],
     ['2026-11-24', [{
-      title: 'Korrigierter Beschluss', revision_id: correctedRevision, event_id: caseEvent,
+      title: 'Zwischenkorrektur', revision_id: intermediateRevision, event_id: caseEvent,
       supersedes: earlierRevision, event_at: '2026-11-21',
+    }, {
+      title: 'Korrigierter Beschluss', revision_id: correctedRevision, event_id: caseEvent,
+      supersedes: intermediateRevision, event_at: '2026-11-21',
       reference_frameworks: ['UN SDG 3.8', 'Deutsche Nachhaltigkeitsstrategie'],
     }, {
       title: 'Prüfbericht ohne Ereignisdatum', revision_id: 'e'.repeat(64), event_id: '5'.repeat(64),
@@ -97,9 +101,11 @@ test('registered SDG editions build stable case chronologies and retain original
   assert.ok(routes.includes(caseRoute) && routes.includes(otherRoute));
   assert.equal(regeneratablePublicationPath(caseRoute + 'index.html'), true);
   const chronology = files.get(caseRoute + 'index.html');
+  assert.match(chronology, /<h1>Korrigierter Beschluss<\/h1>/);
   const headings = [...chronology.matchAll(/<h2>([^<]+)<\/h2>/g)].map(([, heading]) => heading);
-  assert.deepEqual(headings, ['Ursprünglicher Beschluss', 'Korrigierter Beschluss', 'Umsetzung begonnen', 'Prüfbericht ohne Ereignisdatum']);
+  assert.deepEqual(headings, ['Ursprünglicher Beschluss', 'Zwischenkorrektur', 'Korrigierter Beschluss', 'Umsetzung begonnen', 'Prüfbericht ohne Ereignisdatum']);
   assert.ok(chronology.includes(`href="#sdg-${earlierRevision}">Frühere Fassung`));
+  assert.ok(chronology.includes(`href="#sdg-${intermediateRevision}">Frühere Fassung`));
   assert.ok(chronology.includes(`/wirkungsticker/sdg/ausgabe/2026-11-24-morgenlage/#sdg-${correctedRevision}`));
   assert.ok(chronology.includes(`https://example.org/source/${earlierRevision}`));
   assert.ok(chronology.includes('<dt>Umsetzung</dt><dd>begonnen</dd>'));
