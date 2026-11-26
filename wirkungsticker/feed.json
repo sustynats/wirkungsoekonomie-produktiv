@@ -1,11 +1,53 @@
 {
-  "_woek_revision": "20260912-news-freshness:2026-11-24T20:01:15.511Z",
+  "_woek_revision": "20260912-news-freshness:2026-11-26T13:25:47.204Z",
   "version": "https://jsonfeed.org/version/1.1",
   "title": "Wirkungsticker",
   "home_page_url": "https://wirkungsoekonomie.de/wirkungsticker/",
   "feed_url": "https://wirkungsoekonomie.de/wirkungsticker/feed.json",
   "language": "de",
   "items": [
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc/",
+      "title": "Nachgehört: Karl-Theodor zu Guttenberg über Trumps Machtverlust, Kriege und die Grenzen politischer Kontrolle",
+      "summary": "Im Gespräch mit Paul Ronzheimer geht es um die Folgen der US-Midterms, mögliche Absetzbewegungen in der Republikanischen Partei, die Kriege gegen Iran und in der Ukraine sowie den Nvidia-Spionageverdacht.",
+      "date_published": "2026-11-26T13:25:47.204Z",
+      "date_modified": "2026-11-26T13:25:47.204Z",
+      "_woek_released_at": "2026-11-26T13:25:47.204Z",
+      "_woek_original_episode_date": "2026-11-11",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2/",
+      "title": "Nachgehört: Was Andreas W. Herb an deutscher Politik kritisiert – und was davon trägt",
+      "summary": "Im Gespräch mit Paul Ronzheimer verbindet der MBG-Gründer Bürokratie, Energiepreise und politische Unberechenbarkeit. Einige Befunde sind plausibel, andere bleiben persönliche Einschätzungen oder ungeprüfte Beispiele.",
+      "date_published": "2026-11-26T13:25:38.920Z",
+      "date_modified": "2026-11-26T13:25:38.920Z",
+      "_woek_released_at": "2026-11-26T13:25:38.920Z",
+      "_woek_original_episode_date": "2026-11-25",
+      "tags": [
+        "Nachgehört"
+      ],
+      "_woek_type": "Nachgehört"
+    },
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/",
+      "title": "Nachgesehen: Wenn politische Nähe zum politischen Signal wird",
+      "summary": "Nachgesehen: Markus Lanz mit Claudia Wittig und Johannes Volkmann über BSW, AfD und die Regierungsbildung in Sachsen-Anhalt",
+      "date_published": "2026-11-26T13:25:28.725Z",
+      "date_modified": "2026-11-26T13:25:28.725Z",
+      "_woek_released_at": "2026-11-26T13:25:28.725Z",
+      "_woek_original_episode_date": "2026-11-25",
+      "tags": [
+        "Nachgesehen"
+      ],
+      "_woek_type": "Nachgesehen"
+    },
     {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c/",
