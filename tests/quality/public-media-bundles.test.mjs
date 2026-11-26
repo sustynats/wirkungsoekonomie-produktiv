@@ -15,7 +15,11 @@ test('reviewed image bundles survive normalization and pass the publication gate
   const cwd = mkdtempSync(path.join(tmpdir(), 'woek-media-gate-'));
   try {
     const names = ['Icons_mit_Beschriftung_v2', 'Icons_ohne_Beschriftung', '24_Comic_Icons_v2', 'Hochformat_Vorlagen'];
-    const urls = names.map(name => release + `WerteAdvent_2026_${name}.zip`);
+    const sdgRelease = release.replace('werteadvent-2026-v2', 'woek-sdgplus-v1');
+    const urls = [
+      ...names.map(name => release + `WerteAdvent_2026_${name}.zip`),
+      ...['de', 'en'].map(lang => sdgRelease + `sdgplus-zielkarten-${lang}.zip`),
+    ];
     writeFileSync(path.join(cwd, 'index.html'), urls.map(url => `<a href="${url}">Bilderpaket herunterladen</a>`).join('\n'));
     const normalized = run('sanitize-public-library-formats.mjs', cwd);
     assert.equal(normalized.status, 0, normalized.stderr);
