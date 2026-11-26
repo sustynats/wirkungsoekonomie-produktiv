@@ -172,6 +172,11 @@ jobs:
           # Shared publication gates compare institute prose with its current
           # source snapshot, not with HTML left over from an earlier full build.
           node scripts/site/build-institut-projects.mjs
+          # Regenerate approved SDG+ routes without rewriting badges on historical pages.
+          node scripts/glossary/build-glossary-registry.mjs
+          node scripts/glossary/build-glossary-pages.mjs
+          node scripts/portal/build-sdg-reference.mjs --reference-pages-only
+          node --test tests/site/sdgplus-reference.test.mjs
           # Footer refresh makes historical pages enter the shell-integrity
           # check. Refresh their header from the same current renderer first;
           # an old header plus a new footer must not bypass that check.
@@ -181,6 +186,7 @@ jobs:
           # Historical prose stays intact and receives its dated notice.
           python3 tools/apply_nwi_disambiguation.py
           npm run build:search
+          node scripts/api/build-core-api-manifest.mjs
           npm run news:validate
       - name: Audit the generated release including new news routes
         run: bash scripts/ops/audit-generated-release.sh

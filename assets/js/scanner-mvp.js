@@ -316,6 +316,9 @@
   function renderResult(demoKey, sourceText) {
     const mode = modes[modeSelect.value] || modes.text;
     const demo = demos[demoKey] || demos[mode.demo] || demos["politische-sprache"];
+    const referenceNote = demo === demos["politische-sprache"]
+      ? '<p data-sdgplus-method-reference="historical">Die SDG+-Bezüge dieses Beispiels folgen der früheren Web-Gliederung (Begriffsleitfaden v1.8, § 4.2). <a class="text-link" href="/verstehen/sdgs-sdgplus/#sdgplus">Aktuelle SDG+-Zielreferenz v1.0</a>.</p>'
+      : '';
     resultPanel.innerHTML = `
       <article class="scanner-result-card">
         <div class="scanner-result-head">
@@ -330,7 +333,7 @@
           ${renderQuality(demo.quality)}
           <article><h4>Wirkungspotenziale</h4>${list(demo.potentials)}</article>
           <article><h4>Wirkungsräume: Mensch, Planet, Demokratie</h4>${list(demo.spaces)}</article>
-          <article><h4>SDG-/SDG+-Bezug</h4>${list(demo.sdg)}</article>
+          <article><h4>SDG-/SDG+-Bezug</h4>${referenceNote}${list(demo.sdg)}</article>
           <article><h4>Wirkungspfad</h4>${path(demo.path)}</article>
           <article><h4>Zielkonflikte</h4><p>${escapeHtml(demo.conflicts)}</p></article>
           <article><h4>Datenlücken</h4><p>${escapeHtml(demo.gaps)}</p></article>

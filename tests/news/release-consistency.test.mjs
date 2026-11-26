@@ -47,6 +47,11 @@ test('all full and ticker releases rebuild coherent projections from hydrated st
   before(full, 'npm run news:build', 'WOEK_PDF_BUILD_MODE=verify npm run build');
   assert.match(fast, /ticker_only == 'true'/);
   before(fast, 'npm run news:build', 'npm run build:search');
+  before(fast, 'scripts/glossary/build-glossary-registry.mjs', 'scripts/glossary/build-glossary-pages.mjs');
+  before(fast, 'scripts/glossary/build-glossary-pages.mjs', 'scripts/portal/build-sdg-reference.mjs --reference-pages-only');
+  before(fast, 'scripts/portal/build-sdg-reference.mjs --reference-pages-only', 'tests/site/sdgplus-reference.test.mjs');
+  before(fast, 'tests/site/sdgplus-reference.test.mjs', 'npm run build:search');
+  before(fast, 'npm run build:search', 'scripts/api/build-core-api-manifest.mjs');
   before(deploy, 'release-hydrate.mjs', 'Build static reference data and search');
   const build = quality.match(/- name: Build ticker from hydrated data before quality checks\n([\s\S]*?)(?=\n      - name:)/)?.[1];
   assert.ok(build && build.includes('npm run news:build'));
