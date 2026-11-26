@@ -125,8 +125,8 @@ function Transparency() {
         <article>
           <p className="reference-number">05</p>
           <h3>SDG+: Voraussetzungen sichtbar machen</h3>
-          <p>Die Agenda 2030 enthält bereits Ziele zu Frieden, Gerechtigkeit und starken Institutionen. Mit SDG+ konkretisiert und ergänzt die Wirkungsökonomie den UN-Rahmen. Bestehende Fallakten zeigen die Zuordnung zur jeweils dokumentierten Referenzfassung.</p>
-          <div className="reference-links"><a href="https://wirkungsoekonomie.de/verstehen/sdgs-sdgplus/#sdgplus">SDG+-Ziele, Matrix und Toolkit <span aria-hidden="true">→</span></a></div>
+          <p>Die Agenda 2030 enthält bereits Ziele zu Frieden, Gerechtigkeit und starken Institutionen. SDG+ ist zusätzlich eine offen ausgewiesene Erweiterung der Wirkungsökonomie: Sie macht Voraussetzungen wie Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, institutionelles Vertrauen und digitale Selbstbestimmung genauer prüfbar. SDG+ ist keine UN-Kategorie.</p>
+          <div className="reference-links"><Link href="/quellen/sdg-plus-referenzrahmen">SDG+ verstehen <span aria-hidden="true">→</span></Link></div>
         </article>
         <article>
           <p className="reference-number">06</p>
@@ -143,6 +143,16 @@ function Transparency() {
       </div>
       <aside className="reference-framework-boundary"><strong>Wichtig:</strong> Der Referenzrahmen bereitet eine Entscheidung vor, er ersetzt sie nicht. Unterschiedliche demokratische Wege und Abwägungen bleiben möglich. Schwere Schäden an Schutzgütern werden zudem nicht durch Vorteile in anderen Bereichen einfach verrechnet.</aside>
     </section>
+    <EditorialVisual
+      src="/visuals/woek/sdg-sdgplus-referenzrahmen.png"
+      alt="Grafik des Referenzrahmens mit den 17 Nachhaltigkeitszielen und den zusätzlichen WÖk-Prüffeldern Demokratie, Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, institutionelles Vertrauen, gesellschaftlicher Zusammenhalt und digitale Selbstbestimmung."
+      eyebrow="Der Referenzrahmen im Bild"
+      title="SDGs geben Ziele vor. SDG+ macht Voraussetzungen demokratischer Handlungsfähigkeit sichtbar."
+      description="Die Darstellung ist ein Kompass, keine Punktekarte. In jeder Akte werden nur tatsächlich berührte SDGs, SDG+-Prüffelder sowie einschlägige Grundrechte, Staatsziele und Schutzaufträge einzeln ausgewiesen. Tierschutz, Biodiversität und andere Schutzgüter werden nicht in einer Gesamtzahl versteckt."
+      href="/quellen/sdg-plus-referenzrahmen"
+      linkLabel="Referenzrahmen mit Quelle ansehen"
+      reversed
+    />
 
     <section className="trust-workflow" aria-labelledby="trust-workflow-title">
       <div><p className="eyebrow">So arbeitet das Portal</p><h2 id="trust-workflow-title">Ein Wirkungscheck ist kein Schnellurteil.</h2></div>

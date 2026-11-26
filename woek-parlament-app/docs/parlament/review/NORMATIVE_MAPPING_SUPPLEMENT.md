@@ -5,7 +5,7 @@
 Ergänze die bereits erstellten Fall-Reviews. Die bestehende Sachverhalts-, Wirkpfad-, Evidenz- und Berechnungsarbeit wird **nicht** neu geschrieben. Ergänzt wird ausschließlich die strukturierte Zuordnung der materiell berührten Wirkpfade zu:
 
 1. den SDGs der Agenda 2030;
-2. den SDG+-Prüffeldern des dokumentierten Fallpakets;
+2. den sieben SDG+-Dimensionen der Wirkungsökonomie;
 3. gegebenenfalls Staatszielen, Grundrechten, Staatsstrukturprinzipien und Schutzaufträgen.
 
 Ein Mapping ist keine Gesamtpunktzahl und keine Rechtsfeststellung. Es macht transparent, welche Ziele, Schutzgüter und Prüfgrenzen ein belegter Wirkpfad berührt.
@@ -24,7 +24,7 @@ Keine Quelle, Zahl, Zurechnung, Gewichtung, Rechtsfolge oder Beobachtung erfinde
 ## Verbindliche Trennung
 
 - **SDG**: global vereinbartes Ziel der Agenda 2030.
-- **SDG+**: WÖk-eigene Konkretisierung und Ergänzung des UN-Rahmens. Die [aktuelle SDG+-Referenz](https://wirkungsoekonomie.de/verstehen/sdgs-sdgplus/#sdgplus) erläutert die Zielnummern. Für vorhandene Fallpakete gelten Katalog und Versionsstand des jeweiligen Pakets.
+- **SDG+**: transparente WÖk-Erweiterung für Demokratie, Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, institutionelles Vertrauen, gesellschaftlichen Zusammenhalt und digitale Selbstbestimmung. SDG+ ist keine UN-Kategorie.
 - **CONSTITUTIONAL_ANCHOR**: Grundrechte, Staatsstrukturprinzipien, Staatsziele, Schutzaufträge, Landesverfassung oder EU-Primärrecht. Diese Ebene ist nicht als SDG+ auszugeben.
 
 Mehrere Anker für dieselbe Veränderung begründen **keine** mehrfachen Wirkungspunkte. Eine negative Zuordnung zu einem Anker ist kein Rechtsurteil.
@@ -55,7 +55,7 @@ Verwende ausschließlich die IDs aus `normative_reference_catalog` des jeweilige
 | `SDG_16` | Frieden, Gerechtigkeit und starke Institutionen |
 | `SDG_17` | Partnerschaften zur Erreichung der Ziele |
 
-### SDG+-IDs der früheren Fallpakete
+### SDG+
 
 | ID | Dimension |
 | --- | --- |

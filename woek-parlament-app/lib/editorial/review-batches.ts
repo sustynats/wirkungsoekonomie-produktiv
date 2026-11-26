@@ -3,7 +3,7 @@ import { supabaseRest } from "@/lib/database/supabase-admin";
 import { currentReferenceSnapshot } from "@/lib/review/reference-snapshot";
 import { sha256 } from "@/lib/review/privacy";
 import { reviewBatchPackageSchema, reviewPackageSchemaVersion, type ReviewBatchPackage, type ReviewCasePackage, type ReviewType } from "@/lib/review/contracts";
-import { currentNormativeReferenceRegistry } from "@/lib/normative/reference-registry";
+import { normativeReferenceRegistry } from "@/lib/normative/reference-registry";
 
 type BatchRow = { id: string };
 
@@ -150,7 +150,7 @@ export async function createReviewBatch({
           : fact.sourceRows.filter((source) => temporalClassForDecision(source, typeof fact.factPackage.decision_date === "string" ? fact.factPackage.decision_date : null) === "PUBLISHED_AFTER_DECISION").map((source) => source.id)
       },
       woek_reference_snapshot: currentReferenceSnapshot(),
-      normative_reference_catalog: currentNormativeReferenceRegistry.map((reference) => ({
+      normative_reference_catalog: normativeReferenceRegistry.map((reference) => ({
         id: reference.id,
         framework: reference.framework,
         code: reference.code,

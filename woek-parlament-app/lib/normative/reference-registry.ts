@@ -4,14 +4,9 @@
  * a mapping can make a relevant target or legal anchor visible, but never
  * creates an additional impact value.
  *
- * Legacy SDG+ identities are bound to SDG-/SDG+-Referenzrahmen v0.3
- * and the WÖk implementation standard (2026-07-18). The current public
- * target reference is https://wirkungsoekonomie.de/verstehen/sdgs-sdgplus/#sdgplus
+ * Source basis: SDG-/SDG+-Referenzrahmen v0.3 and the WÖk implementation
+ * standard for the multi-level normative framework (2026-07-18).
  */
-
-import sdgPlusPublication from "../../../content/sdgplus/v1/public-content.json";
-
-export const sdgPlusTargetReference = sdgPlusPublication.reference;
 
 export const normativeFrameworks = ["SDG", "SDG_PLUS", "CONSTITUTIONAL_ANCHOR"] as const;
 export type NormativeFramework = (typeof normativeFrameworks)[number];
@@ -65,7 +60,7 @@ const sdgs: NormativeReference[] = [
   sourceSlug: "agenda-2030-sdgs"
 }));
 
-const legacySdgPlus: NormativeReference[] = [
+const sdgPlus: NormativeReference[] = [
   ["SDG_PLUS_DEMOCRACY", "SDG+", "Demokratie", "Demokratische Teilhabe, Machtbegrenzung und öffentliche Korrektur."],
   ["SDG_PLUS_MEDIA_QUALITY", "SDG+", "Medienqualität", "Überprüfbare, vielfältige und kontextualisierte öffentliche Information."],
   ["SDG_PLUS_RULE_OF_LAW", "SDG+", "Rechtsstaatlichkeit", "Rechtliche Begrenzung von Macht, wirksame Grundrechte und zugänglicher Rechtsschutz."],
@@ -164,19 +159,9 @@ const constitutionalAnchors: NormativeReference[] = [
   }
 ];
 
-const sdgPlusTargets: NormativeReference[] = sdgPlusTargetReference.goals.map((goal) => ({
-  id: `SDG_PLUS_TARGET_${goal.id.toUpperCase()}`,
-  framework: "SDG_PLUS",
-  code: `SDG+ ${goal.number}`,
-  label: goal.de.title,
-  shortDescription: goal.de.summary,
-  sourceSlug: "sdg-plus-zielreferenz"
-}));
+export const normativeReferenceRegistry = [...sdgs, ...sdgPlus, ...constitutionalAnchors] as const;
 
-export const normativeReferenceRegistry = [...sdgs, ...legacySdgPlus, ...constitutionalAnchors] as const;
-export const currentNormativeReferenceRegistry = [...sdgs, ...sdgPlusTargets, ...constitutionalAnchors] as const;
-
-const referenceById = new Map([...normativeReferenceRegistry, ...sdgPlusTargets].map((entry) => [entry.id, entry]));
+const referenceById = new Map(normativeReferenceRegistry.map((entry) => [entry.id, entry]));
 
 export function getNormativeReference(id: string) {
   return referenceById.get(id);

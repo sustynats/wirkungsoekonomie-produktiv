@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { currentNormativeReferenceRegistry, getNormativeReference, normativeReferenceRegistry, sdgPlusTargetReference } from "@/lib/normative/reference-registry";
+import { getNormativeReference, normativeReferenceRegistry } from "@/lib/normative/reference-registry";
 import { normativeMappingSchema } from "@/lib/review/contracts";
 
-test("the registry preserves the seven legacy SDG+ identities used in issued case packages", () => {
+test("the registry contains all seven canonical SDG+ dimensions", () => {
   const sdgPlus = normativeReferenceRegistry.filter((entry) => entry.framework === "SDG_PLUS");
   assert.deepEqual(sdgPlus.map((entry) => entry.id), [
     "SDG_PLUS_DEMOCRACY",
@@ -14,18 +14,6 @@ test("the registry preserves the seven legacy SDG+ identities used in issued cas
     "SDG_PLUS_SOCIAL_COHESION",
     "SDG_PLUS_DIGITAL_SELF_DETERMINATION"
   ]);
-});
-
-test("new case packages use the nine targets from the approved SDG+ reference", () => {
-  const oldTargets = normativeReferenceRegistry.filter((entry) => entry.framework === "SDG_PLUS");
-  const newTargets = currentNormativeReferenceRegistry.filter((entry) => entry.framework === "SDG_PLUS");
-  assert.equal(sdgPlusTargetReference.status, "FACHLICH_FREIGEGEBEN");
-  assert.equal(newTargets.length, 9);
-  assert.equal(new Set(newTargets.map((entry) => entry.id)).size, 9);
-  assert.deepEqual(newTargets.map((entry) => entry.code), Array.from({ length: 9 }, (_, index) => `SDG+ ${index + 1}`));
-  assert.deepEqual(newTargets.map((entry) => entry.label), sdgPlusTargetReference.goals.map((goal) => goal.de.title));
-  assert(oldTargets.every((entry) => getNormativeReference(entry.id) === entry));
-  assert(newTargets.every((entry) => getNormativeReference(entry.id) === entry && entry.sourceSlug === "sdg-plus-zielreferenz"));
 });
 
 test("animal welfare is a separate constitutional protection anchor", () => {

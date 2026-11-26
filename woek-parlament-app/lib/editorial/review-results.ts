@@ -27,11 +27,7 @@ function validateResultAgainstPackage(result: ReviewResult, packagePayload: unkn
   for (const sourceId of result.provenance.source_refs_used) {
     if (!knownSourceIds.has(sourceId)) errors.push(`Unknown source reference: ${sourceId}.`);
   }
-  const catalogIds = new Set(reviewPackage.normative_reference_catalog.map((entry) => entry.id));
   for (const tile of result.normative_mapping.tile_mappings) {
-    if (catalogIds.size > 0 && !catalogIds.has(tile.id)) {
-      errors.push(`Normative reference is absent from the supplied package: ${tile.id}.`);
-    }
     for (const sourceId of tile.source_refs) {
       if (!knownSourceIds.has(sourceId)) {
         errors.push(`Unknown source reference in normative mapping ${tile.id}: ${sourceId}.`);
