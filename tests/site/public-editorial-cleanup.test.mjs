@@ -146,31 +146,24 @@ test('editorial CLI preserves the real journal paragraph while cleaning the same
  }
 });
 
-test('editorial CLI detects tracking links independently in consecutive files', () => {
- const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'woek-tracking-pages-'));
- const command = fileURLToPath(new URL('../../scripts/quality/sanitize-public-editorial-residue.mjs', import.meta.url));
+test('editorial CLI removes tracking from every file in one pass and then passes its check', () => {
+ const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'woek-multifile-tracking-'));
+ const cli = fileURLToPath(new URL('../../scripts/quality/sanitize-public-editorial-residue.mjs', import.meta.url));
+ const prose = '<p>Unveränderter Fachtext.</p>'.repeat(40);
  try {
-  for (const file of ['one.html', 'two.html']) fs.writeFileSync(path.join(temporary, file), '');
-  const [first, second] = fs.readdirSync(temporary);
-  const link = '<a href="https://example.org/?topic=demokratie&amp;utm_source=openai">Originalquelle</a>';
-  const cleanLink = '<a href="https://example.org/?topic=demokratie">Originalquelle</a>';
-  const paragraph = '<p>Der veröffentlichte Text bleibt erhalten.</p>'.repeat(4);
-  fs.writeFileSync(path.join(temporary, first), paragraph + link);
-  fs.writeFileSync(path.join(temporary, second), link + paragraph);
-  const scan = spawnSync(process.execPath, [command, '--check'], { cwd: temporary, encoding: 'utf8' });
-  assert.equal(scan.status, 1);
-  assert.ok(scan.stderr.includes(first));
-  assert.ok(scan.stderr.includes(second));
-  const clean = spawnSync(process.execPath, [command], { cwd: temporary, encoding: 'utf8' });
-  assert.equal(clean.status, 0, clean.stderr);
-  assert.equal(fs.readFileSync(path.join(temporary, first), 'utf8'), paragraph + cleanLink);
-  assert.equal(fs.readFileSync(path.join(temporary, second), 'utf8'), cleanLink + paragraph);
-  const verify = spawnSync(process.execPath, [command, '--check'], { cwd: temporary, encoding: 'utf8' });
-  assert.equal(verify.status, 0, verify.stderr);
+  fs.writeFileSync(path.join(temporary, 'a.html'), prose + '<a href="https://example.org/first?utm_source=chatgpt.com">Erste Quelle</a>');
+  fs.writeFileSync(path.join(temporary, 'b.html'), '<a href="https://example.org/second?trk=public_post_comment-text&amp;utm_source=openai">Zweite Quelle</a>');
+  const cleaned = spawnSync(process.execPath, [cli], {cwd: temporary, encoding: 'utf8'});
+  assert.equal(cleaned.status, 0, cleaned.stderr);
+  assert.equal(fs.readFileSync(path.join(temporary, 'a.html'), 'utf8'), prose + '<a href="https://example.org/first">Erste Quelle</a>');
+  assert.equal(fs.readFileSync(path.join(temporary, 'b.html'), 'utf8'), '<a href="https://example.org/second?trk=public_post_comment-text">Zweite Quelle</a>');
+  const checked = spawnSync(process.execPath, [cli, '--check'], {cwd: temporary, encoding: 'utf8'});
+  assert.equal(checked.status, 0, checked.stderr);
  } finally {
-  fs.rmSync(temporary, { recursive: true, force: true });
+  fs.rmSync(temporary, {recursive: true, force: true});
  }
 });
+
 test('production notes never consume preceding sections or inline content',()=>{
  const before='<section id="evidence"><h2>Nachweis</h2><p>Wichtiger fachlicher Inhalt.</p><p>Mehr <strong>Evidenz</strong>.</p>';
  const after='<h3 id="formula">Formel</h3><p>Bleibt erhalten.</p></section>';

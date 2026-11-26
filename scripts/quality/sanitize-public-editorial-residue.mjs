@@ -17,6 +17,8 @@ const excludedDirectories = new Set([
   "tmp",
 ]);
 const eligibleExtensions = new Set([".htm", ".html", ".inc", ".json", ".md", ".svg"]);
+// This is an existence check per file. A global regex would retain lastIndex
+// and could skip an earlier tracking parameter in the next file.
 const aiTrackingPattern = /([?&](?:amp;)*)(?:utm_source|utm_medium|utm_campaign)=(?:chatgpt|openai|claude|anthropic|gemini|copilot)(?:\.com)?(?=(?:&(?:amp;)?|["')\s<>]|$))/i;
 const implementationHeadingPattern = /^(?:\d+\.\s*)?(?:Website- und (?:Portal|Tool|Bereich)integration|Online- und Tool-Umsetzung|Tool- und (?:Website|Online)bezug|Buchanker und Website-Zuordnung)$/iu;
 const residualPatterns = [
