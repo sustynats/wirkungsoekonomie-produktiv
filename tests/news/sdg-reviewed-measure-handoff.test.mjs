@@ -587,7 +587,7 @@ test('ticker presentation can switch and roll back while legacy news and editori
     assert.ok(active.get(homepage).includes(SDG_TRACKER_EVIDENCE));
     assert.match(active.get(homepage), /href="\/wirkungsticker\/methodik\/"/);
     assert.match(impactMethodology({ sdgActive: true }), /Deutsche Nachhaltigkeitsstrategie/);
-    assert.match(impactMethodology({ sdgActive: true }), /href="\/verstehen\/sdgs-sdgplus\/"/);
+    assert.match(impactMethodology({ sdgActive: true }), /href="\/verstehen\/sdgs-sdgplus\/#sdgplus">Zur öffentlichen SDG\+-Referenz v1\.0/);
     assert.doesNotMatch(impactMethodology(), /id="sdg-rahmen"/);
     assert.doesNotMatch(active.get(homepage), /Ältere Meldung/);
     assert.match(active.get(archive), /Ältere Meldung/);

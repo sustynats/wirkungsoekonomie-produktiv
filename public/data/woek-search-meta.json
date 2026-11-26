@@ -319970,7 +319970,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "2f630e4c143600f4",
+      "contentHash": "7acb512b56f7e4d3",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#lagen-titel": {
@@ -319978,7 +319978,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "2f630e4c143600f4",
+      "contentHash": "7acb512b56f7e4d3",
       "sectionId": "lagen-titel"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -322621,6 +322621,14 @@
       "contentHash": "f0c5a8018fa29463",
       "sectionId": "woek-page-4c716c45dd56d188"
     },
+    "/wirkungsticker/analyse/nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc/index.html",
+      "contentHash": "43ef70ca1eaf5708",
+      "sectionId": "woek-page-a5b0809204f49f06"
+    },
     "/wirkungsticker/analyse/nachgehort-ki-apokalypse-zwischen-realem-risiko-und-eigener-geschaftserzahlung-0e73a0/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -322765,6 +322773,14 @@
       "contentHash": "c0852aac0607c5c1",
       "sectionId": "zwei-probleme-werden-voneinander-getrennt"
     },
+    "/wirkungsticker/analyse/nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2/index.html",
+      "contentHash": "7224462046086ff2",
+      "sectionId": "woek-page-7f52d00eaecd5824"
+    },
     "/wirkungsticker/analyse/nachgehort-was-die-us-zwischenwahlen-uber-kosten-korruption-und-ki-macht-zeigen-a75b5c/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -322868,6 +322884,14 @@
       "sourceFile": "wirkungsticker/analyse/nachgehort-was-offene-ki-an-sicherheitsgrenzen-verandert-a16f46/index.html",
       "contentHash": "9ef10bab22aebe47",
       "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/nachgehort-was-von-der-ki-blase-bleibt-1611f2/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-was-von-der-ki-blase-bleibt-1611f2/index.html",
+      "contentHash": "c0e54318e168fcdf",
+      "sectionId": "woek-page-74bc49cdbbecc887"
     },
     "/wirkungsticker/analyse/nachgehort-wenn-der-kompromiss-nur-bis-zum-nachsten-verfahren-reicht-587558/": {
       "documentType": "Referenz",
@@ -322973,6 +322997,14 @@
       "contentHash": "0bedd495be8e3f9b",
       "sectionId": "woek-page-b8f6cc46f130c6e6"
     },
+    "/wirkungsticker/analyse/nachgehort-wenn-koalitionsmisstrauen-zum-politischen-wirkstoff-wird-b0a86a/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wenn-koalitionsmisstrauen-zum-politischen-wirkstoff-wird-b0a86a/index.html",
+      "contentHash": "9809e5412a1611d4",
+      "sectionId": "woek-page-c98c0e36d9a23560"
+    },
     "/wirkungsticker/analyse/nachgehort-wenn-lenkungssteuern-vor-allem-haushaltslocher-stopfen-757203/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -323052,6 +323084,54 @@
       "sourceFile": "wirkungsticker/analyse/nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421/index.html",
       "contentHash": "47485dafe4908160",
       "sectionId": "woek-page-4881ec3731c10d73"
+    },
+    "/wirkungsticker/analyse/nachgehort-wie-aus-einer-personalie-ein-machtspiel-wird-b6e138/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wie-aus-einer-personalie-ein-machtspiel-wird-b6e138/index.html",
+      "contentHash": "ac86163723539660",
+      "sectionId": "woek-page-0b5261a7b36667c6"
+    },
+    "/wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/index.html",
+      "contentHash": "0ca002093c0f8741",
+      "sectionId": "woek-page-8a6a1d826a74a0a1"
+    },
+    "/wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/index.html",
+      "contentHash": "0ca002093c0f8741",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/index.html",
+      "contentHash": "0ca002093c0f8741",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/index.html",
+      "contentHash": "0ca002093c0f8741",
+      "sectionId": "planet"
+    },
+    "/wirkungsticker/analyse/nachgehort-wie-stabil-ist-putins-system-und-was-bewirken-angriffe-und-verhandlungen-d5c0b2/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgehort-wie-stabil-ist-putins-system-und-was-bewirken-angriffe-und-verhandlungen-d5c0b2/index.html",
+      "contentHash": "e09dd0cb8cd62abb",
+      "sectionId": "woek-page-fde7ca193fbd8946"
     },
     "/wirkungsticker/analyse/nachgehort-zwischen-au-enkanzler-und-stromsteuer-wo-machtwechsel-wirkung-vermutet-und-belege-fe-27b9f7/": {
       "documentType": "Referenz",
@@ -324325,6 +324405,38 @@
       "contentHash": "b3948650b4849bb1",
       "sectionId": "planet"
     },
+    "/wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/index.html",
+      "contentHash": "234c17596072e40a",
+      "sectionId": "woek-page-8d0d219c02249042"
+    },
+    "/wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/index.html",
+      "contentHash": "234c17596072e40a",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/index.html",
+      "contentHash": "234c17596072e40a",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/index.html",
+      "contentHash": "234c17596072e40a",
+      "sectionId": "planet"
+    },
     "/wirkungsticker/analyse/was-ein-general-in-litauen-uber-abschreckung-sagt-9cf062/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -325061,6 +325173,22 @@
       "contentHash": "eb8a1324cee174c8",
       "sectionId": "woek-page-35bc4bfbac42c913"
     },
+    "/wirkungsticker/analyse/wenn-politik-nur-noch-aus-bildern-besteht-bleiben-die-folgen-unsichtbar-46489d/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politik-nur-noch-aus-bildern-besteht-bleiben-die-folgen-unsichtbar-46489d/index.html",
+      "contentHash": "3d9a2bf2a1c0bf42",
+      "sectionId": "woek-page-5bebbf40341d8b71"
+    },
+    "/wirkungsticker/analyse/wenn-politik-zum-signal-wird-was-maischberger-uber-handlungsfahigkeit-und-wirkung-zeigt-f8a2b6/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politik-zum-signal-wird-was-maischberger-uber-handlungsfahigkeit-und-wirkung-zeigt-f8a2b6/index.html",
+      "contentHash": "a4e301fd5fd132e0",
+      "sectionId": "woek-page-838e34d51e83c07d"
+    },
     "/wirkungsticker/analyse/wenn-politik-zur-operation-wird-was-maischberger-uber-macht-vertrauen-und-kontrolle-zeigt-9b01ee/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -325100,6 +325228,38 @@
       "sourceFile": "wirkungsticker/analyse/wenn-politische-forderungen-zum-machtinstrument-werden-e863ba/index.html",
       "contentHash": "0552a90edc66d3e1",
       "sectionId": "woek-page-1e5de1b9fde5a0ac"
+    },
+    "/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/index.html",
+      "contentHash": "0a9c0d1ad6046e72",
+      "sectionId": "woek-page-648e39b473d2c27a"
+    },
+    "/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/index.html",
+      "contentHash": "0a9c0d1ad6046e72",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/index.html",
+      "contentHash": "0a9c0d1ad6046e72",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/index.html",
+      "contentHash": "0a9c0d1ad6046e72",
+      "sectionId": "planet"
     },
     "/wirkungsticker/analyse/wenn-politische-unruhe-selbst-zum-thema-wird-47be86/": {
       "documentType": "Referenz",
@@ -325594,7 +325754,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/analysen/index.html",
-      "contentHash": "b6109ab66112a11b",
+      "contentHash": "a247c63a240dd34d",
       "sectionId": "woek-page-720f8d43d23be330"
     },
     "/wirkungsticker/angriff-an-schule-in-frankreich-14-jahriger-soll-schulleiter-und-lehrerin-angeschossen-h-a48894/": {
@@ -332549,6 +332709,22 @@
       "contentHash": "bdaed362d632c856",
       "sectionId": "woek-page-ce0c72d05341d097"
     },
+    "/wirkungsticker/lage/2026-11-26-mittagslage/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/lage/2026-11-26-mittagslage/index.html",
+      "contentHash": "399f1518d0bb09a0",
+      "sectionId": "woek-page-76eeb26dfe66cd97"
+    },
+    "/wirkungsticker/lage/2026-11-26-morgenlage/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/lage/2026-11-26-morgenlage/index.html",
+      "contentHash": "86b6d48b719e8dde",
+      "sectionId": "woek-page-14984d13273796c2"
+    },
     "/wirkungsticker/landkreis-oberhavel-polizeieinsatz-in-velten-gefahrenlage-abgewendet-4b4f92/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -332842,7 +333018,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "bec28e865b0fc7a4",
+      "contentHash": "6d07068f243305a2",
       "sectionId": "woek-page-901baef9d8fe7ae8"
     },
     "/wirkungsticker/mehr/#news-app-title": {
@@ -332850,7 +333026,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "bec28e865b0fc7a4",
+      "contentHash": "6d07068f243305a2",
       "sectionId": "news-app-title"
     },
     "/wirkungsticker/mehrere-explosionen-mindestens-acht-tote-bei-russischen-angriffen-auf-die-ukraine-c3546b/": {
@@ -334010,7 +334186,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/news/index.html",
-      "contentHash": "bbe2b818bdbe3fc9",
+      "contentHash": "a293e1d88de7e977",
       "sectionId": "woek-page-7d87c87ddaa7be64"
     },
     "/wirkungsticker/newsblog-zur-landtagswahl-in-sachsen-anhalt-ministerprasident-schulze-cdu-raumt-niederla-0e1751/": {

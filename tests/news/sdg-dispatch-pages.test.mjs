@@ -123,7 +123,7 @@ test('the existing Pages workflow rejects a stale automatic source before buildi
 test('the existing ticker reports a failed SDG import after the independent delivery steps', () => {
   const yaml = fs.readFileSync(new URL('../../.github/workflows/wirkungsticker.yml', import.meta.url), 'utf8');
   const locate = name => yaml.indexOf(`- name: ${name}`);
-  const intake = locate('Receive checked SDG editions from the private Oracle journal');
+  const intake = yaml.indexOf('\n        id: sdg_editions\n');
   const restore = locate('Restore the committed SDG catalog after an interrupted intake');
   const commit = locate('Commit one atomic update');
   const publish = locate('Publish the committed ticker automatically');

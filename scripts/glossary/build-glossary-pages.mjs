@@ -1,3 +1,4 @@
+import { loadSdgPlus, sdgPlusGlossarySupplement } from "../portal/sdgplus-publication.mjs";
 import {renderSiteHeader} from '../lib/site-shell.mjs';
 import fs from "node:fs";
 import { impactArchitectureVisual } from "../lib/impact-architecture-visual.mjs";
@@ -10,6 +11,7 @@ const generatedAt = (() => {
     : new Date().toISOString();
 })();
 const data = JSON.parse(fs.readFileSync("public/data/glossary.terms.json", "utf8"));
+const sdgPlusReference = loadSdgPlus(process.cwd());
 const navigation = JSON.parse(fs.readFileSync("assets/data/navigation.json", "utf8"));
 const documentRegistryPath = "assets/data/document-registry.json";
 const documentRegistry = fs.existsSync(documentRegistryPath)
@@ -3124,6 +3126,7 @@ ${fallbackDeepGlossaryBlock(term)}
 ${keyMessageBlock(term)}
 ${relatedTermsChips(term)}${relatedContentBlock(term)}
 ${chapterBlock(term)}
+${sdgPlusGlossarySupplement(term.termId, sdgPlusReference)}
         ${sourceHtml ? `<section class="meta-box">
           <h2>Quellen und Einordnung</h2>
           <p>Kategorie: ${esc(containsForbiddenPublicText(term.category) ? "Begriff" : publicText(term.category || "Begriff"))}</p>

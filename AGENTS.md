@@ -19,6 +19,13 @@ Diese Datei ist die dauerhafte Arbeitsanweisung fuer Codex-Aufgaben in diesem Re
 - Fuehre vor Abschluss Build- und Qualitaetspruefungen aus und stelle beauftragte Website-Aenderungen live.
 - Pruefe nach dem Deployment die Live-URL und relevante Such-/Navigationspfade.
 
+## Öffentliche SDG+-Referenz
+
+- Die neun SDG+-Ziele der Wirkungsökonomie sind seit 26.11.2026 in Referenz v1.0 verbindlich. Führende Quelle ist `content/sdgplus/v1/public-content.json`, öffentlicher Einstieg `/verstehen/sdgs-sdgplus/#sdgplus`, maschinenlesbar `/api/v1/sdg-plus/reference-v1.json`. Der Begriffsleitfaden v1.9 dokumentiert § 4.2.
+- Zielseiten, Glossar, Matrix, Workshopmaterial und Anwendungsreferenzen aus derselben Fassung ableiten. Katalogkennung, MasterItem, Indikator, Beobachtung und Bewertung bleiben eigenständige Angaben. Offene Paarungen und Messzuordnungen mit ihrem Status ausweisen.
+- Historische SDG+-Darstellungen mit Fassung zitieren. Bestehende API-IDs, historische Fallzuordnungen und Registeridentitäten stabil halten. Die neun Zielnummern dienen der Identifikation. Bewertungsregeln, Schwellen und Reverse Merit Order haben ihre eigenen Verfahren.
+- Änderungen der öffentlichen Zielreferenz an die fachliche Freigabe der konkreten Fassung binden. `node --test tests/site/sdgplus-reference.test.mjs` prüft Struktur und Rückwärtskompatibilität nach der Seitenerzeugung.
+
 ## Hosting- und Kostenschutz
 
 - Vercel ist keine Standardplattform, sondern ausschliesslich die letzte, technisch zwingende und unumgaengliche Ausnahme. Bestehendes Hosting oder bequemere Umsetzung allein begruenden keine Notwendigkeit.

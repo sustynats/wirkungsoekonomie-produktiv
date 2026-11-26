@@ -1,0 +1,142 @@
+[
+  {
+    "language": "de",
+    "kind": "handout",
+    "title": "Handout (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-handout-de.pdf",
+    "sha256": "fbe2c53252dc9bb9adbc9ad4fd6bcae7e0a6b278c468b0fdf065d96a494122f2"
+  },
+  {
+    "language": "en",
+    "kind": "handout",
+    "title": "Handout (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-handout-en.pdf",
+    "sha256": "87402ca07a6db48586c43de7cbe3825c58ae841df8a6f9314d98771402faf9d3"
+  },
+  {
+    "language": "de",
+    "kind": "kurzuebersicht",
+    "title": "Kurzüberblick auf einer Seite (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-kurzuebersicht-de.pdf",
+    "sha256": "e0b0e0698565516616d9eecea14ed370fc364b117a02937f0e0f754489f32dfd"
+  },
+  {
+    "language": "en",
+    "kind": "kurzuebersicht",
+    "title": "One-page overview (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-kurzuebersicht-en.pdf",
+    "sha256": "96ad5e40c9d543c4a8fdd0289f2a0232cfb75213943c75cdba9095de232da66d"
+  },
+  {
+    "language": "de",
+    "kind": "matrix",
+    "title": "Zuordnungsmatrix (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-matrix-de.pdf",
+    "sha256": "e2b865b679223d1d1a101c92373662f36a6e046aeb1b14a2e600527261f390d4"
+  },
+  {
+    "language": "en",
+    "kind": "matrix",
+    "title": "Relationship matrix (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-matrix-en.pdf",
+    "sha256": "43a2707ec3cf3356ec9479baaeff3a5e96111a4c9249c77645615120779ad6f5"
+  },
+  {
+    "language": "de",
+    "kind": "matrix-csv",
+    "title": "Zuordnungsmatrix (CSV)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-matrix.csv",
+    "sha256": "04211ac371bb748cb09fc9498f81bd40948df87b393813ee87b0c8b3e5accdb0"
+  },
+  {
+    "language": "en",
+    "kind": "matrix-csv",
+    "title": "Relationship matrix (CSV)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-matrix.csv",
+    "sha256": "04211ac371bb748cb09fc9498f81bd40948df87b393813ee87b0c8b3e5accdb0"
+  },
+  {
+    "language": "de",
+    "kind": "matrix-json",
+    "title": "Zuordnungsmatrix (JSON)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-matrix.json",
+    "sha256": "51b1afae2332c362af1f8c33c92041a436453ed6692b6bcf55dc0cfe5ff36443"
+  },
+  {
+    "language": "en",
+    "kind": "matrix-json",
+    "title": "Relationship matrix (JSON)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-matrix.json",
+    "sha256": "51b1afae2332c362af1f8c33c92041a436453ed6692b6bcf55dc0cfe5ff36443"
+  },
+  {
+    "language": "de",
+    "kind": "reference-json",
+    "title": "Zielreferenz v1.0 (JSON)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-reference.json",
+    "sha256": "ad482e092422779f2f81a72812f7069f8c68d59dbb89830c12a9c0fa42d71768"
+  },
+  {
+    "language": "en",
+    "kind": "reference-json",
+    "title": "Goal reference v1.0 (JSON)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-reference.json",
+    "sha256": "ad482e092422779f2f81a72812f7069f8c68d59dbb89830c12a9c0fa42d71768"
+  },
+  {
+    "language": "de",
+    "kind": "workshop",
+    "title": "Workshopfolien (PowerPoint)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-workshop-de.pptx",
+    "sha256": "df0cdcd68caed9a69086fdace6a7ff7a15bff5fbc7bf890ae23603afd3cc5821"
+  },
+  {
+    "language": "en",
+    "kind": "workshop",
+    "title": "Workshop slides (PowerPoint)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-workshop-en.pptx",
+    "sha256": "44f6292eafe7278ca32234f8a7e454eb734388d148ec14fbaa02dcf8ab852a02"
+  },
+  {
+    "language": "de",
+    "kind": "zielkarten",
+    "title": "Zielkarten (SVG und PNG, ZIP)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-zielkarten-de.zip",
+    "sha256": "0ba35bf5c88b13fc9f6c5ba6e2b3e35f75883b1b9bde8abc1d44d75b9617b54f"
+  },
+  {
+    "language": "en",
+    "kind": "zielkarten",
+    "title": "Goal cards (SVG and PNG, ZIP)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/sdgplus-zielkarten-en.zip",
+    "sha256": "2034624147dda5d0f9f3adb0e4baeb6a6c5746d6f3c1c3434dbc5183d97bb10f"
+  },
+  {
+    "language": "de",
+    "kind": "guide",
+    "title": "Führender Begriffsleitfaden v1.9 (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/WOeK_Begriffsleitfaden_fuehrend_v1.9_2026-11-26.pdf",
+    "sha256": "d1d95cb10dd7065cdef6858ef88ae39e1a76f206a3e14efeb97d06358b0288d9"
+  },
+  {
+    "language": "de",
+    "kind": "guide",
+    "title": "SDG+-Addendum zum Begriffsleitfaden v1.9 (PDF)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/WOeK_Begriffsleitfaden_v1.9_SDGplus_Addendum_2026-11-26.pdf",
+    "sha256": "eb43eae977550895f3f3dbef3bc359d8b316bda8e4be5cdb44a16c2c86ce06bd"
+  },
+  {
+    "language": "de",
+    "kind": "checksums",
+    "title": "SHA-256-Prüfsummen (Textdatei)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/SHA256SUMS.txt",
+    "sha256": "be0ed22f8a1684cc5b258ae571e5054f4b0e7c4f369c8082964189b581fef725"
+  },
+  {
+    "language": "en",
+    "kind": "checksums",
+    "title": "SHA-256 checksums (text file)",
+    "url": "https://github.com/sustynats/wirkungsoekonomie-medien/releases/download/woek-sdgplus-v1/SHA256SUMS.txt",
+    "sha256": "be0ed22f8a1684cc5b258ae571e5054f4b0e7c4f369c8082964189b581fef725"
+  }
+]

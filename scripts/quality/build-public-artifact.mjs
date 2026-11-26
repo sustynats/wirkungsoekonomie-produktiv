@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { refreshNatalieProjection } from "./refresh-natalie-projection.mjs";
+import { loadSdgPlus } from "../portal/sdgplus-publication.mjs";
 import {
   normalizeHistoricalMethodRobots,
   synchronizeSitemapIndexability,
@@ -373,15 +374,40 @@ function copyPublicRuntimeContentData() {
   if (copied) console.log(`Copied ${copied} public runtime content data files.`);
 }
 
-function removeOfflineEnglishSurface() {
-  const englishDirectory = path.join(artifactDir, "en");
-  fs.rmSync(englishDirectory, { recursive: true, force: true });
+// The bilingual SDG+ edition has its own author approval. Keep the rest of
+// the deferred English site outside the public artifact.
+const englishSdgPlusRoutes = new Set([
+  "/en/sdg-plus/", "/en/sdg-plus/matrix/", "/en/sdg-plus/toolkit/", "/en/sdg-plus/glossary/",
+  ...loadSdgPlus(root).reference.goals.flatMap(goal => [
+    `/en/sdg-plus/goals/${goal.id}/`, `/en/sdg-plus/glossary/${goal.id}/`,
+  ]),
+]);
+const deferredEnglishData = [
+  "public/data/en-asset-text-inventory.json",
+  "public/data/en-document-translation-manifest.json",
+  "public/data/en-route-coverage.json",
+];
+const englishPath = /^(?:https:\/\/wirkungsoekonomie\.de\/|(?:\.\.\/)*|\/)?en(?:\/|[?#]|$)/iu;
+const urlAttribute = tag => /\bhref=["']([^"']+)["']/iu.exec(tag)?.[1] || "";
 
-  for (const relative of [
-    "public/data/en-asset-text-inventory.json",
-    "public/data/en-document-translation-manifest.json",
-    "public/data/en-route-coverage.json",
-  ]) {
+function approvedEnglishRoute(url) {
+  const pathname = "/" + url.replace(/^https:\/\/wirkungsoekonomie\.de\//iu, "")
+    .replace(/^(?:\.\.\/)+/u, "").replace(/^\//u, "").split(/[?#]/u)[0].replace(/index\.html$/u, "");
+  return englishSdgPlusRoutes.has(pathname);
+}
+
+function copyApprovedEnglishSdgPlus() {
+  for (const route of englishSdgPlusRoutes) {
+    const relative = path.join(route, "index.html");
+    const source = path.join(root, relative);
+    const destination = path.join(artifactDir, relative);
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.copyFileSync(source, destination);
+  }
+}
+
+function removeOfflineEnglishSurface() {
+  for (const relative of deferredEnglishData) {
     fs.rmSync(path.join(artifactDir, relative), { force: true });
   }
 
@@ -390,8 +416,12 @@ function removeOfflineEnglishSurface() {
     if (!/\.html?$/iu.test(file)) continue;
     const before = fs.readFileSync(file, "utf8");
     const after = before
-      .replace(/\s*<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\bhreflang=["']en["'])[^>]*>\s*/giu, "\n")
-      .replace(/\s*<a\b(?=[^>]*\bhref=["'](?:https:\/\/wirkungsoekonomie\.de\/|(?:\.\.\/)*|\/)?en\/(?:[?#][^"']*)?["'])[^>]*>[\s\S]*?<\/a>\s*/giu, "\n");
+      .replace(/<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\bhreflang=["']en["'])[^>]*>/giu,
+        tag => approvedEnglishRoute(urlAttribute(tag)) ? tag : "")
+      .replace(/<a\b[^>]*>[^]*?<\/a>/giu, tag => {
+        const url = urlAttribute(tag);
+        return englishPath.test(url) && !approvedEnglishRoute(url) ? "" : tag;
+      });
     if (after !== before) {
       fs.writeFileSync(file, after, "utf8");
       cleanedHtml += 1;
@@ -402,7 +432,10 @@ function removeOfflineEnglishSurface() {
   let removedSearchEntries = 0;
   if (fs.existsSync(searchIndexPath)) {
     const entries = JSON.parse(fs.readFileSync(searchIndexPath, "utf8"));
-    const publicEntries = entries.filter((entry) => !/^\/en(?:\/|$)/u.test(String(entry?.url || "").split("#")[0]));
+    const publicEntries = entries.filter(entry => {
+      const url = String(entry?.url || "");
+      return !englishPath.test(url) || approvedEnglishRoute(url);
+    });
     removedSearchEntries = entries.length - publicEntries.length;
     fs.writeFileSync(searchIndexPath, JSON.stringify(publicEntries), "utf8");
   }
@@ -411,14 +444,16 @@ function removeOfflineEnglishSurface() {
   let removedSitemapEntries = 0;
   if (fs.existsSync(sitemapPath)) {
     const before = fs.readFileSync(sitemapPath, "utf8");
-    const after = before.replace(/\s*<url\b[^>]*>[\s\S]*?<loc>\s*https:\/\/wirkungsoekonomie\.de\/en(?:\/[^<]*)?<\/loc>[\s\S]*?<\/url>\s*/giu, () => {
+    const after = before.replace(/<url\b[^>]*>[^]*?<\/url>/giu, entry => {
+      const url = /<loc>\s*([^<]+)<\/loc>/iu.exec(entry)?.[1].trim() || "";
+      if (!englishPath.test(url) || approvedEnglishRoute(url)) return entry;
       removedSitemapEntries += 1;
-      return "\n";
+      return "";
     });
     fs.writeFileSync(sitemapPath, after, "utf8");
   }
 
-  console.log(`English surface kept offline: ${cleanedHtml} page link(s) cleaned, ${removedSearchEntries} search entry/entries and ${removedSitemapEntries} sitemap entry/entries removed.`);
+  console.log(`English SDG+ scope: ${englishSdgPlusRoutes.size} routes allowed, ${cleanedHtml} pages, ${removedSearchEntries} search entries and ${removedSitemapEntries} sitemap entries cleaned.`);
 }
 
 function copyLegacyRedirectFiles() {
@@ -500,34 +535,37 @@ function validateLegacyToolsRedirect() {
 
 function validateOfflineEnglishSurface() {
   const failures = [];
-  if (fs.existsSync(path.join(artifactDir, "en"))) failures.push("directory en/");
-  for (const relative of [
-    "public/data/en-asset-text-inventory.json",
-    "public/data/en-document-translation-manifest.json",
-    "public/data/en-route-coverage.json",
-  ]) {
+  for (const file of walkFiles(path.join(artifactDir, "en"))) {
+    const relative = toPosixRelative(file);
+    if (!approvedEnglishRoute(relative)) failures.push(relative);
+  }
+  for (const route of englishSdgPlusRoutes) {
+    if (!fs.existsSync(path.join(artifactDir, route, "index.html"))) failures.push(`${route}: missing approved SDG+ route`);
+  }
+  for (const relative of deferredEnglishData) {
     if (fs.existsSync(path.join(artifactDir, relative))) failures.push(relative);
   }
   const sitemapPath = path.join(artifactDir, "sitemap.xml");
-  if (fs.existsSync(sitemapPath) && /https:\/\/wirkungsoekonomie\.de\/en(?:\/|<)/iu.test(fs.readFileSync(sitemapPath, "utf8"))) {
-    failures.push("English sitemap route");
+  if (fs.existsSync(sitemapPath)) {
+    const locs = [...fs.readFileSync(sitemapPath, "utf8").matchAll(/<loc>\s*([^<]+)<\/loc>/giu)];
+    if (locs.some(([, url]) => englishPath.test(url) && !approvedEnglishRoute(url.trim()))) failures.push("English sitemap route");
   }
   const searchIndexPath = path.join(artifactDir, "assets/search/search-index.json");
   if (fs.existsSync(searchIndexPath)) {
     const entries = JSON.parse(fs.readFileSync(searchIndexPath, "utf8"));
-    if (entries.some((entry) => /^\/en(?:\/|$)/u.test(String(entry?.url || "").split("#")[0]))) failures.push("English search entry");
+    if (entries.some(entry => englishPath.test(entry.url) && !approvedEnglishRoute(entry.url))) failures.push("English search entry");
   }
   for (const file of walkFiles(artifactDir)) {
     if (!/\.html?$/iu.test(file)) continue;
     const html = fs.readFileSync(file, "utf8");
-    if (/\bhreflang=["']en["']/iu.test(html)) failures.push(`${toPosixRelative(file)}: English alternate`);
-    if (/<a\b(?=[^>]*\bhref=["'](?:https:\/\/wirkungsoekonomie\.de\/|(?:\.\.\/)*|\/)?en\/)[^>]*>/iu.test(html)) {
-      failures.push(`${toPosixRelative(file)}: English navigation link`);
-    }
+    const alternateLinks = [...html.matchAll(/<link\b(?=[^>]*\bhreflang=["']en["'])[^>]*>/giu)];
+    if (alternateLinks.some(([tag]) => !approvedEnglishRoute(urlAttribute(tag)))) failures.push(`${toPosixRelative(file)}: English alternate`);
+    const links = [...html.matchAll(/<a\b[^>]*>/giu)].map(([tag]) => urlAttribute(tag));
+    if (links.some(url => englishPath.test(url) && !approvedEnglishRoute(url))) failures.push(`${toPosixRelative(file)}: English navigation link`);
     if (failures.length >= 20) break;
   }
-  if (failures.length) throw new Error(`English surface must stay offline:\n${failures.join("\n")}`);
-  console.log("English surface is absent from routes, navigation, sitemap and search.");
+  if (failures.length) throw new Error(`English routes outside the approved SDG+ edition:\n${failures.join("\n")}`);
+  console.log("Only the approved English SDG+ edition is present in routes and navigation.");
 }
 
 function sanitizePublicDataString(value) {
@@ -991,6 +1029,7 @@ for (const entry of fs.readdirSync(root, { withFileTypes: true }).sort((a, b) =>
   if (copyEntry(entry)) copied += 1;
 }
 
+copyApprovedEnglishSdgPlus();
 removeOfflineEnglishSurface();
 normalizePublicArtifactLinksAndText();
 copyReferencedPublicFiles();

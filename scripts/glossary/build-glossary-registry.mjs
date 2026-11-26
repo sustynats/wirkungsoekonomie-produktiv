@@ -1,3 +1,4 @@
+import { loadSdgPlus } from "../portal/sdgplus-publication.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -1058,6 +1059,31 @@ const rawTerms = [
     return Array.isArray(supplement) ? supplement : supplement.terms || [];
   }),
 ];
+const sdgPlus = loadSdgPlus(root);
+canonicalTermOverrides.set("sdg-plus", {
+  ...canonicalTermOverrides.get("sdg-plus"),
+  shortDefinition: sdgPlus.locale.de.definition,
+  hoverDefinition: sdgPlus.locale.de.definition,
+  definition: sdgPlus.locale.de.definition,
+  longDefinition: sdgPlus.locale.de.definition + " " + sdgPlus.locale.de.intro,
+  statusNote: "Öffentliche SDG+-Referenz v1.0, gültig seit 26. November 2026.",
+});
+for (const goal of sdgPlus.reference.goals) {
+  const id = `sdgplus-${goal.id}`;
+  const label = `SDG+ ${goal.number} - ${goal.de.title}`;
+  rawTerms.push({
+    termId: id, slug: id, label, canonicalLabel: label,
+    shortDefinition: goal.de.summary,
+    longDefinition: goal.de.summary + " " + goal.de.scope,
+    hoverDefinition: goal.de.summary,
+    definition: goal.de.summary,
+    statusNote: "SDG+-Referenz v1.0",
+    sourceDocument: "SDG+-Referenz v1.0",
+    sourceSection: "SDG+",
+    sourceUrl: `https://wirkungsoekonomie.de/verstehen/sdgs-sdgplus/ziele/${goal.id}/`,
+    relatedTerms: ["sdg-plus"],
+  });
+}
 // Deduplizierte Datensätze können ältere Ergänzungsfelder wieder mitbringen.
 // Die kanonischen Kernbegriffe werden deshalb abschließend noch einmal gesetzt.
 const terms = dedupeCanonicalLabels(rawTerms.map(normalizeTerm))

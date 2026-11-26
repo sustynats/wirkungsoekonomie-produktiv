@@ -1,8 +1,85 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-24T20:01:15.511Z",
+  "updated_at": "2026-11-26T13:27:00.314Z",
   "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
   "beitraege": [
+    {
+      "slug": "was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907",
+      "titel": "Was ein Abend über Haushalte, Wohnungen und politische Handlungsfähigkeit zeigt",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-26T13:27:00.314Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907/"
+    },
+    {
+      "slug": "nachgehort-wenn-koalitionsmisstrauen-zum-politischen-wirkstoff-wird-b0a86a",
+      "titel": "Nachgehört: Wenn Koalitionsmisstrauen zum politischen Wirkstoff wird",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:26:53.446Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wenn-koalitionsmisstrauen-zum-politischen-wirkstoff-wird-b0a86a/"
+    },
+    {
+      "slug": "nachgehort-wie-aus-einer-personalie-ein-machtspiel-wird-b6e138",
+      "titel": "Nachgehört: Wie aus einer Personalie ein Machtspiel wird",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:26:45.195Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wie-aus-einer-personalie-ein-machtspiel-wird-b6e138/"
+    },
+    {
+      "slug": "nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf",
+      "titel": "Nachgehört: Wie die AfD aus Remigration, Ukraine und Machtoptionen ein Regierungsprojekt macht",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:26:37.941Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wie-die-afd-aus-remigration-ukraine-und-machtoptionen-ein-regierungsprojekt-macht-48bdaf/"
+    },
+    {
+      "slug": "wenn-politik-nur-noch-aus-bildern-besteht-bleiben-die-folgen-unsichtbar-46489d",
+      "titel": "Wenn Politik nur noch aus Bildern besteht, bleiben die Folgen unsichtbar",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-26T13:26:27.122Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politik-nur-noch-aus-bildern-besteht-bleiben-die-folgen-unsichtbar-46489d/"
+    },
+    {
+      "slug": "wenn-politik-zum-signal-wird-was-maischberger-uber-handlungsfahigkeit-und-wirkung-zeigt-f8a2b6",
+      "titel": "Wenn Politik zum Signal wird: Was „maischberger“ über Handlungsfähigkeit und Wirkung zeigt",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-26T13:26:12.991Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politik-zum-signal-wird-was-maischberger-uber-handlungsfahigkeit-und-wirkung-zeigt-f8a2b6/"
+    },
+    {
+      "slug": "nachgehort-was-von-der-ki-blase-bleibt-1611f2",
+      "titel": "Nachgehört: Was von der KI-Blase bleibt",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:26:04.247Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-was-von-der-ki-blase-bleibt-1611f2/"
+    },
+    {
+      "slug": "nachgehort-wie-stabil-ist-putins-system-und-was-bewirken-angriffe-und-verhandlungen-d5c0b2",
+      "titel": "Nachgehört: Wie stabil ist Putins System – und was bewirken Angriffe und Verhandlungen?",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:25:55.076Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wie-stabil-ist-putins-system-und-was-bewirken-angriffe-und-verhandlungen-d5c0b2/"
+    },
+    {
+      "slug": "nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc",
+      "titel": "Nachgehört: Karl-Theodor zu Guttenberg über Trumps Machtverlust, Kriege und die Grenzen politischer Kontrolle",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:25:47.204Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-karl-theodor-zu-guttenberg-uber-trumps-machtverlust-kriege-und-die-grenzen-politisch-aad8bc/"
+    },
+    {
+      "slug": "nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2",
+      "titel": "Nachgehört: Was Andreas W. Herb an deutscher Politik kritisiert – und was davon trägt",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-26T13:25:38.920Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-was-andreas-w-herb-an-deutscher-politik-kritisiert-und-was-davon-tragt-1783e2/"
+    },
+    {
+      "slug": "wenn-politische-nahe-zum-politischen-signal-wird-3bb1da",
+      "titel": "Wenn politische Nähe zum politischen Signal wird",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-26T13:25:28.725Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-politische-nahe-zum-politischen-signal-wird-3bb1da/"
+    },
     {
       "slug": "nachgehort-klimaschutz-zwischen-protest-versorgungssicherheit-und-politischer-macht-67c73c",
       "titel": "Nachgehört: Klimaschutz zwischen Protest, Versorgungssicherheit und politischer Macht",
@@ -135,83 +212,6 @@
       "art": "listened",
       "veroeffentlicht": "2026-11-21T12:21:56.416Z",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-gipfelsymbolik-und-regierungsrisiko-was-machtwechsel-sichtbar-macht-704eb0/"
-    },
-    {
-      "slug": "nachgesehen-zwischen-kontrolle-schutz-und-auslagerung-f99aa8",
-      "titel": "Nachgesehen: Zwischen Kontrolle, Schutz und Auslagerung",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-20T07:53:57.473Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-zwischen-kontrolle-schutz-und-auslagerung-f99aa8/"
-    },
-    {
-      "slug": "wenn-energiepolitik-zur-vertrauensfrage-wird-5aa31e",
-      "titel": "Wenn Energiepolitik zur Vertrauensfrage wird",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-20T07:53:47.244Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-energiepolitik-zur-vertrauensfrage-wird-5aa31e/"
-    },
-    {
-      "slug": "wenn-der-staat-zum-geheimdienst-wird-lanz-und-precht-uber-spionage-freiheit-und-kontrolle-ceb102",
-      "titel": "Wenn der Staat zum Geheimdienst wird: Lanz und Precht über Spionage, Freiheit und Kontrolle",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-20T07:53:36.637Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-der-staat-zum-geheimdienst-wird-lanz-und-precht-uber-spionage-freiheit-und-kontrolle-ceb102/"
-    },
-    {
-      "slug": "was-maischberger-am-17-november-2026-uber-prioritaten-mieten-und-macht-sichtbar-macht-a761ce",
-      "titel": "Was „maischberger“ am 17. November 2026 über Prioritäten, Mieten und Macht sichtbar macht",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-19T04:46:29.538Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/was-maischberger-am-17-november-2026-uber-prioritaten-mieten-und-macht-sichtbar-macht-a761ce/"
-    },
-    {
-      "slug": "nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172",
-      "titel": "Nachgesehen: Wenn Personalfragen auf Strukturprobleme treffen",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-19T04:46:22.566Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-wenn-personalfragen-auf-strukturprobleme-treffen-a1a172/"
-    },
-    {
-      "slug": "wenn-eine-entlastung-zum-belastungstest-wird-0dee17",
-      "titel": "Wenn eine Entlastung zum Belastungstest wird",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-19T04:46:15.750Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-eine-entlastung-zum-belastungstest-wird-0dee17/"
-    },
-    {
-      "slug": "ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3",
-      "titel": "KI-Chips als Machtfrage: Was eine Podcastfolge belegt – und was offenbleibt",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-18T16:24:16.859Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ki-chips-als-machtfrage-was-eine-podcastfolge-belegt-und-was-offenbleibt-6e67b3/"
-    },
-    {
-      "slug": "ki-ist-keine-naturgewalt-aber-sie-verandert-wer-wissen-arbeit-und-entscheidungen-steuert-a0931c",
-      "titel": "KI ist keine Naturgewalt – aber sie verändert, wer Wissen, Arbeit und Entscheidungen steuert",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-18T05:42:15.098Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ki-ist-keine-naturgewalt-aber-sie-verandert-wer-wissen-arbeit-und-entscheidungen-steuert-a0931c/"
-    },
-    {
-      "slug": "wenn-junge-menschen-nicht-mehr-zuhoren-sondern-nicht-mehr-gehort-werden-d44d17",
-      "titel": "Wenn junge Menschen nicht mehr zuhören, sondern nicht mehr gehört werden",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-17T10:43:57.278Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-junge-menschen-nicht-mehr-zuhoren-sondern-nicht-mehr-gehort-werden-d44d17/"
-    },
-    {
-      "slug": "nachgesehen-was-an-ki-unzuverlassig-ist-und-warum-das-eine-machtfrage-wird-3ee53a",
-      "titel": "Nachgesehen: Was an KI unzuverlässig ist – und warum das eine Machtfrage wird",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-17T10:43:48.965Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-was-an-ki-unzuverlassig-ist-und-warum-das-eine-machtfrage-wird-3ee53a/"
-    },
-    {
-      "slug": "nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421",
-      "titel": "Nachgehört: Wer das Amt besetzt – und was die Wahl über Demokratie verrät",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-14T08:27:56.635Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgehort-wer-das-amt-besetzt-und-was-die-wahl-uber-demokratie-verrat-60b421/"
     }
   ]
 }

@@ -1,3 +1,4 @@
+import {loadSdgPlus, publishSdgPlus, renderSdgPlusLegacy, renderSdgPlusOverview} from "./sdgplus-publication.mjs";
 import {renderSiteHeader} from '../lib/site-shell.mjs';
 import {applyReferenceLinks} from '../wirkungslexikon/reference-links.mjs';
 import fs from "node:fs";
@@ -6,6 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const SITE = "https://wirkungsoekonomie.de";
+const canonicalPlus = loadSdgPlus(ROOT);
 const DATE = "2026-05-24";
 const CSS_VERSION = "20260524-sdg-reference-popover-text";
 const JS_VERSION = "20260523-nachhaltigkeit";
@@ -548,7 +550,7 @@ function go3PublicationBlock(base) {
       <div class="section-header">
         <p class="hero-kicker">Go 3 · echte Detailkonzepte</p>
         ${sectionTitle("go3-sdg-publications", "SDG-/SDG+-Fachdetailkonzepte online lesen")}
-        <p>Diese drei Fachdetailkonzepte bilden Paket 1 der Go-2-Produktionsreihenfolge. Der Online-Volltext ist der Hauptzugang; Word- und PDF-Dateien sind ergänzende Export- und Archivfassungen. Die Unterzielmatrix steht zusätzlich als CSV und JSON bereit.</p>
+        <p>Diese historischen Fachdetailkonzepte dokumentieren den früheren Stand. Die aktuelle SDG+-Referenz mit neun Zielen steht <a href="#sdgplus">auf dieser Seite</a>. Die Unterzielmatrix steht zusätzlich als CSV und JSON bereit.</p>
       </div>
       <div class="card-grid three">
         ${go3PackageOnePublications.map((item) => {
@@ -619,7 +621,8 @@ function overviewPage() {
   page({
     rel: "verstehen/sdgs-sdgplus/index.html",
     title: "SDG-/SDG+-Referenzrahmen | Wirkungsökonomie",
-    description: "Die Wirkungsökonomie nutzt die 17 SDGs der Agenda 2030 und SDG+ als Referenzrahmen für Wirkungsbewertung: Mensch, Planet, Demokratie, Medienqualität, Rechtsstaatlichkeit, Zusammenhalt und digitale Selbstbestimmung.",
+    description: "Die 17 Ziele der Agenda 2030 und die neun Ziele der SDG+-Referenz der Wirkungsökonomie. Mit Zuordnungsmatrix, Glossar und Workshopmaterial.",
+    headExtra: '<link rel="stylesheet" href="../../assets/css/sdgplus-reference.css"><link rel="alternate" hreflang="en" href="https://wirkungsoekonomie.de/en/sdg-plus/">',
     body: (base) => `<section class="hero portal-hero">
       <div class="hero-grid">
         <div>
@@ -638,17 +641,13 @@ function overviewPage() {
         </aside>
       </div>
     </section>
-    <figure class="sdg-reference-visual" aria-labelledby="sdg-reference-visual-caption">
-      <img src="${href(base, "assets/img/generated/sdg_sdgplus_referenzrahmen_hero_v0_1.png")}" alt="SDG-/SDG+-Referenzrahmen der Wirkungsökonomie mit 17 SDG-Kacheln und sieben SDG+-Dimensionen: Demokratie, Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, institutionelles Vertrauen, gesellschaftlicher Zusammenhalt und digitale Selbstbestimmung." loading="eager" width="1672" height="941">
-      <figcaption id="sdg-reference-visual-caption">Der SDG-/SDG+-Referenzrahmen verbindet die 17 Nachhaltigkeitsziele mit den demokratischen, medialen, rechtsstaatlichen und digitalen Voraussetzungen der Wirkungsökonomie.</figcaption>
-    </figure>
     <section class="section" aria-labelledby="sdg-agenda-short">
       <div class="download-card sdg-agenda-brief">
         <div>
           <p class="card-kicker">Kurz erklärt</p>
           ${sectionTitle("sdg-agenda-short", "SDGs und Agenda 2030")}
           <p class="card-text">Die SDGs sind die 17 Ziele für nachhaltige Entwicklung der Vereinten Nationen. Sie wurden 2015 von allen UN-Mitgliedstaaten im Rahmen der Agenda 2030 beschlossen. Der Beschluss ist kein Weltgesetz und keine einheitliche Wirtschaftsideologie. Er ist ein globaler Zielrahmen, der beschreibt, welche Zustände die Weltgemeinschaft bis 2030 verbessern will: Armut, Hunger, Gesundheit, Bildung, Gleichstellung, Wasser, Energie, Arbeit, Infrastruktur, Ungleichheit, Städte, Konsum, Klima, Ökosysteme, Frieden, Institutionen und Partnerschaften.</p>
-          <p class="card-text">Die Wirkungsökonomie nutzt die SDGs als Referenzrahmen für Wirkungsbewertung. SDG+ ergänzt diesen Rahmen um Demokratie, Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, institutionelles Vertrauen, gesellschaftlichen Zusammenhalt und digitale Selbstbestimmung.</p>
+          <p class="card-text">Die Wirkungsökonomie nutzt die SDGs als Referenzrahmen für Wirkungsbewertung. SDG+ konkretisiert und ergänzt vorhandene UN-Bezüge in neun Wirkungsfeldern. Die <a href="#sdgplus">SDG+-Referenz</a> erläutert Ziele, Anforderungen und ihre Verbindung zur Agenda 2030.</p>
           <p class="card-text"><strong>Merksatz:</strong> Die SDGs sind nicht der Ursprung der Wirkungsökonomie. Sie sind ihr globaler Anschlussstecker. Die Wirkungsökonomie übersetzt diesen Zielrahmen in Wirkungsdaten, Rückkopplung, Preise, Steuern, Kapitalzugang, Beschaffung, Haushalte und demokratische Korrektur.</p>
         </div>
         <div class="portal-card-actions no-print">
@@ -665,7 +664,7 @@ function overviewPage() {
         <div>
           <p class="card-kicker">Kompetenzrahmen</p>
           ${sectionTitle("idg-wirkungskompetenz", "Von Zielen zu Fähigkeiten: IDGs und Wirkungskompetenz")}
-          <p class="card-text">SDGs und Agenda 2030 sind der globale Zielrahmen. SDG+ ist die WÖk-Erweiterung für Demokratie, Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, institutionelles Vertrauen, gesellschaftlichen Zusammenhalt und digitale Selbstbestimmung.</p>
+          <p class="card-text">SDGs und Agenda 2030 sind der globale Zielrahmen. SDG+ ergänzt diesen Rahmen in neun demokratischen, medialen, institutionellen, sozialen und digitalen Wirkungsfeldern.</p>
           <p class="card-text">IDGs sind dazu anschlussfähig, aber kein dritter gleichrangiger Zielkatalog. Sie beschreiben innere und kollektive Entwicklungsfähigkeiten, die Menschen und Organisationen brauchen, um Transformation verantwortlicher zu gestalten.</p>
           <p class="card-text">Wirkungskompetenz ist die WÖk-spezifische Fähigkeit, Wirkung, Wirkungspotenziale, Nebenwirkungen, Datenqualität, Unsicherheit, Systemzusammenhänge und Rückkopplungen zu erkennen, zu bewerten und verantwortlich zu gestalten.</p>
         </div>
@@ -683,27 +682,8 @@ function overviewPage() {
       </div>
       <div class="sdg-reference-grid">${sdgs.map((item) => `<article class="card"><p class="card-kicker">SDG ${item.number}</p><h3 class="card-title">${escapeHtml(item.title)}</h3><p class="card-text">${escapeHtml(item.hoverText)}</p><div class="portal-card-actions">${badge(item, base)}</div></article>`).join("")}</div>
     </section>
-    <section class="section" id="sdgplus" aria-labelledby="why-sdgplus">
-      <div class="section-header">
-        <p class="hero-kicker">WÖk-Erweiterung</p>
-        ${sectionTitle("why-sdgplus", "Warum SDG+?")}
-        <p>Die SDGs sind für die Wirkungsökonomie notwendig, aber nicht vollständig ausreichend. Sie sind Zielräume, keine vollständige Rückkopplungsarchitektur. Sie sagen, welche Zustände verbessert werden sollen, erklären aber nicht allein, wie Wirkung in Preise, Steuern, Kapitalzugang, Beschaffung, Haushalt, Medien, Rechtsschutz und demokratische Korrektur zurückgeführt wird.</p>
-        <p>Zudem behandeln sie einige Wirkungsräume des 21. Jahrhunderts nicht in der Tiefe, die für Mensch, Planet und Demokratie notwendig ist: digitale Öffentlichkeit, Plattformmacht, Desinformation, algorithmische Manipulation, Medienqualität, Diskursfähigkeit, institutionelles Vertrauen und digitale Selbstbestimmung.</p>
-        <p><strong>SDG+ bedeutet daher nicht, die SDGs zu ersetzen. SDG+ bedeutet, sie wirkungsökonomisch zu erweitern.</strong></p>
-        <p>SDG+ macht sichtbar, dass eine Wirkung nicht ausreichend positiv sein kann, wenn sie ökologische oder soziale Vorteile erzeugt, aber demokratische Korrekturfähigkeit beschädigt. Ein digitales System kann effizient sein und zugleich Überwachung verstärken. Eine Plattform kann Bildung verbreiten und zugleich Desinformation skalieren. Ein Produkt kann emissionsarm sein und zugleich Menschenrechte verletzen.</p>
-      </div>
-    </section>
-    ${sdgPlusPublicationBlock(base)}
-    <section class="section" aria-labelledby="sdgplus-detail">
-      <div class="section-header">
-        <p class="hero-kicker">SDG+ im Detail</p>
-        ${sectionTitle("sdgplus-detail", "Sieben Erweiterungsdimensionen")}
-        <p class="scanner-notice">Die Agenda 2030 nennt Demokratie, gute Regierungsführung und Rechtsstaatlichkeit in Absatz 9. SDG 16 greift Rechtsstaatlichkeit, wirksame Institutionen, Beteiligung und Informationszugang auf. SDG+ konkretisiert diese und weitere Bezüge für die Wirkungsökonomie. Die sieben Web-Dimensionen und die neun Felder des Masterregisters v1.5 haben eigene Gliederungen. Eine Zuordnung braucht den konkreten Wirkpfad und Belege.</p>
-      </div>
-      <div class="sdg-reference-grid">${sdgPlus.map((item) => `<article class="card"><p class="card-kicker">SDG+</p><h3 class="card-title">${escapeHtml(item.title)}</h3><p class="card-text">${escapeHtml(item.hoverText)}</p><div class="portal-card-actions">${badge(item, base)}</div></article>`).join("")}</div>
-    </section>
-    ${sdgPlus.map((item) => sdgPlusInlineSection(item, base)).join("")}
-    ${sdgPlusDossierBlock()}
+    ${renderSdgPlusOverview(canonicalPlus)}
+    ${renderSdgPlusLegacy(canonicalPlus)}
     <section class="section" aria-labelledby="usage">
       <div class="section-header">
         <p class="hero-kicker">Website-Logik</p>
@@ -722,7 +702,6 @@ function overviewPage() {
         <a class="btn btn-secondary no-print" href="${href(base, "werkzeuge/woek-ids/")}">WÖk-IDs öffnen</a>
       </div>
     </section>
-    ${sdgPlusDownloadBlock(base)}
     ${officialReferencesBlock({ officialSources })}
     ${bookBlock(base, ["Exkurs: Warum die SDGs der Referenzrahmen der Wirkungsökonomie sind", "SDG+ als Erweiterung der Wirkungsökonomie", "Kapitel 28 - Demokratie als Wirkungsraum", "Kapitel 31 - WÖk-IDs und Indikatorenarchitektur", "Kapitel 32 - Benchmarks, Skalen und Scorecards", "Kapitel 33 - Reverse Merit Order", "Kapitel 36 - Wirkung als Rechtsprinzip", "Kapitel 40 - Wirkungsrat", "Kapitel 102 - Agenda 2030, SDGs, SDG+ und Verschwörungsnarrative"])}
     <section class="section" aria-labelledby="glossary-anchors">
@@ -750,128 +729,6 @@ function listBlock(title, items) {
         <h3 class="card-title">${escapeHtml(title)}</h3>
         <ul class="portal-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
       </div>`;
-}
-
-function sdgPlusInlineSection(item, base) {
-  return `<section class="section" id="${escapeHtml(item.id)}" aria-labelledby="${escapeHtml(item.id)}-title">
-      <div class="section-header">
-        <p class="hero-kicker">SDG+ Dimension</p>
-        <h2 id="${escapeHtml(item.id)}-title">${escapeHtml(item.title)} ${citeAnchor(item.id, `Zitierlink zu ${item.title}`)}</h2>
-        <p>${escapeHtml(item.hoverText)}</p>
-      </div>
-      <div class="card-grid two">
-        <article class="card">
-          <h3 class="card-title">Definition</h3>
-          <p class="card-text">${escapeHtml(item.woekMeaning)}</p>
-        </article>
-        <article class="card">
-          <h3 class="card-title">Warum diese Dimension nötig ist</h3>
-          <p class="card-text">${escapeHtml(item.whyNeeded)}</p>
-        </article>
-      </div>
-      <div class="card">
-        <h3 class="card-title">Anschluss an offizielle SDGs</h3>
-        <p class="card-text">${escapeHtml(item.officialSdgConnection)}</p>
-        <div class="model-strip">${item.relatedSdgs.map((id) => badge(byId[id], base)).join("")}</div>
-      </div>
-      <div class="card-grid two">
-        ${listBlock("Unterdimensionen", item.subdimensions)}
-        ${listBlock("Mögliche Indikator- und WÖk-ID-Familien", item.indicatorFamilies)}
-        ${listBlock("Relevante Wirkungsfelder", item.fields)}
-        ${listBlock("Kontextbezogene Werkzeuge", item.tools)}
-      </div>
-      <div class="scanner-notice" role="note">
-        <strong>Wirkungsgrenzen / rote Linien:</strong>
-        <ul class="portal-list">${item.redLines.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>
-      </div>
-      ${politicalImplementationBlock(item)}
-    </section>`;
-}
-
-function sdgPlusPublicationBlock(base) {
-  const detailWordAvailable = fs.existsSync(path.join(ROOT, "assets/downloads/woek_sdg_sdgplus_referenzrahmen_vertiefungskonzept_lesefassung_v0_3.docx"));
-  const detailPdfAvailable = fs.existsSync(path.join(ROOT, "assets/downloads/exports/sdg-sdgplus/woek_sdg_sdgplus_referenzrahmen_vertiefungskonzept_lesefassung_v0_3.pdf"));
-  const workpaperAvailable = fs.existsSync(path.join(ROOT, sdgPlusDownload.file));
-  return `<section class="section" aria-labelledby="sdgplus-publications">
-      <div class="section-header">
-        <p class="hero-kicker">Online lesen & Downloads</p>
-        ${sectionTitle("sdgplus-publications", "Detailkonzept und Dossier zu SDG+")}
-        <p>SDG+ wird auf dieser Seite vollständig online geführt. Downloads sind ergänzende Export- und Archivfassungen, nicht der Hauptzugang.</p>
-      </div>
-      <div class="card-grid four">
-        <article class="card">
-          <p class="card-kicker">Online-Volltext</p>
-          <h3>Detailkonzept online lesen</h3>
-          <p class="card-text">Definition, Begründung, sieben Dimensionen, Unterdimensionen, Indikatorfamilien, Wirkungsgrenzen und politische Anschlussfähigkeit.</p>
-          <a class="text-link" href="#sdgplus-detail">Zum Detailkonzept</a>
-        </article>
-        <article class="card">
-          <p class="card-kicker">Download</p>
-          <h3>Detailkonzept herunterladen</h3>
-          <p class="card-text">Die Lesefassung des vertieften SDG-/SDG+-Referenzrahmens als Word-Datei und, sofern vorhanden, als PDF.</p>
-          <div class="portal-card-actions no-print">
-            ${detailWordAvailable ? `<a class="btn btn-secondary" href="${href(base, "assets/downloads/woek_sdg_sdgplus_referenzrahmen_vertiefungskonzept_lesefassung_v0_3.docx")}">Word</a>` : '<span class="prototype-badge">Word folgt</span>'}
-            ${detailPdfAvailable ? `<a class="btn btn-secondary" href="${href(base, "assets/downloads/exports/sdg-sdgplus/woek_sdg_sdgplus_referenzrahmen_vertiefungskonzept_lesefassung_v0_3.pdf")}">PDF</a>` : '<span class="prototype-badge">PDF folgt</span>'}
-          </div>
-        </article>
-        <article class="card">
-          <p class="card-kicker">Online-Dossier</p>
-          <h3>SDG+ Dossier online lesen</h3>
-          <p class="card-text">Das Dossier bündelt Zweck, Anwendung auf der Website, WÖk-ID-Anschluss, rote Linien, Quellen und Buchanker.</p>
-          <a class="text-link" href="#sdgplus-dossier">Zum Online-Dossier</a>
-        </article>
-        <article class="card">
-          <p class="card-kicker">Download</p>
-          <h3>SDG+ Arbeitspapier</h3>
-          <p class="card-text">Das Arbeitspapier enthält Begründung, Definitionen, Unterdimensionen, WÖk-ID-Anschluss, Hover-Texte und Quellen.</p>
-          ${workpaperAvailable ? `<a class="text-link" href="${href(base, sdgPlusDownload.href)}">Arbeitspapier herunterladen</a>` : '<span class="prototype-badge">Arbeitsdokument folgt</span>'}
-          <p class="card-text"><span class="prototype-badge">Separater Dossier-Download in Vorbereitung</span></p>
-        </article>
-      </div>
-    </section>`;
-}
-
-function sdgPlusDossierBlock() {
-  return `<section class="section" id="sdgplus-dossier" aria-labelledby="sdgplus-dossier-title">
-      <div class="section-header">
-        <p class="hero-kicker">Dossier</p>
-        ${sectionTitle("sdgplus-dossier-title", "SDG+ Dossier online lesen")}
-        <p>Das SDG+-Dossier ordnet die Erweiterung als öffentliche Arbeits- und Quellenebene ein. Es ersetzt keine offiziellen UN-Ziele, sondern erklärt, warum Demokratie, Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, institutionelles Vertrauen, gesellschaftlicher Zusammenhalt und digitale Selbstbestimmung als Wirkungsbedingungen sichtbar bleiben müssen.</p>
-      </div>
-      <div class="card-grid three">
-        <article class="card">
-          <h3>Was das Dossier bündelt</h3>
-          <p class="card-text">Begründung von SDG+, sieben Dimensionen, Anschluss an SDG 16 und SDG 17, WÖk-ID-/Indikatorfamilien, rote Linien, politische Anschlussfähigkeit und Quellen.</p>
-        </article>
-        <article class="card">
-          <h3>Wie es genutzt wird</h3>
-          <p class="card-text">Portalseiten und Werkzeugseiten nutzen SDG+ als Referenzrahmen für Wirkungen, die demokratische Korrektur, öffentliche Wahrheit, Rechtsstaatlichkeit, Zusammenhalt oder digitale Selbstbestimmung betreffen.</p>
-        </article>
-        <article class="card">
-          <h3>Grenze der Einordnung</h3>
-          <p class="card-text">SDG+ ist keine offizielle UN-Kategorie und keine automatische Bewertungsmaschine. Wirkungsdaten bereiten Entscheidungen vor, ersetzen aber keine demokratische Abwägung.</p>
-        </article>
-      </div>
-    </section>`;
-}
-
-function sdgPlusDownloadBlock(base) {
-  const available = sdgDepthDownloads.filter((download) => fs.existsSync(path.join(ROOT, download.file)));
-  return `<section class="section" aria-labelledby="sdgplus-download">
-      <div class="download-card">
-        <div>
-          <p class="card-kicker">Download / Dossier</p>
-          ${sectionTitle("sdgplus-download", "Vertiefungskonzept und Arbeitspapiere")}
-          <p class="card-text">Der vollständige Referenzbereich ist online lesbar. Downloads dienen als ergänzende Export- und Archivfassung.</p>
-          <p class="card-text">${escapeHtml(sdgPlusDownload.description)}</p>
-        </div>
-        <div class="portal-card-actions no-print">
-          ${available.length
-            ? available.map((download) => `<a class="btn btn-primary" href="${href(base, download.href)}">${escapeHtml(download.title)}</a>`).join("")
-            : '<span class="prototype-badge">Arbeitsdokument folgt</span>'}
-        </div>
-      </div>
-    </section>`;
 }
 
 function sdgDetailPage(item) {
@@ -1092,13 +949,11 @@ function politicalRows(item) {
 }
 
 function sdgPlusInteractionBlock(base, item) {
-  const plus = ["sdgplus-demokratie", "sdgplus-medienqualitaet", "sdgplus-rechtsstaatlichkeit", "sdgplus-diskursfaehigkeit", "sdgplus-institutionelles-vertrauen", "sdgplus-gesellschaftlicher-zusammenhalt", "sdgplus-digitale-selbstbestimmung"];
   return `<section class="section" aria-labelledby="plus-interactions">
       <div class="section-header">
-        <p class="hero-kicker">Wechselwirkungen</p>
         ${sectionTitle("plus-interactions", "SDG+ Wechselwirkungen")}
-        <p>Dieses SDG kann nur stabil wirken, wenn demokratische, mediale, rechtsstaatliche und digitale Voraussetzungen mitgedacht werden.</p>
-        <div class="model-strip">${plus.map((id) => badge(byId[id], base)).join("")}</div>
+        <p>Die Zuordnungsmatrix nennt begründete Prüfbezüge, ihre Voraussetzungen und offene Paarungen.</p>
+        <p><a class="text-link" href="${href(base, `verstehen/sdgs-sdgplus/matrix/?sdg=${item.number}`)}">SDG+ prüfen für SDG ${item.number}</a></p>
       </div>
     </section>`;
 }
@@ -1399,7 +1254,7 @@ function enhanceGlossary() {
   );
   html = html.replace(
     /<div><dt id="begriff-sdg-plus">SDG\+<\/dt><dd>[\s\S]*?<\/dd><\/div>/,
-    '<div><dt id="begriff-sdg-plus">SDG+</dt><dd>SDG+ ist keine offizielle UN-Kategorie, sondern eine transparente Erweiterung der Wirkungsökonomie. Sie ergänzt die SDGs um Wirkungsfelder, die für demokratische Stabilität zentral sind: Demokratie, Medienqualität, Rechtsstaatlichkeit, Diskursfähigkeit, gesellschaftlicher Zusammenhalt, institutionelles Vertrauen und digitale Selbstbestimmung. Für Nachhaltigkeit präzisiert SDG+, dass resiliente Systeme auch demokratische Korrekturräume brauchen. <a class="text-link" href="verstehen/sdgs-sdgplus/#sdgplus">Mehr zu SDG+ im Referenzrahmen</a>.</dd></div>',
+    `<div><dt id="begriff-sdg-plus">SDG+</dt><dd>${escapeHtml(canonicalPlus.locale.de.definition)} <a class="text-link" href="verstehen/sdgs-sdgplus/glossary/">Die neun Ziele im Glossar</a>.</dd></div>`,
   );
   html = html.replace(
     /<div><dt id="begriff-positive-netto-wirkung">Positive Netto-Wirkung<\/dt><dd>[\s\S]*?<\/dd><\/div>/,
@@ -1408,7 +1263,7 @@ function enhanceGlossary() {
   fs.writeFileSync(file, html, "utf8");
 }
 
-function updateSitemap() {
+function updateSitemap(plusRoutes) {
   const sitemapPath = path.join(ROOT, "sitemap.xml");
   if (!fs.existsSync(sitemapPath)) return;
   let sitemap = fs.readFileSync(sitemapPath, "utf8");
@@ -1422,13 +1277,26 @@ function updateSitemap() {
     "verstehen/sdgs-sdgplus/unterziele/",
     ...Array.from({ length: 17 }, (_, index) => `verstehen/sdgs-sdgplus/unterziele/sdg-${index + 1}/`),
   ];
-  const urls = ["verstehen/sdgs-sdgplus/", "verstehen/sdgs-sdgplus/geschichte/", "referenzrahmen/sdgs-sdgplus/", ...sdgs.map((item) => `verstehen/sdgs-sdgplus/${item.slug}/`), ...go3Urls];
+  const urls = ["verstehen/sdgs-sdgplus/", "verstehen/sdgs-sdgplus/geschichte/", "referenzrahmen/sdgs-sdgplus/", ...sdgs.map((item) => `verstehen/sdgs-sdgplus/${item.slug}/`), ...go3Urls, ...plusRoutes.map((url) => url.slice(1))];
   const additions = urls
-    .filter((url) => !sitemap.includes(`${SITE}/${url}`))
-    .map((url) => `  <url>\n    <loc>${SITE}/${url}</loc>\n    <lastmod>${DATE}</lastmod>\n  </url>`)
+    .filter((url) => !sitemap.includes(`<loc>${SITE}/${url}</loc>`))
+    .map((url) => `  <url>\n    <loc>${SITE}/${url}</loc>\n    <lastmod>${plusRoutes.includes("/" + url) ? canonicalPlus.reference.date : DATE}</lastmod>\n  </url>`)
     .join("\n");
   if (additions) sitemap = sitemap.replace("</urlset>", `${additions}\n</urlset>`);
   fs.writeFileSync(sitemapPath, sitemap, "utf8");
+}
+
+function writeLegacyOverviewAliases() {
+  for (const rel of ["sdg-plus.html", "sdg-plus/index.html"]) {
+    page({
+      rel,
+      title: "SDG+-Referenz | Wirkungsökonomie",
+      description: "Weiterleitung zur aktuellen SDG+-Referenz mit neun Zielen.",
+      canonicalOverride: SITE + "/verstehen/sdgs-sdgplus/",
+      headExtra: '<meta name="robots" content="noindex,follow"><meta http-equiv="refresh" content="0; url=/verstehen/sdgs-sdgplus/#sdgplus">',
+      body: () => '<section class="section"><h1>SDG+</h1><p><a href="/verstehen/sdgs-sdgplus/#sdgplus">Die neun Ziele der aktuellen SDG+-Referenz öffnen</a></p></section>',
+    });
+  }
 }
 
 function run() {
@@ -1437,10 +1305,11 @@ function run() {
   overviewPage();
   sdgHistoryPage();
   aliasPage();
+  writeLegacyOverviewAliases();
   for (const item of references) sdgDetailPage(item);
   enhanceExistingBadges();
   enhanceGlossary();
-  updateSitemap();
+  updateSitemap(publishSdgPlus(ROOT, canonicalPlus));
   console.log(`SDG reference generated: ${references.length} detail pages.`);
 }
 
