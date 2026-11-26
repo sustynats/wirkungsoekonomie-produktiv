@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { renderSiteFooter, renderSiteHeader, renderSiteHeaderForSource } from '../lib/site-shell.mjs';
+import { renderSiteFooter, renderSiteHeader } from '../lib/site-shell.mjs';
 
 const site = 'https://wirkungsoekonomie.de';
 const langKeys = ['de', 'en'];
@@ -101,13 +101,7 @@ ${legacyMap.map(([id, label, targetIds]) => `<section id="${id}" data-sdgplus-le
 function openPage(root, lang, title, description, url, alternative, content) {
   const base = '../'.repeat(url.split('/').filter(Boolean).length);
   const english = lang === 'en';
-  let header;
-  if (english) {
-    const entry = fs.readFileSync(path.join(root, 'en/index.html'), 'utf8');
-    header = renderSiteHeaderForSource(entry).replace(/((?:href|src)=")\.\.\//g, `$1${base}`);
-  } else {
-    header = renderSiteHeader(base, 'de');
-  }
+  const header = renderSiteHeader(base, 'de');
   const alternates = english ? { de: alternative, en: url } : { de: url, en: alternative };
   write(root, url, `<!doctype html>
 <html lang="${lang}">
