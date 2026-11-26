@@ -689,6 +689,82 @@ test('a scheduled legacy wake acknowledges only an already registered SDG editio
   } finally { rmSync(root, { recursive: true, force: true }); }
 }));
 
+test('a genuine empty first SDG window anchors cutover and later imports an accepted revision', async () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'woek-sdg-empty-start-'));
+  const storage = path.join(dir, 'sdg');
+  const oracleRoot = path.join(storage, 'publication');
+  const checkout = path.join(dir, 'checkout');
+  mkdirSync(storage, { mode: 0o700 });
+  mkdirSync(oracleRoot, { mode: 0o700 });
+  mkdirSync(checkout);
+  const bridge = new BridgeStore(path.join(dir, 'bridge.sqlite'), { lane: 'import' });
+  const measures = new MeasureRevisions(path.join(storage, 'measures.sqlite'));
+  const editions = new EditionLedger(path.join(storage, 'editions.sqlite'));
+  for (const filename of ['editions.sqlite', 'measures.sqlite']) chmodSync(path.join(storage, filename), 0o600);
+  try {
+    const journal = new MeasureReviewJournal(bridge);
+    const [pending] = measures.recordBatch([event]);
+    const { editions: [first] } = prepareScheduledSdgEditions({
+      root: oracleRoot, ledger: editions, journal, measures, startAt: window.cutoff,
+      checkedThrough: window.cutoff, sealedAt: now, expectedCatalogHash: null,
+    });
+    const id = first.edition_id;
+    assert.equal(id, '2026-11-24-morgenlage');
+    assert.deepEqual(editions.read(id).items, []);
+    const expected = { edition_id: id, sha256: first.edition_sha256 };
+    const initial = { root: checkout, packageFile: path.join(oracleRoot, first.paths[0]),
+      editionId: id, expectedSha256: expected.sha256 };
+    assert.throws(() => importFirstSdgPackage({ ...initial, expectedSha256: 'f'.repeat(64) }), /SDG_RELEASE_PACKAGE_MISMATCH/);
+    assert.equal(importFirstSdgPackage(initial).status, 'registered_for_website_build');
+    assert.equal(importFirstSdgPackage(initial).status, 'already_registered');
+    assert.equal(loadSdgTickerPresentation(checkout), null);
+
+    const calls = [];
+    const run = '101:1';
+    const sdg = serveSdgEditions(dir, window.cutoff, bridge, { clock: () => '2026-11-24T11:05:00.000Z' });
+    const receive = () => receiveSdgBridgeEditions({ root: checkout, run, connect: () => ({
+      store: {
+        acquire(_at, lane, owner) { calls.push(['acquire', lane, owner.manualRunId]); },
+        release(success) { calls.push(['release', success]); },
+      },
+      sdg: {
+        ...sdg,
+        reconcile(cursor) { calls.push(['reconcile', cursor]); return { status: 'current' }; },
+        prepare(cursor) { calls.push(['prepare', cursor]); return sdg.prepare(cursor); },
+      },
+    }) });
+    const receiptOnly = [['acquire', 'combined', run], ['reconcile', expected], ['release', true]];
+    assert.deepEqual(await receive(), { changed: false, count: 0 });
+    assert.deepEqual(calls.splice(0), receiptOnly);
+
+    const mode = path.join(checkout, 'data/news/sdg/ticker-mode.json');
+    const setMode = anchor => writeFileSync(mode, JSON.stringify({ schema_version: 1, mode: 'sdg', anchor }));
+    setMode(undefined);
+    assert.throws(() => loadSdgTickerPresentation(checkout), /SDG_TICKER_RELEASE_ANCHOR_REQUIRED/);
+    setMode({ ...expected, sha256: 'f'.repeat(64) });
+    assert.throws(() => loadSdgTickerPresentation(checkout), /SDG_TICKER_RELEASE_ANCHOR_REQUIRED/);
+    setMode(expected);
+    assert.deepEqual(loadSdgTickerPresentation(checkout).releases[0].manifest.items, []);
+
+    const later = bind(measures, pending);
+    await stageIndependentMeasureReview({
+      packet: later.packet, receipt: later.receipt, now: '2026-11-24T10:45:00.000Z',
+    }, { measures, editions, journal, prepareRecord: () => ({ record: later.record }) });
+    assert.deepEqual(await receive(), { changed: true, count: 1 });
+    assert.deepEqual(calls, [receiptOnly[0], receiptOnly[1], ['prepare', expected], receiptOnly[2]]);
+    const { releases: [anchor, midday] } = loadSdgTickerPresentation(checkout);
+    assert.equal(anchor.sha256, expected.sha256);
+    assert.deepEqual(anchor.manifest.items, []);
+    assert.equal(midday.edition_id, '2026-11-24-mittagslage');
+    assert.deepEqual(midday.manifest.items.map(item => item.revision_id), [pending.revisionId]);
+  } finally {
+    bridge.close();
+    measures.close();
+    editions.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('the Oracle bridge accepts only receipt reconciliation without a publication start', async t => {
   const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-no-start-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));

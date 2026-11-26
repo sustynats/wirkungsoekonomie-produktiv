@@ -225,10 +225,12 @@ node scripts/news/sdg/import-bridge-editions.mjs \
   --sha256="$SDG_EDITION_SHA256"
 ```
 
-Der Import prüft den öffentlichen Paketvertrag und verlangt mindestens
-einen geprüften Eintrag. Er schreibt ausschließlich Paket und Katalog,
-solange die Modusdatei fehlt. Die fachliche Prüfung bleibt an den
-vorherigen, privaten Freigabepfad gebunden. GitHub Pages liefert die
+Der Import prüft den öffentlichen Paketvertrag. Auch ein tatsächlich aus
+dem privaten Ledger geschlossener Berliner Termin ohne geprüfte Einträge
+kann den Start verankern. Ausgabe-ID, Ledger- und Paket-Hash sowie die
+öffentliche Zustellquittung gelten dafür unverändert. Der Import schreibt
+ausschließlich Paket und Katalog, solange die Modusdatei fehlt. Alle Einträge
+bleiben an ihre private fachliche Freigabe gebunden. GitHub Pages liefert die
 registrierte Ausgabe über das bestehende Archiv aus.
 
 ### Gebundene amtliche Datenaufnahmen übernehmen

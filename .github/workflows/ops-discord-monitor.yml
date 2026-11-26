@@ -95,11 +95,11 @@ jobs:
         run: node scripts/news/release-hydrate.mjs
         env:
           GH_TOKEN: ${{ github.token }}
-      - name: Check live services and deliver private Discord messages
+      - name: Check live services and deliver to the private Discord channel
         env:
           GH_TOKEN: ${{ github.token }}
           WOEK_MONITOR_DISCORD_BOT_TOKEN: ${{ secrets.WOEK_MONITOR_DISCORD_BOT_TOKEN }}
-          WOEK_MONITOR_DISCORD_USER_ID: ${{ secrets.WOEK_MONITOR_DISCORD_USER_ID }}
+          WOEK_MONITOR_DISCORD_CHANNEL: ${{ secrets.WOEK_MONITOR_DISCORD_CHANNEL }}
           REPORT_NOW: ${{ inputs.report_now }}
           WIRKUNGSTICKER_PROCESSING_MODE: ${{ vars.WIRKUNGSTICKER_PROCESSING_MODE || 'api' }}
           WOEK_NEWS_BRIDGE_DISCOVERY_ENABLED: ${{ vars.WOEK_NEWS_BRIDGE_DISCOVERY_ENABLED || 'true' }}

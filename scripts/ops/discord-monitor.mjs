@@ -508,15 +508,52 @@ function discordParts(content) {
   return parts;
 }
 
+function prepareDiscordParts(event) {
+  if (event.attachment && (!/^[a-z0-9][a-z0-9._-]{0,119}\.txt$/.test(event.attachment.filename || '')
+    || typeof event.attachment.content !== 'string'
+    || Buffer.byteLength(event.attachment.content) > 65536)) throw new Error('MONITOR_DM_ATTACHMENT_INVALID');
+  return discordParts(event.content);
+}
+
 export async function sendDiscord(event, { token, recipient, fetchImpl = fetch }) {
   if (!token || !/^\d{15,22}$/.test(recipient || '')) throw new Error('MONITOR_DM_CONFIGURATION_MISSING');
-  if(event.attachment&&(!/^[a-z0-9][a-z0-9._-]{0,119}\.txt$/.test(event.attachment.filename||'')||typeof event.attachment.content!=='string'||Buffer.byteLength(event.attachment.content)>65536))throw new Error('MONITOR_DM_ATTACHMENT_INVALID');
-  const parts = discordParts(event.content);
+  const parts = prepareDiscordParts(event);
   const headers = { authorization: `Bot ${token}`, 'content-type': 'application/json' };
   const channelResponse = await fetchImpl('https://discord.com/api/v10/users/@me/channels', { method: 'POST', headers, body: JSON.stringify({ recipient_id: recipient }), signal: AbortSignal.timeout(12_000) });
   if (!channelResponse.ok) throw new Error(`MONITOR_DM_CHANNEL_HTTP_${channelResponse.status}`);
   const channel = await channelResponse.json();
   if (!/^\d{15,22}$/.test(channel.id || '')) throw new Error('MONITOR_DM_CHANNEL_INVALID');
+  await postDiscordParts(event, parts, { url: `https://discord.com/api/v10/channels/${channel.id}`,
+    headers, fetchImpl, sendError: 'MONITOR_DM_SEND' });
+}
+
+export async function openPrivateDiscordDelivery({ token, target, fetchImpl = fetch }) {
+  const match = /^(\d{15,22})\/(\d{15,22})$/.exec(target || '');
+  if (!token || !match) throw new Error('MONITOR_DISCORD_CHANNEL_CONFIGURATION_MISSING');
+  const [, guildId, channelId] = match;
+  const url = `https://discord.com/api/v10/channels/${channelId}`;
+  const headers = { authorization: `Bot ${token}`, 'content-type': 'application/json' };
+  const response = await fetchImpl(url, { headers, redirect: 'error', signal: AbortSignal.timeout(12_000) });
+  if (!response.ok) throw new Error(`MONITOR_DISCORD_CHANNEL_HTTP_${response.status}`);
+  const channel = await response.json();
+  if (channel?.id !== channelId || channel.guild_id !== guildId || channel.type !== 0) {
+    throw new Error('MONITOR_DISCORD_CHANNEL_MISMATCH');
+  }
+  const everyone = Array.isArray(channel.permission_overwrites)
+    ? channel.permission_overwrites.find(overwrite => overwrite?.id === guildId && overwrite.type === 0)
+    : null;
+  const viewChannel = 1n << 10n;
+  if (!/^\d{1,25}$/.test(everyone?.deny ?? '') || !/^\d{1,25}$/.test(everyone?.allow ?? '')
+    || !(BigInt(everyone.deny) & viewChannel) || (BigInt(everyone.allow) & viewChannel)) {
+    throw new Error('MONITOR_DISCORD_CHANNEL_NOT_PRIVATE');
+  }
+  // Reuse the verified channel for this delivery batch. There is no DM fallback.
+  return event => postDiscordParts(event, prepareDiscordParts(event), {
+    url, headers, fetchImpl, sendError: 'MONITOR_DISCORD_CHANNEL_SEND', receiptChannel: channelId,
+  });
+}
+
+async function postDiscordParts(event, parts, { url, headers, fetchImpl, sendError, receiptChannel }) {
   // Keep the outbox event until every part succeeds. Stable per-part nonces
   // limit duplicates on retry; do not silently cut off final costs/warnings.
   for (const [index, content] of parts.entries()) {
@@ -528,8 +565,14 @@ export async function sendDiscord(event, { token, recipient, fetchImpl = fetch }
       const form=new FormData();form.set('payload_json',JSON.stringify(payload));form.set('files[0]',new Blob([event.attachment.content],{type:'text/plain;charset=utf-8'}),event.attachment.filename);
       body=form;requestHeaders={authorization:headers.authorization};
     }
-    const response = await fetchImpl(`https://discord.com/api/v10/channels/${channel.id}/messages`, { method: 'POST', headers:requestHeaders, body, signal: AbortSignal.timeout(12_000) });
-    if (!response.ok) throw new Error(`MONITOR_DM_SEND_HTTP_${response.status}`);
+    const response = await fetchImpl(`${url}/messages`, { method: 'POST', headers:requestHeaders, body, signal: AbortSignal.timeout(12_000) });
+    if (!response.ok) throw new Error(`${sendError}_HTTP_${response.status}`);
+    if (receiptChannel) {
+      const receipt = await response.json();
+      if (receipt?.channel_id !== receiptChannel || !/^\d{15,22}$/.test(receipt.id ?? '')) {
+        throw new Error('MONITOR_DISCORD_CHANNEL_RECEIPT_MISMATCH');
+      }
+    }
   }
 }
 
@@ -582,7 +625,7 @@ export async function main() {
     catch { data.editorialStatus = { available: false, error: 'EDITORIAL_STATUS_UNAVAILABLE' }; }
     if (data.editorialStatus.available) Object.assign(data, data.editorialStatus);
   }
-  if (!dryRun && (!process.env.GH_TOKEN || !process.env.WOEK_MONITOR_DISCORD_BOT_TOKEN || !/^\d{15,22}$/.test(process.env.WOEK_MONITOR_DISCORD_USER_ID || ''))) throw new Error('MONITOR_DM_CONFIGURATION_MISSING');
+  if (!dryRun && !process.env.GH_TOKEN) throw new Error('MONITOR_GITHUB_CONFIGURATION_MISSING');
   const statePath = 'monitor-state.json';
   const stored = process.env.GH_TOKEN ? await api(`contents/${statePath}?ref=${STATE_BRANCH}`, { allow404: true }) : null;
   let state = stored ? JSON.parse(Buffer.from(stored.content, 'base64').toString('utf8')) : null;
@@ -646,11 +689,17 @@ export async function main() {
     dispatch: (workflow, body) => api(`actions/workflows/${workflow}/dispatches`, { method: 'POST', body: JSON.stringify(body) }),
   });
   let delivered = 0;
-  while (state.outbox.length) {
-    await sendDiscord(state.outbox[0], { token: process.env.WOEK_MONITOR_DISCORD_BOT_TOKEN, recipient: process.env.WOEK_MONITOR_DISCORD_USER_ID });
-    state.outbox.shift();
-    await save();
-    delivered++;
+  if (state.outbox.length) {
+    const deliver = await openPrivateDiscordDelivery({
+      token: process.env.WOEK_MONITOR_DISCORD_BOT_TOKEN,
+      target: process.env.WOEK_MONITOR_DISCORD_CHANNEL,
+    });
+    while (state.outbox.length) {
+      await deliver(state.outbox[0]);
+      state.outbox.shift();
+      await save();
+      delivered++;
+    }
   }
   // Welche Prüfung rot ist, stand bisher nur in Natalies Discord. Ohne den
   // Namen im Lauf-Protokoll ist ein Hänger von außen nicht auffindbar
@@ -668,7 +717,7 @@ export async function main() {
     try { await writeEditorialMonitorStatus({ session: bridgeSession(), now, status }); }
     catch { console.warn('EDITORIAL_STATUS_DELIVERY_FAILED'); }
   }
-  console.log(JSON.stringify({ checked: checks.length, healthy: checks.filter(c => c.ok).length, activeIncidents: Object.keys(state.incidents).filter(k => state.incidents[k].active).length, delivered, dailyDate: state.dailyDate,
+  console.log(JSON.stringify({ checked: checks.length, healthy: checks.filter(c => c.ok).length, activeIncidents: Object.keys(state.incidents).filter(k => state.incidents[k].active).length, delivered, discord_private_channel_verified: delivered > 0, dailyDate: state.dailyDate,
     failing: checks.filter((check) => !check.ok).map((check) => ({ id: check.id, name: check.name, immediate: Boolean(check.immediate) })),
     publicDelivery: observed.summary, recovery: (state.recovery_attempts || []).filter(attempt => attempt.at === now) }));
   if ((state.recovery_attempts || []).some(attempt => attempt.at === now && attempt.status === 'dispatch_uncertain')) throw new Error('MONITOR_RECOVERY_DISPATCH_UNCERTAIN');

@@ -67,7 +67,8 @@ async function transferPackage(sdg, entry, file) {
   requirePublicProjection(JSON.parse(fs.readFileSync(file, 'utf8')), entry);
 }
 
-// The initial, already reviewed package can be staged before ticker-mode.json.
+// The initial sealed edition can be staged before ticker-mode.json.
+// A completed window with no qualified items still has a ledger hash.
 // The normal Pages build still owns publication and the verified receipt.
 export function importFirstSdgPackage({ root, packageFile, editionId: id, expectedSha256 }) {
   if (typeof id !== 'string' || !editionId.test(id) || typeof expectedSha256 !== 'string' ||
@@ -96,7 +97,6 @@ export function importFirstSdgPackage({ root, packageFile, editionId: id, expect
   } catch { throw Error('SDG_FIRST_PACKAGE_UNREADABLE'); }
   const entry = { edition_id: id, sha256: expectedSha256 };
   requirePublicProjection(pack, entry);
-  if (!pack.manifest.items.length) throw Error('SDG_FIRST_PACKAGE_EMPTY');
   if (registered) return { status: 'already_registered', edition_id: id, edition_sha256: expectedSha256 };
   if (readSdgCatalogIndex(root).sha256 !== catalog.sha256) throw Error('SDG_RELEASE_CATALOG_MOVED');
   writeSdgEditionCandidate(catalog.directory, pack);
@@ -183,7 +183,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
 export async function receiveSdgBridgeEditions({ root, run, connect = bridgeSession, downloadArchive }) {
   const active = loadSdgTickerPresentation(root);
   const { releases } = active ?? readSdgReleaseCatalog(root);
-  if (!releases.some(entry => entry.manifest.items.length)) return { changed: false, count: 0 };
+  if (!releases.length) return { changed: false, count: 0 };
   const committed = releases.at(-1);
 
   const { store, sdg } = connect();

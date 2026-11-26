@@ -67,6 +67,6 @@ export function loadSdgTickerPresentation(root) {
   const catalog = readSdgReleaseCatalog(root);
   const anchor = catalog.releases.find(entry =>
     entry.edition_id === config.anchor?.edition_id && entry.sha256 === config.anchor?.sha256);
-  if (!anchor || !anchor.manifest.items.length) throw Error('SDG_TICKER_RELEASE_ANCHOR_REQUIRED');
+  if (!anchor) throw Error('SDG_TICKER_RELEASE_ANCHOR_REQUIRED');
   return catalog;
 }
