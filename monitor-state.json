@@ -29,10 +29,6 @@
       "firstSeen": "2026-11-22T23:20:51.984Z",
       "active": true
     },
-    "lage": {
-      "firstSeen": "2026-11-26T05:06:05.105Z",
-      "active": true
-    },
     "delivery-wirkungsticker.yml": {
       "firstSeen": "2026-11-26T13:58:58.087Z",
       "active": true
@@ -40,13 +36,14 @@
     "delivery-deploy.yml": {
       "firstSeen": "2026-11-26T14:55:31.241Z",
       "active": true
-    },
-    "editorial-status": {
-      "firstSeen": "2026-11-26T14:59:06.266Z",
-      "active": false
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "11435c38c356bde6925be686",
+      "content": "✓ WÖk-Störung behoben\nKanonischer Lagenbestand\nPrüfung: 2026-11-26T15:06:07.327Z"
+    }
+  ],
   "dailyDate": "2026-11-26",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4197,7 +4194,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-26T14:59:06.266Z",
+    "checked_at": "2026-11-26T15:06:07.327Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
