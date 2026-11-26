@@ -145,6 +145,25 @@ test('editorial CLI preserves the real journal paragraph while cleaning the same
   fs.rmSync(temporary, {recursive: true, force: true});
  }
 });
+
+test('editorial CLI removes tracking from every file in one pass and then passes its check', () => {
+ const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'woek-multifile-tracking-'));
+ const cli = fileURLToPath(new URL('../../scripts/quality/sanitize-public-editorial-residue.mjs', import.meta.url));
+ const prose = '<p>Unveränderter Fachtext.</p>'.repeat(40);
+ try {
+  fs.writeFileSync(path.join(temporary, 'a.html'), prose + '<a href="https://example.org/first?utm_source=chatgpt.com">Erste Quelle</a>');
+  fs.writeFileSync(path.join(temporary, 'b.html'), '<a href="https://example.org/second?trk=public_post_comment-text&amp;utm_source=openai">Zweite Quelle</a>');
+  const cleaned = spawnSync(process.execPath, [cli], {cwd: temporary, encoding: 'utf8'});
+  assert.equal(cleaned.status, 0, cleaned.stderr);
+  assert.equal(fs.readFileSync(path.join(temporary, 'a.html'), 'utf8'), prose + '<a href="https://example.org/first">Erste Quelle</a>');
+  assert.equal(fs.readFileSync(path.join(temporary, 'b.html'), 'utf8'), '<a href="https://example.org/second?trk=public_post_comment-text">Zweite Quelle</a>');
+  const checked = spawnSync(process.execPath, [cli, '--check'], {cwd: temporary, encoding: 'utf8'});
+  assert.equal(checked.status, 0, checked.stderr);
+ } finally {
+  fs.rmSync(temporary, {recursive: true, force: true});
+ }
+});
+
 test('production notes never consume preceding sections or inline content',()=>{
  const before='<section id="evidence"><h2>Nachweis</h2><p>Wichtiger fachlicher Inhalt.</p><p>Mehr <strong>Evidenz</strong>.</p>';
  const after='<h3 id="formula">Formel</h3><p>Bleibt erhalten.</p></section>';
