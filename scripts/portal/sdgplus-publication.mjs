@@ -201,6 +201,23 @@ function csvText(rows) {
   return '\ufeff' + fields.join(',') + '\r\n' + rows.map(row => fields.map(field => cell(row[field])).join(',')).join('\r\n') + '\r\n';
 }
 
+export function sdgPlusGlossarySupplement(term, input) {
+  const { reference, locale, content } = input;
+  const l = locale.de;
+  if (term === 'sdg-plus') {
+    return `<section class="term-summary-card"><h2>Neun SDG+-Ziele</h2>
+${list(reference.goals.map(goal => link(glossary('de', goal.id), titleFor(goal, 'de'))))}
+<p>${link(roots.de + '#sdgplus', 'SDG+-Referenz v1.0')} · ${link('/bibliothek/woek-begriffsleitfaden-fuehrend-v1-9/', 'Begriffsleitfaden v1.9')}</p></section>`;
+  }
+  const goal = reference.goals.find(item => term === 'sdgplus-' + item.id);
+  if (!goal) return '';
+  return `<section class="term-summary-card" data-sdgplus-glossary="${escape(goal.id)}">
+<h2>Vertiefung zu SDG+ ${goal.number}</h2>${content.de[goal.id].longDefinitionHtml}
+<h3>Abgrenzung</h3><p>${escape(goal.de.scope)}</p><p>${escape(goal.de.why)}</p>
+<p>${link(detail('de', goal.id), l.goTo)} · ${link(roots.de + 'matrix/?goal=' + goal.id, l.matrix)} ·
+${link(glossary('en', goal.id), 'English', ' lang="en" hreflang="en"')}</p></section>`;
+}
+
 export function publishSdgPlus(root, input) {
   const { reference, locale, content } = input;
   const publicReference = {
@@ -243,12 +260,6 @@ export function publishSdgPlus(root, input) {
   openPage(root, 'de', guideTitle, 'SDG+-Revision zu § 4.2 vom 26. November 2026.',
     guideRoute, roots.en, `<h1>${guideTitle}</h1>${addendum}${list(guideDownloads)}`);
   routes.push(guideRoute);
-  const glossaryMain = '/begriffe/sdg-plus/';
-  openPage(root, 'de', 'SDG+', locale.de.definition, glossaryMain, roots.en + 'glossary/',
-    `<h1>SDG+</h1><p class="sdgplus-lead">${escape(locale.de.definition)}</p>
-<p>${escape(locale.de.intro)}</p>${list(reference.goals.map(goal => link(glossary('de', goal.id), titleFor(goal, 'de'))))}
-<p>${link(roots.de + '#sdgplus', 'SDG+-Referenz v1.0')} · ${link(guideRoute, 'Begriffsleitfaden v1.9')}</p>`);
-  routes.push(glossaryMain);
   for (const lang of langKeys) {
     const other = lang === 'de' ? 'en' : 'de';
     const l = locale[lang];
@@ -279,7 +290,7 @@ ${link(site + index, site + index)}.</p><p class="sdgplus-narrow">${escape(l.rig
         `<article class="sdgplus-narrow" data-sdgplus-goal="${escape(goal.id)}">
 <p class="sdgplus-lead">${escape(item.summary)}</p><p>${escape(item.why)}</p>${metaLinks}
 ${copy.detailTocHtml}${copy.detailHtml}<h2>${escape(l.sources)}</h2>${sources(reference.sources)}</article>`);
-      add(glossary(lang, goal.id), glossary(other, goal.id), titleFor(goal, lang), item.summary,
+      if (lang === 'en') add(glossary(lang, goal.id), glossary(other, goal.id), titleFor(goal, lang), item.summary,
         `<article class="sdgplus-narrow" data-sdgplus-glossary="${escape(goal.id)}">
 <p class="sdgplus-lead">${escape(item.summary)}</p>${copy.longDefinitionHtml}
 <h2>${lang === 'de' ? 'Abgrenzung' : 'Scope'}</h2><p>${escape(item.scope)}</p><p>${escape(item.why)}</p>
