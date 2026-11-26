@@ -11,7 +11,7 @@ import { writeSdgEditionCandidate } from './package-edition.mjs';
 import { SDG_RUNNER_ARCHIVE_LIMIT } from './confirm-pages-delivery.mjs';
 import { SDG_PAGES_REPOSITORY } from './pages-release.mjs';
 import {
-  loadSdgTickerPresentation, readSdgCatalogIndex, SDG_HASH, SDG_TRANSFER_BYTES, validateSdgEditionPackage,
+  loadSdgTickerPresentation, readSdgCatalogIndex, readSdgReleaseCatalog, SDG_HASH, SDG_TRANSFER_BYTES, validateSdgEditionPackage,
 } from './release-catalog.mjs';
 
 const gitFileCeiling = 100 * 1024 * 1024;
@@ -180,30 +180,37 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   }
 }
 
-async function runBridgeImport() {
-  const { store, sdg } = bridgeSession();
-  const run = `${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT || '1'}`;
+export async function receiveSdgBridgeEditions({ root, run, connect = bridgeSession, downloadArchive }) {
+  const active = loadSdgTickerPresentation(root);
+  const { releases } = active ?? readSdgReleaseCatalog(root);
+  if (!releases.some(entry => entry.manifest.items.length)) return { changed: false, count: 0 };
+  const committed = releases.at(-1);
+
+  const { store, sdg } = connect();
   await store.acquire(new Date().toISOString(), 'combined', { manualRunId: run });
   let success = false;
   try {
-    const committed = loadSdgTickerPresentation(process.cwd())?.releases.at(-1);
-    if (committed) {
-      try {
-        const receipt = await reconcileSdgReceiptFromRunner({
-          sdg, committed: { edition_id: committed.edition_id, sha256: committed.sha256 },
-        });
-        if (['confirmed', 'already_confirmed', 'awaiting_delivery', 'current'].includes(receipt?.status)) {
-          console.log(`SDG publication receipt: ${receipt.status}.`);
-        }
-      } catch {
-        // Retain the uncertainty in Oracle. Receipt failure never initiates a
-        // Pages retry, and a new editorial approval may still be published.
-        console.warn('SDG_PAGES_RECEIPT_PENDING');
+    try {
+      const receipt = await reconcileSdgReceiptFromRunner({
+        sdg, committed: { edition_id: committed.edition_id, sha256: committed.sha256 }, downloadArchive,
+      });
+      if (['confirmed', 'already_confirmed', 'awaiting_delivery', 'current'].includes(receipt?.status)) {
+        console.log(`SDG publication receipt: ${receipt.status}.`);
       }
+    } catch {
+      // Receipt uncertainty must not initiate a retry or stop editorial delivery.
+      console.warn('SDG_PAGES_RECEIPT_PENDING');
     }
-    const result = await importSdgBridgeEditions({ root: process.cwd(), sdg });
-    fs.appendFileSync(process.env.GITHUB_OUTPUT, `changed=${result.changed}\n`);
-    console.log(`Accepted ${result.count} checked SDG editions for the website build.`);
+    const result = active ? await importSdgBridgeEditions({ root, sdg }) : { changed: false, count: 0 };
     success = true;
+    return result;
   } finally { await store.release(success); }
+}
+
+async function runBridgeImport() {
+  const result = await receiveSdgBridgeEditions({
+    root: process.cwd(), run: `${process.env.GITHUB_RUN_ID}:${process.env.GITHUB_RUN_ATTEMPT || '1'}`,
+  });
+  fs.appendFileSync(process.env.GITHUB_OUTPUT, `changed=${result.changed}\n`);
+  console.log(`Accepted ${result.count} checked SDG editions for the website build.`);
 }

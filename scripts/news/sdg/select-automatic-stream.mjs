@@ -1,5 +1,8 @@
 import { appendFileSync } from 'node:fs';
-import { loadSdgTickerPresentation } from './release-catalog.mjs';
+import { loadSdgTickerPresentation, readSdgCatalogIndex } from './release-catalog.mjs';
 
-const legacyNews = loadSdgTickerPresentation(process.cwd()) === null;
-appendFileSync(process.env.GITHUB_OUTPUT, `legacy_news=${legacyNews}\n`);
+const root = process.cwd();
+const presentation = loadSdgTickerPresentation(root);
+const catalog = presentation ?? readSdgCatalogIndex(root);
+appendFileSync(process.env.GITHUB_OUTPUT,
+  `legacy_news=${presentation === null}\nsdg_catalog_registered=${catalog.releases.length > 0}\n`);

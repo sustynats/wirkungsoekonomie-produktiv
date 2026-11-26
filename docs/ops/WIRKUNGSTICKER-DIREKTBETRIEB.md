@@ -207,6 +207,10 @@ geprüfte und für die Veröffentlichung registrierte Erstausgabe kann bereits
 normale Pages-Build bindet dafür dieselben Ausgabe- und Artefaktbytes auch
 ohne `ticker-mode.json`. Die Hauptseite und der Modus des automatischen
 Workflows bleiben bis zur gesonderten Umschaltung im bisherigen Betrieb.
+Sobald der Katalog die Erstausgabe enthält, kann ein regulärer Lauf ihren
+Zustellbeleg über die Import-Spur prüfen und quittieren. Diese Prüfung ist
+auch ohne eingerichteten SDG-Zeitplan möglich. Sie bereitet keine weiteren
+Ausgaben vor und löst keinen Pages-Lauf aus.
 Die Quittung bindet ausschließlich die Ausgabe ihres konkreten Pages-Laufs.
 Die nun aktive Hauptseite und der automatische SDG-Lauf sind nach der
 Umschaltung gesondert zu prüfen.

@@ -20,7 +20,7 @@ import { prepareScheduledSdgEditions } from '../../scripts/news/sdg/prepare-sche
 import { buildSdgEditionPages } from '../../scripts/news/sdg/edition-pages.mjs';
 import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs';
 import { loadSdgTickerPresentation, readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
-import { importFirstSdgPackage, importSdgBridgeEditions } from '../../scripts/news/sdg/import-bridge-editions.mjs';
+import { importFirstSdgPackage, importSdgBridgeEditions, receiveSdgBridgeEditions } from '../../scripts/news/sdg/import-bridge-editions.mjs';
 import { serveSdgEditions } from '../../scripts/news/sdg/bridge-editions.mjs';
 import { appNavigation, buildAppPages } from '../../scripts/news/app-pages.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
@@ -632,15 +632,17 @@ test('automatic stream selector allows legacy writes only with the SDG marker ab
       });
     };
     assert.equal(select().status, 0);
-    assert.equal(readFileSync(output, 'utf8'), 'legacy_news=true\n');
+    assert.equal(readFileSync(output, 'utf8'), 'legacy_news=true\nsdg_catalog_registered=false\n');
 
     const release = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
+    assert.equal(select().status, 0);
+    assert.equal(readFileSync(output, 'utf8'), 'legacy_news=true\nsdg_catalog_registered=true\n');
     const setMode = sha256 => writeFileSync(config, JSON.stringify({
       schema_version: 1, mode: 'sdg', anchor: { edition_id: edition.id, sha256 },
     }));
     setMode(release.edition_sha256);
     assert.equal(select().status, 0);
-    assert.equal(readFileSync(output, 'utf8'), 'legacy_news=false\n');
+    assert.equal(readFileSync(output, 'utf8'), 'legacy_news=false\nsdg_catalog_registered=true\n');
 
     setMode('f'.repeat(64));
     const invalid = select();
@@ -649,6 +651,61 @@ test('automatic stream selector allows legacy writes only with the SDG marker ab
     assert.equal(readFileSync(output, 'utf8'), '');
   } finally { rmSync(root, { recursive: true, force: true }); }
 }));
+
+test('a scheduled legacy wake acknowledges only an already registered SDG edition', () => withStore(async ({
+  target, measures, editions, reviews, perform,
+}) => {
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-first-receipt-'));
+  try {
+    const run = '101:1';
+    const calls = [];
+    const unchanged = { changed: false, count: 0 };
+    const connect = () => ({
+      store: {
+        acquire(_at, lane, owner) { calls.push(['acquire', lane, owner.manualRunId]); },
+        release(success) { calls.push(['release', success]); },
+      },
+      sdg: {
+        reconcile(committed) { calls.push(['reconcile', committed]); return { status: 'current' }; },
+        prepare() { assert.fail('The inactive tracker must not seal another edition'); },
+      },
+    });
+    assert.deepEqual(await receiveSdgBridgeEditions({ root, run, connect }), unchanged);
+    assert.deepEqual(calls, []);
+
+    reviews.set(reviewId, bind(measures, target));
+    await perform();
+    const edition = editions.stage(window);
+    const release = registerSdgEdition({ root, ledger: editions, editionId: edition.id, expectedCatalogHash: null });
+    const catalogBefore = readSdgReleaseCatalog(root);
+    assert.deepEqual(await receiveSdgBridgeEditions({ root, run, connect }), unchanged);
+    assert.deepEqual(calls, [
+      ['acquire', 'combined', run],
+      ['reconcile', { edition_id: edition.id, sha256: release.edition_sha256 }],
+      ['release', true],
+    ]);
+    assert.deepEqual(readSdgReleaseCatalog(root), catalogBefore);
+    assert.equal(loadSdgTickerPresentation(root), null);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+}));
+
+test('the Oracle bridge accepts only receipt reconciliation without a publication start', async t => {
+  const root = mkdtempSync(path.join(tmpdir(), 'woek-sdg-no-start-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const dir = path.join(root, 'sdg');
+  mkdirSync(path.join(dir, 'publication'), { recursive: true, mode: 0o700 });
+  const db = path.join(dir, 'editions.sqlite');
+  writeFileSync(db, '', { mode: 0o600 });
+  const ledger = new EditionLedger(db);
+  ledger.close();
+
+  const sdg = serveSdgEditions(root, undefined);
+  assert.throws(() => sdg.prepare({}), /SDG_BRIDGE_START_REQUIRED/);
+  assert.throws(() => sdg.readPackage('a'.repeat(64), 0), /SDG_BRIDGE_START_REQUIRED/);
+  assert.throws(() => sdg.reserveDispatch({}, 'a'.repeat(40), '101:1'), /SDG_BRIDGE_START_REQUIRED/);
+  await assert.rejects(sdg.reconcile({ edition_id: '2026-11-24-morgenlage', sha256: 'a'.repeat(64) }),
+    /SDG_BRIDGE_CATALOG_PREFIX_MISMATCH/);
+});
 
 test('scheduled editions resume a partial registration without replacing the reviewed package', () => withStore(async ({
   target, measures, editions,

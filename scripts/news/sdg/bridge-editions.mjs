@@ -20,8 +20,10 @@ export function serveSdgEditions(directory, startAt, bridge, { clock = () => new
   const root = path.join(privateRoot, 'publication');
   const editionDb = path.join(privateRoot, 'editions.sqlite');
   const measureDb = path.join(privateRoot, 'measures.sqlite');
-  const start = Date.parse(startAt);
-  if (!Number.isFinite(start) || new Date(start).toISOString() !== startAt) throw Error('SDG_BRIDGE_START_REQUIRED');
+  if (startAt !== undefined) {
+    const start = Date.parse(startAt);
+    if (!Number.isFinite(start) || new Date(start).toISOString() !== startAt) throw Error('SDG_BRIDGE_START_REQUIRED');
+  }
   for (const folder of [privateRoot, root]) {
     const stat = fs.lstatSync(folder, { throwIfNoEntry: false });
     if (!stat?.isDirectory() || (stat.mode & 0o077)) throw Error('SDG_BRIDGE_PRIVATE_DIRECTORY_REQUIRED');
@@ -37,6 +39,7 @@ export function serveSdgEditions(directory, startAt, bridge, { clock = () => new
 
   return {
     prepare(cursor) {
+      if (!startAt) throw Error('SDG_BRIDGE_START_REQUIRED');
       const prior = readSdgCatalogIndex(root);
       after(prior, cursor);
       // Use the Oracle clock and the configured start, never timestamps from
@@ -62,6 +65,7 @@ export function serveSdgEditions(directory, startAt, bridge, { clock = () => new
       }));
     },
     readPackage(digest, offset) {
+      if (!startAt) throw Error('SDG_BRIDGE_START_REQUIRED');
       if (typeof digest !== 'string' || !SDG_HASH.test(digest) || !Number.isSafeInteger(offset) ||
           offset < 0 || offset % SDG_TRANSFER_BYTES !== 0) throw Error('SDG_BRIDGE_PACKAGE_REQUEST_INVALID');
       const catalog = readSdgCatalogIndex(root);
@@ -86,6 +90,7 @@ export function serveSdgEditions(directory, startAt, bridge, { clock = () => new
       } finally { ledger.close(); }
     },
     reserveDispatch(committed, sourceCommit, owner) {
+      if (!startAt) throw Error('SDG_BRIDGE_START_REQUIRED');
       const catalog = readSdgReleaseCatalog(root);
       const tail = catalog.releases.at(-1);
       if (!tail || catalog.sha256 !== committed?.catalog_sha256 || tail.edition_id !== committed.edition_id ||

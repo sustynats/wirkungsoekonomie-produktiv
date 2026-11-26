@@ -76,9 +76,11 @@ const server = http.createServer(async (req, res) => {
       if(!response.ok)throw Error('EDITORIAL_SERVICE_UNAVAILABLE');result=await response.json();
     }
     else if (op.startsWith('sdg.')) {
-      if (lane !== 'import' || !process.env.WOEK_SDG_PUBLICATION_START_AT) throw Error('SDG_BRIDGE_PUBLICATION_INACTIVE');
+      const startAt = process.env.WOEK_SDG_PUBLICATION_START_AT;
+      if (lane !== 'import' || (op !== 'sdg.reconcile' && !startAt)) throw Error('SDG_BRIDGE_PUBLICATION_INACTIVE');
       const { serveSdgEditions } = await import('../sdg/bridge-editions.mjs');
-      const sdg = serveSdgEditions(directory, process.env.WOEK_SDG_PUBLICATION_START_AT, store);
+      const sdg = serveSdgEditions(directory, startAt, store);
+      if (op === 'sdg.reconcile' && (args.length < 1 || args.length > 2)) throw Error('SDG_PAGES_RECEIPT_BINDING_REQUIRED');
       if (op === 'sdg.reserveDispatch') {
         if (args.length !== 2) throw Error('SDG_PAGES_DISPATCH_BINDING_REQUIRED');
         result = sdg.reserveDispatch(args[0], args[1], owner);

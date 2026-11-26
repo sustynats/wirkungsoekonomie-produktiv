@@ -123,9 +123,9 @@ jobs:
         id: ticker_stream
         if: steps.slot.outputs.should_run == 'true'
         run: node scripts/news/sdg/select-automatic-stream.mjs
-      - name: Receive checked SDG editions from the private Oracle journal
+      - name: Reconcile SDG delivery and receive editions when active
         id: sdg_editions
-        if: steps.ticker_stream.outputs.legacy_news == 'false' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
+        if: steps.ticker_stream.outputs.sdg_catalog_registered == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -133,7 +133,7 @@ jobs:
           WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
         run: node scripts/news/sdg/import-bridge-editions.mjs
       - name: Restore the committed SDG catalog after an interrupted intake
-        if: steps.sdg_editions.outcome == 'failure'
+        if: steps.ticker_stream.outputs.legacy_news == 'false' && steps.sdg_editions.outcome == 'failure'
         run: |
           git add -A -- data/news/sdg
           git restore --source=HEAD --staged --worktree -- data/news/sdg
