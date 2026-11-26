@@ -1316,8 +1316,10 @@ function run() {
   aliasPage();
   writeLegacyOverviewAliases();
   for (const item of references) sdgDetailPage(item);
-  enhanceExistingBadges();
-  enhanceGlossary();
+  if (!process.argv.includes("--reference-pages-only")) {
+    enhanceExistingBadges();
+    enhanceGlossary();
+  }
   updateSitemap(publishSdgPlus(ROOT, canonicalPlus));
   console.log(`SDG reference generated: ${references.length} detail pages.`);
 }
