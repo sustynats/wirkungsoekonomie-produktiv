@@ -340,14 +340,14 @@ function updateSdgReference() {
   let html = read("verstehen/sdgs-sdgplus/index.html");
   html = updateMeta(
     html,
-    "Die Wirkungsökonomie nutzt die SDGs, Agenda 2030 und SDG+ als Risiko- und Resilienzregister für Mensch, Planet, Demokratie, Medien, Recht, Vertrauen und digitale Selbstbestimmung.",
-    "SDGs und SDG+ als Risiko- und Resilienzregister | Wirkungsökonomie",
+    "Die 17 UN-Nachhaltigkeitsziele und die neun Ziele der SDG+-Referenz. Mit Zuordnungsmatrix, Glossar, Zielvertiefungen und Workshopmaterial.",
+    "SDG-/SDG+-Referenzrahmen | Wirkungsökonomie",
   );
   html = replaceHeroText(html, {
     kicker: "Referenzrahmen",
-    title: "SDGs und SDG+ als Risiko- und Resilienzregister.",
+    title: "SDG-/SDG+-Referenzrahmen",
     subtitle:
-      "Die SDGs beschreiben Mindestbedingungen, unter denen Gesellschaften, Märkte, Lieferketten, Gesundheitssysteme, Ökosysteme und Demokratien stabil, lernfähig und friedlich bleiben. SDG+ ergänzt die fehlende Systemebene: Demokratiequalität, Medienvielfalt, Rechtsstaatlichkeit, Diskursfähigkeit, Vertrauen, gesellschaftliche Resilienz, digitale Selbstbestimmung, Kooperation, kulturelle Teilhabe sowie Transparenz und Rechenschaft.",
+      "Die 17 Ziele der Agenda 2030 und die neun SDG+-Ziele der Wirkungsökonomie. Hier finden Sie ihre Definitionen, Zuordnungen und Anwendungen.",
   });
   html = upsertAfterHero(
     html,
@@ -356,7 +356,7 @@ function updateSdgReference() {
     <section class="section section-soft">
       <div class="section-header">
         <p class="hero-kicker">Neue Lesart</p>
-        <h2>Die SDGs sind kommunikativ richtig, aber systemisch unterpräzise.</h2>
+        <h2>Eine Anwendung: Risiken und Resilienz</h2>
         <p>Sie klingen nach Nachhaltigkeit, Entwicklung und Zielbild. Das ist anschlussfähig. Der härtere Kern ist Risiko- und Resilienzmanagement: Wenn Armut, Hunger, Wasserstress, Krankheiten, Energieabhängigkeit, Infrastrukturversagen, Ungleichheit, Klimafolgen, Biodiversitätsverlust, Korruption oder Vertrauensverlust nicht bearbeitet werden, destabilisieren sie Gesellschaften, Märkte, Lieferketten, Kapitalmärkte, Versicherbarkeit, Gesundheit, Ernährung und Demokratie.</p>
         <blockquote><p>Nachhaltigkeit ist die langfristige Wirkungsresilienz des gekoppelten Systems Mensch–Planet–Demokratie. Die SDGs und SDG+ beschreiben Referenz-, Risiko- und Rückkopplungsdaten, die diese Systemfähigkeit prüfbar machen.</p></blockquote>
       </div>
@@ -369,7 +369,7 @@ function updateSdgReference() {
   );
   html = html
     .replace(/Der Die Seite ist online lesbar; Word- und PDF-Dateien sind ergänzende(?: ergänzende)? Downloadfassungen\./g, "Diese Seite ist vollständig online lesbar. PDF-, Word-, CSV- oder JSON-Dateien sind ergänzende Export- und Archivfassungen.")
-    .replace(/Separater Dossier-Download wird ergänzt/g, "Dossier-Download folgt nach redaktioneller Prüfung. Die Onlinefassung bleibt bis dahin der aktuelle Arbeitsstand.")
+    .replace(/Separater Dossier-Download wird ergänzt/g, "Dossier-Download folgt nach redaktioneller Prüfung. Die Onlinefassung dokumentiert den historischen Arbeitsstand.")
     .replace(/PDF PDF/g, "PDF")
     .replace(/(<a class="text-link" href="([^"]+\.pdf)">PDF<\/a>)\s*<a class="text-link" href="\2">PDF<\/a>/g, "$1");
   writeIfChanged("verstehen/sdgs-sdgplus/index.html", html);
