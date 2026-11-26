@@ -1205,6 +1205,15 @@ function enhanceExistingBadges() {
       cleaned = updated;
       updated = updated.replace(/(<\/span>\s*<\/span>\s*<\/span>\s*)<\/span>(?=\s*(?:<span class="sdg-ref"|<\/div>))/g, "$1");
     } while (updated !== cleaned);
+    if (/^(?:werkzeuge|erleben|wirkungsfelder)\//.test(rel)) {
+      const currentReference = href(base, "verstehen/sdgs-sdgplus/#sdgplus");
+      const version = escapeHtml(canonicalPlus.reference.version);
+      const note = `<p data-sdgplus-method-reference="historical">Die SDG+-Bezüge in diesem Block folgen der früheren Web-Gliederung (Begriffsleitfaden v1.8, § 4.2). <a class="text-link" href="${currentReference}">Aktuelle SDG+-Zielreferenz v${version}</a>.</p>`;
+      updated = updated.replace(
+        /(?:<p data-sdgplus-method-reference="historical">[\s\S]*?<\/p>\s*)?(<div class="model-strip">[\s\S]*?<\/div>)/g,
+        (match, strip) => strip.includes('data-sdg-id="sdgplus-') ? `${note}\n      ${strip}` : match,
+      );
+    }
     if (updated !== html) fs.writeFileSync(file, updated, "utf8");
   }
 }
