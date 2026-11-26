@@ -17,7 +17,8 @@ if (secret.length < 40) throw new Error('BRIDGE_AUTH_SECRET_INVALID');
 const busy = new Set();
 const validOwner = value => /^\d{1,20}:\d{1,5}$/.test(value || '');
 const operations = new Set(['store.editorialClaim','store.editorialFinalize','store.editorialFailure','store.acquire','store.release','store.get','store.put','store.all','store.editorialJobs','store.semanticReviews','store.impactStagingIndex','store.observe','store.observation',
-  'dropbox.list','dropbox.read','dropbox.readBinary','dropbox.metadata','dropbox.move','dropbox.writeAtomic','dropbox.archive','bridge.status','bridge.monitor']);
+  'dropbox.list','dropbox.read','dropbox.readBinary','dropbox.metadata','dropbox.move','dropbox.writeAtomic','dropbox.archive','bridge.status','bridge.monitor',
+  'sdg.prepare', 'sdg.readPackage', 'sdg.reconcile', 'sdg.reserveDispatch']);
 async function editorialOutputStatus(store,transport){
  const result=await outputStatus(store,transport,new Date().toISOString());
  try{const response=await fetch('http://127.0.0.1:8788/internal/status',{signal:AbortSignal.timeout(2000)});if(response.ok&&(await response.json()).pending){result.status='OUTPUT_READY';result.ready.push('editorial-approved');}}catch{/* A private editorial outage never blocks ordinary news. */}
@@ -73,6 +74,19 @@ const server = http.createServer(async (req, res) => {
       const action=op==='store.editorialClaim'?'claim':op==='store.editorialFailure'?'failure':'finalize';
       const response=await fetch('http://127.0.0.1:8788/internal/'+action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(args),signal:AbortSignal.timeout(30000)});
       if(!response.ok)throw Error('EDITORIAL_SERVICE_UNAVAILABLE');result=await response.json();
+    }
+    else if (op.startsWith('sdg.')) {
+      const startAt = process.env.WOEK_SDG_PUBLICATION_START_AT;
+      if (lane !== 'import' || (op !== 'sdg.reconcile' && !startAt)) throw Error('SDG_BRIDGE_PUBLICATION_INACTIVE');
+      const { serveSdgEditions } = await import('../sdg/bridge-editions.mjs');
+      const sdg = serveSdgEditions(directory, startAt, store, {
+        dnsManifestSha256: process.env.WOEK_SDG_DNS_CAPTURE_MANIFEST_SHA256,
+      });
+      if (op === 'sdg.reconcile' && (args.length < 1 || args.length > 2)) throw Error('SDG_PAGES_RECEIPT_BINDING_REQUIRED');
+      if (op === 'sdg.reserveDispatch') {
+        if (args.length !== 2) throw Error('SDG_PAGES_DISPATCH_BINDING_REQUIRED');
+        result = sdg.reserveDispatch(args[0], args[1], owner);
+      } else result = await sdg[op.slice('sdg.'.length)](...args);
     }
     else { const [target, method] = op.split('.'); result = await (target === 'store' ? store : transport)[method](...args); }
     if (op === 'dropbox.readBinary') result = result.toString('base64');

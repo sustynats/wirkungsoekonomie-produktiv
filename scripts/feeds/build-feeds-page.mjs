@@ -1,7 +1,8 @@
 import {renderSiteHeader} from '../lib/site-shell.mjs';
 import fs from "node:fs";
 import path from "node:path";
-import {RSS_CHANNELS, rssDiscoveryLinks} from "../news/rss-channels.mjs";
+import {RSS_CHANNELS, SDG_RSS_CHANNEL, rssDiscoveryLinks, tickerNewsRssChannel} from "../news/rss-channels.mjs";
+import {loadSdgTickerPresentation, readSdgReleaseCatalog} from "../news/sdg/release-catalog.mjs";
 
 // Übersichtsseite aller RSS-Feeds unter /feeds/. Scannt dynamisch feeds/*.xml
 // (Kanal-Titel/Beschreibung/Link) - neue Feeds erscheinen automatisch.
@@ -67,7 +68,7 @@ function pageShell(title, body, depth, opts = {}) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${esc(opts.metaTitle || `${title} - Wirkungsökonomie`)}</title>
     <meta name="description" content="${esc(opts.metaDescription || "")}">
-    ${rssDiscoveryLinks()}
+    ${rssDiscoveryLinks(opts.tickerChannels)}
     <link rel="stylesheet" href="${depth}assets/css/style.css?v=${CSS_VERSION}">
   </head>
   <body>
@@ -101,7 +102,11 @@ function main() {
     if (ia !== -1 || ib !== -1) return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
     return a.localeCompare(b);
   });
-  const feeds = [...Object.values(RSS_CHANNELS).map(channel => ({
+  const activeSdgCatalog = loadSdgTickerPresentation(process.cwd());
+  const sdgCatalog = activeSdgCatalog ?? readSdgReleaseCatalog(process.cwd());
+  const tickerChannels = [tickerNewsRssChannel(Boolean(activeSdgCatalog)), RSS_CHANNELS.analyses];
+  if (sdgCatalog.releases.length) tickerChannels.unshift(SDG_RSS_CHANNEL);
+  const feeds = [...tickerChannels.map(channel => ({
     title: channel.title, description: channel.description, url: `${site}${channel.path}`,
   })), ...files.map((file) => {
     const meta = channelMeta(fs.readFileSync(path.join(feedDir, file), "utf8"));
@@ -136,7 +141,10 @@ ${cards}
   fs.mkdirSync(feedDir, { recursive: true });
   fs.writeFileSync(path.join(feedDir, "index.html"), pageShell("RSS-Feeds", body, "../", {
     metaTitle: "RSS-Feeds der Wirkungsökonomie",
-    metaDescription: "Wirkungsticker-News und Analysen getrennt abonnieren. Dazu alle weiteren RSS-Feeds der Wirkungsökonomie: Quellenarchiv, Journal, Podcast, Bibliothek und mehr."
+    metaDescription: activeSdgCatalog
+      ? "SDG-Ausgaben, redaktionelle Analysen und das Nachrichtenarchiv des Wirkungstickers. Weitere RSS-Feeds für Journal, Podcast, Bibliothek und Quellenarchiv."
+      : "Wirkungsticker-News und Analysen getrennt abonnieren. Dazu alle weiteren RSS-Feeds der Wirkungsökonomie: Quellenarchiv, Journal, Podcast, Bibliothek und mehr.",
+    tickerChannels,
   }));
   console.log(`[feeds] Übersichtsseite /feeds/ mit ${feeds.length} Feeds erzeugt.`);
 }

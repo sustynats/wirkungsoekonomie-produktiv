@@ -50,7 +50,7 @@ function execute(t,name,extra={}){
  npx() { printf '%s\\n' "npx $*" >> "$CALLS"; }
  gh() { printf '%s\\n' "gh $*" >> "$CALLS"; }
  `;
- const result=spawnSync('bash',['-c',doubles+'\n'+shell(name,steps[name])],{cwd:dir,encoding:'utf8',timeout:15000,env:{PATH:process.env.PATH,CALLS:calls,GITHUB_OUTPUT:output,RUNNER_TEMP:dir,SLOT_NAME:'fixture',BASE_HEAD:'a'.repeat(40),COMMITTED_HEAD:'b'.repeat(40),AMENDED_HEAD:'c'.repeat(40),TEST_NO_CHANGE:'false',TEST_RANGE_FAIL:'false',TEST_STAGE_FAIL_AT:'0',TEST_RESTORE_FAIL:'false',TEST_PUSH_MODE:'success',...extra}});
+ const result=spawnSync('bash',['-c',doubles+'\n'+shell(name,steps[name])],{cwd:dir,encoding:'utf8',timeout:15000,env:{PATH:process.env.PATH,CALLS:calls,GITHUB_OUTPUT:output,RUNNER_TEMP:dir,SLOT_NAME:'fixture',BASE_HEAD:'a'.repeat(40),COMMITTED_HEAD:'b'.repeat(40),AMENDED_HEAD:'c'.repeat(40),TEST_NO_CHANGE:'false',TEST_RANGE_FAIL:'false',TEST_STAGE_FAIL_AT:'0',TEST_RESTORE_FAIL:'false',TEST_PUSH_MODE:'success',SDG_EDITIONS_RECEIVED:'false',...extra}});
  return {...result,calls:fs.existsSync(calls)?fs.readFileSync(calls,'utf8').trim().split('\n'):[]};
 }
 for(const name of Object.keys(steps))test(name+' blocks staged violations before a commit or publication',t=>{

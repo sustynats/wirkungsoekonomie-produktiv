@@ -55,6 +55,15 @@ test("RSS identities and channel dates are stable across unrelated news updates"
   assert.match(before.analyses, /<lastBuildDate>Tue, 29 Sep 2026 06:00:00 GMT<\/lastBuildDate>/);
 });
 
+test("SDG cutover relabels the older news feed without changing items or editorial RSS", () => {
+  const before = tickerRssFeeds([story], analyses);
+  const active = tickerRssFeeds([story], analyses, { sdgActive: true });
+  assert.match(active.news, /<title>Wirkungsticker - Nachrichtenarchiv<\/title>/);
+  assert.ok(active.news.includes('href="' + RSS_SITE + RSS_CHANNELS.news.path + '" rel="self"'));
+  assert.equal(active.news.slice(active.news.indexOf("<item>")), before.news.slice(before.news.indexOf("<item>")));
+  assert.equal(active.analyses, before.analyses);
+});
+
 test("RSS XML escapes text and URLs and handles an empty channel or missing dates", () => {
   for (const channel of Object.values(RSS_CHANNELS)) {
     const empty = renderRssFeed([], channel);

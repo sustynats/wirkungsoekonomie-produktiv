@@ -149,6 +149,142 @@ Doppelläufe.
 6. **Build → Commit → Pages** wie bisher (`build.mjs`, `publish-git.mjs`, `deploy.yml`
    ticker-only), anschließend `news:health`.
 
+### Übergabe der SDG-Ausgaben an die bestehende Publikationsspur
+
+Bei kontrollierter SDG-Umschaltung nutzt derselbe Workflow die bestehende
+Import-Spur auf Oracle. Der vorhandene Taktgeber weckt den Workflow. Die
+aktuelle, gehashte Ausgabe im öffentlichen Katalog bindet dessen Anfrage an
+den privat vorbereiteten Bestand. Der Oracle-Dienst verwendet seinen eigenen
+Zeitpunkt sowie den privat konfigurierten Beginn der Berliner Ausgaben.
+Er schließt den Prüfbestand im vorhandenen Journal und überträgt registrierte
+öffentliche Pakete stückweise. Die drei privaten Datenbanken, Prüfidentitäten
+und Rohbelege bleiben auf Oracle.
+
+Der Oracle-Importdienst benötigt für diesen Pfad den geprüften Stand der
+SDG-Module und `WOEK_SDG_PUBLICATION_START_AT` als kanonischen UTC-Zeitpunkt
+einer Berliner Ausgabe. Unter seinem privaten Verzeichnis liegen
+`sdg/measures.sqlite`, `sdg/editions.sqlite` und `sdg/publication/` mit
+dem bereits abgesicherten Startkatalog. Die bestehenden Autorenfreigaben
+laufen im selben Workflow über ihre bisherigen Schritte. Ist in einem Lauf
+eine neue Autorenfassung zur Veröffentlichung übernommen worden, gibt sie den
+Commit und den Pages-Aufruf vor. Ausstehende SDG-Pakete bleiben für den
+nächsten automatischen Lauf verfügbar.
+
+Der Workflow prüft Vollständigkeit, Paket-Hashes und erlaubte Felder, ehe
+er den Katalog erweitert. Bei einer unterbrochenen Übernahme baut er aus
+dem bereits eingecheckten Katalog. Der Workflow meldet einen fehlgeschlagenen
+SDG-Import nach dem redaktionellen Zustellschritt als eigenen Fehler. Nur der bestehende Git-Commit- und
+Pages-Pfad kann eine Ausgabe ausliefern. Ein ausschließlich automatisches
+SDG-Paket löst keine Nachricht über den bisherigen Push-Feed aus.
+Ein Auslieferungsfehler bleibt bis zur Prüfung des konkreten Pages-Versuchs
+offen. Beim nächsten regulären Lauf nimmt Oracle den tatsächlich sichtbaren
+Pages-Versuch aus dem veröffentlichten Manifest auf. Oracle liest die
+öffentlichen nativen GitHub-Metadaten direkt. Der vorhandene Runner lädt
+das von Oracle identifizierte Action-ZIP mit seinem laufzeitgebundenen Token.
+Er sendet nur Archivbytes und die zugehörige Kennung an die Import-Spur.
+Oracle vergleicht den ZIP-Hash mit dem eigenen GitHub-Beleg sowie Manifest
+und Ausgabe mit deren öffentlichen Bytes. Erst dann speichert es die
+bestätigte Quittung. Beim Archivdownload bleiben Token und signierte URLs
+außerhalb der Import-Spur. Wenn ein Pages-Lauf mehrere noch unquittierte
+Ausgaben enthält, prüft Oracle ihre HTML-Bytes getrennt. Die Ausgaben
+teilen sich den geprüften Laufbeleg und die protokollierte Abschlusszeit.
+Bereits bestätigte Quittungen bleiben erhalten, wenn ein Folgelauf den
+Rest übernehmen muss.
+
+Der automatische Git-Commit trägt den SHA-256 seines SDG-Katalogs. Nach einem
+Abbruch zwischen Git-Push und Pages-Aufruf kann der nächste reguläre Lauf den
+Versand fortsetzen, solange genau dieser Commit die Spitze von `main` ist.
+Oracle reserviert den Versand für die gebundene Ausgabe vor dem ersten
+Aufruf. Bei verlorener Antwort hält die Reservierung weitere automatische
+Aufrufe an, bis eine echte Quittung vorliegt. Eine inzwischen weitergezogene
+Hauptlinie hält einen veralteten automatischen Aufruf vor Build oder
+Deployment an.
+
+Vor der produktiven Umschaltung müssen der normale Lauf bis zur öffentlichen
+Quittung und das passende Rückfallartefakt nachgewiesen sein. Eine fachlich
+geprüfte und für die Veröffentlichung registrierte Erstausgabe kann bereits
+über das bestehende Ausgabenarchiv ausgeliefert und quittiert werden. Der
+normale Pages-Build bindet dafür dieselben Ausgabe- und Artefaktbytes auch
+ohne `ticker-mode.json`. Die Hauptseite und der Modus des automatischen
+Workflows bleiben bis zur gesonderten Umschaltung im bisherigen Betrieb.
+Sobald der Katalog die Erstausgabe enthält, kann ein regulärer Lauf ihren
+Zustellbeleg über die Import-Spur prüfen und quittieren. Diese Prüfung ist
+auch ohne eingerichteten SDG-Zeitplan möglich. Sie bereitet keine weiteren
+Ausgaben vor und löst keinen Pages-Lauf aus.
+Die Quittung bindet ausschließlich die Ausgabe ihres konkreten Pages-Laufs.
+Die nun aktive Hauptseite und der automatische SDG-Lauf sind nach der
+Umschaltung gesondert zu prüfen.
+
+Für die Erstausgabe im serialisierten Release-Checkout das aus dem
+privaten Ledger registrierte Paket mit seiner bestätigten Ausgabe-ID
+und dem dort ermittelten Manifest-Hash übernehmen.
+
+```sh
+node scripts/news/sdg/import-bridge-editions.mjs \
+  --first-package="$SDG_PACKAGE_FILE" --edition-id="$SDG_EDITION_ID" \
+  --sha256="$SDG_EDITION_SHA256"
+```
+
+Der Import prüft den öffentlichen Paketvertrag. Auch ein tatsächlich aus
+dem privaten Ledger geschlossener Berliner Termin ohne geprüfte Einträge
+kann den Start verankern. Ausgabe-ID, Ledger- und Paket-Hash sowie die
+öffentliche Zustellquittung gelten dafür unverändert. Der Import schreibt
+ausschließlich Paket und Katalog, solange die Modusdatei fehlt. Alle Einträge
+bleiben an ihre private fachliche Freigabe gebunden. GitHub Pages liefert die
+registrierte Ausgabe über das bestehende Archiv aus.
+
+### Gebundene amtliche Datenaufnahmen übernehmen
+
+Der DNS-Adapter kann bereits gesicherte amtliche CSV-Beobachtungen für die
+Zeitreihe 1.1.a/b aus einem geprüften SQLite-Archiv in die private
+Maßnahmendatenbank übernehmen. Der Betreiber bindet die ausgewählten
+Aufnahmen vor dem Aufruf an ein privates Manifest. Das Manifest enthält
+`schema_version` (1), `source_database_sha256` und eine Liste
+`receipts` mit `snapshot_id`, `content_sha256`, `proof_sha256`
+und `expected_rows` je Aufnahme.
+
+```sh
+node scripts/news/sdg/ingest-dns-captures.mjs \
+  --manifest="$SDG_CAPTURE_MANIFEST" --manifest-sha256="$SDG_CAPTURE_MANIFEST_SHA256" \
+  --capture-db="$SDG_CAPTURE_DATABASE" --measure-db="$SDG_MEASURES_DATABASE"
+```
+
+Den erwarteten Manifest-Hash aus der geprüften Betreiberkonfiguration
+übergeben. Der Befehl liest die gebundenen Archivbytes, verarbeitet fällige
+Aufnahmen in Erfassungsreihenfolge und schreibt neue Beobachtungsfassungen
+und Belegverknüpfungen. Bei Wiederholung bleibt bereits Übernommenes erhalten.
+Im bestehenden Oracle-Importdienst aktiviert die ausdrücklich gesetzte
+Variable `WOEK_SDG_DNS_CAPTURE_MANIFEST_SHA256` die Übernahme bei den
+regulären SDG-Importläufen. Dafür liegen die geprüften privaten Dateien
+unter `sdg/intake/dns/manifest.json` und `sdg/intake/dns/capture.sqlite`.
+Ein fehlerhafter Stand wird protokolliert. Bereits fachlich geprüfte
+Maßnahmen bleiben zur Ausgabe verfügbar. Quellenfreigabe, laufende Erfassung
+und fachliche Prüfung erfolgen in ihren jeweiligen Betriebsabläufen.
+
+### Referenzrahmen der Maßnahmen
+
+Wenn die unabhängige Prüfung Referenzrahmen enthält, übernimmt Paketversion
+2 ausschließlich die Einträge aus der fassungsgebundenen Prüffassung.
+Ausgabe und Maßnahmenakte zeigen diese Angaben neben der MPD-Analyse.
+Bereits registrierte Pakete der Version 1 behalten ihre ursprünglichen
+Bytes und werden weiter gelesen.
+
+### Feeds für SDG-Ausgaben und Redaktion
+
+Der normale Seitenbau erzeugt aus demselben registrierten SDG-Katalog wie
+das Ausgabenarchiv die Feeds `/wirkungsticker/sdg/feed.xml` und
+`/wirkungsticker/sdg/feed.json`. Jede registrierte Ausgabe erscheint mit
+ihrem festen Permalink. Der Feedeintrag weist die Anzahl geprüfter Einträge
+aus, auch bei einer leeren Ausgabe. Der JSON-Feed führt Solltermin,
+Prüfschluss und Versiegelung als eigene Zeitfelder. Veröffentlichungszeit
+und allgemeine Feed-Aktualisierung werden aus diesen Daten nicht abgeleitet.
+Ohne registrierte Ausgaben erstellt der Seitenbau keine SDG-Feeds.
+
+Die aktive Startseite und das Ausgabenarchiv verweisen auf den neuen Feed.
+Feeds für die bisherigen Nachrichten und für die Redaktion behalten ihre
+Pfade und Datenquellen. SDG-Ausgaben fließen weder in diese Feeds noch in
+deren Discord- oder App-Push-Transport.
+
 ## Kostenregeln
 
 - **Oktober-Freigabe vom 01.10.2026:** Natalie hat die zuletzt vorgeschlagene interne

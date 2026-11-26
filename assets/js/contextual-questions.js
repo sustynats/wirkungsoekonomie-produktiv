@@ -35,7 +35,7 @@ export const PAGE_QUESTIONS = {
   ],
   '/news/': [
     {label:'Was finde ich in dieser Übersicht?', answer:'Hier stehen neue Veröffentlichungen, Inhalte und Funktionen der Wirkungsökonomie, einschließlich Neuerungen aus Akademie, Institut und Parlament.', tag:'Orientierung'},
-    q('Wo finde ich aktuelle Nachrichten und ihre Einordnung?', '/wirkungsticker/', 'Wirkungsticker'),
+    q('Wo finde ich den Wirkungsticker und seine Ausgaben?', '/wirkungsticker/', 'Wirkungsticker'),
     q('Wie kann ich über neue Inhalte informiert bleiben?', '/feeds/', 'Abonnieren'),
   ],
   '/umfragen/': [

@@ -6,7 +6,7 @@ import { reviewResponseFormat } from './review-response-schema.mjs';
 import { expandReviewConfirmation } from './review-confirmation.mjs';
 import { deriveAssessmentCalculations, IMPACT_PROMPT_RULE, IMPACT_PROMPT_SCHEMA, IMPACT_PROMPT_DEFS } from '../impact-assessment.mjs';
 import { IMPACT_SCOPE_RULE } from '../impact-scope.mjs';
-import { EDITORIAL_REQUEST_CONTRACT_V4 } from './intake-processing.mjs';
+import { editorialRequestContract, validateReadingBinding } from './intake-processing.mjs';
 import { validateEditorialPreview } from './editorial-approval.mjs';
 import { apiRequestKey, API_EDITORIAL_PROTOCOL, validateApiRequest } from './api-service.mjs';
 import { processorPriority, isHistoricalJob } from './processor.mjs';
@@ -68,7 +68,7 @@ export function prepareApiJob(packet, knowledge, { priorOutput = null, allowWebR
   if (kind === 'review' && (!JOB_ID.test(original.parent_job_id || '') || original.parent_job_id === original.job_id)) throw Error('API_EDITORIAL_REVIEW_INPUT_INVALID');
   const contract = kind === 'news' ? { output_schema: outputSchema }
     : kind === 'review' ? { output_schema: semanticOutputSchema, requested_output: original.requested_output }
-      : EDITORIAL_REQUEST_CONTRACT_V4;
+      : editorialRequestContract(original);
   const prompt = kind === 'news' && original.wirkungsticker?.analysis_prompt ? [
     orderNativePrompt(original.wirkungsticker.analysis_prompt),
     ...(original.wirkungsticker.analysis_prompt.includes(POTENTIAL_RESEARCH_RULE) ? [] : [POTENTIAL_RESEARCH_RULE]),
@@ -110,8 +110,9 @@ export function prepareApiJob(packet, knowledge, { priorOutput = null, allowWebR
 export function validateApiOutput(output, packet, now) {
   const original = packet.original_input || packet, kind = apiJobKind(packet);
   if (kind === 'news' && Array.isArray(output.analyses)) output = wrapNativeNewsOutput(output, original);
+  const editorialContract = kind === 'personal' ? editorialRequestContract(original) : null;
   const schema = kind === 'news' ? outputSchema : kind === 'review' ? semanticOutputSchema
-    : output.disposition === 'hold' ? EDITORIAL_REQUEST_CONTRACT_V4.hold_output_schema : EDITORIAL_REQUEST_CONTRACT_V4.output_schema;
+    : output.disposition === 'hold' ? editorialContract.hold_output_schema : editorialContract.output_schema;
   output = structuredClone(output);
   if (kind === 'review') expandReviewConfirmation(output, original);
   canonicalResearchIdentifiers(output,original.record?.sources || original.sources || []);
@@ -123,6 +124,7 @@ export function validateApiOutput(output, packet, now) {
     || Date.parse(output.processed_at) > Date.parse(now) + 300000) throw Error('BRIDGE_OUTPUT_TIME_INVALID');
   if (kind === 'personal' && output.preview) {
     if (output.preview.format !== original.request.kind) throw Error('EDITORIAL_PREVIEW_INPUT_CHANGED');
+    validateReadingBinding(output.preview, original.request);
     // News intake has a separate factual preparation gate before its preview.
     if (output.preview.format !== 'news') validateEditorialPreview(output.preview);
   }
@@ -295,6 +297,7 @@ export class ApiEditorialProcessor {
     if (this.store.observation(`api-excluded:${id}`)) return { status: 'excluded', job_id: id };
     const current = this.store.get(id);
     if (!current || current.ack || current.accepted) return { status: 'already_processed', job_id: id };
+    if (current.input.request?.kind === 'read') return { status: 'deferred_to_source_verified_worker', job_id: id };
     const outputPath = bridgePath('20_OUTPUT_READY', `${id}.output.json`);
     if (await this.transport.metadata(outputPath) || await this.transport.metadata(bridgePath('30_ACK', `${id}.ack.json`))) return { status: 'already_delivered', job_id: id };
     const repair = current.corrections?.at(-1);

@@ -62,14 +62,22 @@ test('approved editions and live receipts stay independent of paid news holds wi
   }
   const guardCondition = guard.value.match(/^        if:\s*(.*)$/m)[1];
   const providerCondition = block('Import, analyze (one call per story) and build').value.match(/^        if:\s*(.*)$/m)[1];
-  for (const changed of ['true', 'false', '']) for (const outcome of ['success', 'failure', 'skipped']) {
-    const steps = {slot:{outputs:{should_run:'true'}},approved:{outcome,outputs:{changed}}};
-    const guarded = runInNewContext(guardCondition, {steps,inputs:{dry_run:false}});
-    assert.equal(guarded, changed !== 'true' && outcome === 'success');
-    assert.equal(runInNewContext(guardCondition, {steps,inputs:{dry_run:true}}), changed !== 'true');
-    for (const paid of ['success','failure','skipped']) {
-      const provider = runInNewContext(providerCondition, {steps:{...steps,paid_preflight:{outcome:paid}}});
-      assert.equal(provider, paid === 'success');
+  for (const legacyNews of ['true', 'false', '']) {
+    for (const changed of ['true', 'false', '']) for (const outcome of ['success', 'failure', 'skipped']) {
+      const steps = {
+        slot: {outputs: {should_run: 'true'}},
+        ticker_stream: {outputs: {legacy_news: legacyNews}},
+        approved: {outcome, outputs: {changed}},
+      };
+      for (const dryRun of [false, true]) {
+        const guarded = runInNewContext(guardCondition, {steps, inputs: {dry_run: dryRun}});
+        assert.equal(guarded, legacyNews === 'true' && changed !== 'true' && (dryRun || outcome === 'success'));
+        const possiblePaidOutcomes = guarded ? ['success', 'failure', 'skipped'] : ['skipped'];
+        for (const paid of possiblePaidOutcomes) {
+          const provider = runInNewContext(providerCondition, {steps: {...steps, paid_preflight: {outcome: paid}}});
+          assert.equal(provider, paid === 'success');
+        }
+      }
     }
   }
 });

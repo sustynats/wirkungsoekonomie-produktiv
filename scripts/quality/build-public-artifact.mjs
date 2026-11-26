@@ -1048,6 +1048,11 @@ prunePublicArtifact();
 // GitHub Pages runner. No provider, paid service or workstation is required.
 const { buildArticleShareImages } = await import("../news/share-image.mjs");
 await buildArticleShareImages(artifactDir);
+if (fs.existsSync(path.join(root, 'data/news/sdg/ticker-mode.json'))) {
+  const { loadSdgTickerPresentation } = await import('../news/sdg/release-catalog.mjs');
+  const { applySdgAppDescription } = await import('../news/sdg/presentation.mjs');
+  if (loadSdgTickerPresentation(root)) applySdgAppDescription(artifactDir);
+}
 validateNoCorruptedHtmlAttributes();
 validateNoTemplatePlaceholders();
 validateMainworkFulltextArtifact();

@@ -49,7 +49,9 @@
             <label><input type="radio" name="kind" value="book_review"><span>Buch &amp; Wirkung</span></label>
             <label><input type="radio" name="kind" value="listened"><span>Nachgehört</span></label>
             <label><input type="radio" name="kind" value="watched"><span>Nachgesehen</span></label>
+            <label><input type="radio" name="kind" value="read"><span>Nachgelesen</span></label>
           </fieldset>
+          <div id="reading-details" hidden><label class="field" for="reading-original">Originaldokument<input id="reading-original" type="url" autocomplete="url" maxlength="2000" placeholder="https://" disabled></label></div>
           <label class="field" for="brief">Dein Auftrag<textarea id="brief" name="brief" rows="6" maxlength="20000" required placeholder="Was ist passiert? Was interessiert Dich daran? Was sollen wir daraus machen?"></textarea></label>
           <label class="field" for="links">Links <span class="optional">optional</span><textarea id="links" name="links" rows="2" maxlength="16000" inputmode="url" placeholder="Links hier einfügen - oder direkt oben in Deinen Auftrag."></textarea></label>
           <div class="attachment-field"><label class="upload" for="attachments"><span class="upload-icon" aria-hidden="true">＋</span><span><strong>Screenshots hinzufügen</strong><small>Bis zu 4 Bilder · jeweils höchstens 8 MB</small></span></label><input id="attachments" type="file" accept="image/png,image/jpeg,image/webp" multiple><div id="previews" class="previews"></div></div>

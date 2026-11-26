@@ -13,6 +13,11 @@ export const PATH_STATUS = ['modelled', 'insufficient_basis'];
 export const LIKELIHOOD = { very_low: 'sehr gering', low: 'gering', medium: 'mittel', high: 'hoch', very_high: 'sehr hoch', already_occurring: 'bereits eingetreten', unknown: 'nicht belastbar bestimmt' };
 export const DOMINANCE = ['dominant_positive', 'dominant_negative', 'balanced', 'none'];
 export const TEMPORAL = ['ex_ante', 'ongoing', 'ex_post'];
+const impactTimeLabels = { ex_ante: 'Ex ante', ongoing: 'Laufende Prüfung', ex_post: 'Ex post' };
+
+export function impactTimeLabel(status) {
+  return Object.hasOwn(impactTimeLabels, status) ? impactTimeLabels[status] : 'Zeitstatus offen';
+}
 export const TARGET_TYPES = ['measure', 'decision', 'law', 'proposal', 'event', 'development', 'communication', 'narrative', 'institution', 'technology', 'dossier', 'other'];
 export const EVIDENCE = { high: 'hoch', medium: 'mittel', low: 'gering', not_assessable: 'nicht bewertbar' };
 export const DATA_STATUS = ['measured', 'observed', 'modelled', 'estimated', 'secondary_source', 'missing'];
@@ -250,7 +255,6 @@ export function deriveImpactPresentation(input = {}, context = {}) {
   const original = ['2.0','2.1'].includes(input.version) && input.dimensions ? input : input.impact_assessment || migrateImpactAssessment(analysis, { title: input.title, ...context });
   const assessment = projectMissingEvidenceCorrection(input, projectReviewedObservationContext(input, original));
   const potential = assessment.semantics_revision === POTENTIAL_REVISION;
-  const timeLabels = { ex_ante: 'Ex ante', ongoing: 'Laufende Prüfung', ex_post: 'Ex post' };
   const dimensions = Object.fromEntries(IMPACT_KEYS.map(key => {
     const d = assessment.dimensions?.[key] || {};
     let direction = DIRECTIONS.includes(d.direction) ? d.direction : 'open';
@@ -272,10 +276,10 @@ export function deriveImpactPresentation(input = {}, context = {}) {
       ringStatus:display.ringStatus, ringLabel:display.ringLabel,magnitudeBars:display.magnitudeBars,directionLabel:display.directionLabel,
       shortPathLabel:display.shortPathLabel,display_direction:display.direction,
       direction, magnitude: level, temporal_status: time, label: short, magnitude_label: level === null ? 'Tragweite offen' : MAGNITUDE[level], evidence_label: EVIDENCE[d.evidence] || EVIDENCE.not_assessable, likelihood_label: LIKELIHOOD[d.likelihood] || LIKELIHOOD.unknown, path_status_label: ({ modelled: 'Modelliertes Wirkungspotenzial', material: 'Historischer Wirkpfad', not_material: 'Historische Einordnung', insufficient_basis: 'Derzeit nicht ausreichend bewertbar' })[d.path_status] || 'Wirkpfad noch zu prüfen',
-      time_label: timeLabels[time] || 'Zeitstatus offen', long_label: direction === 'not_material' ? 'Historische Einordnung - Neubewertung erforderlich.' : short,
+      time_label: impactTimeLabel(time), long_label: direction === 'not_material' ? 'Historische Einordnung - Neubewertung erforderlich.' : short,
     }];
   }));
-  return { ...assessment, dimensions, heading: 'Wirkungspotenzial', potential, time_label: timeLabels[assessment.temporal_status] || 'Zeitstatus offen', relevance_label: ({ low: 'Geringe', medium: 'Mittlere', high: 'Hohe', very_high: 'Sehr hohe', critical: 'Kritische' })[assessment.systemic_relevance] || null,
+  return { ...assessment, dimensions, heading: 'Wirkungspotenzial', potential, time_label: impactTimeLabel(assessment.temporal_status), relevance_label: ({ low: 'Geringe', medium: 'Mittlere', high: 'Hohe', very_high: 'Sehr hohe', critical: 'Kritische' })[assessment.systemic_relevance] || null,
     show_target: Boolean(assessment.evaluation_target?.label && assessment.evaluation_target.label.trim().toLowerCase() !== assessment.news_event?.trim().toLowerCase()), legend: IMPACT_LEGEND };
 }
 

@@ -10,7 +10,7 @@ import {DropboxTransport,loadDropboxCredentials} from './dropbox.mjs';
 import {EditorialIntake} from './intake.mjs';
 import {EditorialApproval} from './editorial-approval.mjs';
 import {createEditorialIntakeHandler,existingAdminAuthorizer} from './intake-http.mjs';
-import {EDITORIAL_REQUEST_CONTRACT,EDITORIAL_REQUEST_CONTRACT_V4,importEditorialPreviews} from './intake-processing.mjs';
+import {EDITORIAL_REQUEST_CONTRACT,EDITORIAL_REQUEST_CONTRACT_V4,EDITORIAL_REQUEST_CONTRACT_V5,importEditorialPreviews} from './intake-processing.mjs';
 import {OPS_STATUS_KEY} from '../../ops/betriebsstatus.mjs';
 import {ensureEditorialContracts} from './editorial-bootstrap.mjs';
 
@@ -28,7 +28,7 @@ const admin=existingAdminAuthorizer();
 // Redaktions-App liest ihn ueber ihr eigenes, angemeldetes Konto.
 const handler=createEditorialIntakeHandler({intake,approval,authorize:async req=>(await admin(req))===owner?owner:null,
   readStatus:()=>{try{return store.observation(OPS_STATUS_KEY);}catch{return null;}}});
-console.log(JSON.stringify({event:'EDITORIAL_CONTRACTS_READY', contracts:await ensureEditorialContracts(transport,[EDITORIAL_REQUEST_CONTRACT,EDITORIAL_REQUEST_CONTRACT_V4])}));
+console.log(JSON.stringify({event:'EDITORIAL_CONTRACTS_READY', contracts:await ensureEditorialContracts(transport,[EDITORIAL_REQUEST_CONTRACT,EDITORIAL_REQUEST_CONTRACT_V4,EDITORIAL_REQUEST_CONTRACT_V5])}));
 const notificationFile=path.join(directory,'editorial-discord.json');
 const notificationConfig=fs.existsSync(notificationFile)?JSON.parse(fs.readFileSync(notificationFile)):null;
 const registry=loadNewsRegistry(process.cwd());

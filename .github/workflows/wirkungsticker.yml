@@ -119,6 +119,24 @@ jobs:
           WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
           WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
         run: node scripts/news/import-approved-editorials.mjs --finalize
+      - name: Select automatic ticker stream
+        id: ticker_stream
+        if: steps.slot.outputs.should_run == 'true'
+        run: node scripts/news/sdg/select-automatic-stream.mjs
+      - name: Reconcile SDG delivery and receive editions when active
+        id: sdg_editions
+        if: steps.ticker_stream.outputs.sdg_catalog_registered == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+        run: node scripts/news/sdg/import-bridge-editions.mjs
+      - name: Restore the committed SDG catalog after an interrupted intake
+        if: steps.ticker_stream.outputs.legacy_news == 'false' && steps.sdg_editions.outcome == 'failure'
+        run: |
+          git add -A -- data/news/sdg
+          git restore --source=HEAD --staged --worktree -- data/news/sdg
       - name: Queue potential reassessments for the newest online stories
         # Fester Bestandteil jedes Laufs (seit 16.09.): die jüngsten Online-Meldungen
         # ohne vollständiges freigegebenes Profil bleiben eingereiht, bis die Neufassung
@@ -128,11 +146,11 @@ jobs:
           REASSESS_LIMIT: ${{ inputs.reassess_limit || vars.WOEK_NEWS_REASSESS_LIMIT || '30' }}
         run: node scripts/news/queue-reassessment.mjs --limit="$REASSESS_LIMIT"
       - name: Validate the existing archive encryption key before paid work
-        if: steps.slot.outputs.should_run == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
+        if: steps.ticker_stream.outputs.legacy_news == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
         run: node scripts/news/sealed-raw-output.mjs --check-key
       - name: Verify interrupted paid work before another provider request
         id: paid_preflight
-        if: steps.slot.outputs.should_run == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
+        if: steps.ticker_stream.outputs.legacy_news == 'true' && (inputs.dry_run == true || steps.approved.outcome == 'success') && steps.approved.outputs.changed != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node scripts/news/retained-failed-paid-work.mjs --preflight
@@ -275,15 +293,19 @@ jobs:
         run: node scripts/news/release-data.mjs persist --out="$RUNNER_TEMP/ticker-release-data"
       - name: Commit one atomic update
         id: commit
-        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true
+        if: steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && (steps.ticker_stream.outputs.legacy_news == 'true' || steps.approved.outputs.changed == 'true' || steps.polls.outputs.changed == 'true' || (steps.sdg_editions.outcome == 'success' && steps.sdg_editions.outputs.changed == 'true'))
         env:
           SLOT_NAME: ${{ steps.slot.outputs.slot }}
           GH_TOKEN: ${{ github.token }}
+          SDG_EDITIONS_RECEIVED: ${{ steps.sdg_editions.outcome == 'success' && steps.sdg_editions.outputs.changed == 'true' }}
         run: |
           set -euo pipefail
           git config user.name "wirkungsticker-bot"
           git config user.email "wirkungsticker-bot@users.noreply.github.com"
-          git add -- data/news data/wirkungsticker/source-audit-2026-09-05.json news wirkungsticker reports/wirkungsticker-latest-run.json reports/wirkungsticker-source-integrity.json reports/wirkungsticker-source-portfolio.json sitemap.xml assets/search/search-index.json public/data/woek-search-meta.json content/taxonomy/site-map.json
+          git add -- data/news ':(exclude)data/news/sdg' data/wirkungsticker/source-audit-2026-09-05.json news wirkungsticker reports/wirkungsticker-latest-run.json reports/wirkungsticker-source-integrity.json reports/wirkungsticker-source-portfolio.json sitemap.xml assets/search/search-index.json public/data/woek-search-meta.json content/taxonomy/site-map.json
+          if [[ "$SDG_EDITIONS_RECEIVED" == "true" ]]; then
+            git add -- data/news/sdg/release-catalog.json data/news/sdg/editions
+          fi
           # Pages rebuilds the complete app from the canonical stores. Keep the
           # prior Git app projection coherent and leave a clean rebase worktree.
           git restore --source=HEAD --staged --worktree -- wirkungsticker/data/app
@@ -303,16 +325,25 @@ jobs:
           # Vollstaendig lesen: grep -q in einer pipefail-Pipeline kann git
           # nach einem fruehen Treffer per SIGPIPE beenden und false melden.
           STAGED_FILES="$(git diff --cached --name-only)"
-          if grep -qE '^(news/|wirkungsticker/)' <<< "$STAGED_FILES"; then PUBLIC_FILES=true; fi
-          git commit -m "[wirkungsticker] ${SLOT_NAME} $(date -u +%Y-%m-%dT%H:%MZ)"
+          if grep -qE '^(news/|wirkungsticker/|data/news/sdg/release-catalog\.json$)' <<< "$STAGED_FILES"; then PUBLIC_FILES=true; fi
+          commit_message="[wirkungsticker] ${SLOT_NAME} $(date -u +%Y-%m-%dT%H:%MZ)"
+          if [[ "$SDG_EDITIONS_RECEIVED" == "true" ]]; then
+            WOEK_SDG_PAGES_CATALOG_SHA256="$(git show :data/news/sdg/release-catalog.json | sha256sum | cut -d ' ' -f 1)"
+            export WOEK_SDG_PAGES_CATALOG_SHA256
+            git commit -m "$commit_message" -m "WOEK-SDG-Catalog: $WOEK_SDG_PAGES_CATALOG_SHA256"
+          else
+            git commit -m "$commit_message"
+          fi
           node scripts/news/publish-git.mjs
           RELEASE_COMMIT="$(git rev-parse HEAD)"
           [[ "$RELEASE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Invalid published commit." >&2; exit 1; }
-          echo "commit=$RELEASE_COMMIT" >> "$GITHUB_OUTPUT"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          echo "public_files=$PUBLIC_FILES" >> "$GITHUB_OUTPUT"
+          {
+            echo "commit=$RELEASE_COMMIT"
+            echo "changed=true"
+            echo "public_files=$PUBLIC_FILES"
+          } >> "$GITHUB_OUTPUT"
       - name: Publish the committed ticker automatically
-        if: steps.commit.outputs.changed == 'true' && (steps.outcome.outputs.public_changed == 'true' || steps.polls.outputs.changed == 'true' || steps.approved.outputs.changed == 'true' || steps.commit.outputs.public_files == 'true')
+        if: steps.commit.outputs.changed == 'true' && (steps.ticker_stream.outputs.legacy_news == 'true' || steps.approved.outputs.changed == 'true' || steps.polls.outputs.changed == 'true') && (steps.outcome.outputs.public_changed == 'true' || steps.polls.outputs.changed == 'true' || steps.approved.outputs.changed == 'true' || steps.commit.outputs.public_files == 'true')
         env:
           GH_TOKEN: ${{ github.token }}
           TICKER_COMMIT: ${{ steps.commit.outputs.commit }}
@@ -320,8 +351,15 @@ jobs:
           set -euo pipefail
           [[ "$TICKER_COMMIT" =~ ^[0-9a-f]{40}$ ]] || { echo "Missing exact published commit; refusing an unbound release." >&2; exit 1; }
           gh workflow run deploy.yml --ref main -f ticker_only=true -f "ticker_commit=$TICKER_COMMIT"
+      - name: Deliver the bound automatic SDG commit through Pages
+        if: steps.ticker_stream.outputs.legacy_news == 'false' && inputs.dry_run != true && steps.approved.outputs.changed != 'true' && steps.polls.outputs.changed != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WOEK_NEWS_BRIDGE_URL: "https://130.162.217.58.sslip.io/api/news-bridge"
+          WOEK_NEWS_BRIDGE_TOKEN: ${{ secrets.WOEK_NEWS_BRIDGE_TOKEN }}
+        run: node scripts/news/sdg/dispatch-pages.mjs
       - name: Verify ticker run health
-        if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
+        if: always() && steps.ticker_stream.outputs.legacy_news == 'true' && inputs.dry_run != true && steps.approved.outputs.changed != 'true'
         run: npm run news:health -- --started-after="$WOEK_NEWS_EXPECTED_AFTER"
       - name: Seal paid originals for private recovery
         id: sealed_raw
@@ -339,6 +377,11 @@ jobs:
         if: always() && steps.slot.outputs.should_run == 'true' && inputs.dry_run != true && (steps.approved.outcome == 'failure' || steps.approval_receipt.outcome == 'failure' || steps.news_order_fetch.outcome == 'failure' || steps.news_order_delivery.outcome == 'failure' || steps.paid_answer_recovery.outcome == 'failure')
         run: |
           echo "::error::Redaktionelle Auftragsuebergabe, Freigabequittung oder archivierte Wiederaufnahme fehlgeschlagen. Nachrichten und bezahlte Antworten bleiben gesichert; der Gesamtprozess ist nicht gesund."
+          exit 1
+      - name: Report a failed SDG edition import
+        if: always() && steps.sdg_editions.outcome == 'failure'
+        run: |
+          echo "::error title=SDG_EDITION_IMPORT_FAILED::Die Übernahme der SDG-Ausgaben ist fehlgeschlagen."
           exit 1
       - name: Preserve failed-run work and usage for recovery
         # A job timeout is cancelled, not failure(). Preserve completed paid

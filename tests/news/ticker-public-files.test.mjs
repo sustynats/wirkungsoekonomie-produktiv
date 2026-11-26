@@ -6,7 +6,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const workflow = fs.readFileSync(new URL('../../.github/workflows/wirkungsticker.yml', import.meta.url), 'utf8');
-const detection = workflow.match(/^          PUBLIC_FILES=false\n[\s\S]*?(?=^          git commit)/m)?.[0];
+const detection = workflow.match(/^          PUBLIC_FILES=false\n[\s\S]*?^          if grep -qE [^\n]+PUBLIC_FILES=true; fi\n/m)?.[0];
 assert.ok(detection, 'exercise the actual staged-public-file check from the normal worker');
 
 function detect(t, files, { gitFailure = false } = {}) {
@@ -32,6 +32,15 @@ test('a new public Lage triggers release even when no story was published', t =>
   const r = detect(t, ['data/news/lagen.json', 'wirkungsticker/lage/2026-10-20-morgenlage/index.html']);
   assert.equal(r.status, 0, r.stderr);
   assert.equal(r.stdout, 'true');
+});
+
+test('a registered SDG catalogue triggers release while unregistered packages alone do not', t => {
+  const catalogue = detect(t, ['data/news/sdg/release-catalog.json']);
+  assert.equal(catalogue.status, 0, catalogue.stderr);
+  assert.equal(catalogue.stdout, 'true');
+  const stagedPackage = detect(t, ['data/news/sdg/editions/sdg-edition-unregistered.json']);
+  assert.equal(stagedPackage.status, 0, stagedPackage.stderr);
+  assert.equal(stagedPackage.stdout, 'false');
 });
 
 test('the staged-file producer is fully read after an early public match', t => {

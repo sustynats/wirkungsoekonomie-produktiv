@@ -13,7 +13,7 @@ export function bridgeSession(env = process.env, { fetchImpl = fetch,
   if (url.protocol !== 'https:' || url.hostname !== '130.162.217.58.sslip.io' || url.pathname !== '/api/news-bridge' || url.search || url.hash || url.username || url.password) throw new Error('BRIDGE_REMOTE_URL_INVALID');
   const owner = `${runId}:${env.GITHUB_RUN_ATTEMPT || '1'}`;
   const readOperations = new Set(['store.get', 'store.all', 'store.editorialJobs', 'store.semanticReviews', 'store.impactStagingIndex', 'store.observation',
-    'dropbox.list', 'dropbox.read', 'dropbox.readBinary', 'dropbox.metadata', 'bridge.status', 'bridge.monitor']);
+    'dropbox.list', 'dropbox.read', 'dropbox.readBinary', 'dropbox.metadata', 'bridge.status', 'bridge.monitor', 'sdg.readPackage']);
   async function requestOnce(op, args) {
     return withRequestDeadline(async signal => {
     const response = await fetchImpl(url, { method: 'POST', redirect: 'error', signal,
@@ -107,7 +107,13 @@ export function bridgeSession(env = process.env, { fetchImpl = fetch,
   };
   const transport = Object.fromEntries(['list','read','metadata','move','writeAtomic','archive'].map(op => [op, (...args) => request(`dropbox.${op}`, args)]));
   transport.readBinary = async file => Buffer.from(await request('dropbox.readBinary', [file]), 'base64');
-  return { store, transport, status: () => request('bridge.status'), monitor: () => request('bridge.monitor') };
+  const sdg = {
+    prepare: cursor => request('sdg.prepare', [cursor]),
+    readPackage: (digest, offset) => request('sdg.readPackage', [digest, offset]),
+    reconcile: (cursor, archive) => request('sdg.reconcile', archive === undefined ? [cursor] : [cursor, archive]),
+    reserveDispatch: (cursor, sourceCommit) => request('sdg.reserveDispatch', [cursor, sourceCommit]),
+  };
+  return { store, transport, sdg, status: () => request('bridge.status'), monitor: () => request('bridge.monitor') };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

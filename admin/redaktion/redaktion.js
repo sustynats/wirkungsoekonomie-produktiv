@@ -7,7 +7,7 @@ import {enhancePrivateEditorialHtml} from '../../assets/js/editorial-diagrams.js
 const API='https://130.162.217.58.sslip.io/api/admin/news-editorial';
 const $=id=>document.getElementById(id);
 const auth=()=>localStorage.getItem('woek_community_auth')||'';
-const types={news:'Nachricht',opinion_analysis:'Meinung & Analyse',book_review:'Buch & Wirkung',listened:'Nachgehört',watched:'Nachgesehen'};
+const types={news:'Nachricht',opinion_analysis:'Meinung & Analyse',book_review:'Buch & Wirkung',listened:'Nachgehört',watched:'Nachgesehen',read:'Nachgelesen'};
 let selectedFiles=[],requests=[],sending=false,pendingId=null,poll,supplement=null;
 let previewGeneration=0,reviewGeneration=0,loading=null;
 function note(message,error=false){$('status').textContent=message;$('status').classList.toggle('error',error);}
@@ -23,11 +23,20 @@ function login(){
 }
 $('login-button').addEventListener('click',login);
 $('login-retry').addEventListener('click',()=>load().catch(error=>note(error.message,true)));
+function currentKind(){return supplement?.kind||new FormData($('request-form')).get('kind');}
+function syncReadingFields(){
+  const enabled=currentKind()==='read', input=$('reading-original');
+  $('reading-details').hidden=!enabled;input.disabled=!enabled;input.required=enabled;
+  input.readOnly=Boolean(enabled&&supplement?.document_url);
+}
+$('request-form').addEventListener('change',syncReadingFields);
 function setSupplement(request){
-  supplement=request?{job_id:request.job_id,title:request.title||request.brief?.slice(0,80)||'Auftrag',kind:request.kind}:null;
+  supplement=request?{job_id:request.job_id,title:request.title||request.brief?.slice(0,80)||'Auftrag',kind:request.kind,document_url:request.document_url}:null;
   $('supplement-note').hidden=!supplement;
   $('supplement-title').textContent=supplement?supplement.title:'';
   for(const input of document.querySelectorAll('#request-form input[name=kind]')){input.disabled=Boolean(supplement);if(supplement&&input.value===supplement.kind)input.checked=true;}
+  if(supplement?.kind==='read')$('reading-original').value=supplement.document_url||'';
+  syncReadingFields();
   $('compose-title').textContent=supplement?'Was soll noch dazu?':'Was soll in den Ticker?';
   document.querySelector('#compose .eyebrow').textContent=supplement?'Du kannst jederzeit nachlegen.':'Du gibst den Anstoß.';
   document.querySelector('#compose .intro').hidden=Boolean(supplement);
@@ -104,7 +113,8 @@ $('attachments').addEventListener('change',event=>{
 });
 $('request-form').addEventListener('input',()=>{if(!sending)pendingId=null;});
 function packet(){
-  return {client_id:pendingId||(pendingId=crypto.randomUUID()),kind:supplement?.kind||new FormData($('request-form')).get('kind'),brief:supplement?supplementBrief(supplement.job_id,$('brief').value):$('brief').value.trim(),links:$('links').value.trim(),author_notes:$('author-notes').value.trim(),urgent:$('urgent').checked,publish:false,attachments:selectedFiles.map(file=>({name:file.name,type:file.type,size:file.size}))};
+  const kind=currentKind();
+  return {client_id:pendingId||(pendingId=crypto.randomUUID()),kind,...(kind==='read'?{document_url:$('reading-original').value.trim()}:{}),brief:supplement?supplementBrief(supplement.job_id,$('brief').value):$('brief').value.trim(),links:$('links').value.trim(),author_notes:$('author-notes').value.trim(),urgent:$('urgent').checked,publish:false,attachments:selectedFiles.map(file=>({name:file.name,type:file.type,size:file.size}))};
 }
 $('request-form').addEventListener('submit',async event=>{
   event.preventDefault();if(sending||!$('request-form').reportValidity())return;
@@ -231,6 +241,8 @@ async function openReview(id){
  }else if(['APPROVED_FOR_PUBLICATION','PUBLISHING','PUBLISHED'].includes(r.status))
   mount.append(element('p','Für diese Fassung liegt hier keine überprüfbare Freigabequittung vor.','quiet'));
  if(p.source_media){const m=p.source_media;mount.append(element('h3','Besprochen: '+m.show),element('p',m.episode_title),element('p',[m.original_release_date,...(m.hosts||[]),...(m.guests||[])].filter(Boolean).join(' · ')));}
+ const reading=p.source_document||p.editorial_revision?.base?.source_document;
+ if(p.format==='read'&&reading)mount.append(element('h3',reading.title),element('p',reading.reading_status==='full_text'?'Lesestand: Volltext':'Lesestand: Auszug'));
  if(p.visual){const img=element('img');img.src=p.visual.url;img.alt=p.visual.alt;img.className='review-image';mount.append(img,element('p',p.visual.credit,'quiet'));}
  const frame=element('iframe');frame.title='Vollständiger Beitragsentwurf';frame.setAttribute('sandbox','');frame.className='review-text';frame.srcdoc=r.html_document?r.html:'<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="https://wirkungsoekonomie.de/assets/css/news.css?v=20260924-erklargrafiken"><style>body{font:17px/1.7 system-ui;color:#173c36;margin:12px;overflow-wrap:anywhere}a{color:inherit}img{max-width:100%}</style><body>'+enhancePrivateEditorialHtml(r.html)+'</body></html>';mount.append(frame);
  const sourceList=element('ul');for(const source of p.sources){const li=element('li'),link=element('a',`${source.publisher}: ${source.title}`);link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';li.append(link);sourceList.append(li);}mount.append(element('h3','Quellen'),sourceList);

@@ -44,8 +44,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Select automatic ticker stream
+        id: ticker_stream
+        run: node scripts/news/sdg/select-automatic-stream.mjs
       - name: Check season and missing editions
         id: due
+        if: steps.ticker_stream.outputs.legacy_news == 'true'
         env:
           EVENT_NAME: ${{ github.event_name }}
           EVENT_SCHEDULE: ${{ github.event.schedule }}

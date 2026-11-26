@@ -58,8 +58,10 @@ test('all full and ticker releases rebuild coherent projections from hydrated st
   before(quality, 'release-hydrate.mjs', 'Build ticker from hydrated data before quality checks');
   before(quality, 'Build ticker from hydrated data before quality checks', 'Wirkungsticker unit and security tests');
   before(quality, 'Build ticker from hydrated data before quality checks', 'Build search index');
-  const restore = ticker.match(/git restore --source=HEAD --staged --worktree -- ([^\n]+)/)?.[1];
+  const commit = ticker.match(/- name: Commit one atomic update\n([\s\S]*?)(?=\n      - name:)/)?.[1];
+  assert.ok(commit);
+  const restore = commit.match(/git restore --source=HEAD --staged --worktree -- ([^\n]+)/)?.[1];
   assert.equal(restore, 'wirkungsticker/data/app');
   assert.doesNotMatch(restore,/data\/news|reports\//);
-  assert.ok(ticker.indexOf('git restore --source=HEAD --staged --worktree') < ticker.indexOf('node scripts/news/check-git-size.mjs --automatic'));
+  before(commit, 'git restore --source=HEAD --staged --worktree', 'node scripts/news/check-git-size.mjs --automatic');
 });

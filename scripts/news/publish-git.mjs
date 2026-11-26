@@ -55,6 +55,7 @@ export function regeneratablePublicationPath(file) {
   if (file.includes("..") || file.startsWith("/")) return false;
   return GENERATED_PATHS.filter(base => base.includes(".")).includes(file)
     || /^news\/feed\.(?:xml|atom|json)$/.test(file)
+    || /^wirkungsticker\/sdg\/feed\.(?:xml|json)$/.test(file)
     || /^news\/(?:[a-z0-9-]+\/)*index\.html$/.test(file)
     || /^wirkungsticker\/(?:feed\.(?:xml|atom|json)|data\/stories\.json|(?:[a-z0-9-]+\/)*index\.html|(?:analyse\/|lage\/)?\.generated-[a-z-]+\.json)$/.test(file)
     || /^(?:admin\/)?umfragen\/(?:[a-z0-9-]+\/)*index\.html$/.test(file);
@@ -129,7 +130,9 @@ export function isStorageQuotaRejection(error) {
   return /repository is above its size quota|repository (?:is )?(?:over|exceeds) (?:its |the )?size (?:limit|quota)|exceeds github's file size limit|GH001:[^\n]*large files/i.test(message);
 }
 
-export async function publishGitUpdate({ run = git, rebuild = rebuildPublication, writeStoryStore = (store, options) => writeRepositoryJson(STORY_STORE, store, options), persistStoryParts = persistEnabledReleaseData, readReleasePart = readReleasedPart, storageGate = enforcePublicationStorage, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
+export async function publishGitUpdate({ run = git, rebuild = rebuildPublication, writeStoryStore = (store, options) => writeRepositoryJson(STORY_STORE, store, options), persistStoryParts = persistEnabledReleaseData, readReleasePart = readReleasedPart, storageGate = enforcePublicationStorage, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)), sdgCatalogHash = process.env.WOEK_SDG_PAGES_CATALOG_SHA256 } = {}) {
+  if (sdgCatalogHash !== undefined && !/^[a-f0-9]{64}$/.test(sdgCatalogHash)) throw Error('SDG_PAGES_DISPATCH_BINDING_REQUIRED');
+  const catalogTrailer = sdgCatalogHash ? ['-m', `WOEK-SDG-Catalog: ${sdgCatalogHash}`] : [];
   let regenerated = false;
   for (let attempt = 1; attempt <= 3; attempt++) {
     const before = stdout(await run(["rev-parse", "HEAD"])).trim();
@@ -209,7 +212,7 @@ export async function publishGitUpdate({ run = git, rebuild = rebuildPublication
       if (changed.some(file => !regeneratablePublicationPath(file))) throw new Error("PUBLISH_UNEXPECTED_STAGED_CHANGE");
       if (changed.length) {
         await storageGate({phase: 'staged'});
-        await run(["commit", "-m", "[wirkungsticker] Ansichten nach parallelem Release neu erzeugen"]);
+        await run(["commit", "-m", "[wirkungsticker] Ansichten nach parallelem Release neu erzeugen", ...catalogTrailer]);
       }
       regenerated = true;
     }
