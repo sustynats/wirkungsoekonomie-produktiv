@@ -28,10 +28,6 @@
   },
   "outbox": [
     {
-      "id": "84237464436c5b387c51d8bd",
-      "content": "✓ WÖk-Störung behoben\nÖffentliche SDG-Auslieferung\nPrüfung: 2026-11-27T06:30:39.725Z"
-    },
-    {
       "id": "0f0d7ae3a1f2029eaaf15ad4",
       "content": "✓ WÖk-Störung behoben\nWebsite-Auslieferung\nPrüfung: 2026-11-27T06:30:39.725Z"
     }
