@@ -9,10 +9,6 @@
       "firstSeen": "2026-10-10T17:51:12.919Z",
       "active": true
     },
-    "queue": {
-      "firstSeen": "2026-10-24T14:51:24.993Z",
-      "active": true
-    },
     "delivery-workflows": {
       "firstSeen": "2026-10-26T18:06:05.846Z",
       "active": true
@@ -25,24 +21,21 @@
       "firstSeen": "2026-11-22T21:21:00.804Z",
       "active": true
     },
-    "run": {
-      "firstSeen": "2026-11-22T23:20:51.984Z",
-      "active": true
-    },
     "delivery-wirkungsticker.yml": {
       "firstSeen": "2026-11-26T13:58:58.087Z",
       "active": true
-    },
-    "delivery-deploy.yml": {
-      "firstSeen": "2026-11-27T00:11:12.720Z",
-      "active": true
-    },
-    "editorial-status": {
-      "firstSeen": "2026-11-27T00:50:45.491Z",
-      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "a231debd811202f70acf2b52",
+      "content": "✓ WÖk-Störung behoben\nPrivate Redaktionsverarbeitung\nPrüfung: 2026-11-27T01:05:59.873Z"
+    },
+    {
+      "id": "65f2ca267b96845ff408b684",
+      "content": "✓ WÖk-Störung behoben\nWebsite-Auslieferung\nPrüfung: 2026-11-27T01:05:59.873Z"
+    }
+  ],
   "dailyDate": "2026-11-26",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4193,7 +4186,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-27T00:58:47.891Z",
+    "checked_at": "2026-11-27T01:05:59.873Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
