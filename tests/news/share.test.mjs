@@ -58,11 +58,15 @@ test("when copying is blocked the correct article address remains available", as
 });
 
 test("generated cards provide paired controls, unique status IDs and the share script", () => {
-  const html = fs.readFileSync(new URL("../../wirkungsticker/index.html", import.meta.url), "utf8");
-  const cards = html.match(/class="news-(?:editorial-)?card__actions"/g) || [];
-  const shareIds = [...html.matchAll(/id="(news-share-status-[^"]+-card)"/g)].map((match) => match[1]);
-  assert.ok(cards.length >= 10);
-  assert.equal(shareIds.length, cards.length);
-  assert.equal(new Set(shareIds).size, shareIds.length);
-  assert.match(html, /assets\/js\/news-share\.js\?v=20260911-dynamic-share/);
+  for (const file of ["index.html", "news/index.html"]) {
+    const html = fs.readFileSync(new URL(`../../wirkungsticker/${file}`, import.meta.url), "utf8");
+    const cards = html.match(/\bdata-news-card(?=\s|>)/g) || [];
+    const controls = html.match(/class="news-(?:editorial-)?card__actions"/g) || [];
+    const shareIds = [...html.matchAll(/id="(news-share-status-[^"]+-card)"/g)].map((match) => match[1]);
+    assert.ok(cards.length >= (file === "news/index.html" ? 10 : 1), file);
+    assert.equal(controls.length, cards.length, file);
+    assert.equal(shareIds.length, cards.length, file);
+    assert.equal(new Set(shareIds).size, shareIds.length, file);
+    assert.match(html, /assets\/js\/news-share\.js\?v=20260911-dynamic-share/);
+  }
 });

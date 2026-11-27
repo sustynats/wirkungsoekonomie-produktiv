@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { evidenceLevelLabel, storyPage } from "../../scripts/news/build.mjs";
 import { readerHtmlHasEditorialResidue } from "../../scripts/news/reader-copy.mjs";
+import { SDG_TRACKER_EVIDENCE, SDG_TRACKER_TITLE } from "../../scripts/news/sdg/presentation.mjs";
 
 const fixture = readRepositoryJson(new URL("../../data/news/stories.json", import.meta.url)).stories.find(story => story.published && story.listed !== false && story.analysis && story.news_status);
 
@@ -82,7 +83,12 @@ test("public ticker copy explains quality without infrastructure internals", () 
   assert.doesNotMatch(productCopy, /\b(?:Oracle|OCI|Higgsfield|OpenAI|Anthropic|GPT-\d)/i);
   assert.doesNotMatch(html, /URL-\/Hash-Deduplizierung|Story-Clustering|Fail closed/i);
   assert.doesNotMatch(html, /attributed_single_source|media_trigger|controlled_source_text|provider_reported_usage|AI_INPUT_/i);
-  assert.match(html, /Faktencheck, Folgencheck/);
+  if (productCopy.includes(`<h1>${SDG_TRACKER_TITLE}</h1>`)) {
+    assert.ok(productCopy.includes(SDG_TRACKER_EVIDENCE));
+    assert.match(productCopy, /<h2>Jüngste Ausgaben<\/h2>/);
+  } else {
+    assert.match(productCopy, /Faktencheck, Folgencheck/);
+  }
   const more = fs.readFileSync(new URL("../../wirkungsticker/mehr/index.html", import.meta.url), "utf8");
   assert.match(more, /Name und E-Mail-Adresse sind nicht erforderlich/);
 });
