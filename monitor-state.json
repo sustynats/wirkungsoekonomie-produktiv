@@ -26,12 +26,7 @@
       "active": true
     }
   },
-  "outbox": [
-    {
-      "id": "65f2ca267b96845ff408b684",
-      "content": "✓ WÖk-Störung behoben\nWebsite-Auslieferung\nPrüfung: 2026-11-27T01:05:59.873Z"
-    }
-  ],
+  "outbox": [],
   "dailyDate": "2026-11-26",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
