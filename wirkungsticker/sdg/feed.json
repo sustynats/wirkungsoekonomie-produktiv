@@ -7,6 +7,18 @@
   "language": "de-DE",
   "items": [
     {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-27-mittagslage/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-27-mittagslage/",
+      "title": "SDG-Mittagsupdate · 27.11.2026, 12:00",
+      "content_text": "Für diese Ausgabe liegen keine geprüften Einträge vor.",
+      "_woek_edition": {
+        "scheduled_at": "2026-11-27T11:00:00.000Z",
+        "cutoff_at": "2026-11-27T11:00:00.000Z",
+        "sealed_at": "2026-11-27T11:10:05.314Z",
+        "checked_items": 0
+      }
+    },
+    {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-27-morgenlage/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-27-morgenlage/",
       "title": "SDG-Morgenupdate · 27.11.2026, 06:00",
