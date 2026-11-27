@@ -33,10 +33,6 @@
       "firstSeen": "2026-11-26T13:58:58.087Z",
       "active": true
     },
-    "editorial-status": {
-      "firstSeen": "2026-11-27T00:11:12.720Z",
-      "active": false
-    },
     "delivery-deploy.yml": {
       "firstSeen": "2026-11-27T00:11:12.720Z",
       "active": true
@@ -4193,7 +4189,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-27T00:11:12.720Z",
+    "checked_at": "2026-11-27T00:20:55.833Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
