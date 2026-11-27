@@ -31,6 +31,11 @@ export function schreibeDaten(datei,wert){
 }
 const base='/wirkungsticker/';
 const sdgSearchHref='/suche.html?bereich=SDG-Tracker';
+const appSearchHref = sdgActive => sdgActive ? sdgSearchHref : base + 'suche/';
+export function hasTickerAppNavigation(html, {sdgActive = false} = {}) {
+ return html.includes(`class="ticker-app-search" href="${appSearchHref(sdgActive)}"`)
+   && html.includes('class="ticker-app-nav"');
+}
 export function contentType(item){return item.type==='story'?'news':item.value.format==='book_and_impact'||item.value.subtype==='book_review'?'book':['listened','watched','read'].includes(item.value.subtype)?item.value.subtype:'analysis';}
 // Ressorts kommen aus dem gemeinsamen Verzeichnis: Etiketten UND Titel/Anriss
 // (scripts/news/themen.mjs). Personal formats do not all have editorial topic
@@ -42,7 +47,7 @@ export function appNavigation(canonical,{sdgActive=false}={}){
  const active=route===base?'start':route.startsWith(base+'analyse/')||route===base+'analysen/'?'analysen':route===base+'merkzettel/'?'merkzettel':route===base+'news/'||!/^\/(?:wirkungsticker)\/(?:mehr|suche|quellen|methodik)\//.test(route)?'news':'mehr';
  const links=[['start','Start','⌂',''],['news',sdgActive?'SDG-Ausgaben':'News','▤',sdgActive?'sdg/':'news/'],['analysen','Analysen','◈','analysen/'],['merkzettel','Merkzettel','☆','merkzettel/'],['mehr','Mehr','⋯','mehr/']];
  const current=sdgActive&&active==='news'&&!route.startsWith(base+'sdg/')?null:active;
- const searchHref=sdgActive?sdgSearchHref:base+'suche/';
+ const searchHref=appSearchHref(sdgActive);
  const searchLabel=sdgActive?'SDG-Maßnahmen und Ausgaben durchsuchen':'Im Wirkungsticker suchen';
  return `<div class="ticker-app-header"><a href="${base}" class="ticker-app-brand">Wirkungsticker</a><a class="ticker-app-search" href="${searchHref}" aria-label="${searchLabel}"><span aria-hidden="true">⌕</span> Suche</a></div><nav class="ticker-app-nav" aria-label="Wirkungsticker">${links.map(([key,label,icon,url])=>`<a href="${base+url}"${current===key?' aria-current="page"':''}><span aria-hidden="true">${icon}</span><span>${label}</span></a>`).join('')}</nav>`;
 }
