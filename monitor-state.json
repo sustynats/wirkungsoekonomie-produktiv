@@ -26,12 +26,7 @@
       "active": false
     }
   },
-  "outbox": [
-    {
-      "id": "aa197ece505425f6c343c329",
-      "content": "✓ WÖk-Störung behoben\nNachrichtenimport\nPrüfung: 2026-11-27T08:35:50.971Z"
-    }
-  ],
+  "outbox": [],
   "dailyDate": "2026-11-27",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
