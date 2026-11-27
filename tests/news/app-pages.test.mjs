@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {gunzipSync} from 'node:zlib';
-import {contentType,contentTopics,searchWords,searchBucket,appNavigation,PAGE_SIZE} from '../../scripts/news/app-pages.mjs';
+import {contentType,contentTopics,searchWords,searchBucket,appNavigation,hasTickerAppNavigation,PAGE_SIZE} from '../../scripts/news/app-pages.mjs';
+import {SDG_TRACKER_TITLE} from '../../scripts/news/sdg/presentation.mjs';
 import {showIdentity,renderShowIdentity} from '../../scripts/news/show-identity.mjs';
 import {compareTickerRecords} from '../../assets/js/ticker-order.js';
 import {findSearchIds} from '../../assets/js/ticker-search.js';
@@ -57,13 +58,18 @@ test('search partitions support German prefixes and published records in every f
  }
 });
 test('new routes expose navigation, global search and separated content without loading all records',()=>{
+ const sdgActive=read('wirkungsticker/index.html').includes(`<h1>${SDG_TRACKER_TITLE}</h1>`);
  for(const mode of ['news','analysen','merkzettel','suche','mehr']){
   const html=read(`wirkungsticker/${mode}/index.html`);
-  for(const route of ['news','analysen','merkzettel','mehr','suche'])assert.ok(html.includes(`/wirkungsticker/${route}/`));
+  assert.ok(hasTickerAppNavigation(html,{sdgActive}),`${mode}: Suche im gerenderten Modus`);
+  for(const route of [sdgActive?'sdg':'news','analysen','merkzettel','mehr']){
+   assert.ok(html.includes(`href="/wirkungsticker/${route}/"`),`${mode}: ${route}`);
+  }
   assert.ok((html.match(/ data-news-card /g)||[]).length<=PAGE_SIZE);
   assert.doesNotMatch(html,/data\/stories\.json|search-index\.json/);
  }
  const news=read('wirkungsticker/news/index.html');assert.doesNotMatch(news,/data-news-editorial-analysis|news-reading-guide|news-install-promo/);
+ if(sdgActive)assert.match(news,/<h1>Nachrichtenarchiv<\/h1>/);
  assert.ok(read('wirkungsticker/mehr/index.html').includes('data-news-notification-toggle'));
  assert.match(appNavigation('https://wirkungsoekonomie.de/wirkungsticker/analyse/beispiel/'),/analysen\/" aria-current="page"/);
  const client=read('assets/js/news-app.js');assert.match(client,/IntersectionObserver/);assert.match(client,/popstate/);assert.match(client,/WoekUserSpace\?\.getItems\('saved_items'\)/);

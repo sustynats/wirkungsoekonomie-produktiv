@@ -3,13 +3,18 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { buildSourcePages } from "../../scripts/news/source-pages.mjs";
+import { SDG_TRACKER_TITLE } from "../../scripts/news/sdg/presentation.mjs";
 
 const read = (file) => fs.readFileSync(file, "utf8");
 const pages = ["wirkungsticker/index.html", "wirkungsticker/quellen/index.html", "methodik/index.html", "so-wirkt-wirkungsoekonomie/index.html", "verstehen/index.html", "verstehen/woek-auf-einer-seite/index.html", "modell.html", "wirkungswissenschaften/index.html"];
 
-test("Erklärungsebenen: unverändertes Ticker-Versprechen und kompakte Leselogik", () => {
+test("Erklärungsebenen: passendes Ticker-Versprechen und kompakte Leselogik", () => {
   const html = read(pages[0]);
-  for (const text of ["Nachrichten. Einordnen.", "Wirkung verstehen.", "Faktencheck", "Folgencheck", "Mensch", "Planet", "Demokratie", "Meinung &amp; Analyse", "Ring = Status", "Balken = Tragweite", 'id="methodik"']) assert.ok(html.includes(text), text);
+  const sdgActive = html.includes(`<h1>${SDG_TRACKER_TITLE}</h1>`);
+  const modeCopy = sdgActive
+    ? ["SDG-Ausgaben ansehen", "17 UN-Nachhaltigkeitsziele", "Deutsche Nachhaltigkeitsstrategie", "Nachrichtenarchiv"]
+    : ["Nachrichten. Einordnen.", "Wirkung verstehen.", "Faktencheck", "Folgencheck", "Ring = Status", "Balken = Tragweite"];
+  for (const text of [...modeCopy, "Mensch", "Planet", "Demokratie", "Meinung &amp; Analyse", 'id="methodik"']) assert.ok(html.includes(text), text);
   assert.doesNotMatch(html, /WÖK-Analyse/);
   assert.ok(html.includes('/wirkungsticker/methodik/'));
 });
