@@ -1,8 +1,22 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-27T05:05:44.151Z",
+  "updated_at": "2026-11-27T13:52:58.519Z",
   "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
   "beitraege": [
+    {
+      "slug": "wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc",
+      "titel": "Wenn Entlastung heute den Spielraum von morgen kostet",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-27T13:52:58.519Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/"
+    },
+    {
+      "slug": "nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e",
+      "titel": "Nachgesehen: Zwischen Reformstau und Zukunftsfrage – Markus Lanz sucht den großen Hebel",
+      "art": "watched",
+      "veroeffentlicht": "2026-11-27T13:52:50.379Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/"
+    },
     {
       "slug": "frieden-mit-putin-zwei-szenarien-aber-keine-einfache-losung-3926f9",
       "titel": "Frieden mit Putin: Zwei Szenarien, aber keine einfache Lösung",
@@ -198,20 +212,6 @@
       "art": "watched",
       "veroeffentlicht": "2026-11-23T00:11:18.467Z",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/ukraine-unterstutzung-zwischen-sicherheitsinteresse-kriegsfolgen-und-politischer-zumutung-f4b1d0/"
-    },
-    {
-      "slug": "wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f",
-      "titel": "Wenn fünf Milliarden zum Machtkampf werden",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-23T00:11:10.778Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/"
-    },
-    {
-      "slug": "shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885",
-      "titel": "Shenzhen zeigt Machtbilder – und Europas offene Flanke",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-21T12:22:11.996Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/"
     }
   ]
 }
