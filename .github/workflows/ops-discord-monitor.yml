@@ -69,6 +69,35 @@ jobs:
             scripts/news/check-run-health.mjs
             scripts/news/source-funnel.mjs
             scripts/news/operating-cost.mjs
+            scripts/news/sdg/release-catalog.mjs
+            scripts/news/lage.mjs
+            scripts/news/bridge/contract.mjs
+            scripts/news/lib.mjs
+            scripts/news/themen.mjs
+            scripts/news/lage-processing-status.mjs
+            scripts/news/bridge/research-source-schema.mjs
+            scripts/news/editorial-evidence.mjs
+            scripts/news/discovery-admission.mjs
+            scripts/news/manual-policy.mjs
+            scripts/news/political-development.mjs
+            scripts/news/visuals.mjs
+            scripts/news/impact-assessment.mjs
+            scripts/news/impact-publication.mjs
+            scripts/news/impact-scope.mjs
+            scripts/news/direction-assessment.mjs
+            scripts/news/source-adapters.mjs
+            scripts/news/media-impact.mjs
+            scripts/news/event-relevance.mjs
+            scripts/news/processing-mode.mjs
+            scripts/news/programme-listing.mjs
+            scripts/news/impact-magnitude.mjs
+            scripts/news/impact-release.mjs
+            scripts/news/observation-context.mjs
+            scripts/news/missing-evidence-zero.mjs
+            scripts/news/impact-potential.mjs
+            scripts/news/analysis-principles.mjs
+            scripts/news/migrate-impact-assessments.mjs
+            content/news/impact-release.json
             tests/ops/discord-monitor.test.mjs
             tests/ops/news-recovery.test.mjs
             reports/wirkungsticker-latest-run.json
@@ -76,6 +105,9 @@ jobs:
             data/news/stories.json.parts/
             data/news/lagen.json
             data/news/usage.json
+            data/news/sdg/ticker-mode.json
+            data/news/sdg/release-catalog.json
+            data/news/sdg/editions/
           sparse-checkout-cone-mode: false
       - uses: actions/setup-node@v4
         with:
