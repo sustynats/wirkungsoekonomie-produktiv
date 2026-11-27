@@ -28,10 +28,6 @@
   },
   "outbox": [
     {
-      "id": "ab6354f7bbcc12934fb46770",
-      "content": "⚠ WÖk-Betriebsstörung\nPrivate Redaktionsverarbeitung: Redaktionsjournal nicht pruefbar (BRIDGE_RUN_LOCKED). Fehlende Entwuerfe und Publikationsquittungen duerfen nicht als erledigt gelten.\nSeit: 2026-11-27T22:55:13.624Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
-    },
-    {
       "id": "7ca22c9f7a8493f825703b22",
       "content": "✓ WÖk-Störung behoben\nNachrichtenimport\nPrüfung: 2026-11-27T23:05:49.494Z"
     }
