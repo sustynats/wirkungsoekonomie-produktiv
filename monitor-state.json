@@ -40,10 +40,6 @@
   },
   "outbox": [
     {
-      "id": "02e8037a86bd1ebc819f0032",
-      "content": "⚠ WÖk-Betriebsstörung\nÖffentliche SDG-Auslieferung: Fällige SDG-Ausgabe öffentlich nicht gebunden: 2026-11-27-morgenlage.\nSeit: 2026-11-27T06:05:51.759Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
-    },
-    {
       "id": "7a7a2742f2a7f40f1f3cac58",
       "content": "⚠ WÖk-Betriebsstörung\nNachrichtenimport: Der letzte Lauf ist fehlgeschlagen. Fertige Ergebnisse sind damit nicht als ausgeliefert bestätigt.\nSeit: 2026-11-27T06:13:25.148Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
     }
