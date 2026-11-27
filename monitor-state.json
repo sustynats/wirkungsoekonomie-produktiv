@@ -27,10 +27,27 @@
     },
     "sdg-delivery": {
       "firstSeen": "2026-11-27T06:05:51.759Z",
+      "active": true
+    },
+    "editorial-status": {
+      "firstSeen": "2026-11-27T06:13:25.148Z",
       "active": false
+    },
+    "delivery-wirkungsticker.yml": {
+      "firstSeen": "2026-11-27T06:13:25.148Z",
+      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "02e8037a86bd1ebc819f0032",
+      "content": "⚠ WÖk-Betriebsstörung\nÖffentliche SDG-Auslieferung: Fällige SDG-Ausgabe öffentlich nicht gebunden: 2026-11-27-morgenlage.\nSeit: 2026-11-27T06:05:51.759Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
+    },
+    {
+      "id": "7a7a2742f2a7f40f1f3cac58",
+      "content": "⚠ WÖk-Betriebsstörung\nNachrichtenimport: Der letzte Lauf ist fehlgeschlagen. Fertige Ergebnisse sind damit nicht als ausgeliefert bestätigt.\nSeit: 2026-11-27T06:13:25.148Z\nhttps://github.com/sustynats/wirkungsoekonomie-produktiv/actions/workflows/ops-discord-monitor.yml"
+    }
+  ],
   "dailyDate": "2026-11-26",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4181,7 +4198,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-27T06:05:51.759Z",
+    "checked_at": "2026-11-27T06:13:25.148Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
