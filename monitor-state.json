@@ -21,10 +21,6 @@
       "firstSeen": "2026-11-22T21:21:00.804Z",
       "active": true
     },
-    "editorial-status": {
-      "firstSeen": "2026-11-27T14:58:43.082Z",
-      "active": false
-    },
     "delivery-wirkungsticker.yml": {
       "firstSeen": "2026-11-27T14:58:43.082Z",
       "active": true
@@ -4181,7 +4177,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-27T14:58:43.082Z",
+    "checked_at": "2026-11-27T15:05:57.995Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
