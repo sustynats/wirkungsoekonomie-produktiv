@@ -12,6 +12,10 @@
     {
       "edition_id": "2026-11-27-mittagslage",
       "sha256": "e5fb5acf1fad381d2ff63f4530542249f1c82f7da18f2e810871954325ea2a4d"
+    },
+    {
+      "edition_id": "2026-11-27-abendlage",
+      "sha256": "8ea715bc494e267b7934f6112265ce5d8ab9c913afd01f63d44f5e403e44528c"
     }
   ]
 }
