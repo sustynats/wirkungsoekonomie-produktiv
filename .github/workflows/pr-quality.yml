@@ -93,6 +93,9 @@ jobs:
       - name: Build ticker from hydrated data before quality checks
         run: npm run news:build
 
+      - name: Install PDF text extractor for ticker tests
+        run: command -v pdftotext >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends poppler-utils; }
+
       - name: Wirkungsticker unit and security tests
         # Bis 16.09. lief diese Suite ausschließlich im Nachrichtenlauf, wo der
         # Testschritt jeden weiteren Schritt sperrt: ein gebrochener Test nahm

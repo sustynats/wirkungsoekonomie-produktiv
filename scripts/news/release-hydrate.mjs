@@ -9,31 +9,37 @@ import {newsroomParts} from './newsroom-store.mjs';
 import {LEGACY_DATA_REPOSITORY, RELEASE_STORE_FORMAT, releasePartUrl, assertRawPart, decodeReleasePart, releasePartDownloadCommand, validDataTag, privateReleaseDownloadError, privateDownloadDiagnosticFields} from './release-part.mjs';
 
 const exec = promisify(execFile);
+const publicTransferInterruptions = new Set([18, 28, 52, 55, 56]);
 export async function downloadHydrationPart(url, maxBytes, {run = exec} = {}) {
   const spec = releasePartDownloadCommand(url, maxBytes);
+  let failure;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try { return (await run(spec.command, spec.args, {...spec.options, encoding: 'buffer'})).stdout; }
     catch (error) {
       if (spec.private) throw privateReleaseDownloadError(error);
-      // Retry only an explicit transient HTTP response from public curl GETs.
-      const transient = error.code === 22 && /curl:\s*\(22\)\s*The requested URL returned error:\s*(?:500|502|503|504)\b/i.test(String(error.stderr || ''));
+      const stderr = String(error.stderr || '').trim();
+      failure = error;
+      // A completed curl process can identify an interrupted GET. Do not
+      // spend another full timeout on the same URL before the pinned fallback.
+      if (publicTransferInterruptions.has(error.code) && !error.killed && !error.signal &&
+          (error.status == null || error.status === error.code) && stderr.startsWith(`curl: (${error.code}) `)) break;
+      const transient = error.code === 22 && /curl:\s*\(22\)\s*The requested URL returned error:\s*(?:500|502|503|504)\b/i.test(stderr);
       if (!transient) throw error;
-      if (attempt === 3) {
-        // Existing native GitHub release downloader, limited to a pinned
-        // public legacy part; no fallback for any other URL or failure class.
-        const parsed = new URL(url);
-        const prefix = `/${LEGACY_DATA_REPOSITORY}/releases/download/`;
-        const parts = parsed.pathname.startsWith(prefix) ? parsed.pathname.slice(prefix.length).split('/') : [];
-        if (parsed.origin !== 'https://github.com' || parsed.username || parsed.password || parsed.search || parsed.hash ||
-            parts.length !== 2 || !validDataTag(parts[0]) || !/^[a-f0-9]{64}\.json\.gz$/.test(parts[1])) throw error;
-        try {
-          return (await run('gh', ['release', 'download', parts[0], '--repo', LEGACY_DATA_REPOSITORY,
-            '--pattern', parts[1], '--output', '-'], {...spec.options, encoding: 'buffer'})).stdout;
-        } catch { throw Error('PUBLIC_RELEASE_API_DOWNLOAD_UNAVAILABLE'); }
-      }
+      if (attempt === 3) break;
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
+  // Only the declared public legacy asset can use the native API transport.
+  // The caller still verifies compressed and raw bytes against the manifest.
+  const parsed = new URL(url);
+  const prefix = `/${LEGACY_DATA_REPOSITORY}/releases/download/`;
+  const parts = parsed.pathname.startsWith(prefix) ? parsed.pathname.slice(prefix.length).split('/') : [];
+  if (parsed.origin !== 'https://github.com' || parsed.username || parsed.password || parsed.search || parsed.hash ||
+      parts.length !== 2 || !validDataTag(parts[0]) || !/^[a-f0-9]{64}\.json\.gz$/.test(parts[1])) throw failure;
+  try {
+    return (await run('gh', ['release', 'download', parts[0], '--repo', LEGACY_DATA_REPOSITORY,
+      '--pattern', parts[1], '--output', '-'], {...spec.options, encoding: 'buffer'})).stdout;
+  } catch { throw Error('PUBLIC_RELEASE_API_DOWNLOAD_UNAVAILABLE'); }
 }
 
 export async function hydrateReleaseData({root = process.cwd(), downloadPart = downloadHydrationPart, concurrency = 4} = {}) {

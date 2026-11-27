@@ -161,6 +161,9 @@ jobs:
       - name: Build Parliament and Institute information pages
         if: steps.release-mode.outputs.ticker_only != 'true'
         run: npm run build:parlament-info
+      - name: Install PDF text extractor for ticker tests
+        if: steps.release-mode.outputs.ticker_only == 'true'
+        run: command -v pdftotext >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends poppler-utils; }
       - name: Build ticker and search for fast update
         if: steps.release-mode.outputs.ticker_only == 'true'
         run: |

@@ -94,6 +94,9 @@ jobs:
         run: node scripts/news/release-hydrate.mjs
         env:
           GH_TOKEN: ${{ github.token }}
+      - name: Install PDF text extractor for ticker tests
+        if: steps.slot.outputs.should_run == 'true'
+        run: command -v pdftotext >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends poppler-utils; }
       - name: Unit and security tests
         if: steps.slot.outputs.should_run == 'true'
         run: bash scripts/news/run-isolated-unit-tests.sh
