@@ -28,10 +28,6 @@
   },
   "outbox": [
     {
-      "id": "a231debd811202f70acf2b52",
-      "content": "✓ WÖk-Störung behoben\nPrivate Redaktionsverarbeitung\nPrüfung: 2026-11-27T01:05:59.873Z"
-    },
-    {
       "id": "65f2ca267b96845ff408b684",
       "content": "✓ WÖk-Störung behoben\nWebsite-Auslieferung\nPrüfung: 2026-11-27T01:05:59.873Z"
     }
