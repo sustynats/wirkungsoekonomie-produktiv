@@ -13,6 +13,8 @@ import {editorialEvidenceIssues} from './editorial-evidence.mjs';
 import { loadNewsRegistry, registryErrors } from "./registry.mjs";
 import { isMerged, relatedStories, mergedStoryTargetValid } from "./living-files.mjs";
 import { buildCaseFiles, caseIntegrityErrors } from "./case-files.mjs";
+import { hasTickerAppNavigation } from "./app-pages.mjs";
+import { loadSdgTickerPresentation } from "./sdg/release-catalog.mjs";
 // Die App-Daten liegen gepackt (app-pages.mjs).
 const readAppData = (relative) => {
   const gepackt = path.join(ROOT, `${relative}.gz`);
@@ -92,9 +94,10 @@ const appManifest = readAppData("wirkungsticker/data/app/manifest.json");
 assertChronologicalFeedHtml(appNews);
 if (!index.includes("https://wirkungsoekonomie.de/wirkungsticker/") || !index.includes("/wirkungsticker/methodik/")) fail("NEWS_INDEX_INVALID");
 if (!appNews.includes('data-ticker-app="news"') || !appNews.includes("data-app-more") || !index.includes("wirkungsticker/manifest.webmanifest") || !appNews.includes("Fakten- &amp; Folgencheck öffnen") || !appNews.includes("WÖk-Einordnung aktualisiert") || !appMore.includes("Push-Benachrichtigungen") || !appNews.includes("data-news-story-id")) fail("NEWS_APP_UI_INVALID");
+const sdgActive = Boolean(loadSdgTickerPresentation(ROOT));
 for (const route of ['news','analysen','merkzettel','suche','mehr']) {
   const html = fs.readFileSync(path.join(ROOT,`wirkungsticker/${route}/index.html`),'utf8');
-  if (!html.includes('/wirkungsticker/suche/') || !html.includes('ticker-app-nav')) fail(`NEWS_APP_ROUTE_INVALID:${route}`);
+  if (!hasTickerAppNavigation(html, {sdgActive})) fail(`NEWS_APP_ROUTE_INVALID:${route}`);
 }
 let allAppCards='';
 for (const mode of ['news','analysen']) {

@@ -22,7 +22,7 @@ import { registerSdgEdition } from '../../scripts/news/sdg/register-edition.mjs'
 import { loadSdgTickerPresentation, readSdgReleaseCatalog } from '../../scripts/news/sdg/release-catalog.mjs';
 import { importFirstSdgPackage, importSdgBridgeEditions, receiveSdgBridgeEditions } from '../../scripts/news/sdg/import-bridge-editions.mjs';
 import { serveSdgEditions } from '../../scripts/news/sdg/bridge-editions.mjs';
-import { appNavigation, buildAppPages } from '../../scripts/news/app-pages.mjs';
+import { appNavigation, buildAppPages, hasTickerAppNavigation } from '../../scripts/news/app-pages.mjs';
 import { sha256 } from '../../scripts/news/lib.mjs';
 import { SEMANTIC_CHECKS } from '../../scripts/news/impact-publication.mjs';
 import { syntheticPotentialAssessment, syntheticScopeReview } from './fixtures/impact21.mjs';
@@ -594,6 +594,13 @@ test('ticker presentation can switch and roll back while legacy news and editori
     assert.match(active.get(archive), /Nachrichtenarchiv \(RSS\)/);
     assert.match(active.get('wirkungsticker/mehr/index.html'), /Nachrichtenarchiv \(RSS\)/);
     for (const item of analyses) assert.ok(active.get(homepage).includes(item.title));
+    for (const route of ['news', 'analysen', 'merkzettel', 'suche', 'mehr']) {
+      const page = `wirkungsticker/${route}/index.html`;
+      assert.equal(hasTickerAppNavigation(initial.get(page)), true, route);
+      assert.equal(hasTickerAppNavigation(active.get(page), { sdgActive: true }), true, route);
+      assert.equal(hasTickerAppNavigation(initial.get(page), { sdgActive: true }), false, route);
+      assert.equal(hasTickerAppNavigation(active.get(page)), false, route);
+    }
 
     const artifactRoot = path.join(root, 'artifact');
     const manifest = readFileSync(new URL('../../wirkungsticker/manifest.webmanifest', import.meta.url), 'utf8');
