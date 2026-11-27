@@ -319970,7 +319970,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "ac174cf6eab7b2f8",
+      "contentHash": "941e7217dab27b3d",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#ticker-redaktion-title": {
@@ -319978,7 +319978,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "ac174cf6eab7b2f8",
+      "contentHash": "941e7217dab27b3d",
       "sectionId": "ticker-redaktion-title"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -323749,6 +323749,38 @@
       "contentHash": "fd402026250c9410",
       "sectionId": "woek-page-2507969d7cf62385"
     },
+    "/wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/index.html",
+      "contentHash": "8d6d0b12f359e1e3",
+      "sectionId": "woek-page-741bf46b2dc3b9ce"
+    },
+    "/wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/index.html",
+      "contentHash": "8d6d0b12f359e1e3",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/index.html",
+      "contentHash": "8d6d0b12f359e1e3",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/nachgesehen-zwischen-reformstau-und-zukunftsfrage-markus-lanz-sucht-den-gro-en-hebel-8b140e/index.html",
+      "contentHash": "8d6d0b12f359e1e3",
+      "sectionId": "planet"
+    },
     "/wirkungsticker/analyse/nachgesehen-zwischen-rentenstreit-parteikrise-und-kriegsalltag-1331ef/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -325093,6 +325125,38 @@
       "contentHash": "eec2e6e15e1fed61",
       "sectionId": "woek-page-fc8c6302d0c8a764"
     },
+    "/wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/index.html",
+      "contentHash": "9e4143484a4004de",
+      "sectionId": "woek-page-346f4bc3bdfffa6a"
+    },
+    "/wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/#demokratie": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/index.html",
+      "contentHash": "9e4143484a4004de",
+      "sectionId": "demokratie"
+    },
+    "/wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/#mensch": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/index.html",
+      "contentHash": "9e4143484a4004de",
+      "sectionId": "mensch"
+    },
+    "/wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/#planet": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/analyse/wenn-entlastung-heute-den-spielraum-von-morgen-kostet-95e7bc/index.html",
+      "contentHash": "9e4143484a4004de",
+      "sectionId": "planet"
+    },
     "/wirkungsticker/analyse/wenn-funf-milliarden-zum-machtkampf-werden-5e4a4f/": {
       "documentType": "Referenz",
       "status": "online-reviewed",
@@ -325770,7 +325834,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/analysen/index.html",
-      "contentHash": "00723469b6d6f455",
+      "contentHash": "bf2347437c322cae",
       "sectionId": "woek-page-720f8d43d23be330"
     },
     "/wirkungsticker/angriff-an-schule-in-frankreich-14-jahriger-soll-schulleiter-und-lehrerin-angeschossen-h-a48894/": {
@@ -333034,7 +333098,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "e20761b0ff3e695f",
+      "contentHash": "55b9a7cf2a6df451",
       "sectionId": "woek-page-901baef9d8fe7ae8"
     },
     "/wirkungsticker/mehr/#news-app-title": {
@@ -333042,7 +333106,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/mehr/index.html",
-      "contentHash": "e20761b0ff3e695f",
+      "contentHash": "55b9a7cf2a6df451",
       "sectionId": "news-app-title"
     },
     "/wirkungsticker/mehrere-explosionen-mindestens-acht-tote-bei-russischen-angriffen-auf-die-ukraine-c3546b/": {
@@ -334202,7 +334266,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/news/index.html",
-      "contentHash": "72301ba9bdd5fba6",
+      "contentHash": "bc087e235c77f38d",
       "sectionId": "woek-page-7d87c87ddaa7be64"
     },
     "/wirkungsticker/newsblog-zur-landtagswahl-in-sachsen-anhalt-ministerprasident-schulze-cdu-raumt-niederla-0e1751/": {
