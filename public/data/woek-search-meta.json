@@ -319970,7 +319970,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "9056a546309c2921",
+      "contentHash": "ac174cf6eab7b2f8",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#ticker-redaktion-title": {
@@ -319978,7 +319978,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "9056a546309c2921",
+      "contentHash": "ac174cf6eab7b2f8",
       "sectionId": "ticker-redaktion-title"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -336834,7 +336834,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/sdg/index.html",
-      "contentHash": "05bf36396d8c7134",
+      "contentHash": "f7df393ae5077c35",
       "sectionId": "woek-page-50d364e060e03b9b"
     },
     "/wirkungsticker/sdg/ausgabe/2026-11-26-abendlage/": {
@@ -336844,6 +336844,14 @@
       "sourceFile": "wirkungsticker/sdg/ausgabe/2026-11-26-abendlage/index.html",
       "contentHash": "717a7e1e84e1606a",
       "sectionId": "woek-page-95ecd77c2ac5b98e"
+    },
+    "/wirkungsticker/sdg/ausgabe/2026-11-27-mittagslage/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/sdg/ausgabe/2026-11-27-mittagslage/index.html",
+      "contentHash": "cbd81435cb8acc57",
+      "sectionId": "woek-page-97395fd0162fc8f3"
     },
     "/wirkungsticker/sdg/ausgabe/2026-11-27-morgenlage/": {
       "documentType": "Referenz",

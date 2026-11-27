@@ -8,6 +8,10 @@
     {
       "edition_id": "2026-11-27-morgenlage",
       "sha256": "c236ff0cc824797c42deb3c058f2c6e4e71d7973e32b4793127a9f5218aeca5a"
+    },
+    {
+      "edition_id": "2026-11-27-mittagslage",
+      "sha256": "e5fb5acf1fad381d2ff63f4530542249f1c82f7da18f2e810871954325ea2a4d"
     }
   ]
 }

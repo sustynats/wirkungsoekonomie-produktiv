@@ -1,0 +1,14 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "kind": "sdg_edition_candidate",
+    "edition_id": "2026-11-27-mittagslage",
+    "ledger_sha256": "1f93137c34a498f1d47ec5e18ba362ced77d716a7548ef41c4c87b53ed4d3d07",
+    "scheduled_at": "2026-11-27T11:00:00.000Z",
+    "cutoff_at": "2026-11-27T11:00:00.000Z",
+    "sealed_at": "2026-11-27T11:10:05.314Z",
+    "published_at": null,
+    "items": []
+  },
+  "sha256": "e5fb5acf1fad381d2ff63f4530542249f1c82f7da18f2e810871954325ea2a4d"
+}
