@@ -1,8 +1,22 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-11-26T13:27:00.314Z",
+  "updated_at": "2026-11-27T05:05:44.151Z",
   "hinweis": "Offene persoenliche Einordnungen. Antwort als Issue \"[EINORDNUNG] <slug>\" mit dem Text im Koerper; 300 bis 2600 Zeichen, keine neuen Zahlen, keine Adressen, keine Ueberschriften.",
   "beitraege": [
+    {
+      "slug": "frieden-mit-putin-zwei-szenarien-aber-keine-einfache-losung-3926f9",
+      "titel": "Frieden mit Putin: Zwei Szenarien, aber keine einfache Lösung",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-27T05:05:44.151Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/frieden-mit-putin-zwei-szenarien-aber-keine-einfache-losung-3926f9/"
+    },
+    {
+      "slug": "wenn-private-macht-zur-kritischen-infrastruktur-wird-3e45b8",
+      "titel": "Wenn private Macht zur kritischen Infrastruktur wird",
+      "art": "listened",
+      "veroeffentlicht": "2026-11-27T05:05:16.322Z",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-private-macht-zur-kritischen-infrastruktur-wird-3e45b8/"
+    },
     {
       "slug": "was-ein-abend-uber-haushalte-wohnungen-und-politische-handlungsfahigkeit-zeigt-fdc907",
       "titel": "Was ein Abend über Haushalte, Wohnungen und politische Handlungsfähigkeit zeigt",
@@ -198,20 +212,6 @@
       "art": "watched",
       "veroeffentlicht": "2026-11-21T12:22:11.996Z",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/shenzhen-zeigt-machtbilder-und-europas-offene-flanke-43b885/"
-    },
-    {
-      "slug": "wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c",
-      "titel": "Wenn die Großen reden: Was bleibt Europa vom Tisch?",
-      "art": "watched",
-      "veroeffentlicht": "2026-11-21T12:22:03.744Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/wenn-die-gro-en-reden-was-bleibt-europa-vom-tisch-0b175c/"
-    },
-    {
-      "slug": "zwischen-gipfelsymbolik-und-regierungsrisiko-was-machtwechsel-sichtbar-macht-704eb0",
-      "titel": "Zwischen Gipfelsymbolik und Regierungsrisiko: Was „Machtwechsel“ sichtbar macht",
-      "art": "listened",
-      "veroeffentlicht": "2026-11-21T12:21:56.416Z",
-      "url": "https://wirkungsoekonomie.de/wirkungsticker/analyse/zwischen-gipfelsymbolik-und-regierungsrisiko-was-machtwechsel-sichtbar-macht-704eb0/"
     }
   ]
 }

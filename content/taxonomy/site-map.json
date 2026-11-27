@@ -113928,7 +113928,7 @@
     },
     {
       "url": "/wirkungsticker/",
-      "title": "Wirkungsticker – Start",
+      "title": "Global SDG Impact Tracker - Wirkungsticker",
       "rubrik": "Sonstiges",
       "sammlung": "wirkungsticker",
       "typ": "portal"
@@ -114496,6 +114496,13 @@
     {
       "url": "/wirkungsticker/analyse/frankreich-als-warnbild-nicht-als-vorhersage-a5aeb5/",
       "title": "Frankreich als Warnbild, nicht als Vorhersage",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/analyse/frieden-mit-putin-zwei-szenarien-aber-keine-einfache-losung-3926f9/",
+      "title": "Frieden mit Putin: Zwei Szenarien, aber keine einfache Lösung",
       "rubrik": "Sonstiges",
       "sammlung": "wirkungsticker",
       "typ": "dokument"
@@ -115889,6 +115896,13 @@
     {
       "url": "/wirkungsticker/analyse/wenn-preise-nicht-nur-knappheit-anzeigen-7169eb/",
       "title": "Wenn Preise nicht nur Knappheit anzeigen",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/analyse/wenn-private-macht-zur-kritischen-infrastruktur-wird-3e45b8/",
+      "title": "Wenn private Macht zur kritischen Infrastruktur wird",
       "rubrik": "Sonstiges",
       "sammlung": "wirkungsticker",
       "typ": "dokument"
@@ -121278,7 +121292,7 @@
     },
     {
       "url": "/wirkungsticker/news/",
-      "title": "News – Wirkungsticker",
+      "title": "Nachrichtenarchiv – Wirkungsticker",
       "rubrik": "Sonstiges",
       "sammlung": "wirkungsticker",
       "typ": "dokument"
@@ -122847,6 +122861,20 @@
     {
       "url": "/wirkungsticker/schwiegermutter-mit-wagenheberstange-erschlagen-lebenslange-haft-in-heilbronn-f699da/",
       "title": "Schwiegermutter mit Wagenheberstange erschlagen: Lebenslange Haft in Heilbronn",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/sdg/",
+      "title": "SDG-Ausgaben | Global SDG Impact Tracker",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/sdg/ausgabe/2026-11-26-abendlage/",
+      "title": "SDG-Abendupdate · 26.11.2026, 18:00 | Global SDG Impact Tracker",
       "rubrik": "Sonstiges",
       "sammlung": "wirkungsticker",
       "typ": "dokument"
