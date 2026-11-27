@@ -12,6 +12,8 @@ import { bridgeSession } from '../news/bridge/remote.mjs';
 import { OPS_STATUS_KEY, operationalStatus } from './betriebsstatus.mjs';
 import { PARKED_KEY, EXHAUSTED_ORDERS_KEY } from '../news/bridge/observation-keys.mjs';
 import { feedDate } from '../news/feed-order.mjs';
+import { berlinInstant, LAGEN, lageId } from '../news/lage.mjs';
+import { loadSdgTickerPresentation, SDG_HASH } from '../news/sdg/release-catalog.mjs';
 import { observeLiveNews, workflowChecks, planRecovery, recoverDelivery, RECOVERY_WORKFLOWS } from './news-recovery.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -278,6 +280,98 @@ export function lageCheck({ lagen, now } = {}) {
 
 const awaitingSince = (data) => Number.isFinite(Date.parse(data?.awaitingSince || '')) ? data.awaitingSince : null;
 
+const legacyTickerChecks = new Set([
+  'run', 'provider', 'queue', 'publication-flow', 'sources', 'editorial-coverage',
+  'budget', 'lage', 'bridge-publication-flow',
+]);
+const sdgMonitorChecks = [
+  { id: 'sdg-catalog', name: 'SDG-Ausgabenkatalog', immediate: false },
+  { id: 'sdg-schedule', name: 'Fällige SDG-Ausgaben', immediate: false },
+  { id: 'sdg-delivery', name: 'Öffentliche SDG-Auslieferung', immediate: false },
+];
+// Operational alert grace, separate from the 06/12/18 publication schedule.
+// The importer wakes every 15 min, has a 40 min limit, and Pages runs afterward.
+const SDG_CATALOG_GRACE = 45;
+const SDG_DELIVERY_GRACE = 65;
+
+export function readSdgMonitorSchedule(root, now) {
+  try {
+    const catalog = loadSdgTickerPresentation(root);
+    if (!catalog) return { status: 'legacy' };
+    const { anchor } = JSON.parse(fs.readFileSync(path.join(root, 'data/news/sdg/ticker-mode.json'), 'utf8'));
+    const opening = catalog.releases.find(entry => entry.edition_id === anchor.edition_id && entry.sha256 === anchor.sha256);
+    if (!opening) return { status: 'invalid' };
+    const releases = new Map(catalog.releases.map(entry => [entry.edition_id, entry.sha256]));
+    const first = opening.manifest.scheduled_at;
+    const lastDate = berlinParts(now).date;
+    const due = [];
+    for (const day = new Date(first.slice(0, 10) + 'T12:00:00Z');
+      day.toISOString().slice(0, 10) <= lastDate; day.setUTCDate(day.getUTCDate() + 1)) {
+      const date = day.toISOString().slice(0, 10);
+      for (const { slot, hour } of LAGEN) {
+        const scheduledAt = berlinInstant(date, hour);
+        if (scheduledAt < first || Date.parse(scheduledAt) > Date.parse(now)) continue;
+        const id = lageId(date, slot);
+        due.push({ id, scheduledAt, sha256: releases.get(id) });
+      }
+    }
+    return { status: 'active', due, catalogHash: catalog.sha256 };
+  } catch {
+    return { status: 'invalid' };
+  }
+}
+
+async function readPublicSdgBytes(route, maxBytes, fetchImpl) {
+  const response = await fetchImpl(`https://wirkungsoekonomie.de/wirkungsticker/sdg/${route}`, {
+    redirect: 'error', signal: AbortSignal.timeout(12_000), cache: 'no-store',
+  });
+  if (response.status !== 200 || !response.body) throw Error('MONITOR_SDG_OBSERVATION_UNAVAILABLE');
+  const chunks = [];
+  let size = 0;
+  for await (const part of response.body) {
+    size += part.byteLength;
+    if (size > maxBytes) throw Error('MONITOR_SDG_OBSERVATION_UNAVAILABLE');
+    chunks.push(part);
+  }
+  return Buffer.concat(chunks, size);
+}
+
+export async function observeSdgDelivery({ due, catalogHash }, { sourceCommit, fetchImpl = fetch } = {}) {
+  try {
+    const bytes = await readPublicSdgBytes('release.json', 8 * 1024 ** 2, fetchImpl);
+    const release = JSON.parse(bytes);
+    if (release?.schema_version !== 1 || release.kind !== 'sdg_pages_release'
+      || release.repository !== 'sustynats/wirkungsoekonomie-produktiv'
+      || !/^[a-f0-9]{40}$/.test(release.source_commit)
+      || !SDG_HASH.test(release.catalog_sha256) || !Array.isArray(release.editions)
+      || (release.source_commit === sourceCommit && release.catalog_sha256 !== catalogHash)) {
+      return { status: 'unavailable' };
+    }
+    const editions = new Map();
+    for (const entry of release.editions) {
+      if (!entry || !/^\d{4}-\d{2}-\d{2}-(morgenlage|mittagslage|abendlage)$/.test(entry.edition_id)
+        || editions.has(entry.edition_id) || !SDG_HASH.test(entry.edition_sha256) || !SDG_HASH.test(entry.html_sha256)) {
+        return { status: 'unavailable' };
+      }
+      editions.set(entry.edition_id, entry);
+    }
+    // A previous release may still be serving while a newer catalog is built.
+    // The matching edition digests determine whether individual slots are served.
+    const bound = new Set(due.filter(row => row.sha256 && editions.get(row.id)?.edition_sha256 === row.sha256).map(row => row.id));
+    const latest = due.findLast(row => bound.has(row.id));
+    if (!latest) return { status: 'observed', bound, latest: null };
+    const html = await readPublicSdgBytes(`ausgabe/${latest.id}/`, 32 * 1024 ** 2, fetchImpl);
+    const main = (html.toString('utf8').match(/<main\b[^>]*>/gi) ?? []).filter(tag => tag.includes(' id="main-content"'));
+    if (main.length !== 1 || !main[0].includes(` data-sdg-edition-sha256="${latest.sha256}"`)
+      || createHash('sha256').update(html).digest('hex') !== editions.get(latest.id).html_sha256) {
+      return { status: 'mismatch' };
+    }
+    return { status: 'observed', bound, latest: latest.id };
+  } catch {
+    return { status: 'unavailable' };
+  }
+}
+
 export function evaluateChecks(data, now) {
   // Eine Fassung, deren Veroeffentlichung gescheitert ist, liegt geparkt in der
   // privaten Freigabeliste. Sie stand in keiner Pruefung - Natalie fand sie am
@@ -393,6 +487,36 @@ export function evaluateChecks(data, now) {
       {id:'bridge-cost',name:'Bridge-Kostenschutz',ok:data.report?.processing_mode!=='dropbox_chatgpt_bridge' || Number(data.report.ai_calls||0)===0,reason:'Ein Bridge-Lauf meldet entgegen der Sperre einen KI-API-Aufruf.',immediate:true}
     );
   }
+  if (data.sdg?.status === 'active') {
+    for (const check of checks) {
+      if (legacyTickerChecks.has(check.id)) Object.assign(check, { ok: true, retired: true });
+    }
+    checks.push({ id: 'lage', name: 'Kanonischer Lagenbestand', ok: true, retired: true });
+    const { due } = data.sdg;
+    const latestDue = due.at(-1)?.id ?? null;
+    const missing = due.find(row => !row.sha256 && age(row.scheduledAt, now) >= SDG_CATALOG_GRACE);
+    const observed = data.sdgDelivery?.status === 'observed';
+    const undelivered = observed && due.find(row =>
+      age(row.scheduledAt, now) >= SDG_DELIVERY_GRACE && !data.sdgDelivery.bound.has(row.id));
+    const latestLive = observed ? data.sdgDelivery.latest : null;
+    summary.sdg = { latestDue, latestLive };
+    checks.push(
+      { ...sdgMonitorChecks[0], ok: true, reason: 'Der aktive Katalog und die Eröffnungsausgabe sind gebunden.' },
+      { ...sdgMonitorChecks[1], ok: !missing, reason: missing ? `Fällige SDG-Ausgabe fehlt im Katalog: ${missing.id}.`
+        : latestDue ? `Letzte fällige SDG-Ausgabe: ${latestDue}.` : 'Seit dem Start der SDG-Ausgaben ist noch kein Termin fällig.' },
+      { ...sdgMonitorChecks[2], ok: observed && !undelivered, reason: !observed
+        ? 'Öffentliches SDG-Manifest oder Ausgabe derzeit nicht mit passenden Bytes prüfbar.'
+        : undelivered ? `Fällige SDG-Ausgabe öffentlich nicht gebunden: ${undelivered.id}.`
+          : latestLive ? `Jüngste öffentlich bytegeprüfte SDG-Ausgabe: ${latestLive}.` : 'Für die erste fällige SDG-Ausgabe läuft die Auslieferungsfrist.' },
+    );
+  } else {
+    if (Object.hasOwn(data, 'lagen')) checks.push(lageCheck({ lagen: data.lagen, now }));
+    if (data.sdg?.status === 'invalid') {
+      checks.push({ ...sdgMonitorChecks[0], ok: false, reason: 'Die SDG-Aktivierung oder ihr Katalog ist ungültig.' });
+    } else if (data.sdg?.status === 'legacy') {
+      checks.push(...sdgMonitorChecks.map(check => ({ ...check, ok: true, retired: true })));
+    }
+  }
   return { checks, summary };
 }
 
@@ -409,7 +533,9 @@ export function dailyReport(summary, checks) {
       `Letzte Importbestätigung: ${summary.bridge?.metrics?.last_publication_at||'nicht nachgewiesen'} (kein Live-Nachweis). Abgeschlossene Arbeitsaufträge in der letzten Stunde: ${summary.bridge?.processor_health?.completed_jobs_last_hour??'nicht verfügbar'} (einschließlich Prüfungen und Ablehnungen; keine Artikelzahl).`,
       `Aktuelle Nachrichtenaufträge: ${summary.bridge?.processor_health?.current_news_open??'noch nicht getrennt erfasst'}; davon ohne vollständige Ausgabe ${summary.bridge?.processor_health?.current_news_stages?.awaiting_output??'unbekannt'}, in Zweitprüfung ${summary.bridge?.processor_health?.current_news_stages?.awaiting_second_pass??'unbekannt'}, mit Korrekturbedarf ${summary.bridge?.processor_health?.current_news_stages?.needs_editorial_repair??'unbekannt'}, zur Übernahme ${summary.bridge?.processor_health?.current_news_stages?.awaiting_import??'unbekannt'}.`] : []),
     ...checks.filter(c => TARGETS.some(t => t.id === c.id)).map(c => `${c.ok ? '✓' : '⚠'} ${c.name}: ${c.ok ? 'erreichbar' : c.reason}`),
-    `Ticker: ${summary.live ?? 'nicht verfügbar'} live · ${summary.active} aktuelle Lagen und Einzelakten aus ${summary.underlyingActive} aktiven Wirkungsakten${summary.caseCount ? ` · ${summary.caseCount} ${summary.caseCount === 1 ? 'Lageakte' : 'Lageakten'}` : ''}.`,
+    summary.sdg ? `SDG-Ausgaben · zuletzt fällig: ${summary.sdg.latestDue ?? 'kein Termin'} · zuletzt öffentlich bytegeprüft: ${summary.sdg.latestLive ?? 'noch nicht nachgewiesen'}.`
+      : `Ticker: ${summary.live ?? 'nicht verfügbar'} live · ${summary.active} aktuelle Lagen und Einzelakten aus ${summary.underlyingActive} aktiven Wirkungsakten${summary.caseCount ? ` · ${summary.caseCount} ${summary.caseCount === 1 ? 'Lageakte' : 'Lageakten'}` : ''}.`,
+    ...(summary.sdg ? ['Die folgenden Nachrichtenkennzahlen beziehen sich auf den bisherigen Ticker und die Redaktion.'] : []),
     `Im Redaktionsbestand als veröffentlicht vermerkt: gestern (${summary.yesterday}) ${summary.newYesterday}; heute bisher ${summary.newToday} (inkl. später archivierter/zusammengeführter Akten; Live-Nachweis separat).`,
     `Letzter Lauf: ${summary.runCompleted || 'nicht verfügbar'}; ${summary.pendingCount} offene Prüfungen, ${summary.activeSources} aktive Quellen.`,
     `Queue: ${summary.queue.total || 0} offen (${summary.queue.capacity || 0} Kapazität · ${summary.queue.technical || 0} technisch · ${summary.queue.editorial || 0} redaktionell); Status ${summary.queue.status || 'unbekannt'}.`,
@@ -598,13 +724,19 @@ export async function main() {
     if (!response.ok) throw new Error(`MONITOR_STATE_HTTP_${response.status}`);
     return response.status === 204 ? null : response.json();
   };
-  const probes = await Promise.all(TARGETS.map(t => probe(t)));
+  const sdg = readSdgMonitorSchedule(ROOT, now);
+  const [probes, sdgDelivery] = await Promise.all([
+    Promise.all(TARGETS.map(target => probe(sdg.status === 'active' && target.id === 'news'
+      ? { ...target, marker: /<h1>Global SDG Impact Tracker<\/h1>/ }
+      : target))),
+    sdg.status === 'active' ? observeSdgDelivery(sdg, { sourceCommit: process.env.WOEK_MONITOR_SOURCE_COMMIT }) : null,
+  ]);
   let liveFeed = null;
   try {
     const response = await fetch('https://wirkungsoekonomie.de/wirkungsticker/feed.json', { signal: AbortSignal.timeout(12_000), cache: 'no-store' });
     if (response.ok) { const body = await response.json(); if (Array.isArray(body.items)) liveFeed = body; }
   } catch { /* Evaluated explicitly as unavailable, never a zero count. */ }
-  const data = { probes, liveFeed, report: read('reports/wirkungsticker-latest-run.json'), usage: read('data/news/usage.json'), stories: read('data/news/stories.json').stories };
+  const data = { probes, sdg, sdgDelivery, liveFeed, report: read('reports/wirkungsticker-latest-run.json'), usage: read('data/news/usage.json'), stories: read('data/news/stories.json').stories };
   // Der Lage-Schritt im Ticker-Lauf bricht den Lauf absichtlich nicht ab, damit
   // eine bereits bezahlte Analyse nie verloren geht. Stumm darf sein Ausfall
   // deshalb nicht bleiben: hier werden alle heute faelligen kanonischen IDs
@@ -647,7 +779,6 @@ export async function main() {
   // Vortag das Tagesbudget verbraucht hatten - unsichtbar.
   const gescheitert = (state?.recovery_attempts || []).filter(attempt => attempt.error && age(attempt.at, now) <= 1440);
   const abgewiesen = gescheitert.filter(attempt => attempt.status === 'dispatch_rejected');
-  checks.push(lageCheck({ lagen: data.lagen, now }));
   checks.push({ id: 'self-healing', name: 'Selbstheilung', immediate: true,
     ok: abgewiesen.length === 0 && gescheitert.length < 2,
     reason: abgewiesen.length
@@ -710,7 +841,8 @@ export async function main() {
   // ihn an ihr Konto heraus (16.09.: „Ich dachte, du hast ein permanentes
   // Monitoring aufgesetzt bei jedem Schritt" - es lief, nur unsichtbar).
   // Nicht in die oeffentliche App: das sind Betriebsdaten.
-  const status = operationalStatus({ checks, incidents: state.incidents, summary,
+  const reportedChecks = checks.filter(check => !check.retired || (!summary.sdg && !check.id.startsWith('sdg-')));
+  const status = operationalStatus({ checks: reportedChecks, incidents: state.incidents, summary,
     recovery: (state.recovery_attempts || []).filter(attempt => attempt.at === now),
     delivery: observed.summary, report: data.report, at: now });
   if (!dryRun) {

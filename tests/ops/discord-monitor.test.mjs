@@ -2,8 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { tmpdir } from 'node:os';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { advanceState, monitorRepository, berlinParts, evaluateChecks, summarizeNews, dailyReport, probe, sendDiscord, openPrivateDiscordDelivery, publicationFlow, lageCheck, selbsttestCheck, readEditorialMonitorStatus, writeEditorialMonitorStatus } from '../../scripts/ops/discord-monitor.mjs';
+import { advanceState, monitorRepository, berlinParts, evaluateChecks, summarizeNews, dailyReport, probe, sendDiscord, openPrivateDiscordDelivery, publicationFlow, lageCheck, selbsttestCheck, readEditorialMonitorStatus, writeEditorialMonitorStatus, observeSdgDelivery, readSdgMonitorSchedule } from '../../scripts/ops/discord-monitor.mjs';
 
 const now = '2026-09-04T06:00:00Z';
 const fixture = () => ({ report: { status: 'ok', operational_status: 'ok', completed_at: now, source_failures: 0, monthly_budget_usd: 18.9, budget_policy: { status: 'ok', fx: { rate_date: '2026-09-03', rate_usd_per_eur: 1.16 } }, source_health: [], queue: { status: 'clear', total: 0, capacity: 0, technical: 0, editorial: 0 }, source_funnel: [] }, usage: { runs: [] }, stories: [], liveFeed: { items: [] }, probes: [] });
@@ -93,6 +95,9 @@ test('monitor sparse checkout includes the complete local module dependency grap
   const gelesen = [...monitor.matchAll(/\bread\(\s*['"]([^'"]+)['"]\s*\)/g)].map((match) => match[1]);
   assert.ok(gelesen.includes('data/news/lagen.json'), 'das Muster erkennt die Laufzeitlesungen');
   for (const file of gelesen) assert.ok(checkout.includes(file), `Monitor checkout is missing ${file} (read at runtime)`);
+  for (const file of ['data/news/sdg/ticker-mode.json', 'data/news/sdg/release-catalog.json', 'data/news/sdg/editions/']) {
+    assert.ok(checkout.includes(file), `Monitor checkout is missing ${file} (required by the SDG catalog)`);
+  }
 });
 
 test('ein gescheiterter Selbsttest wird gemeldet, statt den Monitor stumm zu schalten', () => {
@@ -152,6 +157,106 @@ test('transient outage stays quiet; confirmed outage and recovery each notify on
 });
 test('no new articles is not a pipeline failure', () => {
   assert.ok(evaluateChecks(fixture(), now).checks.every(c => c.ok));
+});
+
+const sdgDigest = value => createHash('sha256').update(value).digest('hex');
+const openingId = '2026-10-24-abendlage';
+const openingAt = '2026-10-24T16:00:00.000Z';
+const nextId = '2026-10-25-morgenlage';
+const nextAt = '2026-10-25T05:00:00.000Z';
+const openingHash = 'a'.repeat(64);
+const morningHash = 'b'.repeat(64);
+
+test('SDG monitor only switches on a catalog with a validated opening edition, including Berlin DST', t => {
+  const root = fs.mkdtempSync(path.join(tmpdir(), 'sdg-monitor-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const dir = path.join(root, 'data/news/sdg');
+  fs.mkdirSync(path.join(dir, 'editions'), { recursive: true });
+  const save = (file, value) => fs.writeFileSync(path.join(dir, file), JSON.stringify(value));
+  const manifest = { schema_version: 2, kind: 'sdg_edition_candidate', edition_id: openingId,
+    scheduled_at: openingAt, cutoff_at: openingAt, sealed_at: openingAt,
+    published_at: null, ledger_sha256: 'a'.repeat(64), items: [] };
+  const digest = sdgDigest(JSON.stringify(manifest));
+  save('release-catalog.json', { schema_version: 1, releases: [{ edition_id: openingId, sha256: digest }] });
+  save(`editions/sdg-edition-${digest}.json`, { manifest, sha256: digest });
+  assert.equal(readSdgMonitorSchedule(root, nextAt).status, 'legacy', 'an archive alone does not activate the tracker');
+  const mode = { schema_version: 1, mode: 'sdg', anchor: { edition_id: openingId, sha256: 'b'.repeat(64) } };
+  save('ticker-mode.json', mode);
+  assert.equal(readSdgMonitorSchedule(root, nextAt).status, 'invalid');
+  mode.anchor.sha256 = digest;
+  save('ticker-mode.json', mode);
+  assert.deepEqual(readSdgMonitorSchedule(root, '2026-10-24T22:00:00.000Z').due.map(row => row.id), [openingId]);
+  const schedule = readSdgMonitorSchedule(root, nextAt);
+  assert.equal(schedule.status, 'active');
+  assert.deepEqual(schedule.due, [
+    { id: openingId, scheduledAt: openingAt, sha256: digest },
+    { id: nextId, scheduledAt: nextAt, sha256: undefined },
+  ]);
+});
+
+test('active SDG checks silently retire legacy outages while keeping editorial and site incidents', () => {
+  const at = '2026-10-25T05:20:00.000Z';
+  const data = { ...fixture(), processing_mode: 'api', lagen: [],
+    probes: [{ id: 'main', name: 'Hauptseite', ok: false, error: 'HTTP 503' }],
+    editorialStatus: { available: false, error: 'EDITORIAL_STATUS_UNAVAILABLE' } };
+  const invalid = evaluateChecks({ ...data, sdg: { status: 'invalid' } }, at).checks;
+  assert.equal(invalid.find(check => check.id === 'sdg-catalog').ok, false);
+  assert.equal(invalid.find(check => check.id === 'run').ok, false);
+  const { checks, summary } = evaluateChecks({
+    ...data,
+    sdg: { status: 'active', due: [{ id: openingId, scheduledAt: openingAt, sha256: openingHash }] },
+    sdgDelivery: { status: 'observed', bound: new Set([openingId]), latest: openingId },
+  }, at);
+  for (const id of ['run', 'lage', 'sources', 'budget']) assert.equal(checks.find(check => check.id === id).retired, true);
+  for (const id of ['main', 'editorial-status']) assert.equal(checks.find(check => check.id === id).ok, false);
+  assert.equal(checks.find(check => check.id === 'publication').retired, undefined);
+  assert.match(dailyReport(summary, checks), new RegExp(`zuletzt öffentlich bytegeprüft: ${openingId}`));
+  const obsoleteId = sdgDigest(`run:${at}:failed`).slice(0, 24);
+  const state = advanceState({
+    schema: 1, dailyDate: '2026-10-25',
+    incidents: { run: { active: true, firstSeen: at }, main: { active: true, firstSeen: at } },
+    outbox: [{ id: obsoleteId, content: 'obsolete' }, { id: 'site-alert', content: 'site outage' }],
+  }, checks, summary, at);
+  assert.deepEqual(state.outbox.map(event => event.id), ['site-alert']);
+  assert.equal(state.incidents.run, undefined);
+  assert.equal(state.incidents.main.active, true);
+});
+
+test('SDG monitor separates canonical and public delivery grace and accepts an empty issue', async () => {
+  const html = `<main id="main-content" data-sdg-edition-sha256="${openingHash}">Für diese Ausgabe liegen keine geprüften Einträge vor.</main>`;
+  const commit = 'a'.repeat(40);
+  const catalogHash = 'c'.repeat(64);
+  const schedule = { status: 'active', catalogHash, due: [
+    { id: openingId, scheduledAt: openingAt, sha256: openingHash },
+    { id: nextId, scheduledAt: nextAt },
+  ] };
+  const release = { schema_version: 1, kind: 'sdg_pages_release', repository: 'sustynats/wirkungsoekonomie-produktiv',
+    source_commit: commit, catalog_sha256: catalogHash,
+    editions: [{ edition_id: openingId, edition_sha256: openingHash, html_sha256: sdgDigest(html) }] };
+  const urls = [];
+  const observed = await observeSdgDelivery(schedule, { sourceCommit: commit, fetchImpl: async (url, options) => {
+    assert.equal(options.redirect, 'error');
+    urls.push(url);
+    return new Response(url.endsWith('release.json') ? JSON.stringify(release) : html);
+  } });
+  assert.deepEqual(urls, ['https://wirkungsoekonomie.de/wirkungsticker/sdg/release.json',
+    `https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/${openingId}/`]);
+  assert.equal(observed.latest, openingId);
+  const checkAt = (at, id) => evaluateChecks({ ...fixture(), sdg: schedule, sdgDelivery: observed }, at)
+    .checks.find(check => check.id === id);
+  assert.equal(checkAt('2026-10-25T05:44:59.000Z', 'sdg-schedule').ok, true);
+  assert.equal(checkAt('2026-10-25T05:45:00.000Z', 'sdg-schedule').ok, false);
+  assert.equal(checkAt('2026-10-25T06:04:59.000Z', 'sdg-delivery').ok, true);
+  assert.equal(checkAt('2026-10-25T06:05:00.000Z', 'sdg-delivery').ok, false);
+  schedule.due[1].sha256 = morningHash;
+  assert.equal(checkAt('2026-10-25T06:05:00.000Z', 'sdg-schedule').ok, true);
+  assert.equal(checkAt('2026-10-25T06:05:00.000Z', 'sdg-delivery').ok, false, 'a committed edition is not proof of public delivery');
+  release.editions.push({ edition_id: nextId, edition_sha256: morningHash, html_sha256: sdgDigest('Unbound HTML') });
+  const invalid = await observeSdgDelivery(schedule, { sourceCommit: commit, fetchImpl: async url =>
+    new Response(url.endsWith('release.json') ? JSON.stringify(release) : 'Unbound HTML') });
+  assert.equal(invalid.status, 'mismatch', 'matching HTML bytes without the edition marker do not suffice');
+  const unavailable = await observeSdgDelivery(schedule, { sourceCommit: commit, fetchImpl: async () => new Response(null, { status: 503 }) });
+  assert.equal(unavailable.status, 'unavailable');
 });
 test('bridge pending ignores deliberately stopped API and old image failures, retires alarms without recovery spam',()=>{
   const d=fixture();d.processing_mode='dropbox_chatgpt_bridge';d.discovery_enabled=false;
