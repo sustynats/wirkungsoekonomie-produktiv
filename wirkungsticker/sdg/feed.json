@@ -1,0 +1,22 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Global SDG Impact Tracker – Ausgaben",
+  "description": "Die Ausgaben des Wirkungstickers zu Maßnahmen und belegten Veränderungen für die UN-Nachhaltigkeitsziele.",
+  "home_page_url": "https://wirkungsoekonomie.de/wirkungsticker/sdg/",
+  "feed_url": "https://wirkungsoekonomie.de/wirkungsticker/sdg/feed.json",
+  "language": "de-DE",
+  "items": [
+    {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-26-abendlage/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-26-abendlage/",
+      "title": "SDG-Abendupdate · 26.11.2026, 18:00",
+      "content_text": "Für diese Ausgabe liegen keine geprüften Einträge vor.",
+      "_woek_edition": {
+        "scheduled_at": "2026-11-26T17:00:00.000Z",
+        "cutoff_at": "2026-11-26T17:00:00.000Z",
+        "sealed_at": "2026-11-26T23:19:16.507Z",
+        "checked_items": 0
+      }
+    }
+  ]
+}
