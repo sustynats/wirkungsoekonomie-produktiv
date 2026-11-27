@@ -319970,7 +319970,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "cf199296a9515015",
+      "contentHash": "9056a546309c2921",
       "sectionId": "woek-page-929d49bb8b8fee3c"
     },
     "/wirkungsticker/#ticker-redaktion-title": {
@@ -319978,7 +319978,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/index.html",
-      "contentHash": "cf199296a9515015",
+      "contentHash": "9056a546309c2921",
       "sectionId": "ticker-redaktion-title"
     },
     "/wirkungsticker/10-jahre-mint-strategie-mehr-madchen-aber-noch-zu-wenige-vorbilder-e1da2a/": {
@@ -336834,7 +336834,7 @@
       "status": "online-reviewed",
       "version": "2026.1",
       "sourceFile": "wirkungsticker/sdg/index.html",
-      "contentHash": "70de8d1741aabe08",
+      "contentHash": "05bf36396d8c7134",
       "sectionId": "woek-page-50d364e060e03b9b"
     },
     "/wirkungsticker/sdg/ausgabe/2026-11-26-abendlage/": {
@@ -336844,6 +336844,14 @@
       "sourceFile": "wirkungsticker/sdg/ausgabe/2026-11-26-abendlage/index.html",
       "contentHash": "717a7e1e84e1606a",
       "sectionId": "woek-page-95ecd77c2ac5b98e"
+    },
+    "/wirkungsticker/sdg/ausgabe/2026-11-27-morgenlage/": {
+      "documentType": "Referenz",
+      "status": "online-reviewed",
+      "version": "2026.1",
+      "sourceFile": "wirkungsticker/sdg/ausgabe/2026-11-27-morgenlage/index.html",
+      "contentHash": "d6077c9c3e935805",
+      "sectionId": "woek-page-857789e6db03d1d9"
     },
     "/wirkungsticker/sechs-tote-schusse-in-stade-drei-monate-fassungslosigkeit-und-fragen-7d4680/": {
       "documentType": "Referenz",

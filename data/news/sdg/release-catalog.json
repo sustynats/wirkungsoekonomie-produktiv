@@ -4,6 +4,10 @@
     {
       "edition_id": "2026-11-26-abendlage",
       "sha256": "2e5b004e7a3da38c01eaaa9e01a2a386b319ffd04d6a76b03cf92fcd59c8ea7d"
+    },
+    {
+      "edition_id": "2026-11-27-morgenlage",
+      "sha256": "c236ff0cc824797c42deb3c058f2c6e4e71d7973e32b4793127a9f5218aeca5a"
     }
   ]
 }
