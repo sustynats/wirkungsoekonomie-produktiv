@@ -20,17 +20,18 @@
     "delivery-redaktionsworker.yml": {
       "firstSeen": "2026-11-22T21:21:00.804Z",
       "active": true
-    },
-    "editorial-status": {
-      "firstSeen": "2026-11-27T11:50:59.072Z",
-      "active": true
-    },
-    "delivery-wirkungsticker.yml": {
-      "firstSeen": "2026-11-27T12:02:48.850Z",
-      "active": true
     }
   },
-  "outbox": [],
+  "outbox": [
+    {
+      "id": "ac3154369589a0bccd945f11",
+      "content": "✓ WÖk-Störung behoben\nPrivate Redaktionsverarbeitung\nPrüfung: 2026-11-27T12:36:09.407Z"
+    },
+    {
+      "id": "9e68cdbd450ad28665d25e53",
+      "content": "✓ WÖk-Störung behoben\nNachrichtenimport\nPrüfung: 2026-11-27T12:36:09.407Z"
+    }
+  ],
   "dailyDate": "2026-11-27",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
@@ -4181,7 +4182,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-27T12:21:04.740Z",
+    "checked_at": "2026-11-27T12:36:09.407Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
