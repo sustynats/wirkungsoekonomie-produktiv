@@ -27,6 +27,12 @@ gleichzeitigen oeffentlichen Downloads. `npm run news:build` verwendet denselben
 Vorabruf. Verifizierte lokale Teile werden wiederverwendet. Bei direkten
 Skriptaufrufen kann `node scripts/news/release-hydrate.mjs` vorgeschaltet werden.
 
+Bricht der öffentliche Abruf eines gepinnten Altassets mit einem
+ausdrücklich erkannten Übertragungsfehler ab, versucht der Vorabruf einmal
+den nativen GitHub-Release-Download für genau dieses Repository, Tag und Asset.
+Die Prüfung der gepinnten komprimierten und rohen Bytes gilt für beide Wege.
+Fehler bei Zertifikaten und der Integritätsprüfung stoppen den Abruf.
+
 Texte, Quellen, bezahlte Journale, Reihenfolge, Versionen und Freigabebindungen
 werden nicht neu serialisiert oder fachlich veraendert. Private
 Redaktionsentwuerfe, private Manuskripte und rohe Providerantworten sind von

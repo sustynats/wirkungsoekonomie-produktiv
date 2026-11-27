@@ -35,3 +35,37 @@ test('three explicit 504s trigger exactly one pinned native public-release fallb
  };
  const bytes=await downloadHydrationPart(publicUrl,64,{run:fallbackRun});assert.equal(bytes.toString(),'fallback');assert.equal(count(),3);assert.equal(calls,1);
 }));
+
+test('an interrupted public transfer uses the exact pinned fallback once', async () => {
+ const calls = [];
+ const run = async (command, args) => {
+  calls.push(command);
+  if (command === 'curl') {
+   throw Object.assign(Error('interrupted transfer'), { code: 28, stderr: 'curl: (28) Operation timed out', stdout: Buffer.from('partial') });
+  }
+  assert.deepEqual(args, ['release', 'download', 'wirkungsticker-data-2026-11', '--repo',
+   'sustynats/wirkungsoekonomie.de', '--pattern', `${'a'.repeat(64)}.json.gz`, '--output', '-']);
+  return { stdout: Buffer.from('complete') };
+ };
+ assert.equal((await downloadHydrationPart(publicUrl, 64, { run })).toString(), 'complete');
+ assert.deepEqual(calls, ['curl', 'gh']);
+});
+
+test('unclassified failures and unpinned paths do not use the transfer fallback', async () => {
+ const timeout = { code: 28, stderr: 'curl: (28) Operation timed out' };
+ const examples = [
+  [publicUrl, { ...timeout, killed: true, signal: 'SIGTERM' }],
+  [publicUrl, { code: 60, stderr: 'curl: (60) Certificate verification failed' }],
+  [publicUrl, { code: 28, stderr: 'unclassified transfer failure' }],
+  [`${publicUrl}?not-pinned=1`, timeout],
+ ];
+ for (const [url, fields] of examples) {
+  let calls = 0;
+  await assert.rejects(downloadHydrationPart(url, 64, { run: async command => {
+   calls++;
+   assert.equal(command, 'curl');
+   throw Object.assign(Error('transfer failed'), fields);
+  } }), /transfer failed/);
+  assert.equal(calls, 1);
+ }
+});
