@@ -20,14 +20,19 @@
     "delivery-redaktionsworker.yml": {
       "firstSeen": "2026-11-22T21:21:00.804Z",
       "active": true
-    },
-    "delivery-wirkungsticker.yml": {
-      "firstSeen": "2026-11-28T06:43:35.778Z",
-      "active": true
     }
   },
-  "outbox": [],
-  "dailyDate": "2026-11-27",
+  "outbox": [
+    {
+      "id": "cf130725cf1d75faf7e33d8a",
+      "content": "✓ WÖk-Störung behoben\nNachrichtenimport\nPrüfung: 2026-11-28T07:06:03.677Z"
+    },
+    {
+      "id": "17fd0e6bc73ee5e27342b5de",
+      "content": "WÖk Tagesbericht · 2026-11-28 · Europe/Berlin\n✓ Hauptseite: erreichbar\n✓ Wirkungsticker: erreichbar\n✓ Ticker-RSS: erreichbar\n✓ Akademie: erreichbar\n✓ Parlament: erreichbar\n✓ Institut: erreichbar\n✓ Oracle-API: erreichbar\n✓ Push-Konfiguration: erreichbar\nSDG-Ausgaben · zuletzt fällig: 2026-11-28-morgenlage · zuletzt öffentlich bytegeprüft: 2026-11-28-morgenlage.\nDie folgenden Nachrichtenkennzahlen beziehen sich auf den bisherigen Ticker und die Redaktion.\nIm Redaktionsbestand als veröffentlicht vermerkt: gestern (2026-11-27) 0; heute bisher 0 (inkl. später archivierter/zusammengeführter Akten; Live-Nachweis separat).\nLetzter Lauf: 2026-11-22T22:25:58.023Z; 1029 offene Prüfungen, 42 aktive Quellen.\nQueue: 1030 offen (62 Kapazität · 663 technisch · 305 redaktionell); Status technical_delay.\nQuellen-Funnel heute: 0 Feed-Einträge → 0 neu/aktualisiert → 0 Story-Kandidaten → noch nicht historisch erfasst geeignet → 0 KI → 0 Veröffentlichungen/Aktualisierungen. Lokal verworfen: 0; redaktionelle Quellenbeiträge: 0.\nProduktive Quellen im letzten Lauf: Deutschlandfunk, tagesschau-access.\nEreignischeck (begrenzter Quellenbestand): 17 größere Ereignisse · 8 mit Veröffentlichung · 9 nachzuprüfen (einschließlich berechtigter Qualitätsvorbehalte).\nKI-Gesamtschätzung inkl. offener Reserven: gestern $0.00 · heute $0.00 · Monat $8.94.\nDirekte Nachrichtenverarbeitung seit 2026-09-06T05:24:43.333Z: 212 Erstveröffentlichungen · 31 Aktualisierungen · 427 KI-Anfragen, inklusive Ablehnungen und Wiederholungen.\nKI-Kosten je Erstveröffentlichung noch nicht bestimmbar: keine Erstveröffentlichung oder unvollständige Kostendaten.\nWÖk-Analysen separat: 0 neu · 0 aktualisiert · $0.00 geschätzter KI-Aufwand. Keine Anbieterabrechnung; Einrichtungsverbrauch bleibt im Monatsbudget enthalten.\nBatch-Hintergrundjobs separat im Messfenster: 0 abgeglichen · 0 angewendet · $0.000 nach Anbieter-Nutzungsdaten; $0.000 für 0 Aufträge reserviert. Enthält auch bezahlte Qualitätsablehnungen; keine neuen Nachrichten durch reine Nachprüfungen.\nHeute noch keine veröffentlichte oder aktualisierte Akte für eine Kostenquote.\nEuro-Umrechnung: kein ausreichend aktueller Kurs verfügbar.\nKosten ohne Higgsfield-Abo/Bildcredits und Hosting; 0 KI-Läufe ohne verwertbaren Kostenwert. Keine Abrechnung.\nBesucher/Besuche, Installationen, aktive Push-Nutzer und RSS-Nutzung: noch nicht in diesen Bericht integriert; nicht als null gezählt.\n⚠ Titelbilder: 51 veröffentlichte Meldung(en) ohne nutzbares Titelbild; 2 mit Kartenfallback, weil der Bilddienst nicht lieferte.\n⚠ Liegengebliebene Redaktionsauftraege: 3 Auftrag/Auftraege haben ihren bezahlten Versuch verbraucht, ohne einen Entwurf abzuliefern (aeltester seit 2026-10-09T21:03:10.095Z; Grund: AI_MALFORMED_JSON, nicht als Kennung lesbar). Sie kehren erst mit einer Vertragskorrektur zurueck und stehen bis dahin in keiner Freigabeliste.\n⚠ Redaktionslauf: Der letzte Lauf ist fehlgeschlagen. Fertige Ergebnisse sind damit nicht als ausgeliefert bestätigt.\nhttps://wirkungsoekonomie.de/wirkungsticker/"
+    }
+  ],
+  "dailyDate": "2026-11-28",
   "public_delivery": {
     "started_at": "2026-09-14T05:06:00.782Z",
     "entries": {
@@ -4177,7 +4182,7 @@
       }
     },
     "last_new_at": "2026-11-22T23:20:51.984Z",
-    "checked_at": "2026-11-28T06:50:59.292Z",
+    "checked_at": "2026-11-28T07:06:03.677Z",
     "last_current_new_at": "2026-11-22T22:20:51.616Z"
   },
   "recovery_attempts": [
