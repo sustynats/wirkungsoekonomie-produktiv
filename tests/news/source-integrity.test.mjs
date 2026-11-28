@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { auditSourceIntegrity, newlyHeldStories, reconcileKnownSourceAliases, reconcileSourceIdentity, sourceIntegrityForStory, sourceSupportFingerprint } from "../../scripts/news/source-integrity.mjs";
 import { publicationIntegrityIssues } from "../../scripts/news/run.mjs";
+import { loadNewsRegistry } from "../../scripts/news/registry.mjs";
+import { fileURLToPath } from "node:url";
 
 const registry = { sources: [
   { source_id: "swr", publisher_id: "swr", name: "SWR", url: "https://www.swr.de/", feed_url: "https://www.swr.de/feed.xml", primary_source: false, source_type: "media_rss", publisher_kind: "public_broadcasting", research_lane: "media", geography: ["DE"] },
@@ -110,4 +112,40 @@ test("das Bestandsaudit unterscheidet neue von bereits bekannten Findings", () =
   assert.deepEqual(newlyHeldStories(report, { findings: [{ story_id: bad.story_id }] }), [], "ein bekanntes Finding blockiert den Zyklus nicht");
   assert.deepEqual(newlyHeldStories(report, { findings: [{ story_id: "andere-story" }] }), [bad.story_id]);
   assert.deepEqual(newlyHeldStories({ findings: [] }, { findings: [{ story_id: bad.story_id }] }), [], "eine behobene Story erzeugt kein Finding");
+});
+
+test("SDG intake keeps an official project source's unknown publication date distinct from retrieval", () => {
+  const fullRegistry = loadNewsRegistry(fileURLToPath(new URL('../../', import.meta.url)));
+  const project = source('Official renewable procurement project', 'https://projects.worldbank.org/en/projects-operations/project-detail/P511160', {
+    source_id: 'world-bank-projects',
+    publisher_id: 'world-bank',
+    primary_source: true,
+    date_status: 'undated_reference',
+    source_role: 'official_project_record',
+    published_at: null,
+    retrieved_at: '2026-11-28T06:00:00Z',
+    sdg_evidence: { registry_id: 'world-bank-projects', reference: 'P511160', snapshot_sha256: 'a'.repeat(64) },
+  });
+  const now = '2026-11-28T07:00:00Z';
+  const candidate = story(project.title, [project]);
+  const sdg = { sdgMeasure: true };
+  const accepted = sourceIntegrityForStory(candidate, fullRegistry, [], now, sdg);
+  assert.equal(accepted.status, 'verified');
+  assert.equal(accepted.checks[0].checks[0].publication_date, null);
+  assert.equal(accepted.warnings[0].code, 'SOURCE_REFERENCE_UNDATED');
+  assert.equal(sourceIntegrityForStory(candidate, fullRegistry, [], now).status, 'open');
+  const detail = 'https://search.worldbank.org/api/v3/projects?format=json&id=P511160';
+  assert.equal(sourceIntegrityForStory(story(project.title, [{ ...project, url: detail }]), fullRegistry, [], now, sdg).status, 'verified');
+  for (const change of [
+    { sdg_evidence: undefined },
+    { url: project.url + '?unbound' },
+    { sdg_evidence: { ...project.sdg_evidence, reference: 'P000001' } },
+    { sdg_evidence: { ...project.sdg_evidence, snapshot_sha256: 'unknown' } },
+    { url: detail + '&id=P999999' },
+    { url: detail.replace('P511160', 'P999999') },
+    { retrieved_at: '2026-11-29T06:00:00Z' },
+  ]) {
+    const result = sourceIntegrityForStory(story(project.title, [{ ...project, ...change }]), fullRegistry, [], now, sdg);
+    assert.ok(result.issues.some(issue => issue.code === 'SOURCE_PUBLICATION_DATE_INVALID'));
+  }
 });

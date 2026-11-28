@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { safeUrl } from '../bridge/contract.mjs';
 import { impactTimeLabel, MAGNITUDE } from '../impact-assessment.mjs';
@@ -22,6 +23,8 @@ const domains = {
 };
 const dateLabel = value => value && Number.isFinite(Date.parse(value)) ? formatCalendarDate.format(new Date(value)) : null;
 const calendarDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+const sourceRegistry = JSON.parse(fs.readFileSync(new URL('../../../content/news/sdg-source-registry.json', import.meta.url)));
+const worldBank = sourceRegistry.sources.find(source => source.source_id === 'world-bank-projects');
 
 function lateEventDate(eventAt, previousSlotAt) {
   const timestamp = Date.parse(eventAt ?? '');
@@ -85,14 +88,26 @@ function writeEditionFeeds(root, editions, write) {
   }, null, 2));
 }
 
+function renderSource(source, esc) {
+  const url = safeUrl(source.url);
+  const originalDate = dateLabel(source.source_published_at);
+  const project = worldBank.sdg_intake;
+  const webId = url.startsWith(project.undated_project_record_prefix) && url.slice(project.undated_project_record_prefix.length);
+  const apiId = url.startsWith(worldBank.api_url + '?') && new URL(url).searchParams.get('id');
+  const credit = /^P\d{6}$/.test(webId || apiId || '') ? [
+    `<a href="${esc(safeUrl(project.catalog_url))}">${esc(project.attribution)}</a>`,
+    `<a href="${esc(safeUrl(project.license_url))}">${esc(project.license)}</a>`,
+    `<a href="${esc(safeUrl(worldBank.terms_url))}">Nutzungsbedingungen</a>`,
+    'Metadaten auf Deutsch redaktionell zusammengefasst',
+  ].join(' · ') : '';
+  return `<li><a href="${esc(url)}">${esc(source.title || source.publisher || new URL(url).hostname)}</a>${originalDate ? ` · Original vom ${esc(originalDate)}` : ''}${credit ? `<br>${credit}` : ''}</li>`;
+}
+
 function renderItem(item, link, lateDate, esc) {
   const [domain, statuses] = domains[item.domain];
   const eventDate = dateLabel(item.event_at);
   const discoveryDate = dateLabel(item.discovered_at);
-  const sources = item.sources.map(source => {
-    const originalDate = dateLabel(source.source_published_at);
-    return `<li><a href="${esc(safeUrl(source.url))}">${esc(source.title || source.publisher || new URL(source.url).hostname)}</a>${originalDate ? ` · Original vom ${esc(originalDate)}` : ''}</li>`;
-  }).join('');
+  const sources = item.sources.map(source => renderSource(source, esc)).join('');
   const references = (item.reference_frameworks ?? []).map(reference => `<li>${esc(formatReferenceFramework(reference))}</li>`).join('');
   const impact = Object.entries(dimensions).map(([key, label]) => {
     const part = item.impact[key];

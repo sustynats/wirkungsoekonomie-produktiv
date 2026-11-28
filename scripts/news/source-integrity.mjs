@@ -128,7 +128,20 @@ function semanticSupport(source, story, registrySource) {
   return { reviewed_source_support: reviewed, supported: reviewed || titleScore >= 0.18 || contextScore >= 0.2 || direct.related || sharedReference || peer || translation.supported, title_score: Number(titleScore.toFixed(3)), context_score: Number(contextScore.toFixed(3)), shared_reference: sharedReference, peer_support: peer, translation_support: translation };
 }
 
-export function sourceIntegrityForStory(story, registry, existingStories = [], now = new Date().toISOString()) {
+function admittedSdgProjectRecord(source, registrySource) {
+  const intake = registrySource?.sdg_intake;
+  const proof = source.sdg_evidence;
+  if (intake?.active !== true || typeof intake.undated_project_record_prefix !== 'string'
+      || source.source_role !== 'official_project_record' || proof?.registry_id !== registrySource.source_id
+      || !/^P\d{6}$/.test(proof.reference) || !/^[0-9a-f]{64}$/.test(proof.snapshot_sha256)) return false;
+  if (source.url === intake.undated_project_record_prefix + proof.reference) return true;
+  if (typeof registrySource.api_url !== 'string' || !String(source.url).startsWith(registrySource.api_url + '?')) return false;
+  const url = new URL(source.url);
+  return !url.hash && url.searchParams.getAll('id').length === 1
+    && url.searchParams.get('id') === proof.reference && url.searchParams.get('format') === 'json';
+}
+
+export function sourceIntegrityForStory(story, registry, existingStories = [], now = new Date().toISOString(), { sdgMeasure = false } = {}) {
   const registryById = new Map((registry?.sources || []).map((source) => [source.source_id, source]));
   const issues = [];
   const warnings = [];
@@ -141,7 +154,8 @@ export function sourceIntegrityForStory(story, registry, existingStories = [], n
     const undatedReference = source.date_status === "undated_reference"
       && !source.published_at && !source.source_published_at
       && registrySource?.primary_source === true
-      && ["legal_context", "election_calendar"].includes(source.source_role)
+      && (["legal_context", "election_calendar"].includes(source.source_role)
+        || (sdgMeasure && admittedSdgProjectRecord(source, registrySource)))
       && Number.isFinite(Date.parse(source.retrieved_at || ""))
       && Date.parse(source.retrieved_at) <= nowMs + 10 * 60000;
     const check = { source_id: source.source_id, url: source.url, publisher: source.publisher, title: source.title, status: "verified", checks: [] };

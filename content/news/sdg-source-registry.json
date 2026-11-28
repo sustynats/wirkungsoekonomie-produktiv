@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "source_id": "world-bank-projects",
+      "publisher_id": "world-bank",
+      "name": "World Bank Projects & Operations",
+      "url": "https://projects.worldbank.org/en/projects-operations/projects-home",
+      "api_url": "https://search.worldbank.org/api/v3/projects",
+      "allowed_redirect_hosts": ["search.worldbank.org"],
+      "source_type": "official_project_api",
+      "source_function": "primary_evidence",
+      "primary_source": true,
+      "role": "D",
+      "enabled": false,
+      "topic": "Wirtschaft",
+      "language": "en",
+      "geography": [],
+      "official_endpoint_verified": true,
+      "technical_access": "verified",
+      "legal_use_status": "metadata_only",
+      "terms_url": "https://datacatalog.worldbank.org/public-licenses",
+      "access": { "status": "public", "cost_usd": 0, "article": "metadata_only" },
+      "sdg_intake": {
+        "active": true,
+        "undated_project_record_prefix": "https://projects.worldbank.org/en/projects-operations/project-detail/",
+        "first_approval_date": "2026-11-20",
+        "revision_window_days": 21,
+        "scope": "Recent Board approvals in the Active Projects & Operations dataset",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/",
+        "attribution": "The World Bank: World Bank Projects & Operations: World Bank Projects and Operations project database",
+        "catalog_url": "https://datacatalog.worldbank.org/search/dataset/0037800",
+        "robots_url": "https://search.worldbank.org/robots.txt"
+      }
+    },
+    {
+      "source_id": "world-bank-project-announcements",
+      "publisher_id": "world-bank",
+      "name": "World Bank",
+      "url": "https://www.worldbank.org/en/news",
+      "source_type": "official_project_statement",
+      "source_function": "primary_evidence",
+      "primary_source": true,
+      "role": "D",
+      "enabled": false,
+      "topic": "Wirtschaft",
+      "language": "en",
+      "geography": [],
+      "technical_access": "verified",
+      "legal_use_status": "metadata_only",
+      "access": { "status": "public", "cost_usd": 0, "article": "metadata_only" }
+    }
+  ]
+}
