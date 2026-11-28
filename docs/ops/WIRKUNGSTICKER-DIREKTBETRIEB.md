@@ -276,8 +276,10 @@ und spätere Änderungen bei bereits inaktiven Projekten sind nicht erfasst.
 
 Die Originalantworten liegen privat unter
 `sdg/intake/world-bank-projects/`. Der Sammler übernimmt ausschließlich
-ausgewählte Metadaten in `sdg/measures.sqlite`. Ein Genehmigungsdatum
-belegt eine Board-Entscheidung. Der Sammler ermittelt weder Mittelabflüsse
+ausgewählte Metadaten in `sdg/measures.sqlite`. Das Genehmigungsdatum ist
+eine Registerangabe. Die Prüfung gleicht es vor Veröffentlichung mit
+verfügbaren Originalentscheidungen und Projektberichten ab. Der Sammler
+ermittelt weder Mittelabflüsse
 noch Umsetzungsstände oder beobachtete Wirkungen. Für eine Ausgabe bleibt
 eine unabhängig geprüfte Fassung im vorhandenen Review-Journal nötig.
 Quellenangabe bei Wiederverwendung: World Bank Projects & Operations,

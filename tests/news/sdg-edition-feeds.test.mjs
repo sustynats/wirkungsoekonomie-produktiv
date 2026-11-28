@@ -62,6 +62,7 @@ test('registered SDG editions build stable case chronologies and retain original
       title: 'Korrigierter Beschluss', revision_id: correctedRevision, event_id: caseEvent,
       supersedes: intermediateRevision, event_at: '2026-11-21',
       reference_frameworks: ['UN SDG 3.8', 'Deutsche Nachhaltigkeitsstrategie'],
+      sources: [{ url: 'https://search.worldbank.org/api/v3/projects?format=json&id=P000123', title: 'Amtlicher Testeintrag' }],
     }, {
       title: 'Prüfbericht ohne Ereignisdatum', revision_id: 'e'.repeat(64), event_id: '5'.repeat(64),
       event_at: null, domain: 'observations', stage: 'reported',
@@ -101,6 +102,10 @@ test('registered SDG editions build stable case chronologies and retain original
   assert.ok(routes.includes(caseRoute) && routes.includes(otherRoute));
   assert.equal(regeneratablePublicationPath(caseRoute + 'index.html'), true);
   const chronology = files.get(caseRoute + 'index.html');
+  assert.match(chronology, /https:\/\/datacatalog\.worldbank\.org\/search\/dataset\/0037800/);
+  assert.match(chronology, /https:\/\/creativecommons\.org\/licenses\/by\/4\.0\//);
+  assert.match(chronology, /https:\/\/datacatalog\.worldbank\.org\/public-licenses/);
+  assert.match(chronology, /Metadaten auf Deutsch redaktionell zusammengefasst/);
   assert.match(chronology, /<h1>Korrigierter Beschluss<\/h1>/);
   const headings = [...chronology.matchAll(/<h2>([^<]+)<\/h2>/g)].map(([, heading]) => heading);
   assert.deepEqual(headings, ['Ursprünglicher Beschluss', 'Zwischenkorrektur', 'Korrigierter Beschluss', 'Umsetzung begonnen', 'Prüfbericht ohne Ereignisdatum']);
