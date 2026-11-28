@@ -5086,6 +5086,13 @@
       "head": "064db60f10298d38924fe88e91056d21b56b922d",
       "at": "2026-11-28T05:57:52.634Z",
       "status": "dispatched"
+    },
+    {
+      "key": "adffb337204cf63b84ea2c22b8bfd1f9cae865b403458e831d8b51808ec3ba34",
+      "workflow": "wirkungsticker.yml",
+      "head": "064db60f10298d38924fe88e91056d21b56b922d",
+      "at": "2026-11-28T06:43:35.778Z",
+      "status": "reserved"
     }
   ]
 }
