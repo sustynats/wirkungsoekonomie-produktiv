@@ -1,0 +1,14 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "kind": "sdg_edition_candidate",
+    "edition_id": "2026-11-28-morgenlage",
+    "ledger_sha256": "0cd0a6c290cdedfffcbe71676e9cb17c2f71932948a5a38a968f6ecc83ceca26",
+    "scheduled_at": "2026-11-28T05:00:00.000Z",
+    "cutoff_at": "2026-11-28T05:00:00.000Z",
+    "sealed_at": "2026-11-28T05:10:05.705Z",
+    "published_at": null,
+    "items": []
+  },
+  "sha256": "ba7cff8d2412b31664584604eed9daf52edcdd88097507e5b8bd8b551f14df31"
+}
