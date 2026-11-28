@@ -5092,7 +5092,7 @@
       "workflow": "wirkungsticker.yml",
       "head": "064db60f10298d38924fe88e91056d21b56b922d",
       "at": "2026-11-28T06:43:35.778Z",
-      "status": "reserved"
+      "status": "dispatched"
     }
   ]
 }
