@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "source_id": "world-bank-projects",
+      "publisher_id": "world-bank",
+      "name": "World Bank Projects & Operations",
+      "url": "https://projects.worldbank.org/en/projects-operations/projects-home",
+      "api_url": "https://search.worldbank.org/api/v3/projects",
+      "source_type": "official_project_api",
+      "source_function": "primary_evidence",
+      "primary_source": true,
+      "role": "D",
+      "enabled": false,
+      "topic": "Wirtschaft",
+      "language": "en",
+      "geography": [],
+      "official_endpoint_verified": true,
+      "technical_access": "verified",
+      "legal_use_status": "metadata_only",
+      "terms_url": "https://datacatalog.worldbank.org/public-licenses",
+      "access": { "status": "public", "cost_usd": 0, "article": "metadata_only" },
+      "sdg_intake": {
+        "active": true,
+        "first_approval_date": "2026-11-20",
+        "revision_window_days": 21,
+        "scope": "Recent Board approvals in the Active Projects & Operations dataset",
+        "license": "CC BY 4.0",
+        "catalog_url": "https://datacatalog.worldbank.org/search/dataset/0037800",
+        "robots_url": "https://search.worldbank.org/robots.txt"
+      }
+    }
+  ]
+}

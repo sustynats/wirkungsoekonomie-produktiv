@@ -77,7 +77,9 @@ export function loadNewsRegistry(root) {
   const base = JSON.parse(fs.readFileSync(path.join(root, "content/news/source-registry.json"), "utf8"));
   const extensionPath = path.join(root, "content/news/media-registry.json");
   const extension = fs.existsSync(extensionPath) ? JSON.parse(fs.readFileSync(extensionPath, "utf8")) : { sources: [] };
-  const sources = [...base.sources, ...extension.sources].map((source) => ({
+  const sdgPath = path.join(root, "content/news/sdg-source-registry.json");
+  const sdg = fs.existsSync(sdgPath) ? JSON.parse(fs.readFileSync(sdgPath, "utf8")) : { sources: [] };
+  const sources = [...base.sources, ...extension.sources, ...sdg.sources].map((source) => ({
     publisher_id: source.source_id.startsWith("bundesregierung-") ? "bundesregierung" : source.source_id.startsWith("bundestag-") ? "bundestag" : source.source_id,
     publisher_kind: "institution", research_lane: "primary", language: "de", geography: ["DE"],
     frequency_class: "high_frequency",

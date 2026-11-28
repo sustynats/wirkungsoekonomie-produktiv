@@ -261,6 +261,35 @@ Ein fehlerhafter Stand wird protokolliert. Bereits fachlich geprüfte
 Maßnahmen bleiben zur Ausgabe verfügbar. Quellenfreigabe, laufende Erfassung
 und fachliche Prüfung erfolgen in ihren jeweiligen Betriebsabläufen.
 
+### Laufender Import von Weltbank-Projektmetadaten
+
+`woek-sdg-source-intake.timer` erfasst täglich amtliche Metadaten zu neueren
+Board-Genehmigungen aus dem aktiven Projektbestand der Weltbank. Die
+additive Konfiguration in `content/news/sdg-source-registry.json` hält die
+Quelle aus der allgemeinen Nachrichtensammlung heraus. Der Abruf verwendet
+das Datumsfenster des dokumentierten Projektdienstes und prüft die
+Vollständigkeit aller Seiten. Bei einer Betriebspause beginnt die
+Nachholung spätestens am letzten vollständig erfassten Tag. Der
+überlappende 21-Tage-Zeitraum erfasst Nachmeldungen und Korrekturen im
+beobachteten Bestand. Historische Genehmigungen außerhalb dieses Fensters
+und spätere Änderungen bei bereits inaktiven Projekten sind nicht erfasst.
+
+Die Originalantworten liegen privat unter
+`sdg/intake/world-bank-projects/`. Der Sammler übernimmt ausschließlich
+ausgewählte Metadaten in `sdg/measures.sqlite`. Ein Genehmigungsdatum
+belegt eine Board-Entscheidung. Der Sammler ermittelt weder Mittelabflüsse
+noch Umsetzungsstände oder beobachtete Wirkungen. Für eine Ausgabe bleibt
+eine unabhängig geprüfte Fassung im vorhandenen Review-Journal nötig.
+Quellenangabe bei Wiederverwendung: World Bank Projects & Operations,
+Datensatz 0037800, CC BY 4.0 und ergänzende Katalogbedingungen. Verlinkte
+Unterlagen und Drittinhalte sind vom Sammler ausgeschlossen.
+
+Der Dienst läuft ohne Tokens und Anbieteraufrufe parallel zum
+Ausgabenbetrieb. Die Wiederveröffentlichung einer bereits ausgelieferten
+Ausgabe gehört nicht zu diesem Pfad. Für die Rücknahme genügt es, Timer und
+Dienst zu stoppen und den Timer zu deaktivieren. Die gesicherten
+Quellenstände und erfassten Maßnahmen bleiben erhalten.
+
 ### Referenzrahmen der Maßnahmen
 
 Wenn die unabhängige Prüfung Referenzrahmen enthält, übernimmt Paketversion

@@ -1,0 +1,19 @@
+[Unit]
+Description=Collect World Bank SDG source observations
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/woek-sdg-intake/current
+ExecStart=/usr/bin/node /opt/woek-sdg-intake/current/scripts/news/sdg/world-bank-intake.mjs /var/lib/woek-news-bridge/sdg
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/woek-news-bridge/sdg
+MemoryMax=160M
+TimeoutStartSec=180
