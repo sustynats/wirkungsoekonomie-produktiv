@@ -56,7 +56,7 @@ export function prepareReviewedMediaImpact(review, registry, stories, now) {
   return { errors: [], record, unchanged: false };
 }
 
-export function prepareReviewedStory(review, registry, stories, now, { independentImpactReview = null } = {}) {
+export function prepareReviewedStory(review, registry, stories, now, { independentImpactReview = null, sdgMeasure = false } = {}) {
   if (['media_impact', 'analysis_phase'].includes(review.review_type)) return prepareReviewedMediaImpact(review, registry, stories, now);
   const correction = review.review_type === 'story_correction';
   const draftReview = review.review_type === 'story_draft_review';
@@ -86,7 +86,7 @@ export function prepareReviewedStory(review, registry, stories, now, { independe
   candidate.preanalysis = preAnalyzeStory(candidate, now);
   candidate.topic = review.topics || candidate.preanalysis.topics;
   candidate.evidence_groups = evidenceGroups(sources);
-  candidate.source_integrity = sourceIntegrityForStory(candidate, registry, stories, now);
+  candidate.source_integrity = sourceIntegrityForStory(candidate, registry, stories, now, { sdgMeasure });
   const analysis = { ...structuredClone(review.analysis), story_id: id };
   sanitizeAnalysisMediaImpact(analysis, candidate, {}, now);
   // Editorial visuals cite the reviewed claims that will actually be published,

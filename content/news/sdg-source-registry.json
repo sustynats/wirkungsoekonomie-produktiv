@@ -22,6 +22,7 @@
       "access": { "status": "public", "cost_usd": 0, "article": "metadata_only" },
       "sdg_intake": {
         "active": true,
+        "undated_project_record_prefix": "https://projects.worldbank.org/en/projects-operations/project-detail/",
         "first_approval_date": "2026-11-20",
         "revision_window_days": 21,
         "scope": "Recent Board approvals in the Active Projects & Operations dataset",
