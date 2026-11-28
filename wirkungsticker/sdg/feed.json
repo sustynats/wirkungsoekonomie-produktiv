@@ -7,6 +7,18 @@
   "language": "de-DE",
   "items": [
     {
+      "id": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-28-abendlage/",
+      "url": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-28-abendlage/",
+      "title": "SDG-Abendupdate · 28.11.2026, 18:00",
+      "content_text": "Für diese Ausgabe liegen keine geprüften Einträge vor.",
+      "_woek_edition": {
+        "scheduled_at": "2026-11-28T17:00:00.000Z",
+        "cutoff_at": "2026-11-28T17:00:00.000Z",
+        "sealed_at": "2026-11-28T17:09:54.068Z",
+        "checked_items": 0
+      }
+    },
+    {
       "id": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-28-mittagslage/",
       "url": "https://wirkungsoekonomie.de/wirkungsticker/sdg/ausgabe/2026-11-28-mittagslage/",
       "title": "SDG-Mittagsupdate · 28.11.2026, 12:00",

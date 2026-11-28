@@ -24,6 +24,10 @@
     {
       "edition_id": "2026-11-28-mittagslage",
       "sha256": "6cc3322c1acf6dc1d4a70e2505abb7474ced745c8f16e1688e223d61def8adcc"
+    },
+    {
+      "edition_id": "2026-11-28-abendlage",
+      "sha256": "32b258f8dd56aa8c7cc004babe9d5b2804fd9b5d1216a71d3ad9569c23350ff1"
     }
   ]
 }
