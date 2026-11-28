@@ -122278,6 +122278,13 @@
       "typ": "dokument"
     },
     {
+      "url": "/wirkungsticker/quellen/world-bank/",
+      "title": "World Bank Projects & Operations: Quellenprofil",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
       "url": "/wirkungsticker/quellen/wto/",
       "title": "Welthandelsorganisation (WTO): Quellenprofil",
       "rubrik": "Sonstiges",
@@ -122915,8 +122922,22 @@
       "typ": "dokument"
     },
     {
+      "url": "/wirkungsticker/sdg/ausgabe/2026-11-28-mittagslage/",
+      "title": "SDG-Mittagsupdate · 28.11.2026, 12:00 | Global SDG Impact Tracker",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
       "url": "/wirkungsticker/sdg/ausgabe/2026-11-28-morgenlage/",
       "title": "SDG-Morgenupdate · 28.11.2026, 06:00 | Global SDG Impact Tracker",
+      "rubrik": "Sonstiges",
+      "sammlung": "wirkungsticker",
+      "typ": "dokument"
+    },
+    {
+      "url": "/wirkungsticker/sdg/massnahme/4ca963cb2790331af2de423534499b2c99e7ef393b0c66caa6355bc6e4f37951/",
+      "title": "El Salvador: Weltbank bewilligt 230 Millionen US-Dollar für bezahlbareres und widerstandsfähiges Wohnen – Maßnahmenakte | Global SDG Impact Tracker",
       "rubrik": "Sonstiges",
       "sammlung": "wirkungsticker",
       "typ": "dokument"
