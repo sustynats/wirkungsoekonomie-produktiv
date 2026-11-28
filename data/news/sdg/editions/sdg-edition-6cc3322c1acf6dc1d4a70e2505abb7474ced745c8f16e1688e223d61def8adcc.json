@@ -1,0 +1,67 @@
+{
+  "manifest": {
+    "schema_version": 2,
+    "kind": "sdg_edition_candidate",
+    "edition_id": "2026-11-28-mittagslage",
+    "ledger_sha256": "68d79e5168d64c3ddc96856db62e8dea5f56339911de1ed61887c7784f1ef987",
+    "scheduled_at": "2026-11-28T11:00:00.000Z",
+    "cutoff_at": "2026-11-28T11:00:00.000Z",
+    "sealed_at": "2026-11-28T11:25:12.664Z",
+    "published_at": null,
+    "items": [
+      {
+        "reference_frameworks": [
+          "UN SDG 11.1 - Zugang zu angemessenem, sicherem und bezahlbarem Wohnraum",
+          "UN SDG 11.3 - inklusive, integrierte und partizipative Siedlungsplanung",
+          "UN SDG 11.b - integrierte Risikovorsorge und Klimaresilienz von Siedlungen",
+          "UN SDG 16.6 und 16.7 - rechenschaftspflichtige Institutionen und Beteiligung",
+          "WÖk-SDG+ 3 - Rechtsstaatlichkeit",
+          "WÖk-SDG+ 9 - Öffentliche Transparenz und Rechenschaft"
+        ],
+        "case_id": "4ca963cb2790331af2de423534499b2c99e7ef393b0c66caa6355bc6e4f37951",
+        "revision_id": "13c50924a85915bef70258c0861a8bc0ef8e6a62bc718bee18172fce11ca73b4",
+        "event_id": "ba0fa14b7fcc9410f06df08ab6ff56297c90d3b83de7882d286e238ec7b70a39",
+        "supersedes": null,
+        "stage": "approved",
+        "domain": "finance",
+        "event_at": "2026-11-25",
+        "discovered_at": "2026-11-28T07:02:57.007Z",
+        "title": "El Salvador: Weltbank bewilligt 230 Millionen US-Dollar für bezahlbareres und widerstandsfähiges Wohnen",
+        "summary": "Die Weltbank hat am 25. November 2026 die erste Phase des Wohnungsprogramms HogarES in El Salvador genehmigt. Nach ihrer Mitteilung umfasst sie 230 Millionen US-Dollar. Rund 39.000 Haushalte sollen laut Planung profitieren, darunter Familien mit niedrigen und mittleren Einkommen, Beschäftigte im informellen Sektor, Erstkäufer und Haushalte unter der Leitung von Frauen.\n\nDie Finanzierung der ersten Phase ist laut Umwelt- und Sozialprüfung an überprüfbare Ergebnisse geknüpft. Wohnungsbau, Landkauf und Zwangsumsiedlung sind von der Finanzierung ausgeschlossen. Vorgesehen sind unter anderem Regeln für geeignete Standorte und die Verbesserung der Wohnfinanzierung. Eigene salvadoranische Wohnprogramme und getrennte Vorhaben anderer Entwicklungsbanken bestehen bereits. Auszahlungen, fertiggestellte Wohnungen und tatsächlich verbesserte Wohnverhältnisse sind gesondert zu prüfen.",
+        "sources": [
+          {
+            "url": "https://www.worldbank.org/en/news/press-release/2026/11/25/banco-mundial-impulsa-acceso-vivienda-asequible-resiliente-en-el-salvador",
+            "title": "El Salvador: Weltbank bewilligt Finanzierung für bezahlbaren und widerstandsfähigen Wohnraum",
+            "publisher": "World Bank",
+            "source_published_at": "2026-11-25T22:45:00.000Z",
+            "discovered_at": "2026-11-28T07:08:09.000Z"
+          }
+        ],
+        "impact": {
+          "human": {
+            "direction": "mixed",
+            "magnitude": 3,
+            "label": "± gegenläufig",
+            "temporal_status": "ex_ante",
+            "evidence_label": "gering"
+          },
+          "planet": {
+            "direction": "mixed",
+            "magnitude": 3,
+            "label": "± gegenläufig",
+            "temporal_status": "ex_ante",
+            "evidence_label": "gering"
+          },
+          "democracy": {
+            "direction": "mixed",
+            "magnitude": 2,
+            "label": "± gegenläufig",
+            "temporal_status": "ex_ante",
+            "evidence_label": "gering"
+          }
+        }
+      }
+    ]
+  },
+  "sha256": "6cc3322c1acf6dc1d4a70e2505abb7474ced745c8f16e1688e223d61def8adcc"
+}
