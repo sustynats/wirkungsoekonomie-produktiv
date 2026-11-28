@@ -27,6 +27,15 @@ test('staging CLI binds the exact private source proof and packages only public 
     const receiptFile = path.join(directory, 'receipt.json');
     const measureFile = path.join(directory, 'measures.sqlite');
     const editionFile = path.join(directory, 'editions.sqlite');
+    const forbidLegacy = path.join(directory, 'forbid-legacy.mjs');
+    writeFileSync(forbidLegacy, `
+      import fs from 'node:fs';
+      const read = fs.readFileSync;
+      fs.readFileSync = function(file, ...options) {
+        if (String(file).endsWith('/data/news/stories.json')) throw Error('LEGACY_NEWS_ARCHIVE_READ');
+        return read.call(fs, file, ...options);
+      };
+    `);
     const draft = readRepositoryJson(path.join(root, 'content/news/reviews/2026-09-09-generaldebatte-nachricht.json'));
     const packet = {
       ...draft,
@@ -95,7 +104,7 @@ test('staging CLI binds the exact private source proof and packages only public 
       },
     };
     const invoke = () => spawnSync(process.execPath, [
-      stager, `--review=${reviewFile}`, `--impact-review=${receiptFile}`,
+      '--import', forbidLegacy, stager, `--review=${reviewFile}`, `--impact-review=${receiptFile}`,
       `--bridge-db=${path.join(directory, 'bridge.sqlite')}`, `--measure-db=${measureFile}`, `--edition-db=${editionFile}`,
     ], { encoding: 'utf8' });
     const tampered = structuredClone(packet);

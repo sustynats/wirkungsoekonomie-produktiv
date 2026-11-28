@@ -33,6 +33,8 @@ export function prepareReviewedSdgStory(input, registry, stories, at) {
 export async function stageReviewedFiles({ review, impactReview, bridgeDatabase, measureDatabase, editionDatabase }) {
   const packet = readRepositoryJson(review);
   const receipt = readRepositoryJson(impactReview);
+  if (packet.review_type && packet.review_type !== 'story') throw Error('SDG_MEASURE_REVIEW_TYPE_INVALID');
+  const registry = loadNewsRegistry(root);
   const store = new BridgeStore(bridgeDatabase, { lane: 'import' });
   try {
     for (const file of [measureDatabase, editionDatabase]) {
@@ -46,11 +48,9 @@ export async function stageReviewedFiles({ review, impactReview, bridgeDatabase,
       try {
         return await stageIndependentMeasureReview({ packet, receipt, now: () => new Date().toISOString() }, {
           measures, editions, journal: new MeasureReviewJournal(store),
-          prepareRecord: (input, at) => {
-            const registry = loadNewsRegistry(root);
-            const { stories } = readRepositoryJson(path.join(root, 'data/news/stories.json'));
-            return prepareReviewedSdgStory(input, registry, stories, at);
-          },
+          // SDG revisions are matched and recovered by their private ledger
+          // and review journal. The historical news store is outside this lane.
+          prepareRecord: (input, at) => prepareReviewedSdgStory(input, registry, [], at),
         });
       } finally { editions.close(); }
     } finally { measures.close(); }
