@@ -7,6 +7,7 @@
       "name": "World Bank Projects & Operations",
       "url": "https://projects.worldbank.org/en/projects-operations/projects-home",
       "api_url": "https://search.worldbank.org/api/v3/projects",
+      "allowed_redirect_hosts": ["search.worldbank.org"],
       "source_type": "official_project_api",
       "source_function": "primary_evidence",
       "primary_source": true,
