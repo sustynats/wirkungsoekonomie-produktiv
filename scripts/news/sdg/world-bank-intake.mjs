@@ -201,7 +201,7 @@ export async function collectWorldBankApprovals({ privateRoot, source, now = new
   return report;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && fs.existsSync(process.argv[1]) && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [privateRoot] = process.argv.slice(2);
   if (!privateRoot || !path.isAbsolute(privateRoot)) throw Error('SDG_PROJECT_ROOT_REQUIRED');
   const registry = JSON.parse(fs.readFileSync(new URL('../../../content/news/sdg-source-registry.json', import.meta.url)));

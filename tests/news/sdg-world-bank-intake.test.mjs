@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -40,6 +41,16 @@ test('the reviewed source is additive and excluded from the general news collect
   assert.equal(entries[0].role, 'D');
   assert.equal(entries[0].enabled, false);
   assert.equal(entries[0].sdg_intake.active, true);
+});
+
+test('the service invokes the collector through the versioned release symlink', t => {
+  const { privateRoot } = fixture(t);
+  const release = fileURLToPath(new URL('../../scripts/news/sdg/', import.meta.url));
+  const current = path.join(privateRoot, 'current');
+  fs.symlinkSync(release, current, 'dir');
+  const invocation = spawnSync(process.execPath, [path.join(current, 'world-bank-intake.mjs')], { encoding: 'utf8' });
+  assert.equal(invocation.status, 1);
+  assert.match(invocation.stderr, /SDG_PROJECT_ROOT_REQUIRED/);
 });
 
 test('a verified approval is ingested once and a metadata change becomes a separate revision', async t => {
