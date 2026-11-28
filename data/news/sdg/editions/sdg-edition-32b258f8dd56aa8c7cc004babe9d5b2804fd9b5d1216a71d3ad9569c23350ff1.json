@@ -1,0 +1,14 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "kind": "sdg_edition_candidate",
+    "edition_id": "2026-11-28-abendlage",
+    "ledger_sha256": "7064d4298280514e1b9f8908214a7d02c2fd10b846b2c695c99cef9be4fbdfe2",
+    "scheduled_at": "2026-11-28T17:00:00.000Z",
+    "cutoff_at": "2026-11-28T17:00:00.000Z",
+    "sealed_at": "2026-11-28T17:09:54.068Z",
+    "published_at": null,
+    "items": []
+  },
+  "sha256": "32b258f8dd56aa8c7cc004babe9d5b2804fd9b5d1216a71d3ad9569c23350ff1"
+}
