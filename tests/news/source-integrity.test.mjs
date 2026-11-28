@@ -134,11 +134,15 @@ test("SDG intake keeps an official project source's unknown publication date dis
   assert.equal(accepted.checks[0].checks[0].publication_date, null);
   assert.equal(accepted.warnings[0].code, 'SOURCE_REFERENCE_UNDATED');
   assert.equal(sourceIntegrityForStory(candidate, fullRegistry, [], now).status, 'open');
+  const detail = 'https://search.worldbank.org/api/v3/projects?format=json&id=P511160';
+  assert.equal(sourceIntegrityForStory(story(project.title, [{ ...project, url: detail }]), fullRegistry, [], now, sdg).status, 'verified');
   for (const change of [
     { sdg_evidence: undefined },
     { url: project.url + '?unbound' },
     { sdg_evidence: { ...project.sdg_evidence, reference: 'P000001' } },
     { sdg_evidence: { ...project.sdg_evidence, snapshot_sha256: 'unknown' } },
+    { url: detail + '&id=P999999' },
+    { url: detail.replace('P511160', 'P999999') },
     { retrieved_at: '2026-11-29T06:00:00Z' },
   ]) {
     const result = sourceIntegrityForStory(story(project.title, [{ ...project, ...change }]), fullRegistry, [], now, sdg);

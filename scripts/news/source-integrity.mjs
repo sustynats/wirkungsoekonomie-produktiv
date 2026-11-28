@@ -131,12 +131,14 @@ function semanticSupport(source, story, registrySource) {
 function admittedSdgProjectRecord(source, registrySource) {
   const intake = registrySource?.sdg_intake;
   const proof = source.sdg_evidence;
-  return intake?.active === true && typeof intake.undated_project_record_prefix === 'string'
-    && source.source_role === 'official_project_record'
-    && proof?.registry_id === registrySource.source_id
-    && /^P\d{6}$/.test(proof.reference)
-    && /^[0-9a-f]{64}$/.test(proof.snapshot_sha256)
-    && source.url === intake.undated_project_record_prefix + proof.reference;
+  if (intake?.active !== true || typeof intake.undated_project_record_prefix !== 'string'
+      || source.source_role !== 'official_project_record' || proof?.registry_id !== registrySource.source_id
+      || !/^P\d{6}$/.test(proof.reference) || !/^[0-9a-f]{64}$/.test(proof.snapshot_sha256)) return false;
+  if (source.url === intake.undated_project_record_prefix + proof.reference) return true;
+  if (typeof registrySource.api_url !== 'string' || !String(source.url).startsWith(registrySource.api_url + '?')) return false;
+  const url = new URL(source.url);
+  return !url.hash && url.searchParams.getAll('id').length === 1
+    && url.searchParams.get('id') === proof.reference && url.searchParams.get('format') === 'json';
 }
 
 export function sourceIntegrityForStory(story, registry, existingStories = [], now = new Date().toISOString(), { sdgMeasure = false } = {}) {
